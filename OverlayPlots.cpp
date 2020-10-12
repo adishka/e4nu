@@ -100,18 +100,18 @@ void OverlayPlots() {
 	std::vector<int> Style;
 
 //	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He"); JustNucleus.push_back("He");
-//	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
-	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
+	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
+//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
 
-//	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
+	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
 //	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
-	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");  DoubleE.push_back(4.461);
+//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");  DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
  
 //	Colors.push_back(kBlack); Colors.push_back(kRed); Colors.push_back(kBlue); Colors.push_back(kMagenta); Colors.push_back(kGreen); Colors.push_back(kOrange + 7);
-	Colors.push_back(kBlack); Colors.push_back(kBlack); Colors.push_back(kBlack); Colors.push_back(kMagenta); Colors.push_back(kGreen); Colors.push_back(kOrange + 7);
+	Colors.push_back(kBlack); Colors.push_back(kRed); Colors.push_back(kBlack); Colors.push_back(kMagenta); Colors.push_back(kGreen); Colors.push_back(kOrange + 7);
 
 //	Style.push_back(9); Style.push_back(3); Style.push_back(7); Style.push_back(5);
 //	Style.push_back(9); Style.push_back(9); Style.push_back(9); Style.push_back(9); // fancy dashed lines 
@@ -119,12 +119,20 @@ void OverlayPlots() {
 
 	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(kCyan); BreakDownColors.push_back(kGreen); BreakDownColors.push_back(kMagenta);
 
-	FSIModel.push_back("Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
+	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Data"); DirNames.push_back("Data");
+	FSIModel.push_back("Pinned_Data_NewFiducials_SixSectors"); FSILabel.push_back("Data (New Fiducials)"); DirNames.push_back("Data_New_Fiducials");
+
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
+
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 NoRad");  DirNames.push_back("hA2018_Truth_RadCorr");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("hA2018_Truth_RadCorr");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_NoAccMaps"); FSILabel.push_back("SuSav2 (No Maps)");  DirNames.push_back("hA2018_Truth_RadCorr");
+
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("hA2018_Truth_RadCorr");
+
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_NoAccMaps"); FSILabel.push_back("SuSav2 (No Maps)");  DirNames.push_back("hA2018_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_NewFiducials"); FSILabel.push_back("SuSav2 (New Fiducials)");  DirNames.push_back("SuSav2_New_Fiducials");
+
 //	FSIModel.push_back("SuSav2_02_11a_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("hA2018_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_NoWeightsBelow_0_7"); FSILabel.push_back("SuSav2 w>0.7");  DirNames.push_back("hA2018_Truth_RadCorr_NoWeights_Below_0_7");
 
@@ -139,8 +147,8 @@ void OverlayPlots() {
 
 //	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
 //	NameOfPlots.push_back("MissMomentum_NoWeight"); LabelOfPlots.push_back("P_{miss}^{#perp} [GeV/c]"); OutputPlotNames.push_back("MissMomentum_NoWeight");
-	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-//	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
+//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_1"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]");  OutputPlotNames.push_back("epRecoEnergy_slice_1");
 //	NameOfPlots.push_back("h1_Erec_p_bkgd_slice_sub2p1pi_2p_1"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_1");
 //	NameOfPlots.push_back("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_2"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]");  OutputPlotNames.push_back("epRecoEnergy_slice_2");
@@ -170,6 +178,7 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("CosDeltaThetaElectronPhotonAboveThreshold"); LabelOfPlots.push_back("cos(#Delta#theta_{e',#gamma})");  OutputPlotNames.push_back("CosDeltaThetaElectronPhotonAboveThreshold");
 //	NameOfPlots.push_back("CosDeltaPhiElectronPhotonAboveThreshold"); LabelOfPlots.push_back("cos(#Delta#phi_{e',#gamma})");  OutputPlotNames.push_back("CosDeltaPhiElectronPhotonAboveThreshold");
 //	NameOfPlots.push_back("h1_E_tot_cut2"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{Cal} Before Subtraction [GeV]");  OutputPlotNames.push_back("h1_E_tot_cut2");
+//	NameOfPlots.push_back("h1_PiPlus_Momentum"); LabelOfPlots.push_back("P_{#pi^{+}} [GeV/c]"); OutputPlotNames.push_back("PiPlus_Momentum");
 
 	std::vector<TH1D*> Plots;
 	std::vector<TH1D*> Plots_Clones;
@@ -217,24 +226,24 @@ void OverlayPlots() {
 					double XMinPadOne = -99., XMaxPadOne = -99., YMinPadOne = -99., YMaxPadOne = -99.;
 					double XMinPadTwo = -99., XMaxPadTwo = -99., YMinPadTwo = -99., YMaxPadTwo = -99.;
 
-					if (
-						string(OutputPlotNames[WhichPlot]).find("RecoEnergy_slice") != std::string::npos || 
-						string(NameOfPlots[WhichPlot]).find("MissMomentum") != std::string::npos ||
-						NameOfPlots[WhichPlot] == "h1_Q2_weight"||
-						NameOfPlots[WhichPlot] == "h1_nu_weight" ||
-						NameOfPlots[WhichPlot] == "h1_Nphot" || 
-						NameOfPlots[WhichPlot] == "h1_Nprot" ||
-						NameOfPlots[WhichPlot] == "h1_Npi" ||
-						NameOfPlots[WhichPlot] == "h_Etot_subtruct_piplpimi_factor_fracfeed" ||
-						NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed"
-					   ) {
+//					if (
+//						string(OutputPlotNames[WhichPlot]).find("RecoEnergy_slice") != std::string::npos || 
+//						string(NameOfPlots[WhichPlot]).find("MissMomentum") != std::string::npos ||
+//						NameOfPlots[WhichPlot] == "h1_Q2_weight"||
+//						NameOfPlots[WhichPlot] == "h1_nu_weight" ||
+//						NameOfPlots[WhichPlot] == "h1_Nphot" || 
+//						NameOfPlots[WhichPlot] == "h1_Nprot" ||
+//						NameOfPlots[WhichPlot] == "h1_Npi" ||
+//						NameOfPlots[WhichPlot] == "h_Etot_subtruct_piplpimi_factor_fracfeed" ||
+//						NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed"
+//					   ) {
 
 						XMinPadOne = 0., XMaxPadOne = 1., YMinPadOne = 0.0, YMaxPadOne = 1.;
 						XMinPadTwo = 0., XMaxPadTwo = 1., YMinPadTwo = 0.0, YMaxPadTwo = 0.01;
-					} else {
-						XMinPadOne = 0., XMaxPadOne = 1., YMinPadOne = 0.2, YMaxPadOne = 1.;
-						XMinPadTwo = 0., XMaxPadTwo = 1., YMinPadTwo = 0., YMaxPadTwo = 0.2;
-					}
+//					} else {
+//						XMinPadOne = 0., XMaxPadOne = 1., YMinPadOne = 0.2, YMaxPadOne = 1.;
+//						XMinPadTwo = 0., XMaxPadTwo = 1., YMinPadTwo = 0., YMaxPadTwo = 0.2;
+//					}
 
 					// ----------------------------------------------------------------------------------------
 
@@ -392,7 +401,7 @@ void OverlayPlots() {
 							 OutputPlotNames[WhichPlot] =="epRecoEnergy_slice_1" ||
 							   OutputPlotNames[WhichPlot] =="epRecoEnergy_slice_0" ||
 							   OutputPlotNames[WhichPlot] =="eRecoEnergy_slice_0" ||
-							 OutputPlotNames[WhichPlot] == "nu"
+							 OutputPlotNames[WhichPlot] == "nu" 
 						) 
 							{ Plots[WhichFSIModel]->GetYaxis()->SetTitle("Weighted Events / GeV");  }
 						else if (
@@ -421,7 +430,7 @@ void OverlayPlots() {
 						else { Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(0.6); }
 						Plots[WhichFSIModel]->SetLineWidth(LineWidth);
 
-						if (FSILabel[WhichFSIModel] == "Data" 
+						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos 
 							&& !(NameOfPlots[WhichPlot] == "h1_Nphot" || NameOfPlots[WhichPlot] == "h1_Nprot" || NameOfPlots[WhichPlot] == "h1_Npi")) 
 							{ leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel], "lep");}
 						else { leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel], "l"); }
@@ -705,6 +714,9 @@ void OverlayPlots() {
 						if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed" && xBCut[WhichxBCut] == "xBCut") 
 							{ for (int i = 0; i < 0; i++) {Plots[WhichFSIModel]->Rebin();} Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(-0.2,0.2); }
 
+						if (NameOfPlots[WhichPlot] == "h1_PiPlus_Momentum")
+							{ for (int i = 0; i < 4; i++) {Plots[WhichFSIModel]->Rebin();} Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(0.,2.); }
+
 //						// --------------------------------------------------------------------------------------
 
 //						// Scaling Factor
@@ -916,7 +928,7 @@ void OverlayPlots() {
 							Plots[WhichFSIModel]->GetYaxis()->SetLabelOffset(-0.004);
 							Plots[WhichFSIModel]->Rebin();
 							Plots[0]->GetYaxis()->SetRangeUser(0.5*min,2.*max); pad1->SetLogy();
-							if (FSILabel[WhichFSIModel] == "Data") { 
+							if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 						 
 								Plots[WhichFSIModel]->SetMarkerSize(3.); 
 								if (NameOfPlots[WhichPlot] == "h1_Nprot") { 
@@ -942,11 +954,11 @@ void OverlayPlots() {
 
 						else { 
 						//	Plots[WhichFSIModel]->Draw("C hist same"); 
-							if (FSILabel[WhichFSIModel] == "Data") { 
+							if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 
 								Plots[WhichFSIModel]->SetMarkerStyle(20); 
 								Plots[WhichFSIModel]->SetMarkerSize(2.); 
-								Plots[WhichFSIModel]->SetMarkerColor(kBlack); 
+								Plots[WhichFSIModel]->SetMarkerColor(Colors[WhichFSIModel]); 
 
 								if ( OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_1" 
 									|| OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_2"
@@ -1297,17 +1309,19 @@ void OverlayPlots() {
 						}
 											}
 
-					if (
-						string(OutputPlotNames[WhichPlot]).find("RecoEnergy_slice") != std::string::npos || 
-						string(NameOfPlots[WhichPlot]).find("MissMomentum") != std::string::npos ||
-                                                NameOfPlots[WhichPlot] == "h1_Q2_weight" ||
-						NameOfPlots[WhichPlot] == "h1_nu_weight" ||
-						NameOfPlots[WhichPlot] == "h1_Nphot" || 
-						NameOfPlots[WhichPlot] == "h1_Nprot" ||
-						NameOfPlots[WhichPlot] == "h1_Npi" ||
-						NameOfPlots[WhichPlot] == "h_Etot_subtruct_piplpimi_factor_fracfeed" ||
-						NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed"
-					   ) { delete pad2; }
+//					if (
+//						string(OutputPlotNames[WhichPlot]).find("RecoEnergy_slice") != std::string::npos || 
+//						string(NameOfPlots[WhichPlot]).find("MissMomentum") != std::string::npos ||
+//                                                NameOfPlots[WhichPlot] == "h1_Q2_weight" ||
+//						NameOfPlots[WhichPlot] == "h1_nu_weight" ||
+//						NameOfPlots[WhichPlot] == "h1_Nphot" || 
+//						NameOfPlots[WhichPlot] == "h1_Nprot" ||
+//						NameOfPlots[WhichPlot] == "h1_Npi" ||
+//						NameOfPlots[WhichPlot] == "h_Etot_subtruct_piplpimi_factor_fracfeed" ||
+//						NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed"
+//					   ) { 
+					delete pad2;
+					//}
 
 					// -----------------------------------------------------------------------------------------------------------------------------------------
 
