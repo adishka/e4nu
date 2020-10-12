@@ -79,9 +79,9 @@ void Create2DPlots() {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-//	NameOfPlots.push_back("h2_el_theta_phi"); XLabelOfPlots.push_back("#phi_{e'} [deg]"); YLabelOfPlots.push_back("#theta_{e'} [deg]"); OutputPlotNames.push_back("h2_el_theta_phi"); Title.push_back("");
+	NameOfPlots.push_back("h2_el_theta_phi"); XLabelOfPlots.push_back("#phi_{e'} [deg]"); YLabelOfPlots.push_back("#theta_{e'} [deg]"); OutputPlotNames.push_back("h2_el_theta_phi"); Title.push_back("");
 
-	NameOfPlots.push_back("h2_Proton_Theta_Phi"); XLabelOfPlots.push_back("#phi_{p} [deg]"); YLabelOfPlots.push_back("#theta_{p} [deg]"); OutputPlotNames.push_back("h2_el_theta_phi"); Title.push_back("");
+//	NameOfPlots.push_back("h2_Proton_Theta_Phi"); XLabelOfPlots.push_back("#phi_{p} [deg]"); YLabelOfPlots.push_back("#theta_{p} [deg]"); OutputPlotNames.push_back("h2_el_theta_phi"); Title.push_back("");
 
 //	NameOfPlots.push_back("h2_PiPlus_Theta_Phi"); XLabelOfPlots.push_back("#phi_{#pi^{+}} [deg]"); YLabelOfPlots.push_back("#theta_{#pi^{+}} [deg]"); OutputPlotNames.push_back("h2_piplus_theta_phi"); Title.push_back("");
 

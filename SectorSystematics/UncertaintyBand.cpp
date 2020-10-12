@@ -30,53 +30,36 @@ void UncertaintyBand() {
 	TGaxis::SetMaxDigits(3);
 //	TGaxis::SetExponentOffset(-0.1, 1., "y");
 
-	std::vector<TString> xBCut; std::vector<TString> nucleus; std::vector<TString> LabelsOfSamples; 
-	std::vector<TString> E; std::vector<double> DoubleE;
-	std::vector<TString> LabelE; std::vector<TString> FSIModel;
-	std::vector<TString> FSILabel; std::vector<TString> NameOfPlots; std::vector<int> SectorIndex;  
-	std::vector<TString> OutputPlotNames; std::vector<TH1D*> BreakDownPlots;
-	std::vector<int> Colors;
-	std::vector<int> Style;
+	gStyle->SetTitleSize(TextSize,"t"); 
+	gStyle->SetTitleFont(FontStyle,"t");
+	gStyle->SetOptStat(0);
+
+	// ------------------------------------------------------------------------
+
+	std::vector<TString> xBCut; 
+	std::vector<TString> nucleus;
+	std::vector<TString> E;
+	std::vector<TString> FSIModel;
+	std::vector<TString> FSILabel; std::vector<TString> NameOfPlots; 
+	std::vector<int> SectorIndex;  std::vector<TString> OutputPlotNames;
 	std::vector<TString> Var;
 
-//	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
-	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
-//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
+	// ------------------------------------------------------------------------
 
-//	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
-	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");  DoubleE.push_back(4.461);
+//	nucleus.push_back("4He");
+	nucleus.push_back("12C");
+//	nucleus.push_back("56Fe");
+
+//	E.push_back("1_161");
+//	E.push_back("2_261");	
+	E.push_back("4_461");
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
- 
-//	Colors.push_back(kBlack); Colors.push_back(kRed); Colors.push_back(kBlue); Colors.push_back(kMagenta); Colors.push_back(kGreen); Colors.push_back(kOrange + 7);
-	Colors.push_back(kBlack); Colors.push_back(610); Colors.push_back(410); Colors.push_back(kMagenta); Colors.push_back(kGreen+3); Colors.push_back(kBlue);  Colors.push_back(610);
-
-//	Style.push_back(9); Style.push_back(3); Style.push_back(7); Style.push_back(5);
-//	Style.push_back(9); Style.push_back(9); Style.push_back(9); Style.push_back(9); // fancy dashed lines 
-	Style.push_back(1); Style.push_back(kDashed); Style.push_back(1); Style.push_back(1);
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
-
-/*
-	NameOfPlots.push_back("h1_EQE_InSector_0"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); SectorIndex.push_back("1st");  OutputPlotNames.push_back("h1_EQE_InSector_0");
-	NameOfPlots.push_back("h1_EQE_InSector_1"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); SectorIndex.push_back("2nd");  OutputPlotNames.push_back("h1_EQE_InSector_1");
-//	NameOfPlots.push_back("h1_EQE_InSector_2"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); SectorIndex.push_back("3rd");  OutputPlotNames.push_back("h1_EQE_InSector_2");
-//	NameOfPlots.push_back("h1_EQE_InSector_3"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); SectorIndex.push_back("4th");  OutputPlotNames.push_back("h1_EQE_InSector_3");
-//	NameOfPlots.push_back("h1_EQE_InSector_4"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); SectorIndex.push_back("5th");  OutputPlotNames.push_back("h1_EQE_InSector_4");
-	NameOfPlots.push_back("h1_EQE_InSector_5"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); SectorIndex.push_back("6th");  OutputPlotNames.push_back("h1_EQE_InSector_5");
-*/
-
-
-//	NameOfPlots.push_back("h1_ECal_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{Cal} [GeV]"); SectorIndex.push_back("1st");  OutputPlotNames.push_back("h1_ECal_InSector_0");
-//	NameOfPlots.push_back("h1_ECal_InSector_1"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{Cal} [GeV]"); SectorIndex.push_back("2nd");  OutputPlotNames.push_back("h1_ECal_InSector_1");
-////	NameOfPlots.push_back("h1_ECal_InSector_2"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{Cal} [GeV]"); SectorIndex.push_back("3rd");  OutputPlotNames.push_back("h1_ECal_InSector_2");
-////	NameOfPlots.push_back("h1_ECal_InSector_3"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{Cal} [GeV]"); SectorIndex.push_back("4th");  OutputPlotNames.push_back("h1_ECal_InSector_3");
-////	NameOfPlots.push_back("h1_ECal_InSector_4"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{Cal} [GeV]"); SectorIndex.push_back("5th");  OutputPlotNames.push_back("h1_ECal_InSector_4");
-//	NameOfPlots.push_back("h1_ECal_InSector_5"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{Cal} [GeV]"); SectorIndex.push_back("6th");  OutputPlotNames.push_back("h1_ECal_InSector_5");
 
 	SectorIndex.push_back(0);
 	SectorIndex.push_back(1);
@@ -84,6 +67,8 @@ void UncertaintyBand() {
 
 	Var.push_back("ECal"); 
 //	Var.push_back("EQE");
+
+	// ------------------------------------------------------------------------
 
 	const int NxBCuts = xBCut.size();
 	const int NNuclei = nucleus.size();
@@ -105,9 +90,18 @@ void UncertaintyBand() {
 
 		for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
+			TString LabelE = " @ E = 4.461 GeV"; double DoubleE = 4.461;
+			if ( E[WhichEnergy] == "1_161" ) { LabelE = " @ E = 1.161 GeV"; DoubleE = 1.161; }
+			if ( E[WhichEnergy] == "2_261" ) { LabelE = " @ E = 2.261 GeV"; DoubleE = 2.261; }
+
 			// Loop over the nuclei
 
 			for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
+
+				TString LabelsOfSamples = "^{12}C";
+				if ( nucleus[WhichNucleus] == "4He" ) { LabelsOfSamples = "^{4}He"; }
+				if ( nucleus[WhichNucleus] == "CH2" ) { LabelsOfSamples = "CH2"; }
+				if ( nucleus[WhichNucleus] == "56Fe" ) { LabelsOfSamples = "^{56}Fe"; }
 
 				// Loop over the data set / simulation files
 
@@ -145,244 +139,102 @@ void UncertaintyBand() {
 
 							TString PlotName = "h1_" + Var[WhichVar] + "_InSector_" + SectorIndex[WhichPlot];
 
-							Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot] = (TH1D*)Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get(PlotName);
+							Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot] = 
+								(TH1D*)Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get(PlotName);
 
 							// --------------------------------------------------------------------------------------
-/*
-						// Make the plot pretty
 
-						Plots[WhichPlot]->SetLineColor(SectorColors[WhichPlot]);
-						Plots[WhichPlot]->SetTitle(FSILabel[WhichFSIModel] + ", " + LabelsOfSamples[WhichNucleus]+LabelE[WhichNucleus]);
-						Plots[WhichPlot]->GetXaxis()->SetTitle(LabelOfPlots[WhichPlot]);
-						PrettyDoubleXSecPlot(Plots[WhichPlot]);
+							// Make the plot pretty
 
-						// --------------------------------------------------------------------------------------
+							Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]->SetLineColor(SectorColors[SectorIndex[WhichPlot]]);
+							Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]->SetTitle(FSILabel[WhichFSIModel] + ", " + LabelsOfSamples);
+							Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]->GetXaxis()->SetTitle(LabelOfPlots);
+							PrettyDoubleXSecPlot(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]);
 
-						// Scaling Factor
-						// Scale to data integral after dividing by integrated charge & length
+							// --------------------------------------------------------------------------------------
 
-						double ScalingFactor = 1.;
-						double ScaleBy = 1.;
+							// Scale to obtain absolute double differential cross sections 
+							// Use charge, density and length for data samples
+							// Use total number of events in genie sample and relevant genie cross sections for simulation
 
-int MinBin = 0;
-int MaxBin = Plots[WhichFSIModel]->GetXaxis()->GetNbins()+1;
+							AbsoluteXSecScaling(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot],
+								FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]); 
 
+							// -----------------------------------------------------------------------------------
 
-						if (FSILabel[WhichFSIModel] == "Data") { 
+							// Division by bin width, function defined in myFunctions.C
+							// Accounting for the fact that the bin width might not be constant
 
-							ScaleBy = 1. / ( IntegratedCharge[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetLength[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetDensity[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    OverallUnitConversionFactor / MassNumber[nucleus[WhichNucleus]] ) * ConversionFactorCm2ToMicroBarn / dOmega;
+							ReweightPlots(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]);
 
-							Plots[WhichFSIModel]->Scale(ScaleBy);
+							// --------------------------------------------------------------------------------------
 
-							DataIntegral =  Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
-						}
+							// Rebining & ranges
 
-						if (FSILabel[WhichFSIModel] == "Data_FilterRuns") { 
+							BinningAndRange(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot],DoubleE,Var[WhichVar]);
 
-							ScaleBy = 1. / (IntegratedCharge_FilterRuns[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetLength[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetDensity[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    OverallUnitConversionFactor / MassNumber[nucleus[WhichNucleus]]) * ConversionFactorCm2ToMicroBarn / dOmega;
+							// ----------------------------------------------------------------------------------
 
-							Plots[WhichFSIModel]->Scale(ScaleBy);
-							DataIntegral =  Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
-						}
+							// Apply Systematic Uncertainties on Data Points
+							// using numbers obtained from Mariana's thesis
 
-						if (FSILabel[WhichFSIModel] == "Data_NewFilterRuns") { 
+							if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) 
+								{ ApplySystUnc(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot], DoubleE); }
 
-							ScaleBy = 1. / (IntegratedCharge_NewFilterRuns[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetLength[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetDensity[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    OverallUnitConversionFactor / MassNumber[nucleus[WhichNucleus]]) * ConversionFactorCm2ToMicroBarn / dOmega;
+							// ---------------------------------------------------------------------------------------------------
 
-							Plots[WhichFSIModel]->Scale(ScaleBy);
-							DataIntegral =  Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
-						}
+							// Max, min
 
-						if (FSILabel[WhichFSIModel] == "GoodRunList_Data") { 
+							double localmax = Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]->GetMaximum();
+							double localmin = Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]->GetMinimum();
 
-							ScaleBy = 1. / (IntegratedCharge_GoodRunList_AllRuns[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetLength[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetDensity[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    OverallUnitConversionFactor / MassNumber[nucleus[WhichNucleus]]) * ConversionFactorCm2ToMicroBarn / dOmega;
+							if (localmax > max) { max = localmax; }
+							if (localmin < min) { min = localmin; }
+							double ExtraHeight = 0.1;
+							double PosNegMin = TMath::Min(0.,(1+ExtraHeight)*min);
+							Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][0]->GetYaxis()->SetRangeUser( PosNegMin, (1+ExtraHeight)*max );
 
-							Plots[WhichFSIModel]->Scale(ScaleBy);
-							DataIntegral =  Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
-						}
+							// --------------------------------------------------------------------------------------------------
 
-						if (FSILabel[WhichFSIModel] == "LowCurrent_GoodRunList_Data") { 
+							if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 
-							ScaleBy = 1. / (IntegratedCharge_GoodRunList_LowCurrentRuns[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetLength[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetDensity[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    OverallUnitConversionFactor / MassNumber[nucleus[WhichNucleus]]) * ConversionFactorCm2ToMicroBarn / dOmega;
+								Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]->SetMarkerStyle(MarkerStyle); 
+								Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]->SetMarkerSize(MarkerSize); 
+								Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]->SetMarkerColor(SectorColors[SectorIndex[WhichPlot]]); 
 
-							Plots[WhichFSIModel]->Scale(ScaleBy);
-							DataIntegral =  Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
-						}
+								gStyle->SetErrorX(0); // Removing the horizontal errors
+								Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]->Draw("e same"); 
+								Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][0]->Draw("e same"); 
 
+							} else { 
 
-						if (FSILabel[WhichFSIModel] == "HighCurrent_GoodRunList_Data") { 
+								Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]->Draw("C hist same");  // draw them as lines
+								Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][0]->Draw("C hist same"); 
 
-							ScaleBy = 1. / (IntegratedCharge_GoodRunList_HighCurrentRuns[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetLength[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetDensity[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    OverallUnitConversionFactor / MassNumber[nucleus[WhichNucleus]]) * ConversionFactorCm2ToMicroBarn / dOmega;
-
-							Plots[WhichFSIModel]->Scale(ScaleBy);
-							DataIntegral =  Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
-						}
-
-						if (FSILabel[WhichFSIModel] == "Pinned Data") { 
-
-							ScaleBy = 1. / (IntegratedCharge_PinnedFiles[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetLength[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    TargetDensity[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-										    OverallUnitConversionFactor / MassNumber[nucleus[WhichNucleus]]) * ConversionFactorCm2ToMicroBarn / dOmega;
-
-							Plots[WhichFSIModel]->Scale(ScaleBy);
-							DataIntegral =  Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
-						}
-
-						// -------------------------------------------------------------------------------------------------------------------------------------------------
-
-						if (FSILabel[WhichFSIModel] == "SuSav2" || FSILabel[WhichFSIModel] == "SuSav2_NoAccMaps" ) { 
-
-							ScalingFactor = (SuSav2GenieXSec[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] * TMath::Power(10.,-38.) *\
-								ConversionFactorCm2ToMicroBarn / (SuSav2NumberEvents[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-								dOmega) ) ;
-
-							Plots[WhichFSIModel]->Scale(ScalingFactor);
-							ScaleBy = ScalingFactor;
-							SuSav2Integral =  Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
-						}
-
-						if (FSILabel[WhichFSIModel] == "G2018") { 
-
-							ScalingFactor = ( G2018GenieXSec[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] * TMath::Power(10.,-38.) *\
-								ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair(nucleus[WhichNucleus], E[WhichEnergy])] *\
-								dOmega) );
-
-							Plots[WhichFSIModel]->Scale(ScalingFactor);
-							ScaleBy = ScalingFactor;
-							G2018Integral =  Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
-						}
-
-						// -----------------------------------------------------------------------------------
-
-						// Accounting for the fact that the bin width might not be constant
-
-						ReweightPlots(Plots[WhichFSIModel]);
-
-						// --------------------------------------------------------------------------------------
-
-						// Rebining & ranges
-
-
-						if (string(NameOfPlots[WhichPlot]).find("Omega_FullyInclusive") != std::string::npos) {
-
-							if (DoubleE[WhichEnergy] == 1.161)  
-								{ for (int i = 0; i < 5; i++) { Plots[WhichFSIModel]->Rebin(); } Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(0.,0.7);  }
-
-							if ( DoubleE[WhichEnergy] == 2.261) 
-								{ for (int i = 0; i < 5; i++) { Plots[WhichFSIModel]->Rebin(); } Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(0.,1.5); }
-
-							if ( DoubleE[WhichEnergy] == 4.461) 
-								{ for (int i = 0; i < 6; i++) { Plots[WhichFSIModel]->Rebin(); } Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(0.5,3.); }
-
-						} else {
-
-							if (DoubleE[WhichEnergy] == 1.161)  { 
-								//for (int i = 0; i < 5; i++) { Plots[WhichFSIModel]->Rebin(); }
-								Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(0.4,1.7); 
 							}
 
-							if ( DoubleE[WhichEnergy] == 2.261) { 
-								//for (int i = 0; i < 5; i++) { Plots[WhichFSIModel]->Rebin(); }
-								Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(0.6,3.); 
-							}
-
-							if ( DoubleE[WhichEnergy] == 4.461) { 
-								//for (int i = 0; i < 6; i++) { Plots[WhichFSIModel]->Rebin(); }
-								Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(1.5,6.); 
-							}
-
-						}
-
-						// ----------------------------------------------------------------------------------
-
-						// Apply Systematic Uncertainties on Data Points
-
-						double SystUnc = 0;
-						if ( DoubleE[WhichEnergy] == 1.161 ) { SystUnc = SystUnc1GeV; }
-						if ( DoubleE[WhichEnergy] == 2.261 ) { SystUnc = SystUnc2GeV; }
-						if ( DoubleE[WhichEnergy] == 4.461 ) { SystUnc = SystUnc4GeV; }
-
-						if (FSILabel[WhichFSIModel] == "Data") { ApplySystUnc(Plots[WhichFSIModel], SystUnc); }
-
-						// ---------------------------------------------------------------------------------------------------
-
-						// Max, min, title & # divisions
-
-						double localmax = Plots[WhichFSIModel]->GetMaximum();
-
-						if (localmax > max) { max = localmax; }
-						double height = 1.2;
-						if ( xBCut[WhichxBCut] == "xBCut" ) { height = 1.1; }
-						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
-
-						TString XLabel = Plots[WhichFSIModel]->GetXaxis()->GetTitle();
-						Plots[0]->GetXaxis()->SetTitle(XLabel);
-
-						Plots[WhichFSIModel]->GetXaxis()->SetNdivisions(Ndivisions);
-						Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(Ndivisions);
-
-						// --------------------------------------------------------------------------------------------------
-
-						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
-
-							Plots[WhichFSIModel]->SetMarkerStyle(20); 
-							Plots[WhichFSIModel]->SetMarkerSize(2.); 
-							Plots[WhichFSIModel]->SetMarkerColor(Colors[WhichPlot]); 
-
-							gStyle->SetErrorX(0); // Removing the horizontal errors
-							Plots[WhichFSIModel]->Draw("e same"); 
-
-						} else { 
-
-							Plots[WhichFSIModel]->SetLineStyle(Style[WhichFSIModel]); 
-							Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
-
-						}
-
-						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) 
-							{ leg->AddEntry(Plots[WhichFSIModel],SectorIndex[WhichPlot], "lep");}
-						else { leg->AddEntry(Plots[WhichFSIModel],SectorIndex[WhichPlot], "l"); }
-				
-						SectorPlots.push_back(Plots[WhichFSIModel]);
+							if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) 
+							  {leg->AddEntry(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot],ToStringInt(SectorIndex[WhichPlot]), "lep");}
+							else 
+							  { leg->AddEntry(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot],ToStringInt(SectorIndex[WhichPlot]), "l"); }
 
 
-		                                // ---------------------------------------------------------------------------------------------------
-		                                // --------------------------------------------------------------------------------------------------
+				                        // ---------------------------------------------------------------------------------------------------
+				                        // ---------------------------------------------------------------------------------------------------
+
+							TString ext = "";
+							if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
+
+							//PlotCanvas->SaveAs("../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"
+							//+ext+nucleus[WhichNucleus]+"_" 
+							//+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+".pdf");
+
+							//delete PlotCanvas;
+
+							// -----------------------------------------------------------------------------------------------------------------------------------------
 
 
-					// -----------------------------------------------------------------------------------------------------------------------------------------
-
-					TString ext = "";
-					if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
-
-//					PlotCanvas->SaveAs("../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"+ext+nucleus[WhichNucleus]+"_" 
-//						+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+".pdf");
-
-					delete PlotCanvas;
-
-					// -----------------------------------------------------------------------------------------------------------------------------------------
-
-*/
-					} // End of the loop over the plots
+						} // End of the loop over the plots
 
 /*
 				std::vector<double> UncBand = GetUncertaintyBand(SectorPlots);
@@ -449,7 +301,7 @@ int MaxBin = Plots[WhichFSIModel]->GetXaxis()->GetNbins()+1;
 
 					Nom->SetMarkerStyle(20); 
 					Nom->SetMarkerSize(2.); 
-					Nom->SetMarkerColor(Colors[0]); 
+					Nom->SetMarkerColor(kBlack); 
 
 					gStyle->SetErrorX(0); // Removing the horizontal errors
 					Nom->Draw("e same"); 
