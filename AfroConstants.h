@@ -15,7 +15,7 @@
 
 	// Constants
 
-	const int Ndivisions = 4;
+	const int Ndivisions = 6;
 	const int LineWidth = 3;
 	const int FontStyle = 132;
 	const double TextSize = 0.07;
@@ -244,7 +244,7 @@
 	//  ------------------------------------------------------------------------------
 
 	const std::vector<int> BreakDownColors{kBlue,429,410,610};
-	const std::vector<int> SectorColors{kBlack,610,410,kMagenta,kGreen+3,kBlue};
+	const std::vector<int> SectorColors{kBlack,610,410,kRed+1,kGreen+3,kBlue};
 
 	//  ------------------------------------------------------------------------------
 

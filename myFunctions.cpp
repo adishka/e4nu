@@ -60,9 +60,7 @@ void ApplySystUnc(TH1D* h, double Energy) {
 
 // ----------------------------------------------------------------------------------------------------------------
 
-std::vector<double> GetUncertaintyBand(std::vector<TH1D*> h) {
-
-	int NPlots = h.size();
+std::vector<double> GetUncertaintyBand(TH1D* h[], int NPlots) {
 
 	double NBins = h[0]->GetNbinsX();
 
@@ -284,6 +282,33 @@ void BinningAndRange(TH1D* h, double Energy, TString PlotVar) {
 
 	return;	
 
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+double computeMean(std::vector<double> numbers) {
+
+	if(numbers.empty()) return 0;
+
+	double total = 0;
+	for (int number = 0; number < (int)(numbers.size()); number ++) {
+		total += numbers[number];
+	}
+
+	double average = total / numbers.size();
+	return average;
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+double computeStd(double mean, std::vector<double> numbers) {
+
+	float result = 0;
+	for (int number = 0; number < (int)(numbers.size()); number ++) {
+		result += (numbers[number] - mean)*(numbers[number] - mean);
+	}
+
+	return sqrt(result / (numbers.size() - 1));
 }
 
 // -------------------------------------------------------------------------------------------------------------------------------------

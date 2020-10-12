@@ -106,7 +106,11 @@ void genie_analysis::Loop(Int_t choice) {
 
 	TH1D::SetDefaultSumw2();
 	TH2D::SetDefaultSumw2();
+
 	int NSectors = 6;
+	int NDeltaAlphaTBins = 36; double DeltaAlphaTMin = 0.; double DeltaAlphaTMax = 180.;
+	int NDeltaPhiTBins = 36; double DeltaPhiTMin = 0.; double DeltaPhiTMax = 180.;
+
 
 	//Choice = 0 is for analysis of CLAS data while choice = 1 is for the analysis of GENIE Simulation
 	if (choice != 2 && choice != 1 && choice != 0) {
@@ -717,11 +721,19 @@ void genie_analysis::Loop(Int_t choice) {
 
 	TH1F *h1_ECal_InSector[NSectors];
 	TH1F *h1_EQE_InSector[NSectors];
+	TH1F *h1_DeltaPT_InSector[NSectors];
+	TH1F *h1_DeltaAlphaT_InSector[NSectors];
+	TH1F *h1_DeltaPhiT_InSector[NSectors];
 
 	for (int WhichSector = 0; WhichSector < NSectors; WhichSector++) {
 
 		h1_ECal_InSector[WhichSector]  = new TH1F("h1_ECal_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
 		h1_EQE_InSector[WhichSector]  = new TH1F("h1_EQE_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
+
+		h1_DeltaPT_InSector[WhichSector]  = new TH1F("h1_DeltaPT_InSector_"+TString(std::to_string(WhichSector)),"",80,0.,1.);
+		h1_DeltaAlphaT_InSector[WhichSector]  = new TH1F("h1_DeltaAlphaT_InSector_"+TString(std::to_string(WhichSector)),";#delta#alpha_{T} [deg]",NDeltaAlphaTBins,DeltaAlphaTMin,DeltaAlphaTMax);
+
+		h1_DeltaPhiT_InSector[WhichSector]  = new TH1F("h1_DeltaPhiT_InSector_"+TString(std::to_string(WhichSector)),";#delta#phi_{T} [deg]",NDeltaPhiTBins,DeltaPhiTMin,DeltaPhiTMax);
 
 	}
 
@@ -904,9 +916,6 @@ void genie_analysis::Loop(Int_t choice) {
 	TH1D* Q2_BreakDown[NInt];
 	TH1D* Nu_BreakDown[NInt];
 	TH1D* Pe_BreakDown[NInt];
-	
-	int NDeltaAlphaTBins = 36; double DeltaAlphaTMin = 0.; double DeltaAlphaTMax = 180.;
-	int NDeltaPhiTBins = 36; double DeltaPhiTMin = 0.; double DeltaPhiTMax = 180.;
 		 
 	TH1D* DeltaPhiT_BreakDown[NInt];
 	TH1D* DeltaAlphaT_BreakDown[NInt];
@@ -1730,8 +1739,6 @@ void genie_analysis::Loop(Int_t choice) {
 					double ProtonTheta_Deg = V3_2prot_corr[f].Theta() *180. / TMath::Pi();
 					double ProtonMag = V3_2prot_corr[f].Mag();
 
-					h1_ECal_InSector[ElectronSector]->Fill(E_tot_2p[f],LocalWeight);
-
 					// -----------------------------------------------------------------------------------------------
 					// Reconstruct xB, W, Q2 using Ecal instead of Etrue
 
@@ -1755,7 +1762,12 @@ void genie_analysis::Loop(Int_t choice) {
 					Pe_BreakDown[0]->Fill(V4_el.Rho(),LocalWeight);
 					
 					double deltaphiT = DeltaPhiTFunction(V3_el,V3_2prot_corr[f]);					
-					double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_2prot_corr[f]);					
+					double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_2prot_corr[f]);
+
+					h1_ECal_InSector[ElectronSector]->Fill(E_tot_2p[f],LocalWeight);
+					h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot_2p[f],LocalWeight);
+					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);				
 							     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);     					
@@ -1932,8 +1944,6 @@ void genie_analysis::Loop(Int_t choice) {
 					double ProtonTheta_Deg = V3_2prot_corr[z].Theta() *180. / TMath::Pi();
 					double ProtonMag = V3_2prot_corr[z].Mag();
 
-					h1_ECal_InSector[ElectronSector]->Fill(Ecal_2p1pi_to2p0pi[z],LocalWeight);
-
 					// -----------------------------------------------------------------------------------------------
 					// Reconstruct xB, W, Q2 using Ecal instead of Etrue
 
@@ -1957,7 +1967,12 @@ void genie_analysis::Loop(Int_t choice) {
 					Pe_BreakDown[0]->Fill(V4_el.Rho(),LocalWeight);
 					
 					double deltaphiT = DeltaPhiTFunction(V3_el,V3_2prot_corr[z]);					
-					double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_2prot_corr[z]);					
+					double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_2prot_corr[z]);
+
+					h1_ECal_InSector[ElectronSector]->Fill(Ecal_2p1pi_to2p0pi[z],LocalWeight);
+					h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp_2p1pi_to2p0pi[z],LocalWeight);
+					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);					
 							     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);  								
@@ -2068,8 +2083,6 @@ void genie_analysis::Loop(Int_t choice) {
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_2p1pito1p1pi[z]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_2prot_corr[z].Mag(),V3_2prot_corr[z].Theta()*180./TMath::Pi(),P_2p1pito1p1pi[z]*histoweight);
 
-					h1_ECal_InSector[ElectronSector]->Fill(Ecal_2p1pi_to2p0pi[z],LocalWeight);
-
 					double PionWeight = pion_acc_ratio;
 
 					if (charge_pi[0] == 1) { 
@@ -2107,7 +2120,12 @@ void genie_analysis::Loop(Int_t choice) {
 					Pe_BreakDown[0]->Fill(V4_el.Rho(),LocalWeight);
 					
 					deltaphiT = DeltaPhiTFunction(V3_el,V3_2prot_corr[z]);					
-					deltaalphaT = DeltaAlphaTFunction(V3_el,V3_2prot_corr[z]);					
+					deltaalphaT = DeltaAlphaTFunction(V3_el,V3_2prot_corr[z]);	
+
+					h1_ECal_InSector[ElectronSector]->Fill(Ecal_2p1pi_to2p0pi[z],LocalWeight);
+					h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot_2p[z],LocalWeight);
+					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);				
 							     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);  					
@@ -2217,8 +2235,6 @@ void genie_analysis::Loop(Int_t choice) {
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),-P_2p1pito1p0pi[z]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_2prot_corr[z].Mag(),V3_2prot_corr[z].Theta()*180./TMath::Pi(),-P_2p1pito1p0pi[z]*histoweight);
 
-					h1_ECal_InSector[ElectronSector]->Fill(E_tot_2p[z],LocalWeight);
-
 					if (charge_pi[0] == 1) { 
 					
 						h2_PiPlus_Theta_Momentum->Fill(V3_1pi_corr.Mag(),V3_1pi_corr.Theta()*180./TMath::Pi(),-P_2p1pito1p0pi[z]*histoweight); 
@@ -2255,7 +2271,12 @@ void genie_analysis::Loop(Int_t choice) {
 					Pe_BreakDown[0]->Fill(V4_el.Rho(),LocalWeight);
 					
 					deltaphiT = DeltaAlphaTFunction(V3_el,V3_2prot_corr[z]);					
-					deltaalphaT = DeltaAlphaTFunction(V3_el,V3_2prot_corr[z]);					
+					deltaalphaT = DeltaAlphaTFunction(V3_el,V3_2prot_corr[z]);
+
+					h1_ECal_InSector[ElectronSector]->Fill(E_tot_2p[z],LocalWeight);
+					h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot_2p[z],LocalWeight);
+					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);					
 							     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight); 					
@@ -2427,8 +2448,6 @@ void genie_analysis::Loop(Int_t choice) {
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),Ptot_2p[z]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_2prot_corr[z].Mag(),V3_2prot_corr[z].Theta()*180./TMath::Pi(),Ptot_2p[z]*histoweight);
 
-					h1_ECal_InSector[ElectronSector]->Fill(E_tot_2p[z],LocalWeight);
-
 					for (int i = 0; i < num_pi_phot; i++) {
 
 						if (charge_pi[i] == 1) { 
@@ -2469,7 +2488,12 @@ void genie_analysis::Loop(Int_t choice) {
 					Pe_BreakDown[0]->Fill(V4_el.Rho(),LocalWeight);
 					
 					double deltaphiT = DeltaPhiTFunction(V3_el,V3_2prot_corr[z]);					
-					double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_2prot_corr[z]);					
+					double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_2prot_corr[z]);
+
+					h1_ECal_InSector[ElectronSector]->Fill(E_tot_2p[z],LocalWeight);
+					h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot_2p[z],LocalWeight);
+					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);					
 							     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);					
@@ -2670,8 +2694,6 @@ void genie_analysis::Loop(Int_t choice) {
 						h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_3pto2p[count][j]*histoweight);
 						h2_Proton_Theta_Momentum->Fill(V3_prot_corr[j].Mag(),V3_prot_corr[j].Theta()*180./TMath::Pi(),P_3pto2p[count][j]*histoweight);
 
-						h1_ECal_InSector[ElectronSector]->Fill(E_cal_3pto2p[count][j],LocalWeight);
-
 						// -----------------------------------------------------------------------------------------------
 						// Reconstruct xB, W, Q2 using Ecal instead of Etrue
 
@@ -2695,7 +2717,12 @@ void genie_analysis::Loop(Int_t choice) {
 						Pe_BreakDown[0]->Fill(V4_el.Rho(),LocalWeight);
 						
 						double deltaphiT = DeltaPhiTFunction(V3_el,V3_prot_corr[j]);					
-						double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr[j]);					
+						double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr[j]);
+
+						h1_ECal_InSector[ElectronSector]->Fill(E_cal_3pto2p[count][j],LocalWeight);
+						h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp_3pto2p[count][j],LocalWeight);
+						h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+						h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);				
 								     
 						DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 						DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);						
@@ -2815,8 +2842,6 @@ void genie_analysis::Loop(Int_t choice) {
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),-P_3pto1p[j]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_prot_corr[j].Mag(),V3_prot_corr[j].Theta()*180./TMath::Pi(),-P_3pto1p[j]*histoweight);
 
-					h1_ECal_InSector[ElectronSector]->Fill(E_cal[j],LocalWeight);
-
 					// -----------------------------------------------------------------------------------------------
 					// Reconstruct xB, W, Q2 using Ecal instead of Etrue
 
@@ -2840,7 +2865,12 @@ void genie_analysis::Loop(Int_t choice) {
 					Pe_BreakDown[0]->Fill(V4_el.Rho(),LocalWeight);
 					
 					double deltaphiT = DeltaPhiTFunction(V3_el,V3_prot_corr[j]);					
-					double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr[j]);					
+					double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr[j]);
+
+					h1_ECal_InSector[ElectronSector]->Fill(E_cal[j],LocalWeight);
+					h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp[j],LocalWeight);
+					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);					
 								     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);					
@@ -3004,8 +3034,6 @@ void genie_analysis::Loop(Int_t choice) {
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_tot_3p[j]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_prot_corr[j].Mag(),V3_prot_corr[j].Theta()*180./TMath::Pi(),P_tot_3p[j]*histoweight);
 
-					h1_ECal_InSector[ElectronSector]->Fill(E_cal[j],LocalWeight);
-
 					if (charge_pi[0] == 1) { 
 
 						h2_PiPlus_Theta_Momentum->Fill(V3_pi_corr.Mag(),V3_pi_corr.Theta()*180./TMath::Pi(),P_tot_3p[j]*histoweight); 
@@ -3041,7 +3069,12 @@ void genie_analysis::Loop(Int_t choice) {
 					Pe_BreakDown[0]->Fill(V4_el.Rho(),LocalWeight);
 					
 					double deltaphiT = DeltaPhiTFunction(V3_el,V3_prot_corr[j]);					
-					double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr[j]);					
+					double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr[j]);
+
+					h1_ECal_InSector[ElectronSector]->Fill(E_cal[j],LocalWeight);
+					h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp[j],LocalWeight);
+					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);					
 								     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);					
@@ -3313,8 +3346,6 @@ void genie_analysis::Loop(Int_t choice) {
 								h2_Proton_Theta_Momentum->Fill(V3_prot_corr[j].Mag(),V3_prot_corr[j].Theta()*180./TMath::Pi(),-P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight);
 
 
-								h1_ECal_InSector[ElectronSector]->Fill(E_cal_4pto3p[count][j],LocalWeight);
-
 								// ----------------------------------------------------------
 								// Reconstruct xB, W, Q2 using Ecal instead of Etrue
 
@@ -3339,6 +3370,11 @@ void genie_analysis::Loop(Int_t choice) {
 								
 								double deltaphiT = DeltaPhiTFunction(V3_el,V3_prot_corr[j]);			
 								double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr[j]);
+
+								h1_ECal_InSector[ElectronSector]->Fill(E_cal_4pto3p[count][j],LocalWeight);
+								h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp_4pto3p[count][j],LocalWeight);
+								h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+								h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
 											     
 								DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 								DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);			
@@ -3458,8 +3494,6 @@ void genie_analysis::Loop(Int_t choice) {
 							h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_43pto1p[j]*histoweight);
 							h2_Proton_Theta_Momentum->Fill(V3_prot_corr[j].Mag(),V3_prot_corr[j].Theta()*180./TMath::Pi(),P_43pto1p[j]*histoweight);
 
-							h1_ECal_InSector[ElectronSector]->Fill(E_cal_43pto1p[j],LocalWeight);
-
 							// -----------------------------------------------------------------------------------------------
 							// Reconstruct xB, W, Q2 using Ecal instead of Etrue
 
@@ -3484,6 +3518,11 @@ void genie_analysis::Loop(Int_t choice) {
 							
 							double deltaphiT = DeltaPhiTFunction(V3_el,V3_prot_corr[j]);			
 							double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr[j]);
+
+							h1_ECal_InSector[ElectronSector]->Fill(E_cal_43pto1p[j],LocalWeight);
+							h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp_43pto1p[j],LocalWeight);
+							h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+							h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
 											     
 							DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 							DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);					
@@ -3629,8 +3668,6 @@ void genie_analysis::Loop(Int_t choice) {
 									h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight);
 									h2_Proton_Theta_Momentum->Fill(V3p2[j].Mag(),V3p2[j].Theta()*180./TMath::Pi(),P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight);
 
-									h1_ECal_InSector[ElectronSector]->Fill(E_cal_4pto2p[j],LocalWeight);
-
 									// -----------------------------------------------------------------------
 									
 									// Reconstruct xB, W, Q2 using Ecal instead of Etrue
@@ -3657,6 +3694,11 @@ void genie_analysis::Loop(Int_t choice) {
 									
 									double deltaphiT = DeltaPhiTFunction(V3_el,V3p2[j]);		
 									double deltaalphaT = DeltaAlphaTFunction(V3_el,V3p2[j]);
+
+									h1_ECal_InSector[ElectronSector]->Fill(E_cal_4pto2p[j],LocalWeight);
+									h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp_4pto2p[j],LocalWeight);
+									h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+									h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
 													     
 									DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 									DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);			
@@ -3788,8 +3830,6 @@ void genie_analysis::Loop(Int_t choice) {
 						h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),-P_4pto1p[j]*histoweight);
 						h2_Proton_Theta_Momentum->Fill(V3_prot_corr[j].Mag(),V3_prot_corr[j].Theta()*180./TMath::Pi(),-P_4pto1p[j]*histoweight);
 
-						h1_ECal_InSector[ElectronSector]->Fill(E_cal_p4[j],LocalWeight);
-
 						// -----------------------------------------------------------------------------------------------
 						// apapadop: Reconstruct xB, W, Q2 using Ecal instead of Etrue
 
@@ -3814,6 +3854,11 @@ void genie_analysis::Loop(Int_t choice) {
 						
 						double deltaphiT = DeltaPhiTFunction(V3_el,V3_prot_corr[j]);		
 						double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr[j]);
+
+						h1_ECal_InSector[ElectronSector]->Fill(E_cal_p4[j],LocalWeight);
+						h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp_p4[j],LocalWeight);
+						h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+						h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
 													     
 						DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 						DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);						
@@ -3903,14 +3948,14 @@ void genie_analysis::Loop(Int_t choice) {
 
 		//No Protons here, Next 150 lines are for the inclusive events
 
-		h1_E_rec->Fill(E_rec,WeightIncl);
-
-		h1_EQE_InSector[ElectronSector]->Fill(E_rec,WeightIncl);
+		h1_E_rec->Fill(E_rec,WeightIncl); // Fully inclusive case
 
 		if(num_pi_phot ==0){
 
 			h1_E_rec_0pi->Fill(E_rec,WeightIncl);
 			h1_E_rec_0pi_frac_feed->Fill((E_rec-en_beam_Eqe[fbeam_en])/en_beam_Eqe[fbeam_en],WeightIncl);
+
+			h1_EQE_InSector[ElectronSector]->Fill(E_rec,WeightIncl);
 
 			// Inclusive Case BreakDown
 			InclusiveEQE_BreakDown[0]->Fill(E_rec,WeightIncl);
@@ -3964,7 +4009,7 @@ void genie_analysis::Loop(Int_t choice) {
 			h1_E_rec_1pi_weight->Fill(E_rec,P_undet*histoweight);
 			h1_E_rec_1pi_weight_frac_feed->Fill((E_rec-en_beam_Eqe[fbeam_en])/en_beam_Eqe[fbeam_en],P_undet*histoweight);
 
-			h1_EQE_InSector[ElectronSector]->Fill(E_rec,P_undet*histoweight);
+			h1_EQE_InSector[ElectronSector]->Fill(E_rec,-P_undet*histoweight);
 
 			// Inclusive Case BreakDown
 			InclusiveEQE_BreakDown[0]->Fill(E_rec,-P_undet*histoweight);
@@ -4118,8 +4163,8 @@ void genie_analysis::Loop(Int_t choice) {
 			h1_EQE_InSector[ElectronSector]->Fill(E_rec,(-P_0pi)*histoweight);
 
 			// Inclusive Case BreakDown
-			InclusiveEQE_BreakDown[0]->Fill(E_rec,(P_0pi)*histoweight);
-			if (choice > 0 && P_0pi*histoweight > 0) { InclusiveEQE_BreakDown[Interaction]->Fill(E_rec,(P_0pi)*histoweight); }
+			InclusiveEQE_BreakDown[0]->Fill(E_rec,(-P_0pi)*histoweight);
+			if (choice > 0 && P_0pi*histoweight > 0) { InclusiveEQE_BreakDown[Interaction]->Fill(E_rec,(-P_0pi)*histoweight); }
 
 			for(int h = 0; h < N_3pi; h++){ //loop over three pions
 
@@ -4397,8 +4442,6 @@ void genie_analysis::Loop(Int_t choice) {
 				h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),histoweight);
 				h2_Proton_Theta_Momentum->Fill(V3_prot_corr.Mag(),V3_prot_corr.Theta()*180./TMath::Pi(),histoweight);
 
-				h1_ECal_InSector[ElectronSector]->Fill(E_tot,LocalWeight);
-
 				// -----------------------------------------------------------------------------------------------
 
 				// Unweighted plots for number of events
@@ -4437,6 +4480,11 @@ void genie_analysis::Loop(Int_t choice) {
 				
 				double deltaphiT = DeltaPhiTFunction(V3_el,V3_prot_corr);		
 				double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr);
+
+				h1_ECal_InSector[ElectronSector]->Fill(E_tot,LocalWeight);
+				h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot,LocalWeight);
+				h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+				h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
 													     
 				DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 				DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);				
@@ -4608,8 +4656,6 @@ void genie_analysis::Loop(Int_t choice) {
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),-(N_piphot_undet/N_piphot_det)*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_prot_corr.Mag(),V3_prot_corr.Theta()*180./TMath::Pi(),-(N_piphot_undet/N_piphot_det)*histoweight);
 
-					h1_ECal_InSector[ElectronSector]->Fill(E_tot,LocalWeight);
-
 					if (charge_pi[0] == 1) { 
 
 						h2_PiPlus_Theta_Momentum->Fill(V3_pi_corr.Mag(),V3_pi_corr.Theta()*180./TMath::Pi(),-(N_piphot_undet/N_piphot_det)*histoweight); 
@@ -4647,6 +4693,11 @@ void genie_analysis::Loop(Int_t choice) {
 					
 					double deltaphiT = DeltaPhiTFunction(V3_el,V3_prot_corr);		
 					double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr);
+
+					h1_ECal_InSector[ElectronSector]->Fill(E_tot,LocalWeight);
+					h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot,LocalWeight);
+					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
 														     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);					
@@ -4823,8 +4874,6 @@ void genie_analysis::Loop(Int_t choice) {
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_1p1pi[z]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_prot_corr.Mag(),V3_prot_corr.Theta()*180./TMath::Pi(),P_1p1pi[z]*histoweight);
 
-					h1_ECal_InSector[ElectronSector]->Fill(E_tot,LocalWeight);
-
 					for (int i = 0; i < num_pi_phot; i++) {
 
 						if (charge_pi[i] == 1) { 
@@ -4866,6 +4915,11 @@ void genie_analysis::Loop(Int_t choice) {
 					
 					double deltaphiT = DeltaPhiTFunction(V3_el,V3_prot_corr);		
 					double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr);	
+
+					h1_ECal_InSector[ElectronSector]->Fill(E_tot,LocalWeight);
+					h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot,LocalWeight);
+					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
 					
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);								
@@ -4980,8 +5034,6 @@ void genie_analysis::Loop(Int_t choice) {
 				h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),-P_1p0pi*histoweight);
 				h2_Proton_Theta_Momentum->Fill(V3_prot_corr.Mag(),V3_prot_corr.Theta()*180./TMath::Pi(),-P_1p0pi*histoweight);
 
-				h1_ECal_InSector[ElectronSector]->Fill(E_tot,LocalWeight);
-
 				for (int i = 0; i < num_pi_phot; i++) {
 
 					if (charge_pi[i] == 1) { 
@@ -5022,6 +5074,11 @@ void genie_analysis::Loop(Int_t choice) {
 				
 				double deltaphiT = DeltaAlphaTFunction(V3_el,V3_prot_corr);		
 				double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr);	
+
+				h1_ECal_InSector[ElectronSector]->Fill(E_tot,LocalWeight);
+				h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot,LocalWeight);
+				h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+				h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
 				
 				DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 				DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);								
@@ -5186,8 +5243,6 @@ void genie_analysis::Loop(Int_t choice) {
 				h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_1p3pi*histoweight);
 				h2_Proton_Theta_Momentum->Fill(V3_prot_corr.Mag(),V3_prot_corr.Theta()*180./TMath::Pi(),P_1p3pi*histoweight);
 
-				h1_ECal_InSector[ElectronSector]->Fill(E_tot,LocalWeight);
-
 				for (int i = 0; i < num_pi_phot; i++) {
 
 					if (charge_pi[i] == 1) { 
@@ -5228,7 +5283,12 @@ void genie_analysis::Loop(Int_t choice) {
 				Pe_BreakDown[0]->Fill(V4_el.Rho(),LocalWeight);
 				
 				double deltaphiT = DeltaAlphaTFunction(V3_el,V3_prot_corr);		
-				double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr);	
+				double deltaalphaT = DeltaAlphaTFunction(V3_el,V3_prot_corr);
+
+				h1_ECal_InSector[ElectronSector]->Fill(E_tot,LocalWeight);
+				h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot,LocalWeight);
+				h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
+				h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);	
 				
 				DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 				DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);				

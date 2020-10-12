@@ -97,7 +97,8 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 
 		// ---------------------------------------------------------------------------------------
 
-		TCanvas* PlotCanvas = new TCanvas(FSILabel[WhichFSIModel]+Nucleus+"_"+E+"_"+xBCut,FSILabel[WhichFSIModel]+Nucleus+"_"+E+"_"+xBCut,205,34,1024,768);
+		TString CanvasName =  FSILabel[WhichFSIModel]+Nucleus+"_"+E+"_"+xBCut + "_" + Ereco;
+		TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768);
 
 		PlotCanvas->SetBottomMargin(0.17);
 		PlotCanvas->SetLeftMargin(0.17);
@@ -239,7 +240,8 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 
 			// Ratio studies
 
-			TCanvas* RatioPlotCanvas = new TCanvas("Ratio_"+FSILabel[WhichFSIModel]+Nucleus+"_"+E+"_"+xBCut,"Ratio_"+FSILabel[WhichFSIModel]+Nucleus+"_"+E+"_"+xBCut,205,34,1024,768);
+			TString RatioCanvasName = "Ratio_"+FSILabel[WhichFSIModel]+Nucleus+"_"+E+"_"+xBCut + Ereco; 
+			TCanvas* RatioPlotCanvas = new TCanvas(RatioCanvasName,RatioCanvasName,205,34,1024,768);
 
 			RatioPlotCanvas->SetBottomMargin(0.17);
 			RatioPlotCanvas->SetLeftMargin(0.17);
@@ -297,8 +299,9 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 			// Double ratio studies
 			// Ratio with respect to sector 1 ratio
 
-			TCanvas* DoubleRatioPlotCanvas = new TCanvas("DoubleRatio_"+FSILabel[WhichFSIModel]+Nucleus+"_"+E+"_"+xBCut,
-								     "DoubleRatio_"+FSILabel[WhichFSIModel]+Nucleus+"_"+E+"_"+xBCut,205,34,1024,768);
+			TString DoubleRatioCanvasName = "DoubleRatio_"+FSILabel[WhichFSIModel]+Nucleus+"_"+E+"_"+xBCut + Ereco; 
+
+			TCanvas* DoubleRatioPlotCanvas = new TCanvas(DoubleRatioCanvasName,DoubleRatioCanvasName,205,34,1024,768);
 
 			DoubleRatioPlotCanvas->SetBottomMargin(0.17);
 			DoubleRatioPlotCanvas->SetLeftMargin(0.17);
@@ -308,6 +311,10 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 
 			double DoubleRatiomax = -99.;
 			double DoubleRatiomin = 1E12;
+
+			std::vector< std::vector<double> > CVInBin; CVInBin.clear();
+			int NBins = RatioPlots[0][0]->GetXaxis()->GetNbins();
+			CVInBin.resize(NBins);
 
 			// Loop over the 6 sector plots
 
@@ -319,6 +326,14 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 				DoubleRatioPlots[WhichFSIModel-1][WhichPlot]->GetYaxis()->SetTitle("Double Ratio To 1st Sector");
 
 				DoubleRatioPlots[WhichFSIModel-1][WhichPlot]->SetTitle(FSILabel[0] + "/" + FSILabel[WhichFSIModel] + ", " + LabelsOfSamples+LabelE);
+
+				// ---------------------------------------------------------------------------------------------------
+
+				for (int WhichBin = 0; WhichBin < NBins; WhichBin++) {
+	
+					CVInBin[WhichBin].push_back(DoubleRatioPlots[WhichFSIModel-1][WhichPlot]->GetBinContent(WhichBin+1) );
+
+				}
 
 				// ---------------------------------------------------------------------------------------------------
 
@@ -349,7 +364,22 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 			DoubleRatioleg->SetTextSize(TextSize);
 			DoubleRatioleg->Draw();
 
+			for (int WhichBin = 0; WhichBin < NBins; WhichBin++) {
+
+				std::vector<double> ArrayInsBin = CVInBin[WhichBin];
+
+				double mean = computeMean(ArrayInsBin); 
+				double std = computeStd(mean,ArrayInsBin); 										
+
+			}
+
 //			delete DoubleRatioPlotCanvas;
+
+			// ---------------------------------------------------------------------------------------------------
+
+			// Now on a bin-by-bin basis, we want to calculate the RMS 
+
+
 
 		} // End of the loop over the simulation sets
 

@@ -707,7 +707,7 @@ void GetCharge_FilterData::Loop()
 		else if ( (runnb>18293 && runnb<18301) || (runnb>18305 && runnb<18317) || (runnb>18328 && runnb<18336) || runnb == 18334)  fTorusCurrent=1500;
 		else fTorusCurrent=2250;
 
-		//if (fbeam_en == "1161" && fTorusCurrent > 760) { continue; }                                                              
+		if (fbeam_en == "1161" && fTorusCurrent > 760) { continue; }                                                              
                 //if (fbeam_en == "1161" && fTorusCurrent < 760) { continue; }
 
 		if(jentry == 0){ //was n_evt == 1 before but jentry = n_evnt - 1
