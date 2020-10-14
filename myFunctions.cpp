@@ -163,6 +163,44 @@ void PrettyDoubleXSecPlot(TH1D* h) {
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 
+void PrettyGraph(TGraph* h) {
+
+	// ----------------------------------------------------------------------------------------------------------------
+
+	h->SetLineWidth(LineWidth);
+
+	// ----------------------------------------------------------------------------------------------------------------
+
+	// X-axis
+
+	h->GetXaxis()->CenterTitle();
+	h->GetXaxis()->SetLabelFont(FontStyle);
+	h->GetXaxis()->SetTitleFont(FontStyle);
+	h->GetXaxis()->SetLabelSize(TextSize);
+	h->GetXaxis()->SetTitleSize(TextSize);
+	h->GetXaxis()->SetTitleOffset(1.05);
+	h->GetXaxis()->SetNdivisions(Ndivisions);
+
+	// ----------------------------------------------------------------------------------------------------------------
+
+	// Y-axis
+
+	h->GetYaxis()->CenterTitle();
+	h->GetYaxis()->SetTitleSize(TextSize); 
+	h->GetYaxis()->SetTickSize(0.02);
+	h->GetYaxis()->SetLabelSize(TextSize);
+	h->GetYaxis()->SetTitle(DoubleXSecTitle);
+	h->GetYaxis()->SetTitleFont(FontStyle);
+	h->GetYaxis()->SetLabelFont(FontStyle);
+	h->GetYaxis()->SetTitleOffset(1.05);
+	h->GetYaxis()->SetNdivisions(Ndivisions);
+
+	return;	
+
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
 void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {  
 
 	double SF = 1.;
@@ -262,23 +300,43 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 
-void BinningAndRange(TH1D* h, double Energy, TString PlotVar) {
+void ApplyRebinning(TH1D* h, double Energy, TString PlotVar) {
 
 	// -----------------------------------------------------------------------------------------------------------------------------
 
 	if (string(PlotVar).find("Omega") != std::string::npos) {
 
-		if (Energy == 1.161) { for (int i = 0; i < 5; i++) { h->Rebin(); } h->GetXaxis()->SetRangeUser(0.,0.7); }
-		if (Energy == 2.261) { for (int i = 0; i < 5; i++) { h->Rebin(); } h->GetXaxis()->SetRangeUser(0.,1.5); }
-		if (Energy == 4.461) { for (int i = 0; i < 6; i++) { h->Rebin(); } h->GetXaxis()->SetRangeUser(0.5,3.); }
+		if (Energy == 1.161) { for (int i = 0; i < 5; i++) { h->Rebin(); } }
+		if (Energy == 2.261) { for (int i = 0; i < 5; i++) { h->Rebin(); } }
+		if (Energy == 4.461) { for (int i = 0; i < 6; i++) { h->Rebin(); } }
 
-	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("ECal") != std::string::npos) {
+	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos) {
 
-		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.4,1.7); }
-		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.6,3.); }
-		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(1.5,6.); }
+	} else if (string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos) {
 
-	} else { cout << "Aaaaaaaaaaaah ! How do I rebin this plot ?" << endl; }
+	} else if (string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+
+	} else if (string(PlotVar).find("EQEReso") != std::string::npos || string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+
+	} else if (string(PlotVar).find("PT") != std::string::npos || string(PlotVar).find("MissMomentum") != std::string::npos) {
+
+		for (int i = 0; i < 2; i++) { h->Rebin();} 
+
+	} else if (string(PlotVar).find("DeltaAlphaT") != std::string::npos ) {
+
+		for (int i = 0; i < 1; i++) { h->Rebin();} 
+
+	} else if (string(PlotVar).find("DeltaPhiT") != std::string::npos ) {
+
+		for (int i = 0; i < 1; i++) { h->Rebin();} 
+
+	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
+
+		for (int i = 0; i < 3; i++) { h->Rebin();} 
+
+	}
+
+	else { cout << "Aaaaaaaaaaaah ! How do I rebin this plot ?" << endl; }
 
 	return;	
 
@@ -286,29 +344,225 @@ void BinningAndRange(TH1D* h, double Energy, TString PlotVar) {
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 
-double computeMean(std::vector<double> numbers) {
+void ApplyRange(TH1D* h, double Energy, TString PlotVar) {
+
+	// -----------------------------------------------------------------------------------------------------------------------------
+
+	if (string(PlotVar).find("Omega") != std::string::npos) {
+
+		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.,0.7); }
+		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.,1.5); }
+		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(0.5,3.); }
+
+	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos) {
+
+		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.47,1.4); }
+		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.7,2.6); }
+		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(2.,5.); }
+
+	} else if (string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos) {
+
+		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.57,1.23); }
+		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.67,2.4); }
+		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(1.5,4.6); }
+
+	} else if (string(PlotVar).find("PT") != std::string::npos || string(PlotVar).find("MissMomentum") != std::string::npos) {
+
+	} else if (string(PlotVar).find("DeltaAlphaT") != std::string::npos ) {
+
+	} else if (string(PlotVar).find("DeltaPhiT") != std::string::npos ) {
+
+	} else if (string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+
+		h->GetXaxis()->SetRangeUser(-0.81,0.07);
+
+	} else if (string(PlotVar).find("EQEReso") != std::string::npos || string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+
+		h->GetXaxis()->SetRangeUser(-0.85,0.2);
+
+	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
+
+		h->GetXaxis()->SetRangeUser(0.,2.5);
+
+	}
+
+
+	else { cout << "Aaaaaaaaaaaah ! How do I set the range for this plot ?" << endl; }
+
+	return;	
+
+}
+
+// -----------------------------------------------------------------------------------------------------------------------------
+
+void ApplyRange(TGraph* h, double Energy, TString PlotVar) {
+
+	// -----------------------------------------------------------------------------------------------------------------------------
+
+	if (string(PlotVar).find("Omega") != std::string::npos) {
+
+		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.,0.7); }
+		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.,1.5); }
+		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(0.5,3.); }
+
+	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos) {
+
+		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.48,1.4); }
+		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.6,2.6); }
+		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(2.,5.); }
+
+	} else if (string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos) {
+
+		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.57,1.23); }
+		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.67,2.4); }
+		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(1.5,4.6); }
+
+	} else if (string(PlotVar).find("PT") != std::string::npos || string(PlotVar).find("MissMomentum") != std::string::npos) {
+
+	} else if (string(PlotVar).find("DeltaAlphaT") != std::string::npos ) {
+
+	} else if (string(PlotVar).find("DeltaPhiT") != std::string::npos ) {
+
+	} else if (string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+
+		h->GetXaxis()->SetRangeUser(-0.81,0.07);
+
+	} else if (string(PlotVar).find("EQEReso") != std::string::npos || string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+
+		h->GetXaxis()->SetRangeUser(-0.85,0.2);
+
+	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
+
+		h->GetXaxis()->SetRangeUser(0.,2.5);
+
+	}
+
+
+	else { cout << "Aaaaaaaaaaaah ! How do I set the range for this plot ?" << endl; }
+
+	return;	
+
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+double computeMean(std::vector<double> numbers,std::vector<double> weights = {}) {
 
 	if(numbers.empty()) return 0;
 
-	double total = 0;
-	for (int number = 0; number < (int)(numbers.size()); number ++) {
-		total += numbers[number];
+	int NBins = (int)(numbers.size());
+
+	if (numbers.size() != weights.size()) { 
+
+		weights.resize( NBins );
+
+		for (int bin = 0; bin < NBins; bin ++) {
+
+			weights[bin] = 1.;
+
+		}
+
 	}
 
-	double average = total / numbers.size();
+	double total = 0;
+	double sumweights = 0;
+
+	for (int number = 0; number < NBins; number ++) {
+
+		total += numbers[number] * weights[number];
+		sumweights += weights[number];
+	}
+
+	if (sumweights == 0) { return 0.; }
+
+	double average = total / sumweights;
+
 	return average;
 }
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 
-double computeStd(double mean, std::vector<double> numbers) {
+double computeStd(double mean, std::vector<double> numbers,std::vector<double> weights = {}) {
 
-	float result = 0;
-	for (int number = 0; number < (int)(numbers.size()); number ++) {
-		result += (numbers[number] - mean)*(numbers[number] - mean);
+	if(numbers.empty()) return 0;
+
+	int NBins = (int)(numbers.size());
+
+	if (numbers.size() != weights.size()) { 
+
+		weights.resize( NBins );
+
+		for (int bin = 0; bin < NBins; bin ++) {
+
+			weights[bin] = 1.;
+
+		}
+
 	}
 
-	return sqrt(result / (numbers.size() - 1));
+	double DiffToMean = 0;
+	double sumweights = 0;
+	int M = 0; // Non zero weights
+
+	for (int number = 0; number < NBins; number ++) {
+
+		DiffToMean += weights[number]*(numbers[number] - mean)*(numbers[number] - mean);
+		sumweights += weights[number];
+		if (weights[number] != 0) { M++; }
+
+	}
+
+	if (sumweights == 0) { return 0.; }
+
+	return sqrt(DiffToMean / ( (double)(M-1)/(double)(M) * sumweights) );
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+double SumSqDiffInBin(std::vector<double> numbers, double mean = 0) {
+
+	if(numbers.empty()) return 0;
+
+	int NBins = (int)(numbers.size());
+
+	double sum = 0;
+
+	for (int number = 0; number < NBins; number ++) {
+
+		sum += TMath::Power(numbers[number] - mean,2.);
+
+	}
+
+	return sum;
+
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+double Chi2(TH1D* h1,TH1D* h2, int LowBin = -1, int HighBin = -1) {
+
+	int NBinsX = h1->GetXaxis()->GetNbins();
+
+	double chi2 = 0;
+	
+	if (LowBin == -1) { LowBin = 0; }
+	if (HighBin == -1) { HighBin = NBinsX; }	
+
+	for (int WhichXBin = LowBin; WhichXBin < HighBin; WhichXBin++) {
+
+		double h1Entry = h1->GetBinContent(WhichXBin+1);
+		double h1Error = h1->GetBinError(WhichXBin+1);
+		double h2Entry = h2->GetBinContent(WhichXBin+1);
+		double h2Error = h2->GetBinError(WhichXBin+1);
+
+		double num = TMath::Power(h1Entry - h2Entry,2.);
+		double den = TMath::Power(h1Error,2.) + TMath::Power(h2Error,2.);
+		if (den != 0) { chi2 += (num / den); }
+
+	}
+
+	return chi2;
+
 }
 
 // -------------------------------------------------------------------------------------------------------------------------------------

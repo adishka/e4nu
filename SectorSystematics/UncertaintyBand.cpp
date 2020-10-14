@@ -46,13 +46,13 @@ void UncertaintyBand() {
 
 	// ------------------------------------------------------------------------
 
-	nucleus.push_back("4He");
-//	nucleus.push_back("12C");
+//	nucleus.push_back("4He");
+	nucleus.push_back("12C");
 //	nucleus.push_back("56Fe");
 
 //	E.push_back("1_161");
-//	E.push_back("2_261");	
-	E.push_back("4_461");
+	E.push_back("2_261");	
+//	E.push_back("4_461");
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
@@ -65,8 +65,18 @@ void UncertaintyBand() {
 	SectorIndex.push_back(1);
 	SectorIndex.push_back(5);
 
+//	Var.push_back("ECal_Slice1");
+//	Var.push_back("ECal_Slice2");
+//	Var.push_back("ECal_Slice3");
+ 
+//	Var.push_back("EQEReso"); 
+//	Var.push_back("ECalReso"); 
+
 	Var.push_back("ECal"); 
 //	Var.push_back("EQE");
+//	Var.push_back("DeltaPT"); 
+//	Var.push_back("DeltaAlphaT"); 
+//	Var.push_back("DeltaPhiT"); 
 
 	// ------------------------------------------------------------------------
 
@@ -119,7 +129,19 @@ void UncertaintyBand() {
 					for (int WhichVar = 0; WhichVar < NVars; WhichVar ++) {
 
 						TString LabelOfPlots = "(e,e')_{0#pi} E^{QE} [GeV]";
+
+						if (Var[WhichVar] == "ECal_Slice1") { LabelOfPlots = "(e,e'p)_{1p0#pi} P_{T} [GeV/c]"; }
+						if (Var[WhichVar] == "ECal_Slice2") { LabelOfPlots = "(e,e'p)_{1p0#pi} P_{T} [GeV/c]"; }
+						if (Var[WhichVar] == "ECal_Slice3") { LabelOfPlots = "(e,e'p)_{1p0#pi} P_{T} [GeV/c]"; }
+
+						if (Var[WhichVar] == "ECalReso") { LabelOfPlots = "E^{cal} Feeddown"; }
+
+						if (Var[WhichVar] == "EQEReso") { LabelOfPlots = "E^{QE} Feeddown"; }
+
 						if (Var[WhichVar] == "ECal") { LabelOfPlots = "(e,e'p)_{1p0#pi} E^{Cal} [GeV]"; }
+						if (Var[WhichVar] == "DeltaPT") { LabelOfPlots = "(e,e'p)_{1p0#pi} P_{T} [GeV/c]"; }
+						if (Var[WhichVar] == "DeltaAlphaT") { LabelOfPlots = "(e,e'p)_{1p0#pi} #delta#alpha_{T} [deg]"; }
+						if (Var[WhichVar] == "DeltaPhiT") { LabelOfPlots = "(e,e'p)_{1p0#pi} #delta#phi_{T} [deg]"; }
 
 						TString CanvasName =  Var[WhichVar] + "_" + nucleus[WhichNucleus] + "_" + E[WhichEnergy] + "_" + xBCut[WhichxBCut];
 						TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768);
@@ -174,7 +196,8 @@ void UncertaintyBand() {
 
 							// Rebining & ranges
 
-							BinningAndRange(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot],DoubleE,Var[WhichVar]);
+							ApplyRange(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot],DoubleE,Var[WhichVar]);
+							ApplyRebinning(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot],DoubleE,Var[WhichVar]);
 
 							// ----------------------------------------------------------------------------------
 
@@ -234,22 +257,22 @@ void UncertaintyBand() {
 							//+ext+nucleus[WhichNucleus]+"_" 
 							//+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+".pdf");
 
-							//delete PlotCanvas;
-
 							// -----------------------------------------------------------------------------------------------------------------------------------------
 
 
 						} // End of the loop over the plots
 
-						double PlotCounter = NPlots;
-						if ( E[WhichEnergy] == "4_461" ) { PlotCounter -= 1; }				
-
-						std::vector<double> UncBand = GetUncertaintyBand(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar],PlotCounter);
-
 						leg->SetBorderSize(0);
 						leg->SetTextFont(FontStyle);
 						leg->SetTextSize(TextSize);
 						leg->Draw();
+
+						//delete PlotCanvas;
+
+						double PlotCounter = NPlots;
+						if ( E[WhichEnergy] == "4_461" ) { PlotCounter -= 1; }				
+
+						std::vector<double> UncBand = GetUncertaintyBand(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar],PlotCounter);
 
 						// ---------------------------------------------------------------------------------------------------------------------------------------
 
@@ -261,11 +284,27 @@ void UncertaintyBand() {
 
 						if ( Var[WhichVar] == "EQE" ) 
 							{ Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("h_Erec_subtruct_piplpimi_noprot_3pi") ); }
-						if ( Var[WhichVar] == "ECal" ) { Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("epRecoEnergy_slice_0") ); }
+
+						else if ( Var[WhichVar] == "ECal_Slice1" ) 
+							{ Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_1") ); }
+						else if ( Var[WhichVar] == "ECal_Slice2" ) 
+							{ Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_2") ); }
+						else if ( Var[WhichVar] == "ECal_Slice3" ) 
+							{ Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_3") ); }
+
+						else if ( Var[WhichVar] == "ECalReso" ) 
+							{ Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("h_Etot_subtruct_piplpimi_factor_fracfeed") ); }
+						else if ( Var[WhichVar] == "EQEReso" ) 
+							{ Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("h_Erec_subtruct_piplpimi_factor_fracfeed") ); }
+
+						else if ( Var[WhichVar] == "ECal" ) { Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("epRecoEnergy_slice_0") ); }
+						else if ( Var[WhichVar] == "DeltaPT" ) { Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("MissMomentum") ); }
+						else if ( Var[WhichVar] == "DeltaPhiT" ) { Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("DeltaPhiT_Int_0") ); }
+						else if ( Var[WhichVar] == "DeltaAlphaT" ) { Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("DeltaAlphaT_Int_0") ); }
+						else { cout << "Come again ? Which combined plot are we talking about ?" << endl; }
 
 						TString UncCanvasName = "UncCanvas_" + Var[WhichVar] + "_" + nucleus[WhichNucleus] + "_" + E[WhichEnergy] + "_" + xBCut[WhichxBCut];
 						TCanvas* UncCanvas = new TCanvas(UncCanvasName,UncCanvasName,205,34,1024,768);
-						UncCanvas->cd();
 
 						// --------------------------------------------------------------------------------------
 
@@ -286,7 +325,8 @@ void UncertaintyBand() {
 
 						// Rebining & ranges
 
-						BinningAndRange(Nom,DoubleE,Var[WhichVar]);
+						ApplyRebinning(Nom,DoubleE,Var[WhichVar]);
+						ApplyRange(Nom,DoubleE,Var[WhichVar]);
 
 						// ---------------------------------------------------------------------------------------------------------------------------------------
 
@@ -312,6 +352,8 @@ void UncertaintyBand() {
 						double PosNegMin = TMath::Min(0.,(1+ExtraHeight)*PosNegMin);
 						Nom->GetYaxis()->SetRangeUser( PosNegMin, (1+ExtraHeight)*localmax );
 
+						UncCanvas->cd();
+
 						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 
 							Nom->SetMarkerStyle(MarkerStyle); 
@@ -329,6 +371,8 @@ void UncertaintyBand() {
 
 						Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->cd();
 						Nom->Write("Unc_"+Var[WhichVar]);
+
+						//delete UncCanvas;
 
 					} // End of the loop over the variable of interest
 

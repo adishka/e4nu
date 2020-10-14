@@ -16,26 +16,97 @@
 
 using namespace std;
 
-#include "../myFunctions.cpp"
-#include "../AfroConstants.h"
+#include  "/home/afroditi/Dropbox/PhD/Secondary_Code/CenterAxisTitle.cpp"
+#include "/home/afroditi/Dropbox/PhD/Secondary_Code/SetOffsetAndSize.cpp"
+//#include "/home/afroditi/Dropbox/PhD/Secondary_Code/ToString.cpp"
+#include "/home/afroditi/Dropbox/PhD/Secondary_Code/myFunctions.cpp"
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void AbsXSec_OverlayECalFig4_e4nuPaper() {
+// Accounting for the fact that the bin width is not constant
+
+void ReweightPlots(TH1D* h) {
+
+	double NBins = h->GetNbinsX(); 
+				
+	for (int i = 1; i <= NBins; i++) { 
+					
+		double content = h->GetBinContent(i);
+		double error = h->GetBinError(i);
+		double width = h->GetBinWidth(i);
+		double newcontent = content / width;
+		double newerror = error / width;				
+		h->SetBinContent(i,newcontent);
+		h->SetBinError(i,newerror);
+
+	}
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
+void ApplySystUnc(TH1D* h, double systunc) {
+
+	double NBins = h->GetNbinsX(); 
+				
+	for (int i = 1; i <= NBins; i++) { 
+					
+		double error = h->GetBinError(i);
+		double newerror = error * (1. + systunc);
+		h->SetBinError(i,newerror);
+
+	}
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
+void ApplyGenieUnc(TH1D* h, TGraphAsymmErrors* asymmerror) {
+
+	double NBins = h->GetNbinsX(); 
+				
+	for (int i = 1; i <= NBins; i++) { 
+					
+		double error = asymmerror->GetErrorYhigh(i);
+		//cout << "error " << error << endl;
+		//double newerror = error * (1. + systunc);
+		h->SetBinError(i,error);
+
+	}
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
+void OverlayECalFig4_e4nuPaper() {
 
 	// ------------------------------------------------------------------------
 
+	SetOffsetAndSize();
 	TGaxis::SetMaxDigits(5);
 
-	gStyle->SetTitleSize(TextSize,"t"); 
-	gStyle->SetTitleFont(FontStyle,"t");
-	gStyle->SetOptStat(0);
+	int Ndivisions = 5;
+	int LineWidth = 1;
+	int FontStyle = 132;
+	double TextSize = 0.08;
+	
+	TString version = "v3_0_6/";
+
+	// From Mariana's analysis note
+
+	double SystUnc1GeV = 0.02; // 2% syst uncertainty at 1.161 GeV
+	double SystUnc2GeV = 0.021; // 2.1% syst uncertainty at 2.261 GeV
+	double SystUnc4GeV = 0.047; // 4.7% syst uncertainty at 4.461 GeV
 
 	// ------------------------------------------------------------------------
+
+	// Larry/Axel's suggestion for scaling the last 5 bins by EnhaceTail
+
+	double EnhaceTail = 1./3.;
 
 	std::vector<TString> xBCut; std::vector<TString> nucleus; std::vector<TString> JustNucleus; std::vector<TString> LabelsOfSamples; 
 	std::vector<TString> E; std::vector<double> DoubleE;
-	std::vector<TString> LabelE; std::vector<TString> FSIModel; std::vector<TString> DirNames;
+	std::vector<TString> LabelE; std::vector<TString> FSIModel; std::vector<TString> DirNames;  std::vector<int> BreakDownColors;
 	std::vector<TString> FSILabel; std::vector<TString> NameOfPlots; std::vector<TString> LabelOfPlots;  
 	std::vector<TString> OutputPlotNames; std::vector<TH1D*> BreakDownPlots;
 	std::vector<int> Colors;
@@ -56,14 +127,20 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 	Style.push_back(1); Style.push_back(1); Style.push_back(1); Style.push_back(1);
 
-	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Data");
+	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(429); BreakDownColors.push_back(410); BreakDownColors.push_back(610);
+
+	FSIModel.push_back("Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
+	
+//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 
 	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]");
 	OutputPlotNames.push_back("epRecoEnergy_slice_0");
 
 	std::vector<TH1D*> Plots;
+//	std::vector<TGraphAsymmErrors*> UncertaintyPlots;
+	std::vector<TH1D*> Plots_Clones;
 
 	int NxBCuts = xBCut.size();
 	int NNuclei = nucleus.size();
@@ -75,11 +152,11 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 	for (int LoopOverFSIModels = 0 ; LoopOverFSIModels < NFSIModels ; LoopOverFSIModels ++) 
 		{ WhatModelsAreIncluded += "_"+DirNames[LoopOverFSIModels]; };
 
+	TString RecoCalorimetry = "(e,e'p)";
+	TString FSI = "FSI";
+
 	std::vector<TString> GenieFSILabel; GenieFSILabel.clear();
 	GenieFSILabel.push_back("QE"); GenieFSILabel.push_back("MEC"); GenieFSILabel.push_back("RES"); GenieFSILabel.push_back("DIS");
-
-	// ---------------------------------------------------------------------------------------------------------------------------------------------
-
 
 	// Loop over the xB kinematics
 
@@ -104,13 +181,13 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 			for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
 				// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
-				double MaxHeight = 9.;
+				double MaxHeight = 3.3;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 28.; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = MaxHeight * 0.67; }
 
 					// ----------------------------------------------------------------------------
 
@@ -130,9 +207,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 					if (nucleus[WhichNucleus] == "12C") 
 						{ pad = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPad,YMinPad,XMaxPad,YMaxPad, 21); }
 					else { 
-						if (DoubleE[WhichEnergy] == 2.261) 
-							{ pad = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPad-0.025,YMinPad+space,XMaxPad,YMaxPad+space, 21); }
-						else { pad = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPad,YMinPad+space,XMaxPad,YMaxPad+space, 21); }
+						pad = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPad,YMinPad+space,XMaxPad,YMaxPad+space, 21);
 					}
 
 					pad->SetFillColor(kWhite); 
@@ -144,8 +219,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 					pad->SetTopMargin(0.0);
 					if (nucleus[WhichNucleus] == "12C") { pad->SetTopMargin(0.01); }
 					pad->SetLeftMargin(0.);
-					if (DoubleE[WhichEnergy] == 1.161 ) { pad->SetLeftMargin(0.07); }
-					if (DoubleE[WhichEnergy] == 2.261 && nucleus[WhichNucleus] == "56Fe") { pad->SetLeftMargin(0.08); }
+					if (DoubleE[WhichEnergy] == 1.161 ) { pad->SetLeftMargin(0.05); }
 					pad->SetRightMargin(0.0);
 					if (DoubleE[WhichEnergy] == 4.461 ) { pad->SetRightMargin(0.01); }
 					pad->SetFrameBorderSize(10);
@@ -176,19 +250,33 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
 						TFile* FileSample = TFile::Open(FileName);
 
-						//Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
-						if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") { Plots.push_back( (TH1D*)( FileSample->Get("Unc_ECal") ) ); }
+						Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
+
+//						TString PathToUncertaintyFiles = "../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[1]+"/"+xBCut[WhichxBCut]+"/";
+//						TString UncertaintyFileName = PathToUncertaintyFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[1]+"_Plots_FSI_em"+NameOfPlots[WhichPlot]+"_Uncertainty.root";
+//						TFile* UncertaintyFileSample = TFile::Open(UncertaintyFileName);
+//						UncertaintyPlots.push_back( (TGraphAsymmErrors*)( UncertaintyFileSample->Get(OutputPlotNames[WhichPlot]) ) );
+
+						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
+						CenterAxisTitle(Plots[WhichFSIModel]);
+						Plots[WhichFSIModel]->SetLineWidth(LineWidth);
 
 						// --------------------------------------------------------------------------------------
 
-						// Make the plot pretty
+						// X-axis
 
-						PrettyDoubleXSecPlot(Plots[WhichFSIModel]);
-						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
-
+						Plots[WhichFSIModel]->GetXaxis()->SetLabelFont(FontStyle);
+						Plots[WhichFSIModel]->GetXaxis()->SetTitleFont(FontStyle);
 						Plots[WhichFSIModel]->GetXaxis()->SetLabelSize(1.2*TextSize);
 						Plots[WhichFSIModel]->GetXaxis()->SetTitleSize(0.);
+						Plots[WhichFSIModel]->GetXaxis()->SetNdivisions(Ndivisions);
 
+						// --------------------------------------------------------------------------------------
+
+						// Y-axis label
+
+						Plots[WhichFSIModel]->GetYaxis()->SetLabelFont(FontStyle);
+						Plots[WhichFSIModel]->GetYaxis()->SetTitleFont(FontStyle);
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(0.);
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelOffset(0.013);
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(1.2*TextSize);
@@ -196,13 +284,12 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 						Plots[WhichFSIModel]->GetYaxis()->SetTitle("");
 
-						// -----------------------------------------------------------------------------------
+						// --------------------------------------------------------------------------------------
 
-						// Scale to obtain absolute double differential cross sections 
-						// Use charge, density and length for data samples
-						// Use total number of events in genie sample and relevant genie cross sections for simulation
-
-						//AbsoluteXSecScaling(Plots[WhichFSIModel],FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]); 
+						// Scaling Factor
+//Plots[WhichFSIModel]->Rebin();
+						double ScalingFactor = 1. / Plots[WhichFSIModel]->Integral();  // area normalized
+						Plots[WhichFSIModel]->Scale(ScalingFactor);
 
 						//-----------------------------------------------------------------------------------------------
 
@@ -232,25 +319,27 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 						// Accounting for the fact that the bin width might not be constant
 
-						//ReweightPlots(Plots[WhichFSIModel]);
+						ReweightPlots(Plots[WhichFSIModel]);
 
 						if (DoubleE[WhichEnergy] == 1.161) { Plots[WhichFSIModel]->Scale(1./4.); }
-						if (DoubleE[WhichEnergy] == 4.461) { Plots[WhichFSIModel]->Scale(5.); }
-						Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(5);
+						Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(3);
 
 						// --------------------------------------------------------------------------------------
 
 						// Rebining & ranges
 						
 						double LowRange = -1;
-						double HighRange = -1;					
+						double HighRange = -1;						
+
+//						if (DoubleE[WhichEnergy] == 1.161) { LowRange = 0.7; HighRange = 1.29; }
+//						if (DoubleE[WhichEnergy] == 2.261) { LowRange = 0.7; HighRange = 2.4; }
+//						if (DoubleE[WhichEnergy] == 4.461) { LowRange = 1.5; HighRange = 4.6; }
 						
 						if (DoubleE[WhichEnergy] == 1.161) { LowRange = 0.57; HighRange = 1.29; }
 						if (DoubleE[WhichEnergy] == 2.261) { LowRange = 0.67; HighRange = 2.4; }
 						if (DoubleE[WhichEnergy] == 4.461) { LowRange = 1.5; HighRange = 4.6; }					
-
-						ApplyRebinning(Plots[WhichFSIModel],DoubleE[WhichEnergy],"ECal");
-						ApplyRange(Plots[WhichFSIModel],DoubleE[WhichEnergy],"ECal");
+												
+						Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(LowRange,HighRange);
 						
 						LowBin = Plots[WhichFSIModel]->GetXaxis()->FindBin(LowRange);
 						HighBin = Plots[WhichFSIModel]->GetXaxis()->FindBin(HighRange);						
@@ -258,9 +347,13 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 						// ----------------------------------------------------------------------------------
 
 						// Apply Systematic Uncertainties on Data Points
-						// using numbers obtained from Mariana's thesis
 
-						//if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { ApplySystUnc(Plots[WhichFSIModel], DoubleE[WhichEnergy]); }
+						double SystUnc = 0;
+						if ( DoubleE[WhichEnergy] == 1.161 ) { SystUnc = SystUnc1GeV; }
+						if ( DoubleE[WhichEnergy] == 2.261 ) { SystUnc = SystUnc2GeV; }
+						if ( DoubleE[WhichEnergy] == 4.461 ) { SystUnc = SystUnc4GeV; }
+
+						if (FSILabel[WhichFSIModel] == "Data") { ApplySystUnc(Plots[WhichFSIModel], SystUnc); }
 
 						// ----------------------------------------------------------------------------------
 
@@ -274,15 +367,12 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 								legGenieBlackLine->AddEntry(Plots[0],"Data", "lep"); 
 								//legGenieBlackLine->AddEntry(Plots[WhichFSIModel],"GENIE (Total)", "l"); 
 							}
-
 							BreakDownPlots.clear();
 
 							for (int j = 1; j < 5; j++) {
 
-								BreakDownPlots.push_back( (TH1D*)( FileSample->Get("ECal_Int_"+ToStringInt(j)) ) );
-								//for (int i = 0; i < 1; i++) { BreakDownPlots[j-1]->Rebin(); }	
-
-								AbsoluteXSecScaling(BreakDownPlots[j-1],FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]); 			
+								BreakDownPlots.push_back( (TH1D*)( FileSample->Get("ECal_Int_"+ToString(j)) ) );
+								//for (int i = 0; i < 1; i++) { BreakDownPlots[j-1]->Rebin(); }				
 								ReweightPlots(BreakDownPlots[j-1]);
 
 								//-----------------------------------------------------------------------------------------------
@@ -296,10 +386,9 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 								
 								BreakDownPlots[j-1]->SetLineWidth(LineWidth);
 								BreakDownPlots[j-1]->SetLineStyle(Style[j-1]);
-
+								BreakDownPlots[j-1]->Scale(ScalingFactor);
 
 								if (DoubleE[WhichEnergy] == 1.161) { BreakDownPlots[j-1]->Scale(1./4.); }
-								if (DoubleE[WhichEnergy] == 4.461) { BreakDownPlots[j-1]->Scale(5.); }
 
 								//-----------------------------------------------------------------------------------------------
 
@@ -339,12 +428,19 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 						}
 
-
 						// ---------------------------------------------------------------------------------------------------
 
 						// Max, min, title & # divisions
 
-						Plots[0]->GetYaxis()->SetRangeUser(0.,MaxHeight);
+//						double localmax = Plots[WhichFSIModel]->GetMaximum();
+//						if (localmax > max) { max = localmax; }
+//						double height = 1.15;
+//						if ( xBCut[WhichxBCut] == "xBCut" ) { height = 1.1; }
+//						if ( DoubleE[WhichEnergy] == 2.261 ) { height = 1.4; }
+//						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
+
+
+Plots[0]->GetYaxis()->SetRangeUser(0.,MaxHeight);
 
 						double localmin = Plots[WhichFSIModel]->GetBinContent(Plots[WhichFSIModel]->FindBin(4)); // multiplicity 4 is the highest one in data
 						if (localmin < min && localmin != 0) { min = localmin; }
@@ -354,14 +450,15 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 						// -------------------------------------------------------------------------------------------------
 
-						TLine* line = new TLine(0.95*DoubleE[WhichEnergy],0.,0.95*DoubleE[WhichEnergy],MaxHeight);
+//						TLine* line = new TLine(0.95*DoubleE[WhichEnergy],0.,0.95*DoubleE[WhichEnergy],height*max);
+TLine* line = new TLine(0.95*DoubleE[WhichEnergy],0.,0.95*DoubleE[WhichEnergy],MaxHeight);
 						line->SetLineColor(kBlack); 
 						line->SetLineWidth(LineWidth);
 						if ( FSILabel[WhichFSIModel] == "SuSav2" && DoubleE[WhichEnergy] == 2.261) { line->Draw(); }
 
 						// --------------------------------------------------------------------------------------------------
 
-						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
+						if (FSILabel[WhichFSIModel] == "Data") { 
 
 							Plots[WhichFSIModel]->SetMarkerStyle(20); 
 							Plots[WhichFSIModel]->SetMarkerSize(1.5); 
@@ -372,14 +469,45 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 						} else { 
 
+							// "C hist same" draw them as lines // "hist same" draw them as histos
+							
+//ApplyGenieUnc(Plots[WhichFSIModel],UncertaintyPlots[1]);
+							
+							//Plots[WhichFSIModel]->SetMarkerColor(kBlack);
 							TH1D* GenieTotalClone = (TH1D*)(Plots[WhichFSIModel]->Clone());
 							GenieTotalClone->SetLineColor(kBlack);
+							//GenieTotalClone->Draw("4C hist same");
+														
+//							Plots[WhichFSIModel]->SetLineColor(kBlack);
+//							Plots[WhichFSIModel]->SetFillColor(kBlack);
+//							Plots[WhichFSIModel]->SetFillStyle(3002);
+							
+							//Plots[WhichFSIModel]->SetMarkerSize(2.);
+							//Plots[WhichFSIModel]->SetMarkerStyle(20);								
 
-							if (FSILabel[WhichFSIModel] == "G2018") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }
-							Plots[WhichFSIModel]->Draw("hist C same");							
+//							Plots[WhichFSIModel]->Draw("4C hist same");
+
+//if ( !(DoubleE[WhichEnergy] == 2.261 && nucleus[WhichNucleus] == "12C") ) {							 			
+//							Plots[WhichFSIModel]->Draw("CE6 hist same");
+//}
+							//Plots[WhichFSIModel]->Draw("E2 same");
+							if (FSILabel[WhichFSIModel] == "Genie") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }
+							Plots[WhichFSIModel]->Draw("hist C same");								
+
+							 
+//							UncertaintyPlots[1]->SetMarkerColor(kBlack);	
+//							UncertaintyPlots[1]->SetLineColor(kBlack);
+//							UncertaintyPlots[1]->SetFillColor(kBlack);
+//							UncertaintyPlots[1]->SetFillStyle(3002);
+//							UncertaintyPlots[1]->SetMarkerSize(2.);
+//							UncertaintyPlots[1]->SetMarkerStyle(20);
+							//UncertaintyPlots[1]->Draw("3C same");
 													
+							
 							if (nucleus[WhichNucleus] == "12C" && E[WhichEnergy] == "1_161") {
-										
+							
+								//legGenieBlackLine->AddEntry(UncertaintyPlots[1],"GENIE (Total)", "lf"); 
+								//legGenieBlackLine->AddEntry(UncertaintyPlots[1],"GENIE (Total)", "l");			
 								if (WhichFSIModel == 1)
 									{ legGenieBlackLine->AddEntry(Plots[WhichFSIModel],"SuSav2 (Total)", "l"); }
 							}
@@ -496,32 +624,6 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 		// -------------------------------------------------------------------------------------------------
 	
-		TPad* padx5aC12 = new TPad("padx5aC12","padx5aC12",0.855,0.7,0.905,0.77,21); 
-		padx5aC12->SetFillColor(kWhite); 
-		PlotCanvas->cd();
-		padx5aC12->Draw();
-		padx5aC12->cd();
-
-		TLatex latexx5aC12;
-		latexx5aC12.SetTextFont(FontStyle);
-		latexx5aC12.SetTextSize(8*TextSize);
-		latexx5aC12.DrawLatexNDC(0.,0.4,"x5");
-
-		// -------------------------------------------------------------------------------------------------
-	
-		TPad* padx5bC12 = new TPad("padx5bC12","padx5bC12",0.855,0.35,0.905,0.42,21); 
-		padx5bC12->SetFillColor(kWhite); 
-		PlotCanvas->cd();
-		padx5bC12->Draw();
-		padx5bC12->cd();
-
-		TLatex latexx5bC12;
-		latexx5bC12.SetTextFont(FontStyle);
-		latexx5bC12.SetTextSize(8*TextSize);
-		latexx5bC12.DrawLatexNDC(0.,0.4,"x5");
-
-		// -------------------------------------------------------------------------------------------------
-	
 		TPad* padx13C12 = new TPad("padx13C12","padx13C12",0.675,0.91,0.71,0.98,21); 
 		padx13C12->SetFillColor(kWhite); 
 		PlotCanvas->cd();
@@ -571,38 +673,34 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		// Extra pad for the Y-axis units carbon
 
 		PlotCanvas->cd();
-		TPad* padTitle = new TPad("padTitle","padTitle",0.042,0.58,0.092,1., 21); 
+		TPad* padTitle = new TPad("padTitle","padTitle",0.065,0.58,0.09,1., 21); 
 		padTitle->SetFillColor(kWhite); 
 		padTitle->Draw();
 		padTitle->cd();
 
 		TLatex latexYTitle;
 		latexYTitle.SetTextFont(FontStyle);
-		latexYTitle.SetTextSize(6*TextSize);
+		latexYTitle.SetTextSize(11*TextSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
-//		latexYTitle.DrawLatexNDC(0.8,0.03,"Weighted Events / GeV");
-//		latexYTitle.DrawLatexNDC(0.8,0.03,"Weighted Events");
-		latexYTitle.DrawLatexNDC(0.6,0.18,DoubleXSecTitle);
+		latexYTitle.DrawLatexNDC(0.8,0.03,"Weighted Events / GeV");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
 		// Extra pad for the Y-axis units iron
 
 		PlotCanvas->cd();
-		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.35,0.18,0.4,0.55,21); 
+		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.37,0.18,0.4,0.55,21); 
 		padTitleFe->SetFillColor(kWhite); 
 		padTitleFe->Draw();
 		padTitleFe->cd();
 
 		TLatex latexYTitleFe;
 		latexYTitleFe.SetTextFont(FontStyle);
-		latexYTitleFe.SetTextSize(6*TextSize);
+		latexYTitleFe.SetTextSize(9*TextSize);
 		latexYTitleFe.SetTextColor(kBlack);
 		latexYTitleFe.SetTextAngle(90);
-//		latexYTitleFe.DrawLatexNDC(0.8,0.03,"Weighted Events / GeV");
-//		latexYTitleFe.DrawLatexNDC(0.8,0.03,"Weighted Events");
-		latexYTitleFe.DrawLatexNDC(0.6,0.1,DoubleXSecTitle);
+		latexYTitleFe.DrawLatexNDC(0.8,0.03,"Weighted Events / GeV");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -611,14 +709,14 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		PlotCanvas->cd();
 		TPad* padTitleZero = new TPad("padTitleZero","padTitleZero",0.405,0.17,0.421,0.22,21); 
 		padTitleZero->SetFillColor(kWhite); 
-		//padTitleZero->Draw();
+		padTitleZero->Draw();
 		padTitleZero->cd();
 
 		TLatex latexYTitleZero;
 		latexYTitleZero.SetTextFont(FontStyle);
 		latexYTitleZero.SetTextSize(20*TextSize);
 		latexYTitleZero.SetTextColor(kBlack);
-		//latexYTitleZero.DrawLatexNDC(0.,0.1,"0");
+		latexYTitleZero.DrawLatexNDC(0.,0.1,"0");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -628,21 +726,37 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 //		TPad* padTitleOne = new TPad("padTitleOne","padTitleOne",0.41,0.34,0.426,0.39,21); 
 		TPad* padTitleOne = new TPad("padTitleOne","padTitleOne",0.405,0.355,0.421,0.405,21); 
 		padTitleOne->SetFillColor(kWhite); 
-		//padTitleOne->Draw();
+		padTitleOne->Draw();
 		padTitleOne->cd();
 
 		TLatex latexYTitleOne;
 		latexYTitleOne.SetTextFont(FontStyle);
 		latexYTitleOne.SetTextSize(20*TextSize);
 		latexYTitleOne.SetTextColor(kBlack);
-		//latexYTitleOne.DrawLatexNDC(0.,0.1,"1");
+		latexYTitleOne.DrawLatexNDC(0.,0.1,"1");
+
+		// -----------------------------------------------------------------------------------------------------------------------------------------
+
+		// Extra pad for the Y-axis 2. point
+
+//		PlotCanvas->cd();
+//		TPad* padTitleTwo = new TPad("padTitleTwo","padTitleTwo",0.41,0.5,0.426,0.55,21); 
+//		padTitleTwo->SetFillColor(kWhite); 
+//		padTitleTwo->Draw();
+//		padTitleTwo->cd();
+
+//		TLatex latexYTitleTwo;
+//		latexYTitleTwo.SetTextFont(FontStyle);
+//		latexYTitleTwo.SetTextSize(20*TextSize);
+//		latexYTitleTwo.SetTextColor(kBlack);
+//		latexYTitleTwo.DrawLatexNDC(0.,0.1,"2");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
 		TString ext = "";
 		if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
-		PlotCanvas->SaveAs("../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"Fig4"+WhatModelsAreIncluded+"_SuSav2_AbsXSec.pdf");
+		PlotCanvas->SaveAs("../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"Fig4"+WhatModelsAreIncluded+"_SuSav2.pdf");
 
 		//delete PlotCanvas;
 

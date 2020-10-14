@@ -719,16 +719,29 @@ void genie_analysis::Loop(Int_t choice) {
 	TH1F *h1_EQE_Slice2_NoWeight = new TH1F("eRecoEnergy_slice_2_NoWeight","",n_bins,x_values);
 	TH1F *h1_EQE_Slice3_NoWeight = new TH1F("eRecoEnergy_slice_3_NoWeight","",n_bins,x_values);
 
+	TH1F *h1_ECalReso_InSector[NSectors];
+	TH1F *h1_EQEReso_InSector[NSectors];
 	TH1F *h1_ECal_InSector[NSectors];
 	TH1F *h1_EQE_InSector[NSectors];
 	TH1F *h1_DeltaPT_InSector[NSectors];
 	TH1F *h1_DeltaAlphaT_InSector[NSectors];
 	TH1F *h1_DeltaPhiT_InSector[NSectors];
 
+	TH1F *h1_ECal_Slice1_InSector[NSectors];
+	TH1F *h1_ECal_Slice2_InSector[NSectors];
+	TH1F *h1_ECal_Slice3_InSector[NSectors];
+
 	for (int WhichSector = 0; WhichSector < NSectors; WhichSector++) {
+
+		h1_ECal_Slice1_InSector[WhichSector]  = new TH1F("h1_ECal_Slice1_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
+		h1_ECal_Slice2_InSector[WhichSector]  = new TH1F("h1_ECal_Slice2_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
+		h1_ECal_Slice2_InSector[WhichSector]  = new TH1F("h1_ECal_Slice3_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
 
 		h1_ECal_InSector[WhichSector]  = new TH1F("h1_ECal_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
 		h1_EQE_InSector[WhichSector]  = new TH1F("h1_EQE_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
+
+		h1_ECalReso_InSector[WhichSector]  = new TH1F("h1_ECalReso_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_qe);
+		h1_EQEReso_InSector[WhichSector]  = new TH1F("h1_EQEReso_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_qe);
 
 		h1_DeltaPT_InSector[WhichSector]  = new TH1F("h1_DeltaPT_InSector_"+TString(std::to_string(WhichSector)),"",80,0.,1.);
 		h1_DeltaAlphaT_InSector[WhichSector]  = new TH1F("h1_DeltaAlphaT_InSector_"+TString(std::to_string(WhichSector)),";#delta#alpha_{T} [deg]",NDeltaAlphaTBins,DeltaAlphaTMin,DeltaAlphaTMax);
@@ -1126,6 +1139,7 @@ void genie_analysis::Loop(Int_t choice) {
 		//Calculation of Reconstructed Energy from ELectron only
 		//using the same value of single nucleon separation E Ecal and Eqe
 		double E_rec = (m_prot*bind_en[ftarget]+m_prot*V4_el.E())/(m_prot-V4_el.E()+V4_el.Rho()*cos(el_theta));
+		double EQE_Reso = (E_rec - en_beam_Ecal[fbeam_en]) / en_beam_Ecal[fbeam_en]; 
 
 		//Calculation of kinematic quantities (nu, Q2, x bjorken, q and W)
 		double nu = -(V4_el-V4_beam).E();
@@ -1767,7 +1781,20 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_ECal_InSector[ElectronSector]->Fill(E_tot_2p[f],LocalWeight);
 					h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot_2p[f],LocalWeight);
 					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
-					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);				
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
+			
+					// ---------------------------------------------------------------------------------------------------------------------	
+
+					double PTmiss = p_perp_tot_2p[f];
+					double Ecal = E_tot_2p[f];
+					if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+					if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+					if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+					double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+					h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+					// ---------------------------------------------------------------------------------------------------------------------
 							     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);     					
@@ -1972,7 +1999,20 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_ECal_InSector[ElectronSector]->Fill(Ecal_2p1pi_to2p0pi[z],LocalWeight);
 					h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp_2p1pi_to2p0pi[z],LocalWeight);
 					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
-					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);					
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
+
+					// ---------------------------------------------------------------------------------------------------------------------	
+
+					double PTmiss = p_miss_perp_2p1pi_to2p0pi[z];
+					double Ecal = Ecal_2p1pi_to2p0pi[z];
+					if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+					if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+					if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+					double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+					h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+					// ---------------------------------------------------------------------------------------------------------------------				
 							     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);  								
@@ -2125,7 +2165,17 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_ECal_InSector[ElectronSector]->Fill(Ecal_2p1pi_to2p0pi[z],LocalWeight);
 					h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot_2p[z],LocalWeight);
 					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
-					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);				
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);	
+
+					// ---------------------------------------------------------------------------------------------------------------------	
+
+					if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+					if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+					if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+					h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+					// ---------------------------------------------------------------------------------------------------------------------			
 							     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);  					
@@ -2276,7 +2326,17 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_ECal_InSector[ElectronSector]->Fill(E_tot_2p[z],LocalWeight);
 					h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot_2p[z],LocalWeight);
 					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
-					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);					
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);	
+
+					// ---------------------------------------------------------------------------------------------------------------------	
+
+					if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+					if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+					if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+					h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+					// ---------------------------------------------------------------------------------------------------------------------				
 							     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight); 					
@@ -2493,7 +2553,20 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_ECal_InSector[ElectronSector]->Fill(E_tot_2p[z],LocalWeight);
 					h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot_2p[z],LocalWeight);
 					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
-					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);					
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);	
+
+					// ---------------------------------------------------------------------------------------------------------------------	
+
+					double PTmiss = p_perp_tot_2p[z];
+					double Ecal = E_tot_2p[z];
+					if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+					if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+					if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+					double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+					h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+					// ---------------------------------------------------------------------------------------------------------------------				
 							     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);					
@@ -2722,7 +2795,20 @@ void genie_analysis::Loop(Int_t choice) {
 						h1_ECal_InSector[ElectronSector]->Fill(E_cal_3pto2p[count][j],LocalWeight);
 						h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp_3pto2p[count][j],LocalWeight);
 						h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
-						h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);				
+						h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
+
+						// ---------------------------------------------------------------------------------------------------------------------	
+
+						double PTmiss = p_miss_perp_3pto2p[count][j];
+						double Ecal = E_cal_3pto2p[count][j];
+						if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+						if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+						if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+						double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+						h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+						// ---------------------------------------------------------------------------------------------------------------------	
 								     
 						DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 						DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);						
@@ -2870,7 +2956,20 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_ECal_InSector[ElectronSector]->Fill(E_cal[j],LocalWeight);
 					h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp[j],LocalWeight);
 					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
-					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);					
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);	
+
+					// ---------------------------------------------------------------------------------------------------------------------	
+
+					double PTmiss = p_miss_perp[j];
+					double Ecal = E_cal[j];
+					if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+					if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+					if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+					double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+					h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+					// ---------------------------------------------------------------------------------------------------------------------			
 								     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);					
@@ -3074,7 +3173,20 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_ECal_InSector[ElectronSector]->Fill(E_cal[j],LocalWeight);
 					h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp[j],LocalWeight);
 					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
-					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);					
+					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
+
+					// ---------------------------------------------------------------------------------------------------------------------	
+
+					double PTmiss = p_miss_perp[j];
+					double Ecal = E_cal[j];
+					if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+					if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+					if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+					double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+					h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+					// ---------------------------------------------------------------------------------------------------------------------				
 								     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);					
@@ -3375,6 +3487,19 @@ void genie_analysis::Loop(Int_t choice) {
 								h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp_4pto3p[count][j],LocalWeight);
 								h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
 								h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
+
+								// ---------------------------------------------------------------------------------------------------------------------	
+
+								double PTmiss = p_miss_perp_4pto3p[count][j];
+								double Ecal = E_cal_4pto3p[count][j];
+								if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+								if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+								if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+								double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+								h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+								// ---------------------------------------------------------------------------------------------------------------------
 											     
 								DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 								DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);			
@@ -3523,6 +3648,19 @@ void genie_analysis::Loop(Int_t choice) {
 							h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp_43pto1p[j],LocalWeight);
 							h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
 							h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
+
+							// ---------------------------------------------------------------------------------------------------------------------	
+
+							double PTmiss = p_miss_perp_43pto1p[j];
+							double Ecal = E_cal_43pto1p[j];
+							if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+							if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+							if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+							double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+							h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+							// ---------------------------------------------------------------------------------------------------------------------
 											     
 							DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 							DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);					
@@ -3699,6 +3837,19 @@ void genie_analysis::Loop(Int_t choice) {
 									h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp_4pto2p[j],LocalWeight);
 									h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
 									h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
+
+									// ---------------------------------------------------------------------------------------------------------------------
+
+									double PTmiss = p_miss_perp_4pto2p[j];
+									double Ecal = E_cal_4pto2p[j];
+									if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+									if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+									if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+									double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+									h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+									// ---------------------------------------------------------------------------------------------------------------------
 													     
 									DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 									DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);			
@@ -3859,6 +4010,19 @@ void genie_analysis::Loop(Int_t choice) {
 						h1_DeltaPT_InSector[ElectronSector]->Fill(p_miss_perp_p4[j],LocalWeight);
 						h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
 						h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
+
+						// ---------------------------------------------------------------------------------------------------------------------
+
+						double PTmiss = p_miss_perp_p4[j];
+						double Ecal = E_cal_p4[j];
+						if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+						if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+						if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+						double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+						h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+						// ---------------------------------------------------------------------------------------------------------------------
 													     
 						DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 						DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);						
@@ -3956,6 +4120,7 @@ void genie_analysis::Loop(Int_t choice) {
 			h1_E_rec_0pi_frac_feed->Fill((E_rec-en_beam_Eqe[fbeam_en])/en_beam_Eqe[fbeam_en],WeightIncl);
 
 			h1_EQE_InSector[ElectronSector]->Fill(E_rec,WeightIncl);
+			h1_EQEReso_InSector[ElectronSector]->Fill(EQE_Reso,WeightIncl);
 
 			// Inclusive Case BreakDown
 			InclusiveEQE_BreakDown[0]->Fill(E_rec,WeightIncl);
@@ -4010,6 +4175,7 @@ void genie_analysis::Loop(Int_t choice) {
 			h1_E_rec_1pi_weight_frac_feed->Fill((E_rec-en_beam_Eqe[fbeam_en])/en_beam_Eqe[fbeam_en],P_undet*histoweight);
 
 			h1_EQE_InSector[ElectronSector]->Fill(E_rec,-P_undet*histoweight);
+			h1_EQEReso_InSector[ElectronSector]->Fill(EQE_Reso,-P_undet*histoweight);
 
 			// Inclusive Case BreakDown
 			InclusiveEQE_BreakDown[0]->Fill(E_rec,-P_undet*histoweight);
@@ -4076,6 +4242,7 @@ void genie_analysis::Loop(Int_t choice) {
 			h1_E_rec_20pi->Fill(E_rec,(P_0pi)*histoweight);
 
 			h1_EQE_InSector[ElectronSector]->Fill(E_rec,(-P_0pi)*histoweight);
+			h1_EQEReso_InSector[ElectronSector]->Fill(EQE_Reso,(-P_0pi)*histoweight);
 
 			// Inclusive Case BreakDown
 			InclusiveEQE_BreakDown[0]->Fill(E_rec,(-P_0pi)*histoweight);
@@ -4090,6 +4257,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_E_rec_21pi->Fill(E_rec,(P_1pi[k])*histoweight);
 
 				h1_EQE_InSector[ElectronSector]->Fill(E_rec,(P_1pi[k])*histoweight);
+				h1_EQEReso_InSector[ElectronSector]->Fill(EQE_Reso,(P_1pi[k])*histoweight);
 
 				// Inclusive Case BreakDown
 				InclusiveEQE_BreakDown[0]->Fill(E_rec,(P_1pi[k])*histoweight);
@@ -4161,6 +4329,7 @@ void genie_analysis::Loop(Int_t choice) {
 			h1_E_rec_30pi->Fill(E_rec,(P_0pi)*histoweight);
 
 			h1_EQE_InSector[ElectronSector]->Fill(E_rec,(-P_0pi)*histoweight);
+			h1_EQEReso_InSector[ElectronSector]->Fill(EQE_Reso,(-P_0pi)*histoweight);
 
 			// Inclusive Case BreakDown
 			InclusiveEQE_BreakDown[0]->Fill(E_rec,(-P_0pi)*histoweight);
@@ -4174,6 +4343,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_E_rec_3pi_weight_frac_feed->Fill((E_rec-en_beam_Eqe[fbeam_en])/en_beam_Eqe[fbeam_en],P_1pi[h]*histoweight);
 				h1_E_rec_310pi->Fill(E_rec,(P_1pi[h])*histoweight);
 				h1_EQE_InSector[ElectronSector]->Fill(E_rec,(P_1pi[h])*histoweight);
+				h1_EQEReso_InSector[ElectronSector]->Fill(EQE_Reso,(P_1pi[h])*histoweight);
 
 				// Inclusive Case BreakDown
 				InclusiveEQE_BreakDown[0]->Fill(E_rec,(P_1pi[h])*histoweight);
@@ -4185,6 +4355,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_E_rec_3pi_weight_frac_feed->Fill((E_rec-en_beam_Eqe[fbeam_en])/en_beam_Eqe[fbeam_en],P_320pi[h]*histoweight);
 				h1_E_rec_320pi->Fill(E_rec,(P_320pi[h])*histoweight);
 				h1_EQE_InSector[ElectronSector]->Fill(E_rec,(P_320pi[h])*histoweight);
+				h1_EQEReso_InSector[ElectronSector]->Fill(EQE_Reso,(P_320pi[h])*histoweight);
 
 				// Inclusive Case BreakDown
 				InclusiveEQE_BreakDown[0]->Fill(E_rec,(P_320pi[h])*histoweight);
@@ -4198,6 +4369,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_E_rec_3pi_weight_frac_feed->Fill((E_rec-en_beam_Eqe[fbeam_en])/en_beam_Eqe[fbeam_en],(-P_3210pi[h][g])*histoweight);
 					h1_E_rec_3210pi->Fill(E_rec,(P_3210pi[h][g])*histoweight);
 					h1_EQE_InSector[ElectronSector]->Fill(E_rec,(-P_3210pi[h][g])*histoweight);
+					h1_EQEReso_InSector[ElectronSector]->Fill(EQE_Reso,(-P_3210pi[h][g])*histoweight);
 
 					// Inclusive Case BreakDown
 					InclusiveEQE_BreakDown[0]->Fill(E_rec,(-P_3210pi[h][g])*histoweight);
@@ -4275,6 +4447,7 @@ void genie_analysis::Loop(Int_t choice) {
 			h1_E_rec_4pi_weight_frac_feed->Fill((E_rec-en_beam_Eqe[fbeam_en])/en_beam_Eqe[fbeam_en],(-P_0pi+P_410pi+P_420pi-P_4210pi+P_430pi-P_4310pi-P_4320pi+P_43210pi)*histoweight);
 			h1_E_rec_40pi->Fill(E_rec,(P_0pi)*histoweight);
 			h1_EQE_InSector[ElectronSector]->Fill(E_rec,(-P_0pi+P_410pi+P_420pi-P_4210pi+P_430pi-P_4310pi-P_4320pi+P_43210pi)*histoweight);
+			h1_EQEReso_InSector[ElectronSector]->Fill(EQE_Reso,(-P_0pi+P_410pi+P_420pi-P_4210pi+P_430pi-P_4310pi-P_4320pi+P_43210pi)*histoweight);
 
 			// Inclusive Case BreakDown
 			InclusiveEQE_BreakDown[0]->Fill(E_rec,(-P_0pi+P_410pi+P_420pi-P_4210pi+P_430pi-P_4310pi-P_4320pi+P_43210pi)*histoweight);
@@ -4485,6 +4658,19 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot,LocalWeight);
 				h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
 				h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
+
+				// ---------------------------------------------------------------------------------------------------------------------
+
+				double PTmiss = p_perp_tot;
+				double Ecal = E_tot;
+				if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+				if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+				if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+				double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+				h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+				// ---------------------------------------------------------------------------------------------------------------------
 													     
 				DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 				DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);				
@@ -4698,6 +4884,19 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot,LocalWeight);
 					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
 					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
+
+					// ---------------------------------------------------------------------------------------------------------------------
+
+					double PTmiss = p_perp_tot;
+					double Ecal = E_tot;
+					if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+					if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+					if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+					double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+					h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+					// ---------------------------------------------------------------------------------------------------------------------
 														     
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);					
@@ -4920,6 +5119,19 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot,LocalWeight);
 					h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
 					h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
+
+					// ---------------------------------------------------------------------------------------------------------------------
+
+					double PTmiss = p_perp_tot;
+					double Ecal = E_tot;
+					if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+					if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+					if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+					double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+					h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+					// ---------------------------------------------------------------------------------------------------------------------
 					
 					DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 					DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);								
@@ -5079,6 +5291,19 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot,LocalWeight);
 				h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
 				h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
+
+				// ---------------------------------------------------------------------------------------------------------------------
+
+				double PTmiss = p_perp_tot;
+				double Ecal = E_tot;
+				if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+				if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+				if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+				double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+				h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+				// ---------------------------------------------------------------------------------------------------------------------
 				
 				DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 				DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);								
@@ -5288,7 +5513,20 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_ECal_InSector[ElectronSector]->Fill(E_tot,LocalWeight);
 				h1_DeltaPT_InSector[ElectronSector]->Fill(p_perp_tot,LocalWeight);
 				h1_DeltaAlphaT_InSector[ElectronSector]->Fill(deltaalphaT,LocalWeight);
-				h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);	
+				h1_DeltaPhiT_InSector[ElectronSector]->Fill(deltaphiT,LocalWeight);
+
+				// ---------------------------------------------------------------------------------------------------------------------
+
+				double PTmiss = p_perp_tot;
+				double Ecal = E_tot;
+				if (PTmiss < pperp_max[0]) { h1_ECal_Slice1_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }		
+				if (PTmiss > pperp_min[1] && PTmiss < pperp_max[1]) { h1_ECal_Slice2_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+				if (PTmiss > pperp_min[2] && PTmiss < pperp_max[2]) { h1_ECal_Slice3_InSector[ElectronSector]->Fill(Ecal,LocalWeight); }
+
+				double EcalReso = (Ecal-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en];
+				h1_ECalReso_InSector[ElectronSector]->Fill(EcalReso,LocalWeight);
+
+				// ---------------------------------------------------------------------------------------------------------------------	
 				
 				DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 				DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);				

@@ -18,13 +18,10 @@
 #include <map>
 #include <utility>
 
-typedef std::pair<std::string,std::string> pair;
-
 using namespace std;
 
-#include  "/home/afroditi/Dropbox/PhD/Secondary_Code/CenterAxisTitle.cpp"
-#include "/home/afroditi/Dropbox/PhD/Secondary_Code/SetOffsetAndSize.cpp"
-#include "/home/afroditi/Dropbox/PhD/Secondary_Code/myFunctions.cpp"
+#include "../myFunctions.cpp"
+#include "../AfroConstants.h"
 
 // ----------------------------------------------------------------------------------------------------------------
 

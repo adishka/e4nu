@@ -818,7 +818,7 @@ void GetCharge_FilterData::Loop()
 
 		// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		//Define electron vectors, angles amd other Information
+		//Define electron vectors, angles and other Information
 
 		TVector3 e_ec_xyz1(ech_x[ec[ind_em]-1],ech_y[ec[ind_em]-1],ech_z[ec[ind_em]-1]);
 		TVector3 el_mom1(p[ind_em]*cx[ind_em],p[ind_em]*cy[ind_em] ,p[ind_em]*cz[ind_em]);
