@@ -735,7 +735,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 		h1_ECal_Slice1_InSector[WhichSector]  = new TH1F("h1_ECal_Slice1_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
 		h1_ECal_Slice2_InSector[WhichSector]  = new TH1F("h1_ECal_Slice2_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
-		h1_ECal_Slice2_InSector[WhichSector]  = new TH1F("h1_ECal_Slice3_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
+		h1_ECal_Slice3_InSector[WhichSector]  = new TH1F("h1_ECal_Slice3_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
 
 		h1_ECal_InSector[WhichSector]  = new TH1F("h1_ECal_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
 		h1_EQE_InSector[WhichSector]  = new TH1F("h1_EQE_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
