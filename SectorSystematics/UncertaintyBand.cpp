@@ -50,8 +50,8 @@ void UncertaintyBand() {
 	nucleus.push_back("12C");
 //	nucleus.push_back("56Fe");
 
-//	E.push_back("1_161");
-	E.push_back("2_261");	
+	E.push_back("1_161");
+//	E.push_back("2_261");	
 //	E.push_back("4_461");
 
 	xBCut.push_back("NoxBCut");
@@ -65,18 +65,18 @@ void UncertaintyBand() {
 	SectorIndex.push_back(1);
 	SectorIndex.push_back(5);
 
-//	Var.push_back("ECal_Slice1");
-//	Var.push_back("ECal_Slice2");
-//	Var.push_back("ECal_Slice3");
+	Var.push_back("ECal_Slice1");
+	Var.push_back("ECal_Slice2");
+	Var.push_back("ECal_Slice3");
  
-//	Var.push_back("EQEReso"); 
-//	Var.push_back("ECalReso"); 
+	Var.push_back("EQEReso"); 
+	Var.push_back("ECalReso"); 
 
 	Var.push_back("ECal"); 
-//	Var.push_back("EQE");
-//	Var.push_back("DeltaPT"); 
-//	Var.push_back("DeltaAlphaT"); 
-//	Var.push_back("DeltaPhiT"); 
+	Var.push_back("EQE");
+	Var.push_back("DeltaPT"); 
+	Var.push_back("DeltaAlphaT"); 
+	Var.push_back("DeltaPhiT"); 
 
 	// ------------------------------------------------------------------------
 
@@ -163,7 +163,7 @@ void UncertaintyBand() {
 							// ---------------------------------------------------------------------------------------
 
 							TString PlotName = "h1_" + Var[WhichVar] + "_InSector_" + SectorIndex[WhichPlot];
-
+//cout << "PlotName = " << PlotName << endl;
 							Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot] = 
 								(TH1D*)Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get(PlotName);
 
@@ -267,7 +267,7 @@ void UncertaintyBand() {
 						leg->SetTextSize(TextSize);
 						leg->Draw();
 
-						//delete PlotCanvas;
+						delete PlotCanvas;
 
 						double PlotCounter = NPlots;
 						if ( E[WhichEnergy] == "4_461" ) { PlotCounter -= 1; }				
@@ -372,7 +372,7 @@ void UncertaintyBand() {
 						Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->cd();
 						Nom->Write("Unc_"+Var[WhichVar]);
 
-						//delete UncCanvas;
+						delete UncCanvas;
 
 					} // End of the loop over the variable of interest
 

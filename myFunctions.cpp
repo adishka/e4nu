@@ -369,6 +369,8 @@ void ApplyRange(TH1D* h, double Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("DeltaAlphaT") != std::string::npos ) {
 
+		h->GetXaxis()->SetRangeUser(10,180);
+
 	} else if (string(PlotVar).find("DeltaPhiT") != std::string::npos ) {
 
 	} else if (string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
@@ -419,6 +421,8 @@ void ApplyRange(TGraph* h, double Energy, TString PlotVar) {
 	} else if (string(PlotVar).find("PT") != std::string::npos || string(PlotVar).find("MissMomentum") != std::string::npos) {
 
 	} else if (string(PlotVar).find("DeltaAlphaT") != std::string::npos ) {
+
+		h->GetXaxis()->SetRangeUser(10,180);
 
 	} else if (string(PlotVar).find("DeltaPhiT") != std::string::npos ) {
 

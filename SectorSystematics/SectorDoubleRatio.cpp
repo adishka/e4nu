@@ -554,7 +554,7 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 
 			ApplyRange(PercErrWeightedGraph,Energy,Ereco);
 			PercErrWeightedGraph->GetXaxis()->SetTitle(LabelOfPlots);
-			PercErrWeightedGraph->GetYaxis()->SetRangeUser(0.,100);
+			PercErrWeightedGraph->GetYaxis()->SetRangeUser(0.,35);
 			PercErrWeightedGraph->GetYaxis()->SetTitle("Percentage Error");
 			PercErrWeightedGraph->GetYaxis()->SetNdivisions(10);
 			PercErrWeightedGraph->Draw("AP");
