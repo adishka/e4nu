@@ -977,7 +977,7 @@ void genie_analysis::Loop(Int_t choice) {
 	// Vector containing kinematic variables using Ecal
 	vector<double> CalKineVars{};
 	// Weight to fill the plots mentioned above
-	double LocalWeight;
+	//double LocalWeight;
 
 	// Signal Event Counter -> 1e1p0pi events (everything lese is bkg)
 	int SignalEvents = 0;
@@ -1747,7 +1747,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),-P_N_2p[f]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_2prot_corr[f].Mag(),V3_2prot_corr[f].Theta()*180./TMath::Pi(),-P_N_2p[f]*histoweight);
 
-					LocalWeight = -P_N_2p[f]*histoweight;
+					double LocalWeight = -P_N_2p[f]*histoweight;
 
 					double ProtonPhi_Deg = V3_2prot_corr[f].Phi() *180. / TMath::Pi() + 180.;
 					double ProtonTheta_Deg = V3_2prot_corr[f].Theta() *180. / TMath::Pi();
@@ -1962,7 +1962,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_prot_mom->Fill(V3_2prot_corr[z].Mag(),P_2p1pito2p0pi[z]*histoweight);
 					h1_MissMomentum->Fill(p_miss_perp_2p1pi_to2p0pi[z],P_2p1pito2p0pi[z]*histoweight);
 
-					LocalWeight = P_2p1pito2p0pi[z]*histoweight;
+					double LocalWeight = P_2p1pito2p0pi[z]*histoweight;
 
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_2p1pito2p0pi[z]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_2prot_corr[z].Mag(),V3_2prot_corr[z].Theta()*180./TMath::Pi(),P_2p1pito2p0pi[z]*histoweight);
@@ -2122,8 +2122,6 @@ void genie_analysis::Loop(Int_t choice) {
 
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_2p1pito1p1pi[z]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_2prot_corr[z].Mag(),V3_2prot_corr[z].Theta()*180./TMath::Pi(),P_2p1pito1p1pi[z]*histoweight);
-
-					double PionWeight = pion_acc_ratio;
 
 					if (charge_pi[0] == 1) { 
 
@@ -2503,7 +2501,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_prot_mom->Fill(V3_2prot_corr[z].Mag(),Ptot_2p[z]*histoweight);
 					h1_MissMomentum->Fill(p_perp_tot_2p[z],Ptot_2p[z]*histoweight);
 
-					LocalWeight = Ptot_2p[z]*histoweight;
+					double LocalWeight = Ptot_2p[z]*histoweight;
 
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),Ptot_2p[z]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_2prot_corr[z].Mag(),V3_2prot_corr[z].Theta()*180./TMath::Pi(),Ptot_2p[z]*histoweight);
@@ -2762,7 +2760,7 @@ void genie_analysis::Loop(Int_t choice) {
 						h1_prot_mom->Fill(V3_prot_corr[j].Mag(),P_3pto2p[count][j]*histoweight);
 						h1_MissMomentum->Fill(p_miss_perp_3pto2p[count][j],P_3pto2p[count][j]*histoweight);
 
-						LocalWeight = P_3pto2p[count][j]*histoweight;
+						double LocalWeight = P_3pto2p[count][j]*histoweight;
 
 						h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_3pto2p[count][j]*histoweight);
 						h2_Proton_Theta_Momentum->Fill(V3_prot_corr[j].Mag(),V3_prot_corr[j].Theta()*180./TMath::Pi(),P_3pto2p[count][j]*histoweight);
@@ -2923,7 +2921,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_prot_mom->Fill(V3_prot_corr[j].Mag(),-P_3pto1p[j]*histoweight);
 					h1_MissMomentum->Fill(p_miss_perp[j],-P_3pto1p[j]*histoweight);
 
-					LocalWeight = -P_3pto1p[j]*histoweight;
+					double LocalWeight = -P_3pto1p[j]*histoweight;
 
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),-P_3pto1p[j]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_prot_corr[j].Mag(),V3_prot_corr[j].Theta()*180./TMath::Pi(),-P_3pto1p[j]*histoweight);
@@ -3128,7 +3126,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_prot_mom->Fill(V3_prot_corr[j].Mag(),P_tot_3p[j]*histoweight);
 					h1_MissMomentum->Fill(p_miss_perp[j],P_tot_3p[j]*histoweight);
 
-					LocalWeight = P_tot_3p[j]*histoweight;
+					double LocalWeight = P_tot_3p[j]*histoweight;
 
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_tot_3p[j]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_prot_corr[j].Mag(),V3_prot_corr[j].Theta()*180./TMath::Pi(),P_tot_3p[j]*histoweight);
@@ -3452,7 +3450,7 @@ void genie_analysis::Loop(Int_t choice) {
 								h1_prot_mom->Fill(V3_prot_corr[j].Mag(),-P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight);
 								h1_MissMomentum->Fill(p_miss_perp_4pto3p[count][j],-P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight);
 
-								LocalWeight = -P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight;
+								double LocalWeight = -P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight;
 
 								h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),-P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight);
 								h2_Proton_Theta_Momentum->Fill(V3_prot_corr[j].Mag(),V3_prot_corr[j].Theta()*180./TMath::Pi(),-P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight);
@@ -3614,7 +3612,7 @@ void genie_analysis::Loop(Int_t choice) {
 							h1_prot_mom->Fill(V3_prot_corr[j].Mag(),P_43pto1p[j]*histoweight);
 							h1_MissMomentum->Fill(p_miss_perp_43pto1p[j],P_43pto1p[j]*histoweight);
 
-							LocalWeight = P_43pto1p[j]*histoweight;
+							double LocalWeight = P_43pto1p[j]*histoweight;
 
 							h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_43pto1p[j]*histoweight);
 							h2_Proton_Theta_Momentum->Fill(V3_prot_corr[j].Mag(),V3_prot_corr[j].Theta()*180./TMath::Pi(),P_43pto1p[j]*histoweight);
@@ -3801,7 +3799,7 @@ void genie_analysis::Loop(Int_t choice) {
 									h1_prot_mom->Fill(V3p2[j].Mag(),P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight);
 									h1_MissMomentum->Fill(p_miss_perp_4pto2p[j],P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight);
 
-									LocalWeight = P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight;
+									double LocalWeight = P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight;
 	
 									h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight);
 									h2_Proton_Theta_Momentum->Fill(V3p2[j].Mag(),V3p2[j].Theta()*180./TMath::Pi(),P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight);
@@ -3811,7 +3809,6 @@ void genie_analysis::Loop(Int_t choice) {
 									// Reconstruct xB, W, Q2 using Ecal instead of Etrue
 
 									CalKineVars = CalculateCalKineVars(E_cal_4pto2p[j],V4_el);
-									LocalWeight = P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight;
 
 									h1_nuCal_weight->Fill(CalKineVars.at(0),LocalWeight);
 									h1_Q2Cal_weight->Fill(CalKineVars.at(1),LocalWeight);
@@ -3976,7 +3973,7 @@ void genie_analysis::Loop(Int_t choice) {
 						h1_prot_mom->Fill(V3_prot_corr[j].Mag(),-P_4pto1p[j]*histoweight);
 						h1_MissMomentum->Fill(p_miss_perp_p4[j],-P_4pto1p[j]*histoweight);
 
-						LocalWeight = -P_4pto1p[j]*histoweight;
+						double LocalWeight = -P_4pto1p[j]*histoweight;
 
 						h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),-P_4pto1p[j]*histoweight);
 						h2_Proton_Theta_Momentum->Fill(V3_prot_corr[j].Mag(),V3_prot_corr[j].Theta()*180./TMath::Pi(),-P_4pto1p[j]*histoweight);
@@ -4610,7 +4607,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_prot_mom->Fill(V3_prot_corr.Mag(),histoweight);
 				h1_MissMomentum->Fill(p_perp_tot,histoweight);
 
-				LocalWeight = histoweight;
+				double LocalWeight = histoweight;
 
 				h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),histoweight);
 				h2_Proton_Theta_Momentum->Fill(V3_prot_corr.Mag(),V3_prot_corr.Theta()*180./TMath::Pi(),histoweight);
@@ -4632,7 +4629,6 @@ void genie_analysis::Loop(Int_t choice) {
 				// Reconstruct xB, W, Q2 using Ecal instead of Etrue
 
 				CalKineVars = CalculateCalKineVars(E_tot,V4_el);
-				LocalWeight = histoweight;
 
 				h1_nuCal_weight->Fill(CalKineVars.at(0),LocalWeight);
 				h1_Q2Cal_weight->Fill(CalKineVars.at(1),LocalWeight);
@@ -4837,7 +4833,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_prot_mom->Fill(V3_prot_corr.Mag(),-(N_piphot_undet/N_piphot_det)*histoweight);
 					h1_MissMomentum->Fill(p_perp_tot,-(N_piphot_undet/N_piphot_det)*histoweight);
 
-					LocalWeight = -(N_piphot_undet/N_piphot_det)*histoweight;
+					double LocalWeight = -(N_piphot_undet/N_piphot_det)*histoweight;
 
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),-(N_piphot_undet/N_piphot_det)*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_prot_corr.Mag(),V3_prot_corr.Theta()*180./TMath::Pi(),-(N_piphot_undet/N_piphot_det)*histoweight);
@@ -4858,7 +4854,6 @@ void genie_analysis::Loop(Int_t choice) {
 					// apapadop: Reconstruct xB, W, Q2 using Ecal instead of Etrue
 
 					CalKineVars = CalculateCalKineVars(E_tot,V4_el);
-					LocalWeight = -(N_piphot_undet/N_piphot_det)*histoweight;
 
 					h1_nuCal_weight->Fill(CalKineVars.at(0),LocalWeight);
 					h1_Q2Cal_weight->Fill(CalKineVars.at(1),LocalWeight);
@@ -5068,7 +5063,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_prot_mom->Fill(V3_prot_corr.Mag(),P_1p1pi[z]*histoweight);
 					h1_MissMomentum->Fill(p_perp_tot,P_1p1pi[z]*histoweight);
 
-					LocalWeight = P_1p1pi[z]*histoweight;
+					double LocalWeight = P_1p1pi[z]*histoweight;
 
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_1p1pi[z]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_prot_corr.Mag(),V3_prot_corr.Theta()*180./TMath::Pi(),P_1p1pi[z]*histoweight);
@@ -5093,7 +5088,6 @@ void genie_analysis::Loop(Int_t choice) {
 					// apapadop: Reconstruct xB, W, Q2 using Ecal instead of Etrue
 
 					CalKineVars = CalculateCalKineVars(E_tot,V4_el);
-					LocalWeight = P_1p1pi[z]*histoweight;
 
 					h1_nuCal_weight->Fill(CalKineVars.at(0),LocalWeight);
 					h1_Q2Cal_weight->Fill(CalKineVars.at(1),LocalWeight);
@@ -5241,7 +5235,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_prot_mom->Fill(V3_prot_corr.Mag(),-P_1p0pi*histoweight);
 				h1_MissMomentum->Fill(p_perp_tot,-P_1p0pi*histoweight);
 
-				LocalWeight = -P_1p0pi*histoweight;
+				double LocalWeight = -P_1p0pi*histoweight;
 
 				h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),-P_1p0pi*histoweight);
 				h2_Proton_Theta_Momentum->Fill(V3_prot_corr.Mag(),V3_prot_corr.Theta()*180./TMath::Pi(),-P_1p0pi*histoweight);
@@ -5463,7 +5457,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_prot_mom->Fill(V3_prot_corr.Mag(),P_1p3pi*histoweight);
 				h1_MissMomentum->Fill(p_perp_tot,P_1p3pi*histoweight);
 
-				LocalWeight = P_1p3pi*histoweight;
+				double LocalWeight = P_1p3pi*histoweight;
 
 				h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_1p3pi*histoweight);
 				h2_Proton_Theta_Momentum->Fill(V3_prot_corr.Mag(),V3_prot_corr.Theta()*180./TMath::Pi(),P_1p3pi*histoweight);
@@ -5488,7 +5482,6 @@ void genie_analysis::Loop(Int_t choice) {
 				// apapadop: Reconstruct xB, W, Q2 using Ecal instead of Etrue
 
 				CalKineVars = CalculateCalKineVars(E_tot,V4_el);
-				LocalWeight = P_1p3pi*histoweight;
 
 				h1_nuCal_weight->Fill(CalKineVars.at(0),LocalWeight);
 				h1_Q2Cal_weight->Fill(CalKineVars.at(1),LocalWeight);

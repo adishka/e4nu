@@ -121,12 +121,13 @@ void OverlayPmissFig3b_e4nuPaper() {
 //	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(kCyan); BreakDownColors.push_back(kGreen); BreakDownColors.push_back(kMagenta);
 	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(429); BreakDownColors.push_back(410); BreakDownColors.push_back(610);
 
-	FSIModel.push_back("Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
-//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-
-//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+
+//	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 
 	NameOfPlots.push_back("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_3"); LabelOfPlots.push_back("P_{T} > 400 [MeV/c]");  OutputPlotNames.push_back("epRecoEnergy_slice_3");
 	NameOfPlots.push_back("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_2"); LabelOfPlots.push_back("200 < P_{T} < 400 [MeV/c]");  OutputPlotNames.push_back("epRecoEnergy_slice_2");
@@ -300,7 +301,7 @@ void OverlayPmissFig3b_e4nuPaper() {
 						if ( DoubleE[WhichEnergy] == 2.261 ) { SystUnc = SystUnc2GeV; }
 						if ( DoubleE[WhichEnergy] == 4.461 ) { SystUnc = SystUnc4GeV; }
 
-						if (FSILabel[WhichFSIModel] == "Data") { ApplySystUnc(Plots[WhichFSIModel], SystUnc); }
+						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { ApplySystUnc(Plots[WhichFSIModel], SystUnc); }
 						
 						// ----------------------------------------------------------------------------------
 
@@ -372,7 +373,7 @@ void OverlayPmissFig3b_e4nuPaper() {
 
 						// --------------------------------------------------------------------------------------------------
  
-						if (FSILabel[WhichFSIModel] == "Data") { 
+						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 
 							Plots[WhichFSIModel]->SetMarkerStyle(20); 
 							Plots[WhichFSIModel]->SetMarkerColor(kBlack); 

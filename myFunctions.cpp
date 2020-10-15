@@ -271,7 +271,6 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 						    TargetDensity[std::make_pair(Nucleus, E)] *\
 						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
 
-
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------
@@ -332,7 +331,7 @@ void ApplyRebinning(TH1D* h, double Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
 
-		for (int i = 0; i < 3; i++) { h->Rebin();} 
+		for (int i = 0; i < 2; i++) { h->Rebin();} 
 
 	}
 
@@ -360,7 +359,7 @@ void ApplyRange(TH1D* h, double Energy, TString PlotVar) {
 		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.7,2.6); }
 		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(2.,5.); }
 
-	} else if (string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos) {
+	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos) {
 
 		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.57,1.23); }
 		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.67,2.4); }
@@ -382,7 +381,7 @@ void ApplyRange(TH1D* h, double Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
 
-		h->GetXaxis()->SetRangeUser(0.,2.5);
+		h->GetXaxis()->SetRangeUser(0.4,1.7);
 
 	}
 
@@ -433,7 +432,7 @@ void ApplyRange(TGraph* h, double Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
 
-		h->GetXaxis()->SetRangeUser(0.,2.5);
+		h->GetXaxis()->SetRangeUser(0.4,1.7);
 
 	}
 

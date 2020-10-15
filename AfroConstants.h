@@ -67,6 +67,7 @@
 	{
 		{ "4He", 4 },
 		{ "12C", 12 },
+		{ "CH2", 14 },
 		{ "56Fe", 56 }
 	};
 
@@ -91,6 +92,7 @@
 		{ std::make_pair("4He", "2_261"), 1.16584 },
 		{ std::make_pair("4He", "4_461"), 0.97884 },
 		{ std::make_pair("12C", "1_161"), 0.079 },
+		{ std::make_pair("CH2", "1_161"), 0.079446889 },
 		{ std::make_pair("12C", "2_261"), 2.83649 },
 //		{ std::make_pair("12C", "2_261"), 0.007609864 },
 		{ std::make_pair("12C", "4_461"), 2.31146 },
@@ -169,6 +171,7 @@
 	{
 		{ std::make_pair("4He", "2_261"), 4.3 }, // 3.72-4.99 // taking the average
 		{ std::make_pair("4He", "4_461"), 4.3 }, // 3.72-4.99 // taking the average
+		{ std::make_pair("CH2", "1_161"), 0.07 },
 		{ std::make_pair("12C", "1_161"), 0.1 },
 		{ std::make_pair("12C", "2_261"), 0.1 },
 		{ std::make_pair("12C", "4_461"), 0.1 },
@@ -182,6 +185,7 @@
 	{
 		{ std::make_pair("4He", "2_261"), 0.125 },
 		{ std::make_pair("4He", "4_461"), 0.125 },
+		{ std::make_pair("CH2", "1_161"), 1.392 },
 		{ std::make_pair("12C", "1_161"), 1.786 },
 		{ std::make_pair("12C", "2_261"), 1.786 },
 		{ std::make_pair("12C", "4_461"), 1.786 },

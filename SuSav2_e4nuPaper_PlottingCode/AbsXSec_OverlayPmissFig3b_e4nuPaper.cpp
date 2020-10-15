@@ -27,18 +27,24 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 
 	TH1D::SetDefaultSumw2();
 
-	TGaxis::SetMaxDigits(3);
+	TGaxis::SetMaxDigits(4);
 //	TGaxis::SetExponentOffset(-0.1, 1., "y");
 
 	gStyle->SetTitleSize(TextSize,"t"); 
 	gStyle->SetTitleFont(FontStyle,"t");
 	gStyle->SetOptStat(0);
 
+	double YPadStart = 0.04;
+	double YRange[4] = {0.04,0.4,0.7,0.99};
+	double LeftMargin = 0.15;
+	double TextSize = 0.15;
+	int Ndivisions = 2;
+
 	// ------------------------------------------------------------------------
 
 	std::vector<TString> xBCut; std::vector<TString> nucleus; std::vector<TString> JustNucleus; std::vector<TString> LabelsOfSamples; 
 	std::vector<TString> E; std::vector<double> DoubleE;
-	std::vector<TString> LabelE; std::vector<TString> FSIModel; std::vector<TString> DirNames;  std::vector<int> BreakDownColors;
+	std::vector<TString> LabelE; std::vector<TString> FSIModel; std::vector<TString> DirNames;
 	std::vector<TString> FSILabel; std::vector<TString> NameOfPlots; std::vector<TString> LabelOfPlots;  
 	std::vector<TString> OutputPlotNames; std::vector<TH1D*> BreakDownPlots;
 	std::vector<int> Colors;
@@ -55,27 +61,19 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
  
-//	Colors.push_back(kBlack); Colors.push_back(kRed); Colors.push_back(kBlue); Colors.push_back(kMagenta); Colors.push_back(kGreen); Colors.push_back(kOrange + 7);
 	Colors.push_back(kBlack); Colors.push_back(kBlack); Colors.push_back(kBlack); Colors.push_back(kMagenta); Colors.push_back(kGreen); Colors.push_back(kOrange + 7);
 
 	Style.push_back(1); Style.push_back(1); Style.push_back(1); Style.push_back(1);
 
-//	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(kCyan); BreakDownColors.push_back(kGreen); BreakDownColors.push_back(kMagenta);
-	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(429); BreakDownColors.push_back(410); BreakDownColors.push_back(610);
-
-	FSIModel.push_back("Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
-//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-
-//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 
 	NameOfPlots.push_back("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_3"); LabelOfPlots.push_back("P_{T} > 400 [MeV/c]");  OutputPlotNames.push_back("epRecoEnergy_slice_3");
 	NameOfPlots.push_back("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_2"); LabelOfPlots.push_back("200 < P_{T} < 400 [MeV/c]");  OutputPlotNames.push_back("epRecoEnergy_slice_2");
 	NameOfPlots.push_back("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_1"); LabelOfPlots.push_back("0 < P_{T} < 200 [MeV/c]");  OutputPlotNames.push_back("epRecoEnergy_slice_1");
 
 	std::vector<TH1D*> Plots;
-	std::vector<TH1D*> Plots_Clones;
 
 	int NxBCuts = xBCut.size();
 	int NNuclei = nucleus.size();
@@ -153,34 +151,49 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 
 						Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
 
-						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
-						CenterAxisTitle(Plots[WhichFSIModel]);
-						Plots[WhichFSIModel]->SetLineWidth(LineWidth);
+//						if (NameOfPlots[WhichPlot] == "h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_1") { Plots.push_back( (TH1D*)( FileSample->Get("Unc_ECal_Slice1") ) ); }
 
 						// --------------------------------------------------------------------------------------
 
-						// X-axis label
+//						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
+						//Plots[WhichFSIModel]->SetLineWidth(LineWidth);
+
+						// Make the plot pretty
+
+						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
+						PrettyDoubleXSecPlot(Plots[WhichFSIModel]);
+
+						// --------------------------------------------------------------------------------------
+
+//						// X-axis label
 
 						Plots[WhichFSIModel]->GetXaxis()->SetLabelFont(FontStyle);
 						Plots[WhichFSIModel]->GetXaxis()->SetTitleFont(FontStyle);
 						Plots[WhichFSIModel]->GetXaxis()->SetLabelSize(TextSize);
 						Plots[WhichFSIModel]->GetXaxis()->SetTitleSize(TextSize);
+
 						Plots[WhichFSIModel]->GetXaxis()->SetTitleOffset(1.05);
 						Plots[WhichFSIModel]->GetXaxis()->SetNdivisions(5);
+
+						// -------------------------------------------------------------------------------------
+
+
 						if (WhichPlot != 0) { Plots[WhichFSIModel]->GetXaxis()->SetLabelSize(0.); }
 					        else { Plots[WhichFSIModel]->GetXaxis()->SetLabelSize(0.13); }
 
 						// --------------------------------------------------------------------------------------
 
-						// Y-axis label
+//						// Y-axis label
 
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelFont(FontStyle);
-						Plots[WhichFSIModel]->GetYaxis()->SetTitleFont(FontStyle);
+//						Plots[WhichFSIModel]->GetYaxis()->SetTitleFont(FontStyle);
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(TextSize);
-						Plots[WhichFSIModel]->GetYaxis()->SetTitleSize(TextSize);
+//						Plots[WhichFSIModel]->GetYaxis()->SetTitleSize(TextSize);
 						Plots[WhichFSIModel]->GetYaxis()->SetTickSize(0.02);
 						Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(Ndivisions);
 						Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(0.35);
+						Plots[WhichFSIModel]->GetYaxis()->SetTitleSize(0.);
+
 					        if (WhichPlot == 0) { Plots[WhichFSIModel]->GetXaxis()->SetLabelSize(0.13); }
 
 						//-----------------------------------------------------------------------------------------------
@@ -209,13 +222,14 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 
 						}
 
-						// --------------------------------------------------------------------------------------
+						// -----------------------------------------------------------------------------------
 
-						// Scaling Factor
+						// Scale to obtain absolute double differential cross sections 
+						// Use charge, density and length for data samples
+						// Use total number of events in genie sample and relevant genie cross sections for simulation
 
-						double ScalingFactor = 1. / Plots[WhichFSIModel]->Integral();  // area normalized
-						Plots[WhichFSIModel]->Scale(ScalingFactor);
-
+						AbsoluteXSecScaling(Plots[WhichFSIModel],FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]); 
+//Plots[WhichFSIModel]->Scale(1./Plots[WhichFSIModel]->Integral());
 						// -----------------------------------------------------------------------------------
 
 						// Accounting for the fact that the bin width might not be constant
@@ -229,6 +243,9 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 						double LowRange = 0.6;
 						double HighRange = 2.35;						
 						Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(LowRange,HighRange);
+
+						ApplyRebinning(Plots[WhichFSIModel],DoubleE[WhichEnergy],"ECal");
+						ApplyRange(Plots[WhichFSIModel],DoubleE[WhichEnergy],"ECal");
 						
 						LowBin = Plots[WhichFSIModel]->GetXaxis()->FindBin(LowRange);
 						HighBin = Plots[WhichFSIModel]->GetXaxis()->FindBin(HighRange);						
@@ -236,13 +253,9 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 						// ----------------------------------------------------------------------------------
 
 						// Apply Systematic Uncertainties on Data Points
+						// using numbers obtained from Mariana's thesis
 
-						double SystUnc = 0;
-						if ( DoubleE[WhichEnergy] == 1.161 ) { SystUnc = SystUnc1GeV; }
-						if ( DoubleE[WhichEnergy] == 2.261 ) { SystUnc = SystUnc2GeV; }
-						if ( DoubleE[WhichEnergy] == 4.461 ) { SystUnc = SystUnc4GeV; }
-
-						if (FSILabel[WhichFSIModel] == "Data") { ApplySystUnc(Plots[WhichFSIModel], SystUnc); }
+						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { ApplySystUnc(Plots[WhichFSIModel], DoubleE[WhichEnergy]); }
 						
 						// ----------------------------------------------------------------------------------
 
@@ -270,8 +283,13 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 								if (NameOfPlots[WhichPlot] == "h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_1") 
 									{ PlotName = "ECal_LowPmiss_Int_"; }							
 
-								BreakDownPlots.push_back( (TH1D*)( FileSample->Get(PlotName+ToString(j)) ) );
+								BreakDownPlots.push_back( (TH1D*)( FileSample->Get(PlotName+ToStringInt(j)) ) );
+
+								AbsoluteXSecScaling(BreakDownPlots[j-1],FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]);
 								ReweightPlots(BreakDownPlots[j-1]);
+								ApplyRebinning(BreakDownPlots[j-1],DoubleE[WhichEnergy],"ECal");
+								ApplyRange(BreakDownPlots[j-1],DoubleE[WhichEnergy],"ECal");
+
 								//for (int i = 0; i < 2; i++) { BreakDownPlots[j-1]->Rebin(); }
 
 								//-----------------------------------------------------------------------------------------------
@@ -286,7 +304,7 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 								
 								BreakDownPlots[j-1]->SetLineWidth(3);
 								BreakDownPlots[j-1]->SetLineStyle(Style[j-1]);
-								BreakDownPlots[j-1]->Scale(ScalingFactor);
+								//BreakDownPlots[j-1]->Scale(ScalingFactor);
 								//TLegendEntry* l1 = legGenie->AddEntry(BreakDownPlots[j-1],GenieFSILabel[j-1], "l");
 								//if (j == 2) { legGenie->AddEntry(Plots[WhichFSIModel],"SuSav2 (Total)", "l");  }
 								//if (j == 2) { legGenie->AddEntry(UncertaintyPlots[1],"GENIE (Total)", "lf");  }
@@ -314,7 +332,7 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 
 						// --------------------------------------------------------------------------------------------------
  
-						if (FSILabel[WhichFSIModel] == "Data") { 
+						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 
 							Plots[WhichFSIModel]->SetMarkerStyle(20); 
 							Plots[WhichFSIModel]->SetMarkerColor(kBlack); 
@@ -324,7 +342,7 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 
 						} else { 
 						
-							if (FSILabel[WhichFSIModel] == "Genie") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }
+							if (FSILabel[WhichFSIModel] == "G2018") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }
 						
 //							Plots[WhichFSIModel]->Draw("hist same"); // draw them as histos
 							Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
@@ -418,7 +436,8 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 				latexYTitle.SetTextSize(8*TextSize);
 				latexYTitle.SetTextColor(kBlack);
 				latexYTitle.SetTextAngle(90);
-				latexYTitle.DrawLatexNDC(0.8,0.27,"Weighted Events / GeV");		
+//				latexYTitle.DrawLatexNDC(0.8,0.27,"Weighted Events / GeV");		
+				latexYTitle.DrawLatexNDC(0.8,0.27,"Normalized Yield");
 
 				// --------------------------------------------------------------------------------------------
 
@@ -445,7 +464,7 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 
 				PlotCanvas->SaveAs("../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"
 					+E[WhichEnergy]+"/"+ext+"Fig3b_"+nucleus[WhichNucleus]+"_" 
-					+E[WhichEnergy]+"_"+WhatModelsAreIncluded+"_SuSav2.pdf");
+					+E[WhichEnergy]+"_"+WhatModelsAreIncluded+"_SuSav2_AbsXSec.pdf");
 
 				//delete PlotCanvas;
 
