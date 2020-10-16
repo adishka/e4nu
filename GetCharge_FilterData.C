@@ -683,8 +683,6 @@ void GetCharge_FilterData::Loop()
 			std::cout<<jentry<<std::endl;
 		}
 
-//		if (runnb == 17883 || runnb == )
-
 		if (runnb==18258 || runnb==18259 || (runnb>18382 && runnb<18438) || (runnb>18220 && runnb<18253)) {
 			vz_corr_func->SetParameters(pars); 
 			//setting appropriate parameters of the vertex correction function for the runs with the same target and beam energy, but different vertex correction
@@ -706,6 +704,8 @@ void GetCharge_FilterData::Loop()
 		if((runnb>18283 && runnb<18289) || (runnb>18300 && runnb<18304) || (runnb>18317 && runnb<18329)) fTorusCurrent=750; //setting appropriate torrus magnet current
 		else if ( (runnb>18293 && runnb<18301) || (runnb>18305 && runnb<18317) || (runnb>18328 && runnb<18336) || runnb == 18334)  fTorusCurrent=1500;
 		else fTorusCurrent=2250;
+
+		if (runnb == 18334) { fTorusCurrent = 750; }
 
 		if (fbeam_en == "1161" && fTorusCurrent > 760) { continue; }                                                              
                 //if (fbeam_en == "1161" && fTorusCurrent < 760) { continue; }

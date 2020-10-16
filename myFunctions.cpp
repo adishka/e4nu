@@ -331,7 +331,7 @@ void ApplyRebinning(TH1D* h, double Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
 
-		for (int i = 0; i < 2; i++) { h->Rebin();} 
+		for (int i = 0; i < 0; i++) { h->Rebin();} 
 
 	}
 
@@ -383,7 +383,7 @@ void ApplyRange(TH1D* h, double Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
 
-		h->GetXaxis()->SetRangeUser(0.4,1.7);
+		h->GetXaxis()->SetRangeUser(0.6,1.5);
 
 	}
 
@@ -436,7 +436,7 @@ void ApplyRange(TGraph* h, double Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
 
-		h->GetXaxis()->SetRangeUser(0.4,1.7);
+		h->GetXaxis()->SetRangeUser(0.6,1.5);
 
 	}
 

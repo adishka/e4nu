@@ -16,8 +16,8 @@
 
 using namespace std;
 
-#include "../myFunctions.cpp"
-#include "../AfroConstants.h"
+#include "../../myFunctions.cpp"
+#include "../../AfroConstants.h"
 
 // ----------------------------------------------------------------------------------------------------------------
 
@@ -62,13 +62,13 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData10() {
 //	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(kCyan); BreakDownColors.push_back(kGreen); BreakDownColors.push_back(kMagenta);
 	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(429); BreakDownColors.push_back(410); BreakDownColors.push_back(610);
 
-//	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");	
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_NoRadCorr");	
 
-	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors"); FSILabel.push_back("G2018");  DirNames.push_back("G2018");
+//	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors"); FSILabel.push_back("G2018");  DirNames.push_back("G2018");
 
 	NameOfPlots.push_back("DeltaAlphaT_Int_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} #delta#alpha_{T} [deg]"); OutputPlotNames.push_back("DeltaAlphaT_Int_0");
 
@@ -178,11 +178,12 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData10() {
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-						TString PathToFiles = "../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
+						TString PathToFiles = "../../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
 						TFile* FileSample = TFile::Open(FileName);
 
-						Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
+//						Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
+						Plots.push_back( (TH1D*)( FileSample->Get("Unc_DeltaAlphaT") ) );
 
 						// --------------------------------------------------------------------------------------
 
@@ -195,10 +196,6 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData10() {
 						Plots[WhichFSIModel]->GetXaxis()->SetTitleSize(0.);
 						Plots[WhichFSIModel]->GetXaxis()->SetNdivisions(Ndivisions);
 
-						// --------------------------------------------------------------------------------------
-
-						// Y-axis label
-
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(0.);
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelOffset(0.013);
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(1.2*TextSize);
@@ -210,20 +207,17 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData10() {
 						// Use charge, density and length for data samples
 						// Use total number of events in genie sample and relevant genie cross sections for simulation
 
-						AbsoluteXSecScaling(Plots[WhichFSIModel],FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]);
+						//AbsoluteXSecScaling(Plots[WhichFSIModel],FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]);
 
 						// -----------------------------------------------------------------------------------
 
 						// Accounting for the fact that the bin width might not be constant
 
-						ReweightPlots(Plots[WhichFSIModel]);
+						//ReweightPlots(Plots[WhichFSIModel]);
 
 						// --------------------------------------------------------------------------------------
 
 						// Rebining & ranges
-
-int NRebin = 1;
-//						for (int i = 0; i < NRebin; i++) { Plots[WhichFSIModel]->Rebin(); }
 
 						double LowRange = 0.;
 						double HighRange = 180.;						
@@ -289,17 +283,17 @@ int NRebin = 1;
 								l1Break->SetTextColor(BreakDownColors[j-1]);
 								}
 
-//								BreakDownPlots[j-1]->Draw("C hist same");
+								BreakDownPlots[j-1]->Draw("C hist same");
 
 							} // end of the look over the GENIE break down
 							
 TH1D* CloneBreakDown = (TH1D*)BreakDownPlots[0]->Clone();
 for (int j = 1; j < 4; j++) { CloneBreakDown->Add(BreakDownPlots[j]); }
-CloneBreakDown->SetLineColor(kBlack);
-CloneBreakDown->SetLineStyle(kSolid);
+//CloneBreakDown->SetLineColor(kBlack);
+//CloneBreakDown->SetLineStyle(kSolid);
 
-for (int j = 0; j < 4; j++) { BreakDownPlots[j]->Scale( Plots[1]->Integral() / CloneBreakDown->Integral()); BreakDownPlots[j]->Draw("C hist same"); }
-
+//for (int j = 0; j < 4; j++) { BreakDownPlots[j]->Scale( Plots[1]->Integral() / CloneBreakDown->Integral()); BreakDownPlots[j]->Draw("C hist same"); }
+cout << "Plots[1]->Integral() / CloneBreakDown->Integral() = " << Plots[1]->Integral() / CloneBreakDown->Integral() << endl;
 
 
 						} // End of the SuSav2 if statement for breakdown

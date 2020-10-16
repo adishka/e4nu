@@ -123,6 +123,11 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 
 			// ------------------------------------------------------------------------------------------------------------------
 
+			if (Energy == 1.161 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+			if (Energy == 2.261 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "4th" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+
+			// ------------------------------------------------------------------------------------------------------------------
+
 			// Grab the relevant plot
 
 			Plots[WhichFSIModel][WhichPlot] = (TH1D*)( Files[WhichFSIModel]->Get( NameOfPlots+ToStringInt(WhichPlot) ) );
@@ -156,7 +161,6 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 			// Rebining & ranges
 
 			ApplyRebinning(Plots[WhichFSIModel][WhichPlot],Energy,Ereco);
-
 			Plots[WhichFSIModel][WhichPlot]->GetXaxis()->SetNdivisions(7);
 
 			// ----------------------------------------------------------------------------------
@@ -266,6 +270,13 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 
 			for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot++) {
 
+			// ------------------------------------------------------------------------------------------------------------------
+
+			if (Energy == 1.161 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+			if (Energy == 2.261 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "4th" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+
+			// ------------------------------------------------------------------------------------------------------------------
+
 				RatioPlots[WhichFSIModel-1][WhichPlot] = (TH1D*)( Plots[0][WhichPlot]->Clone() );
 				RatioPlots[WhichFSIModel-1][WhichPlot]->Divide(Plots[WhichFSIModel][WhichPlot]);
 
@@ -334,9 +345,18 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 			InverseErrorSqInBin.resize(NBins);
 			ErrorInBin.resize(NBins);
 
+TFile* f = new TFile("myFiles/"+RatioCanvasName+".root","recreate");
+
 			// Loop over the 6 sector plots
 
 			for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot++) {
+
+			// ------------------------------------------------------------------------------------------------------------------
+
+			if (Energy == 1.161 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+			if (Energy == 2.261 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "4th" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+
+			// ------------------------------------------------------------------------------------------------------------------
 
 				DoubleRatioPlots[WhichFSIModel-1][WhichPlot] = (TH1D*)( RatioPlots[WhichFSIModel-1][WhichPlot]->Clone() );
 				DoubleRatioPlots[WhichFSIModel-1][WhichPlot]->Divide( RatioPlots[WhichFSIModel-1][0]);
@@ -377,6 +397,9 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 
 				DoubleRatioleg->AddEntry(DoubleRatioPlots[WhichFSIModel-1][WhichPlot],SectorLabel[WhichPlot], "lep");
 
+f->cd();
+DoubleRatioPlots[WhichFSIModel-1][WhichPlot]->Write();
+
 			} // End of the loop over the 6 sector plots
 
 			DoubleRatioleg->SetBorderSize(0);
@@ -412,7 +435,7 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 
 				// Larry
 				// We can calculate an unweighted variance from our six values and then 
-				// subtract the variance expected from the statsitical uncertainties [Sum[(x_i - x_bar)^2] - Sum[(error_i)^2]	
+				// subtract the variance expected from the statsitical uncertainties Sqrt([Sum[(x_i - x_bar)^2] - Sum[(error_i)^2]/5)	
 
 				double unweightedmean = computeMean(ArrayCVInBin); 
 				double unweightedstd = computeStd(unweightedmean,ArrayCVInBin); 

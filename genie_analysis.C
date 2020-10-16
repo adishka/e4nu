@@ -1179,14 +1179,11 @@ void genie_analysis::Loop(Int_t choice) {
 
 		int ElectronSector = el_phi_mod / 60.;
 
-		// apapadop: Oct 8 2020: keeping only sectors 1,2 & 6
+		// apapadop: Oct 8 2020: ditching bad sectors
 		// Counting sectors from 0 to 5
 
-		// ditching sectors 3, 4 & 5
-		//if ( ElectronSector == 2 || ElectronSector == 3 || ElectronSector == 4 ) { continue; }
-
 		if ( (ElectronSector == 2 || ElectronSector == 4) &&  fbeam_en == "1161") { continue; }
-		if ( (ElectronSector == 2 || ElectronSector == 3 || ElectronSector == 4) &&  fbeam_en == "1161") { continue; }
+		if ( (ElectronSector == 2 || ElectronSector == 3 || ElectronSector == 4) &&  fbeam_en == "2261") { continue; }
 
 //		if ( ElectronSector == 5 &&  fbeam_en == "4461") { continue; }
 

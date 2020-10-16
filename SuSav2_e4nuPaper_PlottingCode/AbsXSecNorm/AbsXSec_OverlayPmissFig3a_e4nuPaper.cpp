@@ -16,8 +16,8 @@
 
 using namespace std;
 
-#include "../myFunctions.cpp"
-#include "../AfroConstants.h"
+#include "../../myFunctions.cpp"
+#include "../../AfroConstants.h"
 
 // ----------------------------------------------------------------------------------------------------------------
 
@@ -137,7 +137,7 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-						TString PathToFiles = "../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
+						TString PathToFiles = "../../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
 						TFile* FileSample = TFile::Open(FileName);
 
@@ -150,6 +150,7 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 
 						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
 						PrettyDoubleXSecPlot(Plots[WhichFSIModel]);
+						Plots[WhichFSIModel]->GetXaxis()->SetTitle(LabelOfPlots[WhichPlot]);
 
 						// --------------------------------------------------------------------------------------
 

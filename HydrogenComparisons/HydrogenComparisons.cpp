@@ -134,7 +134,7 @@ void HydrogenComparisons() {
 
 				// ---------------------------------------------------------------------------------------
 
-				TLegend* leg = leg = new TLegend(0.2,0.73,0.35,0.87);
+				TLegend* leg = leg = new TLegend(0.7,0.73,0.8,0.87);
 
 				leg->SetNColumns(1);
 
@@ -169,6 +169,7 @@ void HydrogenComparisons() {
 						Plots[WhichNucleus]->SetTitle(FSILabel[WhichFSIModel] + ", " + LabelsOfSamples[WhichNucleus]);
 						Plots[WhichNucleus]->GetXaxis()->SetTitle(LabelOfPlots[WhichPlot]);
 						PrettyDoubleXSecPlot(Plots[WhichNucleus]);
+						Plots[WhichNucleus]->GetYaxis()->SetTitle("# Counts");
 
 						// --------------------------------------------------------------------------------------
 
@@ -176,13 +177,13 @@ void HydrogenComparisons() {
 						// Use charge, density and length for data samples
 						// Use total number of events in genie sample and relevant genie cross sections for simulation
 
-						AbsoluteXSecScaling(Plots[WhichNucleus],FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]);
+						//AbsoluteXSecScaling(Plots[WhichNucleus],FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]);
 
 						// -----------------------------------------------------------------------------------
 
 						// Accounting for the fact that the bin width might not be constant
 
-						ReweightPlots(Plots[WhichNucleus]);
+						//ReweightPlots(Plots[WhichNucleus]);
 
 						// --------------------------------------------------------------------------------------
 
@@ -191,8 +192,15 @@ void HydrogenComparisons() {
 						ApplyRebinning(Plots[WhichNucleus],DoubleE[WhichEnergy],NameOfPlots[WhichPlot]);
 						ApplyRange(Plots[WhichNucleus],DoubleE[WhichEnergy],NameOfPlots[WhichPlot]);
 
-Plots[WhichNucleus]->Scale(MassNumber[nucleus[WhichNucleus]]);
+//Plots[WhichNucleus]->Scale(MassNumber[nucleus[WhichNucleus]]);
+if (nucleus[WhichNucleus] == "12C") {
+	double SF = IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")]  * TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")] / (IntegratedCharge_PinnedFiles[std::make_pair("12C", "1_161")] * TargetLength[std::make_pair("12C","1_161")] * TargetDensity[std::make_pair("12C","1_161")]);
 
+//	double SF = IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")] * (6./7.) * TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")] / (IntegratedCharge_PinnedFiles[std::make_pair("12C", "1_161")] * TargetLength[std::make_pair("12C","1_161")] * TargetDensity[std::make_pair("12C","1_161")]);
+
+	Plots[WhichNucleus]->Scale(SF);
+
+}
 						// ----------------------------------------------------------------------------------
 
 						// Apply Systematic Uncertainties on Data Points
@@ -271,9 +279,28 @@ Plots[WhichNucleus]->Scale(MassNumber[nucleus[WhichNucleus]]);
 			
 			TH1D* Clone = (TH1D*)Plots[1]->Clone("Clone");
 			Clone->Add(Plots[0],-1);
-			Clone->Scale(0.5);
+
+double CloneSF = 7. * ConversionFactorChargeToElectrons / (dOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")] * AvogadroNumber * TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")]);
+Clone->Scale(CloneSF);
+
+			Clone->GetYaxis()->SetTitle("Normalized Yield");
 			DiffCanvas->cd();
 			Clone->Draw();
+
+//Clone->Fit("gaus","","",0.9,0.96);
+
+//Clone->Fit("pol1","","",0.7,0.9);
+Clone->Fit("pol0","","",0.7,0.9);
+
+//double sigma = 0; 
+//for (int WhichBin = 0; WhichBin < (int)Clone->GetNbinsX(); WhichBin++) {
+
+//	sigma += Clone->GetBinContent(WhichBin+1);
+
+//}
+
+//cout << "sigma = " << sigma << endl;
+
 
 		} // End of the loop over the energies
 

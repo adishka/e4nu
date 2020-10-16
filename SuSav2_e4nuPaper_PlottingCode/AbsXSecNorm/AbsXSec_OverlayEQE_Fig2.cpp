@@ -17,8 +17,8 @@
 
 using namespace std;
 
-#include "../myFunctions.cpp"
-#include "../AfroConstants.h"
+#include "../../myFunctions.cpp"
+#include "../../AfroConstants.h"
 
 // ----------------------------------------------------------------------------------------------------------------
 
@@ -61,8 +61,6 @@ void AbsXSec_OverlayEQE_Fig2() {
 	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
 
 	std::vector<TH1D*> Plots;
-//	std::vector<TGraphAsymmErrors*> UncertaintyPlots;
-	std::vector<TH1D*> Plots_Clones;
 
 	int NxBCuts = xBCut.size();
 	int NNuclei = nucleus.size();
@@ -137,11 +135,12 @@ void AbsXSec_OverlayEQE_Fig2() {
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-						TString PathToFiles = "../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
+						TString PathToFiles = "../../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
 						TFile* FileSample = TFile::Open(FileName);
 
-						if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") { Plots.push_back( (TH1D*)( FileSample->Get("Unc_EQE") ) ); }
+						Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
+						//if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") { Plots.push_back( (TH1D*)( FileSample->Get("Unc_EQE") ) ); }
 
 						// --------------------------------------------------------------------------------------
 
@@ -172,20 +171,20 @@ void AbsXSec_OverlayEQE_Fig2() {
 						// Use charge, density and length for data samples
 						// Use total number of events in genie sample and relevant genie cross sections for simulation
 
-						//AbsoluteXSecScaling(Plots[WhichFSIModel],FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]); 
+						AbsoluteXSecScaling(Plots[WhichFSIModel],FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]); 
 
 						// --------------------------------------------------------------------------------------
 
 						// Accounting for the fact that the bin width might not be constant
 
-						//ReweightPlots(Plots[WhichFSIModel]);
+						ReweightPlots(Plots[WhichFSIModel]);
 
 						// ----------------------------------------------------------------------------------
 
 						// Apply Systematic Uncertainties on Data Points
 						// using numbers obtained from Mariana's thesis
 
-						//if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { ApplySystUnc(Plots[WhichFSIModel], DoubleE[WhichEnergy]); }
+						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { ApplySystUnc(Plots[WhichFSIModel], DoubleE[WhichEnergy]); }
 
 						// ----------------------------------------------------------------------------------
 
@@ -322,7 +321,7 @@ void AbsXSec_OverlayEQE_Fig2() {
 					TString ext = "";
 					if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
-//					PlotCanvas->SaveAs("../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"
+//					PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"
 //						+E[WhichEnergy]+"/"+ext+nucleus[WhichNucleus]+"_" 
 //						+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+WhatModelsAreIncluded+"_SuSav2_AbsXSec.pdf");
 
@@ -332,19 +331,6 @@ void AbsXSec_OverlayEQE_Fig2() {
 
 
 				} // End of the loop over the plots
-				
-				// --------------------------------------------------------------------------------------				
-				
-				// Chi2 calculation
-				
-				int NBinsX = HighBin - LowBin +1;
-				int Chi2Double = Chi2(Plots[0],Plots[1],LowBin,HighBin);
-				
-				cout << endl << endl << "SuSav2 Chi2/ndof = " << Chi2Double << " / " << NBinsX << endl << endl;
-				
-				int G2018Chi2Double = Chi2(Plots[0],Plots[2],LowBin,HighBin);
-				
-				cout << endl << endl << "G2018 Chi2/ndof = " << G2018Chi2Double << " / " << NBinsX << endl << endl;				
 				
 				// --------------------------------------------------------------------------------------				
 
