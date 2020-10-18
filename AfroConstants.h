@@ -15,6 +15,18 @@
 
 	// Constants
 
+	// ------------------------------------------------------------------------------------
+
+	// Dimensions of TPads
+
+	double Xmin = 0.14, Xmax = 1.;
+	double Ymax = 1., Ymin = 0.05;
+	double Xstep = (Xmax - Xmin) / 3.;
+	double Ystep = ( Ymax - Ymin  ) / 2.;
+	double space = 0.07;
+
+	// ------------------------------------------------------------------------------------
+
 	const int Ndivisions = 6;
 	const int LineWidth = 3;
 	const int FontStyle = 132;
@@ -22,6 +34,8 @@
 	const int MarkerStyle = 20;
 	const int MarkerSize = 2.;
 	const double acc = 3.;
+
+	// ------------------------------------------------------------------------------------
 	
 	const TString version = "v3_0_6/";	
 /*	const TString DoubleXSecTitle = "#frac{d^{2}#sigma}{d#Omega dE} [#frac{#mub}{sr GeV nucleus}]";*/
@@ -36,6 +50,12 @@
 	const double SystUnc1GeV = 0.02; // 2% syst uncertainty at 1.161 GeV
 	const double SystUnc2GeV = 0.021; // 2.1% syst uncertainty at 2.261 GeV
 	const double SystUnc4GeV = 0.047; // 4.7% syst uncertainty at 4.461 GeV
+
+	// Sector Uncertainties from Afro's study
+
+	const double SectorSystUnc1GeV = 0.04; // 4% syst uncertainty at 1.161 GeV
+	const double SectorSystUnc2GeV = 0.04; // 4% syst uncertainty at 2.261 GeV
+	const double SectorSystUnc4GeV = 0.04; // 4% syst uncertainty at 4.461 GeV
 
 	// Larry/Axel's suggestion for scaling down the last 2 bins by EnhaceTail
 
@@ -59,7 +79,33 @@
 	double AvogadroNumber = 6*TMath::Power(10.,23);
 	double OverallUnitConversionFactor = ConversionFactorChargeToElectrons * AvogadroNumber;
 
+	// ----------------------------------------------------------------------------------------------------------------------------------------------
+
 	// Maps 
+
+	// Plot names to plot labels
+
+	static std::map<TString,TString> PlotNamesToLabels =
+	{
+		{ "DeltaAlphaT", "(e,e'p)_{1p0#pi} #delta#alpha_{T} [deg]" },
+		{ "DeltaPhiT", "(e,e'p)_{1p0#pi} #delta#phi_{T} [deg]" },
+		{ "ECalReso", "E^{cal} Feeddown" },
+		{ "EQEReso", "E^{QE} Feeddown" },
+		{ "ECal", "(e,e'p)_{1p0#pi} E^{Cal} [GeV]" },
+		{ "DeltaPT", "(e,e'p)_{1p0#pi} P_{T} [GeV/c]" }
+	};
+
+	// FSI Models to Labels
+
+	static std::map<TString,TString> FSIModelsToLabels =
+	{
+		{ "Pinned_Data_Final", "Pinned Data" },
+		{ "SuSav2_RadCorr_LFGM", "SuSav2" },
+		{ "hA2018_Final_RadCorr_LFGM", "G2018" },
+		{ "Pinned_Data_Final_SixSectors", "Pinned Data" },
+		{ "SuSav2_RadCorr_LFGM_SixSectors", "SuSav2" },
+		{ "hA2018_Final_RadCorr_LFGM_SixSectors", "G2018" },
+	};
 
 	// Mass Numbers
 
@@ -250,6 +296,9 @@
 
 	const std::vector<int> BreakDownColors{kBlue,429,410,610};
 	const std::vector<int> SectorColors{kBlack,610,410,kRed+1,kGreen+3,kBlue};
+	const std::vector<int> Style{1,1,kDashed,1,1};
+	const std::vector<TString> GenieFSILabel{"QE","MEC","RES","DIS"};
+	const std::vector<int> DataSetColors{1,1,1,1,1};
 
 	//  ------------------------------------------------------------------------------
 

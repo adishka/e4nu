@@ -9,14 +9,14 @@ LocalPath=/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles
 #JLabPath=/u/home/apapadop/e4nu
 DataExtension=Data_Final
 
-GENIEAccount=apapadop@geniegpvm02.fnal.gov
+GENIEAccount=apapadop@geniegpvm01.fnal.gov
 GENIEPath=/genie/app/users/apapadop/e4nu
 
-GENIEOnlineExtension=G18_10a_02_11a
-GENIELocalExtension=hA2018_Final_RadCorr_LFGM
+#GENIEOnlineExtension=G18_10a_02_11a
+#GENIELocalExtension=hA2018_Final_RadCorr_LFGM
 
-#GENIEOnlineExtension=SuSav2
-#GENIELocalExtension=SuSav2_RadCorr_LFGM
+GENIEOnlineExtension=SuSav2
+GENIELocalExtension=SuSav2_RadCorr_LFGM
 
 ##### Genie Samples
 

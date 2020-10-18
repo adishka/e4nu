@@ -910,7 +910,7 @@ void genie_analysis::Loop(Int_t choice) {
 	}
 
 	// Plots for interaction break down for GENIE samples
-	const int NInt = 6; // All Interactions = 0, QE = 1, MEC = 2, RES = 3, DIS = 4, Other = 6
+	const int NInt = 6; // All Interactions = 0, QE = 1, MEC = 2, RES = 3, DIS = 4
 
 	TH1D* ECal_BreakDown[NInt];
 	TH1D* EQE_BreakDown[NInt];
@@ -2052,8 +2052,8 @@ void genie_analysis::Loop(Int_t choice) {
 						Nu_BreakDown[Interaction]->Fill(nu,LocalWeight);
 						Pe_BreakDown[Interaction]->Fill(V4_el.Rho(),LocalWeight);
 						
-						DeltaPhiT_BreakDown[Interaction]->Fill(deltaphiT);	     
-						DeltaAlphaT_BreakDown[Interaction]->Fill(deltaalphaT);			
+						DeltaPhiT_BreakDown[Interaction]->Fill(deltaphiT,LocalWeight);	     
+						DeltaAlphaT_BreakDown[Interaction]->Fill(deltaalphaT,LocalWeight);			
 
 						if (p_miss_perp_2p1pi_to2p0pi[z] < pperp_max[0]) { 
 
@@ -2301,7 +2301,6 @@ void genie_analysis::Loop(Int_t choice) {
 					// Reconstruct xB, W, Q2 using Ecal instead of Etrue
 
 					CalKineVars = CalculateCalKineVars(E_tot_2p[z],V4_el);
-					LocalWeight = -P_2p1pito1p0pi[z]*histoweight;
 
 					h1_nuCal_weight->Fill(CalKineVars.at(0),LocalWeight);
 					h1_Q2Cal_weight->Fill(CalKineVars.at(1),LocalWeight);
@@ -2426,6 +2425,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 				TVector3 V3_2pi_corr[N_2pi];
 				double pion_acc_ratio[N_2pi] = {1};
+
 				for (int i = 0; i < num_pi_phot; i++) {
 
 					if (choice == 0) { //CLAS data

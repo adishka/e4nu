@@ -69,9 +69,13 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 	if (Energy == 2.261) { E = "2_261"; LabelE = " @ E = 2.261 GeV"; }
 	if (Energy == 1.161) { E = "1_161"; LabelE = " @ E = 1.161 GeV"; }
 
-	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Pinned Data");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors"); FSILabel.push_back("G2018");
+//	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Pinned Data");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
+////	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors"); FSILabel.push_back("G2018");
+
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
 
 	SectorLabel.push_back("1st");
 	SectorLabel.push_back("2nd");
@@ -123,8 +127,12 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 
 			// ------------------------------------------------------------------------------------------------------------------
 
-			if (Energy == 1.161 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "5th") ) { continue; }
-			if (Energy == 2.261 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "4th" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+			if ( !(string(FSIModel[WhichFSIModel]).find("SixSectors") != std::string::npos) ) {
+
+				if (Energy == 1.161 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+				if (Energy == 2.261 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "4th" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+
+			}
 
 			// ------------------------------------------------------------------------------------------------------------------
 
@@ -136,39 +144,25 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 
 			// Make the plot pretty
 
+			PrettyDoubleXSecPlot(Plots[WhichFSIModel][WhichPlot]);
 			Plots[WhichFSIModel][WhichPlot]->SetLineColor(SectorColors[WhichPlot]);
 			Plots[WhichFSIModel][WhichPlot]->SetTitle(FSILabel[WhichFSIModel] + ", " + LabelsOfSamples+LabelE);
 			Plots[WhichFSIModel][WhichPlot]->GetXaxis()->SetTitle(LabelOfPlots);
-			PrettyDoubleXSecPlot(Plots[WhichFSIModel][WhichPlot]);
 
 			// --------------------------------------------------------------------------------------
 
-			// Scale to obtain absolute double differential cross sections 
-			// Use charge, density and length for data samples
-			// Use total number of events in genie sample and relevant genie cross sections for simulation
+			// Use the universal e4v function that 
+			// scales by all the necessary scaling factors
+			// divides by the bin width to obtain normalized yields / absolute cross sections
+			// uses the relevant binning
+			// gets the relevant x axis range
+			// If data sample: 
+			//                 apply systematics due to rotations et al
+			//                 apply acceptance systematics using sector-by -sector uncertainties
 
-			AbsoluteXSecScaling(Plots[WhichFSIModel][WhichPlot],FSILabel[WhichFSIModel],Nucleus,E); 
+			UniversalE4vFunction(Plots[WhichFSIModel][WhichPlot],FSIModelsToLabels[FSIModel[WhichFSIModel]],Nucleus,E,Ereco);
 
-			// -----------------------------------------------------------------------------------
-
-			// Division by bin width, function defined in myFunctions.C
-			// Accounting for the fact that the bin width might not be constant
-
-			ReweightPlots(Plots[WhichFSIModel][WhichPlot]);
-
-			// --------------------------------------------------------------------------------------
-
-			// Rebining & ranges
-
-			ApplyRebinning(Plots[WhichFSIModel][WhichPlot],Energy,Ereco);
 			Plots[WhichFSIModel][WhichPlot]->GetXaxis()->SetNdivisions(7);
-
-			// ----------------------------------------------------------------------------------
-
-			// Apply Systematic Uncertainties on Data Points
-			// using numbers obtained from Mariana's thesis
-
-			if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { ApplySystUnc(Plots[WhichFSIModel][WhichPlot], Energy); }
 
 			// ---------------------------------------------------------------------------------------------------
 
@@ -229,7 +223,7 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 
 //		PlotCanvas->SaveAs("../myPlots/pdf/"+xBCut+"/"+version+Nucleus+"/"+E+"/"+ext+Nucleus+"_"+E+"_" +OutputPlotNames+".pdf");
 
-		//delete PlotCanvas;
+		delete PlotCanvas;
 
 
 	} // End of the loop over the FSI Models 
@@ -272,8 +266,12 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 
 			// ------------------------------------------------------------------------------------------------------------------
 
-			if (Energy == 1.161 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "5th") ) { continue; }
-			if (Energy == 2.261 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "4th" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+			if ( !(string(FSIModel[WhichFSIModel]).find("SixSectors") != std::string::npos) ) {
+
+				if (Energy == 1.161 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+				if (Energy == 2.261 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "4th" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+
+			}
 
 			// ------------------------------------------------------------------------------------------------------------------
 
@@ -345,7 +343,7 @@ void SectorDoubleRatio(TString Nucleus = "12C", double Energy = 4.461, TString E
 			InverseErrorSqInBin.resize(NBins);
 			ErrorInBin.resize(NBins);
 
-TFile* f = new TFile("myFiles/"+RatioCanvasName+".root","recreate");
+			TFile* f = new TFile("myFiles/"+RatioCanvasName+".root","recreate");
 
 			// Loop over the 6 sector plots
 
@@ -353,8 +351,12 @@ TFile* f = new TFile("myFiles/"+RatioCanvasName+".root","recreate");
 
 			// ------------------------------------------------------------------------------------------------------------------
 
-			if (Energy == 1.161 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "5th") ) { continue; }
-			if (Energy == 2.261 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "4th" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+			if ( !(string(FSIModel[WhichFSIModel]).find("SixSectors") != std::string::npos) ) {
+
+				if (Energy == 1.161 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+				if (Energy == 2.261 && (SectorLabel[WhichPlot] == "3rd" || SectorLabel[WhichPlot] == "4th" || SectorLabel[WhichPlot] == "5th") ) { continue; }
+
+			}
 
 			// ------------------------------------------------------------------------------------------------------------------
 
@@ -575,7 +577,7 @@ DoubleRatioPlots[WhichFSIModel-1][WhichPlot]->Write();
 
 			PercErrWeightedGraph->SetTitle(FSILabel[WhichFSIModel] + ", " + LabelsOfSamples+LabelE);
 
-			ApplyRange(PercErrWeightedGraph,Energy,Ereco);
+			ApplyRange(PercErrWeightedGraph,E,Ereco);
 			PercErrWeightedGraph->GetXaxis()->SetTitle(LabelOfPlots);
 			PercErrWeightedGraph->GetYaxis()->SetRangeUser(0.,35);
 			PercErrWeightedGraph->GetYaxis()->SetTitle("Percentage Error");

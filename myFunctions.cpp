@@ -1,6 +1,7 @@
 #include "TMath.h"
 #include <TH1D.h>
 #include <TH2D.h>
+#include <TGaxis.h>
 
 #include <iostream>
 #include <iomanip>
@@ -9,9 +10,22 @@
 #include <vector>
 #include <map>
 #include <utility>
+
 #include "AfroConstants.h"
 
 using namespace std;
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+void GlobalSettings() {
+
+	TGaxis::SetMaxDigits(5);
+
+	gStyle->SetTitleSize(TextSize,"t"); 
+	gStyle->SetTitleFont(FontStyle,"t");
+	gStyle->SetOptStat(0);	
+
+}
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 
@@ -35,12 +49,12 @@ void ReweightPlots(TH1D* h) {
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void ApplySystUnc(TH1D* h, double Energy) {
+void ApplySystUnc(TH1D* h, TString Energy) {
 
 	double SystUnc = 0;
-	if ( Energy == 1.161 ) { SystUnc = SystUnc1GeV; }
-	if ( Energy == 2.261 ) { SystUnc = SystUnc2GeV; }
-	if ( Energy == 4.461 ) { SystUnc = SystUnc4GeV; }
+	if ( Energy == "1_161" ) { SystUnc = SystUnc1GeV; }
+	if ( Energy == "2_261" ) { SystUnc = SystUnc2GeV; }
+	if ( Energy == "4_461" ) { SystUnc = SystUnc4GeV; }
 
 	double NBins = h->GetNbinsX(); 
 				
@@ -60,9 +74,36 @@ void ApplySystUnc(TH1D* h, double Energy) {
 
 // ----------------------------------------------------------------------------------------------------------------
 
-std::vector<double> GetUncertaintyBand(TH1D* h[], int NPlots) {
+void ApplySectorSystUnc(TH1D* h, TString Energy) {
 
-	double NBins = h[0]->GetNbinsX();
+	double SystUnc = 0;
+	if ( Energy == "1_161" ) { SystUnc = SectorSystUnc1GeV; }
+	if ( Energy == "2_261" ) { SystUnc = SectorSystUnc2GeV; }
+	if ( Energy == "4_461" ) { SystUnc = SectorSystUnc4GeV; }
+
+	double NBins = h->GetNbinsX(); 
+				
+	for (int i = 1; i <= NBins; i++) { 
+					
+//		double error = h->GetBinError(i);
+//		double newerror = error * (1. + systunc);
+
+		double error = h->GetBinError(i);
+		double content = h->GetBinContent(i);
+		double newerror = TMath::Sqrt( TMath::Power(error,2.) + TMath::Power(SystUnc*content,2.));
+		h->SetBinError(i,newerror);
+
+	}
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
+std::vector<double> GetUncertaintyBand(std::vector<TH1D*> h) {
+
+	int NPlots = h.size();
+
+	int NBins = h[0]->GetNbinsX();
 
 	std::vector<double> UncVector; UncVector.clear();
 
@@ -83,7 +124,7 @@ std::vector<double> GetUncertaintyBand(TH1D* h[], int NPlots) {
 
 		double spread = *max - *min;
 
-		UncVector.push_back(0.5*spread); // take half the spread as an uncertainty
+		UncVector.push_back(0.5*TMath::Abs(spread)); // take half the spread as an uncertainty
 
 	} // End of the loop over the bins
 
@@ -109,6 +150,27 @@ void ApplySectorSystUnc(TH1D* h, std::vector<double> sectorsystunc) {
 		h->SetBinError(i,newerror);
 
 	}
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
+TH1D* VectorToHistSystUnc(TH1D* h, std::vector<double> sectorsystunc, TString name) {
+
+	double NBins = h->GetXaxis()->GetNbins(); 
+
+	TH1D* ClonePlot = (TH1D*)(h->Clone("Unc_"+name));
+				
+	for (int i = 1; i <= NBins; i++) { 
+
+		double unc = sectorsystunc[i-1];
+
+		ClonePlot->SetBinContent(i,unc);
+		ClonePlot->SetBinError(i,0);
+
+	}
+
+	return ClonePlot;
 
 }
 
@@ -299,23 +361,23 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 
-void ApplyRebinning(TH1D* h, double Energy, TString PlotVar) {
+void ApplyRebinning(TH1D* h, TString Energy, TString PlotVar) {
 
 	// -----------------------------------------------------------------------------------------------------------------------------
 
 	if (string(PlotVar).find("Omega") != std::string::npos) {
 
-		if (Energy == 1.161) { for (int i = 0; i < 5; i++) { h->Rebin(); } }
-		if (Energy == 2.261) { for (int i = 0; i < 5; i++) { h->Rebin(); } }
-		if (Energy == 4.461) { for (int i = 0; i < 6; i++) { h->Rebin(); } }
-
-	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos) {
-
-	} else if (string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos) {
+		if (Energy == "1_161") { for (int i = 0; i < 5; i++) { h->Rebin(); } }
+		if (Energy == "2_261") { for (int i = 0; i < 5; i++) { h->Rebin(); } }
+		if (Energy == "4.461") { for (int i = 0; i < 6; i++) { h->Rebin(); } }
 
 	} else if (string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
 
 	} else if (string(PlotVar).find("EQEReso") != std::string::npos || string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+
+	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos || string(PlotVar).find("Etot") != std::string::npos) {
+
+	} else if (string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("Erec") != std::string::npos) {
 
 	} else if (string(PlotVar).find("PT") != std::string::npos || string(PlotVar).find("MissMomentum") != std::string::npos) {
 
@@ -343,35 +405,15 @@ void ApplyRebinning(TH1D* h, double Energy, TString PlotVar) {
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 
-void ApplyRange(TH1D* h, double Energy, TString PlotVar) {
+void ApplyRange(TH1D* h, TString Energy, TString PlotVar) {
 
 	// -----------------------------------------------------------------------------------------------------------------------------
 
 	if (string(PlotVar).find("Omega") != std::string::npos) {
 
-		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.,0.7); }
-		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.,1.5); }
-		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(0.5,3.); }
-
-	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos) {
-
-		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.47,1.4); }
-		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.7,2.6); }
-		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(2.,5.); }
-
-	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos) {
-
-		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.57,1.23); }
-		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.67,2.4); }
-		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(1.5,4.6); }
-
-	} else if (string(PlotVar).find("PT") != std::string::npos || string(PlotVar).find("MissMomentum") != std::string::npos) {
-
-	} else if (string(PlotVar).find("DeltaAlphaT") != std::string::npos ) {
-
-		h->GetXaxis()->SetRangeUser(10,180);
-
-	} else if (string(PlotVar).find("DeltaPhiT") != std::string::npos ) {
+		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.,0.7); }
+		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.,1.5); }
+		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(0.5,3.); }
 
 	} else if (string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
 
@@ -380,6 +422,26 @@ void ApplyRange(TH1D* h, double Energy, TString PlotVar) {
 	} else if (string(PlotVar).find("EQEReso") != std::string::npos || string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
 
 		h->GetXaxis()->SetRangeUser(-0.85,0.2);
+
+	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos || string(PlotVar).find("Erec") != std::string::npos) {
+
+		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.47,1.4); }
+		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.7,2.6); }
+		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(2.,5.); }
+
+	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos ) {
+
+		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.57,1.23); }
+		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.67,2.4); }
+		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(1.5,4.6); }
+
+	} else if (string(PlotVar).find("PT") != std::string::npos || string(PlotVar).find("MissMomentum") != std::string::npos) {
+
+	} else if (string(PlotVar).find("DeltaAlphaT") != std::string::npos ) {
+
+		h->GetXaxis()->SetRangeUser(10,180);
+
+	} else if (string(PlotVar).find("DeltaPhiT") != std::string::npos ) {
 
 	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
 
@@ -396,35 +458,15 @@ void ApplyRange(TH1D* h, double Energy, TString PlotVar) {
 
 // -----------------------------------------------------------------------------------------------------------------------------
 
-void ApplyRange(TGraph* h, double Energy, TString PlotVar) {
+void ApplyRange(TGraph* h, TString Energy, TString PlotVar) {
 
 	// -----------------------------------------------------------------------------------------------------------------------------
 
 	if (string(PlotVar).find("Omega") != std::string::npos) {
 
-		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.,0.7); }
-		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.,1.5); }
-		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(0.5,3.); }
-
-	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos) {
-
-		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.48,1.4); }
-		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.6,2.6); }
-		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(2.,5.); }
-
-	} else if (string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos) {
-
-		if (Energy == 1.161) { h->GetXaxis()->SetRangeUser(0.57,1.23); }
-		if (Energy == 2.261) { h->GetXaxis()->SetRangeUser(0.67,2.4); }
-		if (Energy == 4.461) { h->GetXaxis()->SetRangeUser(1.5,4.6); }
-
-	} else if (string(PlotVar).find("PT") != std::string::npos || string(PlotVar).find("MissMomentum") != std::string::npos) {
-
-	} else if (string(PlotVar).find("DeltaAlphaT") != std::string::npos ) {
-
-		h->GetXaxis()->SetRangeUser(10,180);
-
-	} else if (string(PlotVar).find("DeltaPhiT") != std::string::npos ) {
+		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.,0.7); }
+		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.,1.5); }
+		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(0.5,3.); }
 
 	} else if (string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
 
@@ -433,6 +475,26 @@ void ApplyRange(TGraph* h, double Energy, TString PlotVar) {
 	} else if (string(PlotVar).find("EQEReso") != std::string::npos || string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
 
 		h->GetXaxis()->SetRangeUser(-0.85,0.2);
+
+	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos || string(PlotVar).find("Erec") != std::string::npos) {
+
+		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.47,1.4); }
+		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.7,2.6); }
+		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(2.,5.); }
+
+	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("ECal") != std::string::npos || string(PlotVar).find("Ecal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos ) {
+
+		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.57,1.19); }
+		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.67,2.4); }
+		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(1.5,4.6); }
+
+	} else if (string(PlotVar).find("PT") != std::string::npos || string(PlotVar).find("MissMomentum") != std::string::npos) {
+
+	} else if (string(PlotVar).find("DeltaAlphaT") != std::string::npos ) {
+
+		h->GetXaxis()->SetRangeUser(10,180);
+
+	} else if (string(PlotVar).find("DeltaPhiT") != std::string::npos ) {
 
 	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
 
@@ -446,6 +508,39 @@ void ApplyRange(TGraph* h, double Energy, TString PlotVar) {
 	return;	
 
 }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+void UniversalE4vFunction(TH1D* h, TString DataSetLabel, TString nucleus, TString E, TString name) {
+
+	// Scale to obtain absolute double differential cross sections 
+	// Use charge, density and length for data samples
+	// Use total number of events in genie sample and relevant genie cross sections for simulation
+
+	AbsoluteXSecScaling(h,DataSetLabel,nucleus,E);
+
+	// Division by the bin width
+
+	ReweightPlots(h);
+
+	// Rebin is necessary
+
+	ApplyRebinning(h,E,name);
+
+	// Use relevant ranges
+			
+	ApplyRange(h,E,name);
+
+	// if data sample: 
+	//                 apply systematics due to rotations et al
+
+	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplySystUnc(h, E); }
+
+	//                 apply acceptance systematics using sector-by -sector uncertainties
+
+	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplySectorSystUnc(h, E); }
+}
+
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 
@@ -565,6 +660,45 @@ double Chi2(TH1D* h1,TH1D* h2, int LowBin = -1, int HighBin = -1) {
 	}
 
 	return chi2;
+
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+TPad* CreateTPad(int WhichEnergy, int WhichNucleus, double Energy, TString nucleus, TString name, TCanvas* PlotCanvas) {
+
+	double XMinPad = Xmin + WhichEnergy * Xstep, XMaxPad = Xmin + ( WhichEnergy + 1) * Xstep;
+	if (Energy == 1.161 ) { XMinPad = XMinPad - 0.05; }
+	double YMinPad = Ymax - ( WhichNucleus + 1) * Ystep, YMaxPad = Ymax - WhichNucleus * Ystep;
+
+	TPad* pad = new TPad(); 
+
+	if (nucleus == "12C") 
+	{ pad = new TPad(name,name,XMinPad,YMinPad,XMaxPad,YMaxPad, 21); }
+	else { 
+		if (Energy == 2.261) 
+			{ pad = new TPad(name,name,XMinPad-0.03,YMinPad+space,XMaxPad,YMaxPad+space, 21); }
+		else { pad = new TPad(name,name,XMinPad,YMinPad+space,XMaxPad,YMaxPad+space, 21); }
+	}
+
+	pad->SetFillColor(kWhite); 
+	PlotCanvas->cd();
+	pad->Draw();
+	pad->cd();
+
+	pad->SetBottomMargin(0.15);
+
+	pad->SetTopMargin(0.0);
+	if (nucleus == "12C") { pad->SetTopMargin(0.01); }
+
+	pad->SetRightMargin(0.0);
+	if (Energy == 4.461 ) { pad->SetRightMargin(0.01); }
+
+	pad->SetLeftMargin(0.);
+	if (Energy == 1.161 ) { pad->SetLeftMargin(0.13); }
+	if (Energy == 2.261 && nucleus == "56Fe") { pad->SetLeftMargin(0.095); }	
+
+	return pad;
 
 }
 

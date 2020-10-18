@@ -27,12 +27,7 @@ void UncertaintyBand() {
 
 	// ------------------------------------------------------------------------
 
-	TGaxis::SetMaxDigits(3);
-//	TGaxis::SetExponentOffset(-0.1, 1., "y");
-
-	gStyle->SetTitleSize(TextSize,"t"); 
-	gStyle->SetTitleFont(FontStyle,"t");
-	gStyle->SetOptStat(0);
+	GlobalSettings();
 
 	// ------------------------------------------------------------------------
 
@@ -58,11 +53,14 @@ void UncertaintyBand() {
 //	xBCut.push_back("xBCut");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
 
 	SectorIndex.push_back(0);
 	SectorIndex.push_back(1);
+	SectorIndex.push_back(2);
+	SectorIndex.push_back(3);
+	SectorIndex.push_back(4);
 	SectorIndex.push_back(5);
 
 	Var.push_back("ECal_Slice1");
@@ -124,6 +122,9 @@ void UncertaintyBand() {
 					TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
 					Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel] = TFile::Open(FileName,"update");
 
+					TString UncFileName = "myAcceptanceUncertainties/Unc_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
+					TFile* UncFile = TFile::Open(UncFileName,"recreate");
+
 					// Loop over the variable of interest
 
 					for (int WhichVar = 0; WhichVar < NVars; WhichVar ++) {
@@ -154,16 +155,20 @@ void UncertaintyBand() {
 						double max = -99.;
 						double min = 1E12;
 
+						std::vector<TH1D*> PlotsForUncBand; PlotsForUncBand.clear();
+
 						// Loop over the plots
 
 						for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
-							if ( E[WhichEnergy] == "4_461" && SectorIndex[WhichPlot] == 5 ) { continue; }				
+							if ( E[WhichEnergy] == "1_161" && (SectorIndex[WhichPlot] == 2 || SectorIndex[WhichPlot] == 4) ) { continue; }				
+							if ( E[WhichEnergy] == "2_261" && (SectorIndex[WhichPlot] == 2 || SectorIndex[WhichPlot] == 3 || SectorIndex[WhichPlot] == 4) )
+								{ continue; }				
 
 							// ---------------------------------------------------------------------------------------
 
 							TString PlotName = "h1_" + Var[WhichVar] + "_InSector_" + SectorIndex[WhichPlot];
-//cout << "PlotName = " << PlotName << endl;
+
 							Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot] = 
 								(TH1D*)Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get(PlotName);
 
@@ -176,36 +181,18 @@ void UncertaintyBand() {
 							Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]->GetXaxis()->SetTitle(LabelOfPlots);
 							PrettyDoubleXSecPlot(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]);
 
-							// --------------------------------------------------------------------------------------
-
-							// Scale to obtain absolute double differential cross sections 
-							// Use charge, density and length for data samples
-							// Use total number of events in genie sample and relevant genie cross sections for simulation
-
-							AbsoluteXSecScaling(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot],
-								FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]); 
-
-							// -----------------------------------------------------------------------------------
-
-							// Division by bin width, function defined in myFunctions.C
-							// Accounting for the fact that the bin width might not be constant
-
-							ReweightPlots(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]);
-
-							// --------------------------------------------------------------------------------------
-
-							// Rebining & ranges
-
-							ApplyRange(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot],DoubleE,Var[WhichVar]);
-							ApplyRebinning(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot],DoubleE,Var[WhichVar]);
-
 							// ----------------------------------------------------------------------------------
 
-							// Apply Systematic Uncertainties on Data Points
-							// using numbers obtained from Mariana's thesis
+							// Use the universal e4v function that 
+							// scales by all the necessary scaling factors
+							// divides by the bin width to obtain normalized yields / absolute cross sections
+							// uses the relevant binning
+							// gets the relevant x axis range
+							// If data sample: 
+							//                 apply systematics due to rotations et al
+							//                 apply acceptance systematics using sector-by -sector uncertainties
 
-							if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) 
-								{ ApplySystUnc(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot], DoubleE); }
+							UniversalE4vFunction(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],Var[WhichVar]);
 
 							// ---------------------------------------------------------------------------------------------------
 
@@ -246,6 +233,7 @@ void UncertaintyBand() {
 							else 
 							  { leg->AddEntry(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot],ToStringInt(SectorIndex[WhichPlot]+1), "l"); }
 
+							PlotsForUncBand.push_back(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar][WhichPlot]);
 
 				                        // ---------------------------------------------------------------------------------------------------
 				                        // ---------------------------------------------------------------------------------------------------
@@ -269,10 +257,7 @@ void UncertaintyBand() {
 
 						delete PlotCanvas;
 
-						double PlotCounter = NPlots;
-						if ( E[WhichEnergy] == "4_461" ) { PlotCounter -= 1; }				
-
-						std::vector<double> UncBand = GetUncertaintyBand(Plots[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel][WhichVar],PlotCounter);
+						std::vector<double> UncBand = GetUncertaintyBand(PlotsForUncBand);
 
 						// ---------------------------------------------------------------------------------------------------------------------------------------
 
@@ -280,66 +265,41 @@ void UncertaintyBand() {
 						// Let's apply it on the plot which includes results from all sectors
 						// Uncertainty band added in quadrature
 
-						TH1D* Nom = nullptr;
+						TString NameOfPlot = ""; 
 
-						if ( Var[WhichVar] == "EQE" ) 
-							{ Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("h_Erec_subtruct_piplpimi_noprot_3pi") ); }
-
-						else if ( Var[WhichVar] == "ECal_Slice1" ) 
-							{ Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_1") ); }
-						else if ( Var[WhichVar] == "ECal_Slice2" ) 
-							{ Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_2") ); }
-						else if ( Var[WhichVar] == "ECal_Slice3" ) 
-							{ Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_3") ); }
-
-						else if ( Var[WhichVar] == "ECalReso" ) 
-							{ Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("h_Etot_subtruct_piplpimi_factor_fracfeed") ); }
-						else if ( Var[WhichVar] == "EQEReso" ) 
-							{ Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("h_Erec_subtruct_piplpimi_factor_fracfeed") ); }
-
-						else if ( Var[WhichVar] == "ECal" ) { Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("epRecoEnergy_slice_0") ); }
-						else if ( Var[WhichVar] == "DeltaPT" ) { Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("MissMomentum") ); }
-						else if ( Var[WhichVar] == "DeltaPhiT" ) { Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("DeltaPhiT_Int_0") ); }
-						else if ( Var[WhichVar] == "DeltaAlphaT" ) { Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get("DeltaAlphaT_Int_0") ); }
+						if ( Var[WhichVar] == "EQE" ) { NameOfPlot = "h_Erec_subtruct_piplpimi_noprot_3pi"; }
+						else if ( Var[WhichVar] == "ECal_Slice1" ) { NameOfPlot = "h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_1"; }
+						else if ( Var[WhichVar] == "ECal_Slice2" ) { NameOfPlot =  "h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_2"; }
+						else if ( Var[WhichVar] == "ECal_Slice3" ) { NameOfPlot = "h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_3"; }
+						else if ( Var[WhichVar] == "ECalReso" ) { NameOfPlot = "h_Etot_subtruct_piplpimi_factor_fracfeed"; }
+						else if ( Var[WhichVar] == "EQEReso" ) { NameOfPlot = "h_Erec_subtruct_piplpimi_factor_fracfeed"; }
+						else if ( Var[WhichVar] == "ECal" ) { NameOfPlot = "epRecoEnergy_slice_0"; }
+						else if ( Var[WhichVar] == "DeltaPT" ) { NameOfPlot = "MissMomentum"; }
+						else if ( Var[WhichVar] == "DeltaPhiT" ) { NameOfPlot = "DeltaPhiT_Int_0"; }
+						else if ( Var[WhichVar] == "DeltaAlphaT" ) { NameOfPlot = "DeltaAlphaT_Int_0"; }
 						else { cout << "Come again ? Which combined plot are we talking about ?" << endl; }
+
+						TH1D* Nom = (TH1D*)(Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->Get(NameOfPlot) );
 
 						TString UncCanvasName = "UncCanvas_" + Var[WhichVar] + "_" + nucleus[WhichNucleus] + "_" + E[WhichEnergy] + "_" + xBCut[WhichxBCut];
 						TCanvas* UncCanvas = new TCanvas(UncCanvasName,UncCanvasName,205,34,1024,768);
 
 						// --------------------------------------------------------------------------------------
 
-						// Scale to obtain absolute double differential cross sections 
-						// Use charge, density and length for data samples
-						// Use total number of events in genie sample and relevant genie cross sections for simulation
+						// Use the universal e4v function that 
+						// scales by all the necessary scaling factors
+						// divides by the bin width to obtain normalized yields / absolute cross sections
+						// uses the relevant binning
+						// gets the relevant x axis range
+						// If data sample: 
+						//                 apply systematics due to rotations et al
+						//                 apply acceptance systematics using sector-by -sector uncertainties
 
-						AbsoluteXSecScaling(Nom,FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]); 
+						UniversalE4vFunction(Nom,FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlot);
 
-						// -----------------------------------------------------------------------------------
+						ApplySectorSystUnc(Nom,UncBand);
 
-						// Division by bin width, function defined in myFunctions.C
-						// Accounting for the fact that the bin width might not be constant
-
-						ReweightPlots(Nom);
-
-						// --------------------------------------------------------------------------------------
-
-						// Rebining & ranges
-
-						ApplyRebinning(Nom,DoubleE,Var[WhichVar]);
-						ApplyRange(Nom,DoubleE,Var[WhichVar]);
-
-						// ---------------------------------------------------------------------------------------------------------------------------------------
-
-						// Apply Systematic Uncertainties on Data Points
-						// using numbers obtained from Mariana's thesis
-
-						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { ApplySystUnc(Nom, DoubleE); }
-
-						// ---------------------------------------------------------------------------------------------------------------------------------------
-
-						// Apply uncertainty band on main plot
-
-						ApplySectorSystUnc(Nom, UncBand);
+						TH1D* UncBandPlot = VectorToHistSystUnc(Nom, UncBand,Var[WhichVar]);
 
 						// ---------------------------------------------------------------------------------------------------
 
@@ -349,7 +309,7 @@ void UncertaintyBand() {
 						double localmin = Nom->GetMinimum();
 
 						double ExtraHeight = 0.1;
-						double PosNegMin = TMath::Min(0.,(1+ExtraHeight)*PosNegMin);
+						double PosNegMin = TMath::Min(0.,(1+ExtraHeight)*localmin);
 						Nom->GetYaxis()->SetRangeUser( PosNegMin, (1+ExtraHeight)*localmax );
 
 						UncCanvas->cd();
@@ -369,10 +329,11 @@ void UncertaintyBand() {
 
 						}
 
-						Files[WhichxBCut][WhichNucleus][WhichEnergy][WhichFSIModel]->cd();
-						Nom->Write("Unc_"+Var[WhichVar]);
-
 						delete UncCanvas;
+
+						UncFile->cd();
+						UncBandPlot->Write();
+						
 
 					} // End of the loop over the variable of interest
 
