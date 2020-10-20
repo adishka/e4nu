@@ -18,19 +18,18 @@
 
 using namespace std;
 
-#include "/home/afroditi/Dropbox/PhD/Secondary_Code/CenterAxisTitle.cpp"
-#include "/home/afroditi/Dropbox/PhD/Secondary_Code/SetOffsetAndSize.cpp"
-#include "/home/afroditi/Dropbox/PhD/Secondary_Code/ToString.cpp"
+#include "../../myFunctions.cpp"
+#include "../../AfroConstants.h"
 
-void OverlayECalVsEQE_FigExtData9() {
+void AbsXSec_OverlayECalVsEQE_FigExtData9() {
 
-	int Ndivisions = 4;
-	int FontStyle = 132;
-	double TextSize = 0.08;
-	
-	TString version = "v3_0_6/";
+	// ------------------------------------------------------------------------
 
-	gStyle->SetPalette(55); const Int_t NCont = 999; gStyle->SetNumberContours(NCont); gStyle->SetTitleSize(TextSize,"t"); gStyle->SetTitleFont(FontStyle,"t"); SetOffsetAndSize();
+	GlobalSettings();
+
+	// ------------------------------------------------------------------------
+
+	gStyle->SetPalette(55); const Int_t NCont = 999; gStyle->SetNumberContours(NCont); gStyle->SetTitleSize(TextSize,"t"); gStyle->SetTitleFont(FontStyle,"t");
 
 	std::vector<TString> xBCut; std::vector<TString> nucleus; std::vector<TString> LabelsOfSamples; std::vector<TString> E;  std::vector<TString> JustNucleus;
 	std::vector<TString> LabelE; std::vector<TString> FSIModel; std::vector<TString> DirNames;
@@ -48,10 +47,6 @@ void OverlayECalVsEQE_FigExtData9() {
 //	xBCut.push_back("xBCut");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
-//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");	
 
 	NameOfPlots.push_back("h2_Ecal_Eqe"); XLabelOfPlots.push_back("E^{QE} (GeV)"); YLabelOfPlots.push_back("E^{cal} (GeV)"); OutputPlotNames.push_back("ECalVsEQE2D");
@@ -119,7 +114,7 @@ void OverlayECalVsEQE_FigExtData9() {
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-						if (string(FSIModel[WhichFSIModel]).find("Data") != std::string::npos) 
+						if (string(FSIModelsToLabels[FSIModel[WhichFSIModel]]).find("Data") != std::string::npos) 
 							{ pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.15); }
 						else { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.15); }
 
@@ -129,11 +124,11 @@ void OverlayECalVsEQE_FigExtData9() {
 
 						TH2D* Plots =  (TH2D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) ;
 
-						CenterAxisTitle(Plots);
 						Plots->SetTitleSize(TextSize,"t");
-						if (string(FSIModel[WhichFSIModel]).find("Data") != std::string::npos) { gStyle->SetTitleX(.54); }
+						if (string(FSIModelsToLabels[FSIModel[WhichFSIModel]]).find("Data") != std::string::npos) { gStyle->SetTitleX(.54); }
 						else { gStyle->SetTitleX(.47); }
 
+						Plots->GetXaxis()->CenterTitle();
 						Plots->GetXaxis()->SetLabelFont(FontStyle);
 						Plots->GetXaxis()->SetTitleFont(FontStyle);
 						Plots->GetXaxis()->SetLabelSize(TextSize);
@@ -143,7 +138,7 @@ void OverlayECalVsEQE_FigExtData9() {
 							{ Plots->GetXaxis()->SetTitle(JustNucleus[WhichNucleus]+"(e,e'p)_{1p0#pi }"+XLabelOfPlots[WhichPlot]); }
 						else { Plots->GetXaxis()->SetTitle(XLabelOfPlots[WhichPlot]); }
 
-
+						Plots->GetYaxis()->CenterTitle();
 						Plots->GetYaxis()->SetLabelFont(FontStyle);
 						Plots->GetYaxis()->SetTitleFont(FontStyle);
 						Plots->GetYaxis()->SetLabelSize(TextSize);
@@ -167,25 +162,30 @@ void OverlayECalVsEQE_FigExtData9() {
 						pad1->SetLogz();
 						pad2->SetLogz();
 
-						XMin = 1.; XMax = 5.2; Plots->GetXaxis()->SetRangeUser(XMin,XMax); 
+						XMin = 1.; XMax = 5.5; Plots->GetXaxis()->SetRangeUser(XMin,XMax); 
 						Plots->GetYaxis()->SetRangeUser(XMin,XMax); 
 						
 						// --------------------------------------------------------------------------------------------
 
-						double ScalingFactor = TMath::Power(10.,6.) / Plots->GetMaximum();
-						Plots->Scale(ScalingFactor);
-//						Plots->GetZaxis()->SetRangeUser(1.,Plots->GetMaximum());
-						if ( NameOfPlots[WhichPlot] == "h2_Ecal_Eqe" ) { Plots->GetZaxis()->SetRangeUser(Plots->GetMaximum()*1E-2,Plots->GetMaximum()); }
-						else { Plots->GetZaxis()->SetRangeUser(1.,Plots->GetMaximum()); }
-						Plots->GetZaxis()->SetLabelSize(TextSize);
+//						double ScalingFactor = TMath::Power(10.,6.) / Plots->GetMaximum();
+//						Plots->Scale(ScalingFactor);
+////						Plots->GetZaxis()->SetRangeUser(1.,Plots->GetMaximum());
+//						if ( NameOfPlots[WhichPlot] == "h2_Ecal_Eqe" ) { Plots->GetZaxis()->SetRangeUser(Plots->GetMaximum()*1E-2,Plots->GetMaximum()); }
+//						else { Plots->GetZaxis()->SetRangeUser(1.,Plots->GetMaximum()); }
+
+						UniversalE4v2DFunction(Plots,FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
+
+						Plots->GetZaxis()->SetLabelOffset(0.);
+						Plots->GetZaxis()->SetLabelSize(TextSize-0.02);
 						Plots->GetZaxis()->SetLabelFont(FontStyle);
-						Plots->GetZaxis()->SetTitle("Weighted Events");
+						Plots->GetZaxis()->SetTitle("Normalized Yiled");
+						Plots->GetZaxis()->SetTitleOffset(0.9);
 						Plots->GetZaxis()->CenterTitle();
 						Plots->GetZaxis()->SetTitleFont(FontStyle);
 						Plots->GetZaxis()->SetTitleSize(TextSize);
 
-//						Plots->Draw("coltz");
-						Plots->Draw("colt");
+						Plots->Draw("coltz");
+//						Plots->Draw("colt");
 						PlotCanvas->Update();
 
 						// ----------------------------------------------------------------------------------------------------------------
@@ -196,7 +196,7 @@ void OverlayECalVsEQE_FigExtData9() {
 						sample->SetTextFont(FontStyle); 
 						sample->SetTextColor(kBlack); 
 						sample->SetTextSize(TextSize);
-						if (string(FSIModel[WhichFSIModel]).find("Data") != std::string::npos) { sample->DrawTextNDC(0.2,0.82,FSILabel[WhichFSIModel]); }
+						if (string(FSIModelsToLabels[FSIModel[WhichFSIModel]]).find("Data") != std::string::npos) { sample->DrawTextNDC(0.2,0.82,"Data"); }
 						else { sample->DrawTextNDC(0.05,0.82,FSILabel[WhichFSIModel]); } 
 
 						if ( NameOfPlots[WhichPlot] == "h2_Q2_nu_weight" ) {
@@ -250,10 +250,14 @@ void OverlayECalVsEQE_FigExtData9() {
 
 						// --------------------------------------------------------------------------------------------------
 
-//						TPaletteAxis *palette = (TPaletteAxis*)Plots->GetListOfFunctions()->FindObject("palette");
-//						palette->SetX1NDC(0.87);
-//						palette->SetX2NDC(0.9);
-//						PlotCanvas->Modified();
+						if (WhichFSIModel > 0) {
+
+							TPaletteAxis *palette = (TPaletteAxis*)Plots->GetListOfFunctions()->FindObject("palette");
+							palette->SetX1NDC(0.85);
+							palette->SetX2NDC(0.88);
+							PlotCanvas->Modified();
+
+						}
 
 						//delete PlotCanvas;
 
@@ -262,7 +266,7 @@ void OverlayECalVsEQE_FigExtData9() {
 					PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"
 							+E[WhichEnergy]+"/FigExtData9_"
 							+nucleus[WhichNucleus]+"_" 
-							+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2.pdf");
+							+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2_AbsXSec.pdf");
 
 					//delete PlotCanvas;
 

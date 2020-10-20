@@ -161,6 +161,8 @@ void HydrogenComparisons() {
 
 						Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
 
+						//UniversalE4vFunction(Plots[WhichNucleus],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
+
 						// --------------------------------------------------------------------------------------
 
 						// Make the plot pretty
@@ -192,11 +194,13 @@ void HydrogenComparisons() {
 						ApplyRebinning(Plots[WhichNucleus],DoubleE[WhichEnergy],NameOfPlots[WhichPlot]);
 						ApplyRange(Plots[WhichNucleus],DoubleE[WhichEnergy],NameOfPlots[WhichPlot]);
 
-//Plots[WhichNucleus]->Scale(MassNumber[nucleus[WhichNucleus]]);
-if (nucleus[WhichNucleus] == "12C") {
-	double SF = IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")]  * TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")] / (IntegratedCharge_PinnedFiles[std::make_pair("12C", "1_161")] * TargetLength[std::make_pair("12C","1_161")] * TargetDensity[std::make_pair("12C","1_161")]);
 
-//	double SF = IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")] * (6./7.) * TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")] / (IntegratedCharge_PinnedFiles[std::make_pair("12C", "1_161")] * TargetLength[std::make_pair("12C","1_161")] * TargetDensity[std::make_pair("12C","1_161")]);
+
+//Plots[WhichNucleus]->Scale(MassNumber[nucleus[WhichNucleus]]);
+
+if (nucleus[WhichNucleus] == "12C") {
+
+	double SF = IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")] * (6./7.) * TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")] / (IntegratedCharge_PinnedFiles[std::make_pair("12C", "1_161")] * TargetLength[std::make_pair("12C","1_161")] * TargetDensity[std::make_pair("12C","1_161")]);
 
 	Plots[WhichNucleus]->Scale(SF);
 
@@ -282,15 +286,40 @@ if (nucleus[WhichNucleus] == "12C") {
 
 double CloneSF = 7. * ConversionFactorChargeToElectrons / (dOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")] * AvogadroNumber * TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")]);
 Clone->Scale(CloneSF);
+ReweightPlots(Clone);
 
 			Clone->GetYaxis()->SetTitle("Normalized Yield");
 			DiffCanvas->cd();
+//Clone->GetYaxis()->SetRangeUser(-0.5,20);
 			Clone->Draw();
+
+TString HydrogenPathToFiles = "../../myFiles/1_161/hA2018_Final_RadCorr_LFGM/NoxBCut/";
+TString HydrogenFileName = HydrogenPathToFiles+"1H_1_161_hA2018_Final_RadCorr_LFGM_Plots_FSI_em.root";
+TFile* HydrogenFileSample = TFile::Open(HydrogenFileName);
+
+TH1D* G2018histo = (TH1D*)(HydrogenFileSample->Get("h1_Wvar_weight"));
+
+UniversalE4vFunction(G2018histo,"G2018","1H","1_161","h1_Wvar_weight");
+
+G2018histo->SetLineColor(kBlue);
+G2018histo->SetLineWidth(3);
+G2018histo->Draw("C hist same");
+
+TLegend* leg = new TLegend(0.6,0.6,0.7,0.7);
+
+leg->AddEntry(Clone,"Data","lep");
+leg->AddEntry(G2018histo,"GENIE","l");
+
+leg->SetTextFont(FontStyle);
+leg->SetTextSize(TextSize);
+leg->SetBorderSize(0);
+
+leg->Draw();
 
 //Clone->Fit("gaus","","",0.9,0.96);
 
 //Clone->Fit("pol1","","",0.7,0.9);
-Clone->Fit("pol0","","",0.7,0.9);
+//Clone->Fit("pol0","","",0.7,0.9);
 
 //double sigma = 0; 
 //for (int WhichBin = 0; WhichBin < (int)Clone->GetNbinsX(); WhichBin++) {

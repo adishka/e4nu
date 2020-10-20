@@ -116,7 +116,7 @@ void OverlayReso_FigExtData8() {
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-						TString PathToFiles = "../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
+						TString PathToFiles = "../../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
 						TFile* FileSample = TFile::Open(FileName);
 
@@ -229,7 +229,7 @@ if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed") {
 				latexDG.SetTextSize(TextSize);
 				latexDG.DrawLatexNDC(0.13,0.83,"Data/SuSav2");
 
-				PlotCanvas->SaveAs("../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/FeedDown_"+nucleus[WhichNucleus]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2.pdf");
+				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/FeedDown_"+nucleus[WhichNucleus]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2.pdf");
 
 			} // End of the loop over the plots
 

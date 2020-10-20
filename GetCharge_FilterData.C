@@ -165,6 +165,7 @@ void GetCharge_FilterData::Loop()
 		vert_min["3He"]=-3.05;
 		vert_min["C12"]=4.95;
 		vert_min["CH2"]=4.85;
+
 		vert_max["3He"]=-0.18;
 		vert_max["C12"]=5.76;
 		vert_max["CH2"]=5.62;
@@ -705,7 +706,7 @@ void GetCharge_FilterData::Loop()
 		else if ( (runnb>18293 && runnb<18301) || (runnb>18305 && runnb<18317) || (runnb>18328 && runnb<18336) || runnb == 18334)  fTorusCurrent=1500;
 		else fTorusCurrent=2250;
 
-		if (runnb == 18334) { fTorusCurrent = 750; } // CH2 only run @ 1.1 GeV, but we don't have fiducials there, thus using the 750 torus current 
+		if (runnb == 18334) { fTorusCurrent = 750; } // CH2 only run @ 1.1 GeV with 1500 torus current, but we don't have fiducials there, thus using the 750 torus current 
 
 		if (fbeam_en == "1161" && fTorusCurrent > 760) { continue; }                                                              
                 //if (fbeam_en == "1161" && fTorusCurrent < 760) { continue; }

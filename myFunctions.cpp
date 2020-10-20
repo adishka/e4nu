@@ -361,6 +361,104 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 
+void AbsoluteXSec2DScaling(TH2D* h, TString Sample, TString Nucleus, TString E) {  
+
+	double SF = 1.;
+
+	// ----------------------------------------------------------------------------------------------------------------------------------------
+
+	// Data sets
+
+	if (Sample == "Data") { 
+
+		SF = 1. / ( IntegratedCharge[std::make_pair(Nucleus, E)] *\
+						    TargetLength[std::make_pair(Nucleus, E)] *\
+						    TargetDensity[std::make_pair(Nucleus, E)] *\
+						    OverallUnitConversionFactor / MassNumber[Nucleus] ) * ConversionFactorCm2ToMicroBarn / dOmega;
+
+	}
+
+	if (Sample == "Data_FilterRuns") { 
+
+		SF = 1. / (IntegratedCharge_FilterRuns[std::make_pair(Nucleus, E)] *\
+						    TargetLength[std::make_pair(Nucleus, E)] *\
+						    TargetDensity[std::make_pair(Nucleus, E)] *\
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+
+	}
+
+	if (Sample == "Data_NewFilterRuns") { 
+
+		SF = 1. / (IntegratedCharge_NewFilterRuns[std::make_pair(Nucleus, E)] *\
+						    TargetLength[std::make_pair(Nucleus, E)] *\
+						    TargetDensity[std::make_pair(Nucleus, E)] *\
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+
+	}
+
+	if (Sample == "GoodRunList_Data") { 
+
+		SF = 1. / (IntegratedCharge_GoodRunList_AllRuns[std::make_pair(Nucleus, E)] *\
+						    TargetLength[std::make_pair(Nucleus, E)] *\
+						    TargetDensity[std::make_pair(Nucleus, E)] *\
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+
+	}
+
+	if (Sample == "LowCurrent_GoodRunList_Data") { 
+
+		SF = 1. / (IntegratedCharge_GoodRunList_LowCurrentRuns[std::make_pair(Nucleus, E)] *\
+						    TargetLength[std::make_pair(Nucleus, E)] *\
+						    TargetDensity[std::make_pair(Nucleus, E)] *\
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+
+
+	}
+
+	if (Sample == "HighCurrent_GoodRunList_Data") { 
+
+		SF = 1. / (IntegratedCharge_GoodRunList_HighCurrentRuns[std::make_pair(Nucleus, E)] *\
+						    TargetLength[std::make_pair(Nucleus, E)] *\
+						    TargetDensity[std::make_pair(Nucleus, E)] *\
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+
+	}
+
+	if (Sample == "Pinned Data") { 
+
+		SF = 1. / (IntegratedCharge_PinnedFiles[std::make_pair(Nucleus, E)] *\
+						    TargetLength[std::make_pair(Nucleus, E)] *\
+						    TargetDensity[std::make_pair(Nucleus, E)] *\
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+
+	}
+
+	// -------------------------------------------------------------------------------------------------------------------------------------------------
+
+	// Simulation sets
+
+	if (Sample == "SuSav2" || Sample == "SuSav2_NoAccMaps" ) { 
+
+				SF = (SuSav2GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+					ConversionFactorCm2ToMicroBarn / (SuSav2NumberEvents[std::make_pair(Nucleus, E)] *\
+					dOmega) ) ;
+
+	}
+
+	if (Sample == "G2018") { 
+
+		SF = ( G2018GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+					ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair(Nucleus, E)] *\
+					dOmega) );
+
+	}	
+
+	h->Scale(SF);
+
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
 void ApplyRebinning(TH1D* h, TString Energy, TString PlotVar) {
 
 	// -----------------------------------------------------------------------------------------------------------------------------
@@ -438,8 +536,6 @@ void ApplyRange(TH1D* h, TString Energy, TString PlotVar) {
 	} else if (string(PlotVar).find("PT") != std::string::npos || string(PlotVar).find("MissMomentum") != std::string::npos) {
 
 	} else if (string(PlotVar).find("DeltaAlphaT") != std::string::npos ) {
-
-		h->GetXaxis()->SetRangeUser(10,180);
 
 	} else if (string(PlotVar).find("DeltaPhiT") != std::string::npos ) {
 
@@ -539,6 +635,38 @@ void UniversalE4vFunction(TH1D* h, TString DataSetLabel, TString nucleus, TStrin
 	//                 apply acceptance systematics using sector-by -sector uncertainties
 
 	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplySectorSystUnc(h, E); }
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+void UniversalE4v2DFunction(TH2D* h, TString DataSetLabel, TString nucleus, TString E, TString name) {
+
+	// Scale to obtain absolute double differential cross sections 
+	// Use charge, density and length for data samples
+	// Use total number of events in genie sample and relevant genie cross sections for simulation
+
+	AbsoluteXSec2DScaling(h,DataSetLabel,nucleus,E);
+
+	// Division by the bin width
+
+//	ReweightPlots(h);
+
+//	// Rebin is necessary
+
+//	ApplyRebinning(h,E,name);
+
+//	// Use relevant ranges
+//			
+//	ApplyRange(h,E,name);
+
+//	// if data sample: 
+//	//                 apply systematics due to rotations et al
+
+//	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplySystUnc(h, E); }
+
+//	//                 apply acceptance systematics using sector-by -sector uncertainties
+
+//	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplySectorSystUnc(h, E); }
 }
 
 
@@ -677,7 +805,7 @@ TPad* CreateTPad(int WhichEnergy, int WhichNucleus, double Energy, TString nucle
 	{ pad = new TPad(name,name,XMinPad,YMinPad,XMaxPad,YMaxPad, 21); }
 	else { 
 		if (Energy == 2.261) 
-			{ pad = new TPad(name,name,XMinPad-0.03,YMinPad+space,XMaxPad,YMaxPad+space, 21); }
+			{ pad = new TPad(name,name,XMinPad-0.031,YMinPad+space,XMaxPad,YMaxPad+space, 21); }
 		else { pad = new TPad(name,name,XMinPad,YMinPad+space,XMaxPad,YMaxPad+space, 21); }
 	}
 
@@ -696,7 +824,7 @@ TPad* CreateTPad(int WhichEnergy, int WhichNucleus, double Energy, TString nucle
 
 	pad->SetLeftMargin(0.);
 	if (Energy == 1.161 ) { pad->SetLeftMargin(0.13); }
-	if (Energy == 2.261 && nucleus == "56Fe") { pad->SetLeftMargin(0.095); }	
+	if (Energy == 2.261 && nucleus == "56Fe") { pad->SetLeftMargin(0.1); }	
 
 	return pad;
 

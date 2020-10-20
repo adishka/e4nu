@@ -21,7 +21,7 @@ using namespace std;
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void AbsXSec_OverlayECalFig4_e4nuPaper() {
+void AbsXSec_OverlayECalFigExtData6_e4nuPaper() {
 
 	// ------------------------------------------------------------------------
 
@@ -45,7 +45,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 	E.push_back("2_261"); DoubleE.push_back(2.261);	
 	E.push_back("4_461"); DoubleE.push_back(4.461);
 
-	xBCut.push_back("NoxBCut");
+	xBCut.push_back("xBCut");
  
 	Colors.push_back(kBlack); Colors.push_back(kBlack); Colors.push_back(kBlack); 
 	Colors.push_back(kMagenta); Colors.push_back(kGreen); Colors.push_back(kOrange + 7);
@@ -95,13 +95,13 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 			for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
 				// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
-				double MaxHeight = 23.;
+				double MaxHeight = 22.;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 71.; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 58.; }
 
 					// ----------------------------------------------------------------------------
 
@@ -166,6 +166,9 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
 
+						if (DoubleE[WhichEnergy] == 1.161) { Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(0.85,1.27); }
+						if (DoubleE[WhichEnergy] == 2.261) { Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(1.5,2.35); }
+
 						//-----------------------------------------------------------------------------------------------
 
 						//Larry's suggestion because ECal has a sharp peak and a low tail 
@@ -192,11 +195,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 						// -----------------------------------------------------------------------------------
 
-//						// Accounting for the fact that the bin width might not be constant
-
-//						ReweightPlots(Plots[WhichFSIModel]);
-
-						if (DoubleE[WhichEnergy] == 1.161) { Plots[WhichFSIModel]->Scale(1./2.); }
+						//if (DoubleE[WhichEnergy] == 1.161) { Plots[WhichFSIModel]->Scale(1./2.); }
 						if (DoubleE[WhichEnergy] == 4.461) { Plots[WhichFSIModel]->Scale(5.); }
 						Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(5);
 
@@ -228,7 +227,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 								
 								BreakDownPlots[j-1]->SetLineWidth(LineWidth);
 
-								if (DoubleE[WhichEnergy] == 1.161) { BreakDownPlots[j-1]->Scale(1./2.); }
+								//if (DoubleE[WhichEnergy] == 1.161) { BreakDownPlots[j-1]->Scale(1./2.); }
 								if (DoubleE[WhichEnergy] == 4.461) { BreakDownPlots[j-1]->Scale(5.); }
 
 								//-----------------------------------------------------------------------------------------------
@@ -345,7 +344,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
-		TPad* pad1GeV = new TPad("pad1GeV","pad1GeV",0.18,0.89,0.34,0.99,21);
+		TPad* pad1GeV = new TPad("pad1GeV","pad1GeV",0.18,0.89,0.32,0.99,21);
 		pad1GeV->SetFillColor(kWhite); 
 		PlotCanvas->cd();
 		pad1GeV->Draw();
@@ -397,16 +396,16 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 		// -------------------------------------------------------------------------------------------------
 	
-		TPad* padx14C12 = new TPad("padx14C12","padx14C12",0.255,0.65,0.305,0.72,21); 
-		padx14C12->SetFillColor(kWhite); 
-		PlotCanvas->cd();
-		padx14C12->Draw();
-		padx14C12->cd();
+//		TPad* padx14C12 = new TPad("padx14C12","padx14C12",0.255,0.65,0.305,0.72,21); 
+//		padx14C12->SetFillColor(kWhite); 
+//		PlotCanvas->cd();
+//		padx14C12->Draw();
+//		padx14C12->cd();
 
-		TLatex latexx14C12;
-		latexx14C12.SetTextFont(FontStyle);
-		latexx14C12.SetTextSize(8*TextSize);
-		latexx14C12.DrawLatexNDC(0.,0.4,"x1/2");
+//		TLatex latexx14C12;
+//		latexx14C12.SetTextFont(FontStyle);
+//		latexx14C12.SetTextSize(8*TextSize);
+//		latexx14C12.DrawLatexNDC(0.,0.4,"x1/2");
 
 		// -------------------------------------------------------------------------------------------------
 	
@@ -519,7 +518,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		TString ext = "";
 		if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
-		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"Fig4_SuSav2_AbsXSec.pdf");
+		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"FigExtData6_SuSav2_AbsXSec.pdf");
 
 		//delete PlotCanvas;
 

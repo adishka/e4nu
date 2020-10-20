@@ -16,8 +16,8 @@
 
 using namespace std;
 
-#include "../myFunctions.cpp"
-#include "../AfroConstants.h"
+#include "../../myFunctions.cpp"
+#include "../../AfroConstants.h"
 
 // ----------------------------------------------------------------------------------------------------------------
 
@@ -25,12 +25,7 @@ void AbsXSec_OverlayReso_FigExtData8() {
 
 	// ------------------------------------------------------------------------
 
-	TGaxis::SetMaxDigits(3);
-//	TGaxis::SetExponentOffset(-0.1, 1., "y");
-
-	gStyle->SetTitleSize(TextSize,"t"); 
-	gStyle->SetTitleFont(FontStyle,"t");
-	gStyle->SetOptStat(0);
+	GlobalSettings();
 
 	// ------------------------------------------------------------------------
 
@@ -45,7 +40,7 @@ void AbsXSec_OverlayReso_FigExtData8() {
 	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); JustE.push_back("2.257 GeV");
 	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV"); JustE.push_back("4.453 GeV");
  
-	FSIModel.push_back("Data_Final"); FSILabel.push_back("Data");
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
 
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");	
@@ -98,6 +93,8 @@ void AbsXSec_OverlayReso_FigExtData8() {
 								 205,34,1024,768);
 
 				PlotCanvas->SetBottomMargin(0.16);
+				PlotCanvas->SetLeftMargin(0.13);
+
 				TLegend* leg = new TLegend(0.12,0.6,0.4,0.8);
 				leg->SetNColumns(2);
 				double max = -99.;
@@ -113,14 +110,13 @@ void AbsXSec_OverlayReso_FigExtData8() {
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-						TString PathToFiles = "../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
+						TString PathToFiles = "../../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
 						TFile* FileSample = TFile::Open(FileName);
 
 						Plots[WhichEnergy][WhichFSIModel] =  (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) );
 						Plots[WhichEnergy][WhichFSIModel]->SetLineColor(Colors[WhichEnergy][WhichFSIModel]);
 						Plots[WhichEnergy][WhichFSIModel]->SetLineWidth(LineWidth-WhichEnergy);
-						CenterAxisTitle(Plots[WhichEnergy][WhichFSIModel]);
 
 						Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->SetLabelFont(FontStyle);
 						Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->SetTitleFont(FontStyle);
@@ -179,7 +175,7 @@ if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed") {
 						TString XLabel = Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->GetTitle();
 						Plots[WhichEnergy][0]->GetXaxis()->SetTitle(XLabels[WhichPlot]);
 
-						if (FSIModel[WhichFSIModel] == "Data_Final") { 
+						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 
 							Plots[WhichEnergy][WhichFSIModel]->SetMarkerSize(2.); 
 							Plots[WhichEnergy][WhichFSIModel]->SetMarkerColor(Colors[WhichEnergy][WhichFSIModel]);
@@ -195,16 +191,6 @@ if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed") {
 						}
 
 					} // End of the loop over the FSI Models 
-					
-					// --------------------------------------------------------------------------------------				
-					
-					// Chi2 calculation
-					
-					int NBinsX = HighBin - LowBin +1;
-					int Chi2Double = Chi2(Plots[WhichEnergy][0],Plots[WhichEnergy][1],LowBin,HighBin);
-					
-					cout << endl << endl << nucleus[WhichNucleus] << "  " << E[WhichEnergy]  << " Chi2/ndof = " << Chi2Double;
-					cout << "/" << NBinsX << endl << endl;
 					
 					// --------------------------------------------------------------------------------------				
 
@@ -226,7 +212,7 @@ if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed") {
 				latexDG.SetTextSize(TextSize);
 				latexDG.DrawLatexNDC(0.13,0.83,"Data/SuSav2");
 
-				PlotCanvas->SaveAs("../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/FeedDown_"+nucleus[WhichNucleus]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2.pdf");
+				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/FeedDown_"+nucleus[WhichNucleus]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2_AbsXSec.pdf");
 
 			} // End of the loop over the plots
 

@@ -21,7 +21,7 @@ using namespace std;
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void AbsXSec_OverlayDeltaAlphaT_FigExtData8() {
+void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 
 	// ------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData8() {
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors");
 
-	NameOfPlots.push_back("DeltaAlphaT_Int_0");
+	NameOfPlots.push_back("DeltaPhiT_Int_0");
 
 	// ------------------------------------------------------------------------
 
@@ -107,13 +107,13 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData8() {
 
 	 			// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
 			
-				double MaxHeight = 0.12;
+				double MaxHeight = 0.39;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 0.7; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 1.7; }
 
 					// ---------------------------------------------------------------------------------------------------------------
 
@@ -194,7 +194,7 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData8() {
 
 							for (int j = 1; j < 5; j++) {
 
-								BreakDownPlots.push_back( (TH1D*)( FileSample->Get("DeltaAlphaT_Int_"+ToStringInt(j)) ) );
+								BreakDownPlots.push_back( (TH1D*)( FileSample->Get("DeltaPhiT_Int_"+ToStringInt(j)) ) );
 
 								BreakDownPlots[j-1]->SetLineColor(BreakDownColors[j-1]);
 								BreakDownPlots[j-1]->SetLineWidth(LineWidth);
@@ -328,7 +328,7 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData8() {
 		TLatex latexPmiss;
 		latexPmiss.SetTextFont(FontStyle);
 		latexPmiss.SetTextSize(5*TextSize);
-		latexPmiss.DrawLatexNDC(0.2,0.5,"(e,e'p)_{1p0#pi} #delta#alpha_{T} [deg]");
+		latexPmiss.DrawLatexNDC(0.2,0.5,"(e,e'p)_{1p0#pi} #delta#phi_{T} [deg]");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -397,7 +397,7 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData8() {
 		TString ext = "";
 		if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
-		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"DeltaAlphaT_FigExtData8_SuSav2_AbsXSec.pdf");
+		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"DeltaPhiT_FigExtData8_SuSav2_AbsXSec.pdf");
 
 		//delete PlotCanvas;
 

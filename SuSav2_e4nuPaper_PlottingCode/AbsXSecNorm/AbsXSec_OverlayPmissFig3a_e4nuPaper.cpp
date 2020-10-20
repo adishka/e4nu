@@ -25,59 +25,46 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 
 	// ------------------------------------------------------------------------
 
-	TGaxis::SetMaxDigits(3);
-//	TGaxis::SetExponentOffset(-0.1, 1., "y");
-
-	gStyle->SetTitleSize(TextSize,"t"); 
-	gStyle->SetTitleFont(FontStyle,"t");
-	gStyle->SetOptStat(0);
+	GlobalSettings();
 
 	// ------------------------------------------------------------------------
 
-	std::vector<TString> xBCut; std::vector<TString> nucleus; std::vector<TString> JustNucleus; std::vector<TString> LabelsOfSamples; 
-	std::vector<TString> E; std::vector<double> DoubleE;
-	std::vector<TString> LabelE; std::vector<TString> FSIModel; std::vector<TString> DirNames;  std::vector<int> BreakDownColors;
-	std::vector<TString> FSILabel; std::vector<TString> NameOfPlots; std::vector<TString> LabelOfPlots;  
-	std::vector<TString> OutputPlotNames; std::vector<TH1D*> BreakDownPlots;
-	std::vector<int> Colors;
-	std::vector<int> Style;
+	std::vector<TString> xBCut; 
+	std::vector<TString> nucleus; 
+	std::vector<TString> JustNucleus;
+	std::vector<TString> E; 
+	std::vector<double> DoubleE;
+	std::vector<TString> LabelE; 
+	std::vector<TString> FSIModel;
+	std::vector<TString> FSILabel; 
+	std::vector<TString> NameOfPlots; 
+	std::vector<TString> LabelOfPlots;  
+	std::vector<TString> OutputPlotNames;
 
-	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
+	// ------------------------------------------------------------------------
+
+	nucleus.push_back("12C"); JustNucleus.push_back("C");
 
 	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
 
 	xBCut.push_back("NoxBCut");
- 
-	Colors.push_back(kBlack); Colors.push_back(kBlack); Colors.push_back(kBlack); Colors.push_back(kMagenta); Colors.push_back(kGreen); Colors.push_back(kOrange + 7);
 
-	Style.push_back(1); Style.push_back(1); Style.push_back(1); Style.push_back(1);
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");
 
-	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(429); BreakDownColors.push_back(410); BreakDownColors.push_back(610);
-
-	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Data");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("hA2018_Truth_NoRadCorr");	
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-
-//	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{miss}^{#perp} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
 	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
 
+	// ------------------------------------------------------------------------
+
 	std::vector<TH1D*> Plots;
-	std::vector<TH1D*> Plots_Clones;
+	std::vector<TH1D*> BreakDownPlots;
 
 	int NxBCuts = xBCut.size();
 	int NNuclei = nucleus.size();
 	int NEnergies = E.size();
 	int NFSIModels = FSIModel.size();
 	int NPlots = NameOfPlots.size();
-
-	TString WhatModelsAreIncluded = "";
-	for (int LoopOverFSIModels = 0 ; LoopOverFSIModels < NFSIModels ; LoopOverFSIModels ++) { WhatModelsAreIncluded += "_"+DirNames[LoopOverFSIModels]; };
-
-	TString RecoCalorimetry = "(e,e'p)";
-	TString FSI = "FSI";
-
-	std::vector<TString> GenieFSILabel; GenieFSILabel.clear();
-	GenieFSILabel.push_back("QE"); GenieFSILabel.push_back("MEC"); GenieFSILabel.push_back("RES"); GenieFSILabel.push_back("DIS");
 
 	// Loop over the xB kinematics
 
@@ -141,36 +128,28 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
 						TFile* FileSample = TFile::Open(FileName);
 
-//						Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
-						Plots.push_back( (TH1D*)( FileSample->Get("Unc_DeltaPT") ) );
+						Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
 
 						// --------------------------------------------------------------------------------------
 
 						// Make the plot pretty
 
-						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
+						Plots[WhichFSIModel]->SetLineColor(DataSetColors[WhichFSIModel]);
 						PrettyDoubleXSecPlot(Plots[WhichFSIModel]);
 						Plots[WhichFSIModel]->GetXaxis()->SetTitle(LabelOfPlots[WhichPlot]);
 
-						// --------------------------------------------------------------------------------------
+						// ----------------------------------------------------------------------------------
 
-						// Scale to obtain absolute double differential cross sections 
-						// Use charge, density and length for data samples
-						// Use total number of events in genie sample and relevant genie cross sections for simulation
+						// Use the universal e4v function that 
+						// scales by all the necessary scaling factors
+						// divides by the bin width to obtain normalized yields / absolute cross sections
+						// uses the relevant binning
+						// gets the relevant x axis range
+						// If data sample: 
+						//                 apply systematics due to rotations et al
+						//                 apply acceptance systematics using sector-by -sector uncertainties
 
-						//AbsoluteXSecScaling(Plots[WhichFSIModel],FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]); 
-
-						// --------------------------------------------------------------------------------------
-
-						// Accounting for the fact that the bin width might not be constant
-
-						//ReweightPlots(Plots[WhichFSIModel]);
-
-						// --------------------------------------------------------------------------------------
-
-						// Binning & Range
-
-						//BinningAndRange(Plots[WhichFSIModel],DoubleE[WhichEnergy],"PT");
+						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
 
 						// ----------------------------------------------------------------------------------
 
@@ -189,19 +168,12 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 
 								BreakDownPlots.push_back( (TH1D*)( FileSample->Get("Pmiss_Int_"+ToStringInt(j)) ) );
 
-								ReweightPlots(BreakDownPlots[j-1]);
-								AbsoluteXSecScaling(BreakDownPlots[j-1],FSILabel[WhichFSIModel],nucleus[WhichNucleus],E[WhichEnergy]);
-								ApplyRebinning(BreakDownPlots[j-1],DoubleE[WhichEnergy],"PT");
-								ApplyRange(BreakDownPlots[j-1],DoubleE[WhichEnergy],"PT");
+								UniversalE4vFunction(BreakDownPlots[j-1],FSIModelsToLabels[FSIModel[WhichFSIModel]],\
+										     nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
 
 								//-----------------------------------------------------------------------------------------------
 
 								BreakDownPlots[j-1]->SetLineColor(BreakDownColors[j-1]);
-
-//								int GenieNBins = Plots[WhichFSIModel]->GetNbinsX();
-//								int GenieMin = Plots[WhichFSIModel]->GetXaxis()->GetXmin();
-//								int GenieMax = Plots[WhichFSIModel]->GetXaxis()->GetXmax();
-//								BreakDownPlots[j-1]->SetBins(GenieNBins,GenieMin,GenieMax);
 								
 								BreakDownPlots[j-1]->SetLineWidth(3);
 								BreakDownPlots[j-1]->SetLineStyle(Style[j-1]);
@@ -298,9 +270,9 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 					TString ext = "";
 					if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
-					PlotCanvas->SaveAs("../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"
+					PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"
 						+ext+"Fig3a_"+nucleus[WhichNucleus]+"_" 
-						+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+WhatModelsAreIncluded+"_SuSav2_AbsXSec.pdf");
+						+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2_AbsXSec.pdf");
 
 					//delete PlotCanvas;
 
@@ -308,20 +280,7 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 
 
 				} // End of the loop over the plots
-				
-				// --------------------------------------------------------------------------------------				
-				
-				// Chi2 calculation
-				
-				int NBinsX = Plots[0]->GetXaxis()->GetNbins();
-				int Chi2Double = Chi2(Plots[0],Plots[1]);
-				
-				cout << endl << endl << "SuSav2 Chi2/ndof = " << Chi2Double << "/" << NBinsX << endl << endl;
-				
-				int G2018Chi2Double = Chi2(Plots[0],Plots[2]);
-				
-				cout << "G2018 Chi2/ndof = " << G2018Chi2Double << "/" << NBinsX << endl << endl;				
-				
+
 				// --------------------------------------------------------------------------------------				
 
 			} // End of the loop over the nuclei
