@@ -25,6 +25,29 @@ using namespace std;
 
 // ----------------------------------------------------------------------------------------------------------------
 
+double Integrate(TH1D* h) {
+
+	int NBins = h->GetXaxis()->GetNbins();
+
+	double SumEntries = 0;
+
+	for (int i = 0; i < NBins; i++) {
+
+		//if (h->GetBinCenter(i+1) >= 0.9 && h->GetBinCenter(i+1) <= 1.) {
+		if (h->GetBinContent(i+1) > 0) {
+
+		SumEntries += h->GetBinContent(i+1) /** h->GetBinWidth(i+1)*/;
+//cout << "h->GetBinContent(i+1) = " << h->GetBinContent(i+1) << endl;
+		}
+
+	}
+
+	return SumEntries;
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
 void HydrogenComparisons() {
 
 	// ------------------------------------------------------------------------
@@ -194,24 +217,17 @@ void HydrogenComparisons() {
 						ApplyRebinning(Plots[WhichNucleus],DoubleE[WhichEnergy],NameOfPlots[WhichPlot]);
 						ApplyRange(Plots[WhichNucleus],DoubleE[WhichEnergy],NameOfPlots[WhichPlot]);
 
+						//Plots[WhichNucleus]->Scale(MassNumber[nucleus[WhichNucleus]]);
 
+						// Scaling the 12C plot to the CH2 equivalent
 
-//Plots[WhichNucleus]->Scale(MassNumber[nucleus[WhichNucleus]]);
+						if (nucleus[WhichNucleus] == "12C") {
 
-if (nucleus[WhichNucleus] == "12C") {
+							double SF = IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")] * (6./7.) * TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")] / (IntegratedCharge_PinnedFiles[std::make_pair("12C", "1_161")] * TargetLength[std::make_pair("12C","1_161")] * TargetDensity[std::make_pair("12C","1_161")]);
 
-	double SF = IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")] * (6./7.) * TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")] / (IntegratedCharge_PinnedFiles[std::make_pair("12C", "1_161")] * TargetLength[std::make_pair("12C","1_161")] * TargetDensity[std::make_pair("12C","1_161")]);
+							Plots[WhichNucleus]->Scale(SF);
 
-	Plots[WhichNucleus]->Scale(SF);
-
-}
-						// ----------------------------------------------------------------------------------
-
-						// Apply Systematic Uncertainties on Data Points
-						// using numbers obtained from Mariana's thesis
-
-						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) 
-								{ ApplySystUnc(Plots[WhichNucleus], DoubleE[WhichEnergy]); }
+						}
 
 						// ---------------------------------------------------------------------------------------------------
 
@@ -277,59 +293,103 @@ if (nucleus[WhichNucleus] == "12C") {
 
 			} // End of the loop over the plots
 
+			// ----------------------------------------------------------------------------------------------------------------------
+
 			TCanvas* DiffCanvas = new TCanvas("DiffCanvas","DiffCanvas",205,34,1024,768);
 			DiffCanvas->SetBottomMargin(0.2);
 			DiffCanvas->SetLeftMargin(0.17);
-			
+
+			// ----------------------------------------------------------------------------------------------------------------------
+
+			// Scaling the CH2 integral to the 12C one in the region 0.6 to 0.9
+
+			double LowRange = 0.6;
+			double HighRange = 0.9;
+
+			int LowBin = Plots[1]->FindBin(LowRange);
+			int HighBin = Plots[1]->FindBin(HighRange);
+
+			double IntegralCH2 = Plots[1]->Integral(LowBin,HighBin);
+			double IntegralC = Plots[0]->Integral(LowBin,HighBin);
+
+//cout << "IntegralC/IntegralCH2 =" << IntegralC/IntegralCH2 << endl;
+
+			Plots[1]->Scale(IntegralC/IntegralCH2);
+
+			// ----------------------------------------------------------------------------------------------------------------------
+
 			TH1D* Clone = (TH1D*)Plots[1]->Clone("Clone");
 			Clone->Add(Plots[0],-1);
 
-double CloneSF = 7. * ConversionFactorChargeToElectrons / (dOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")] * AvogadroNumber * TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")]);
-Clone->Scale(CloneSF);
-ReweightPlots(Clone);
+//cout << "Clone->Integral() = " << Clone->Integral() << endl;
+ 
+			// ----------------------------------------------------------------------------------------------------------------
+
+			// Getting to the cross section
+
+			double CloneSF = 7. * ConversionFactorChargeToElectrons / (dOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")] * AvogadroNumber *\
+			       TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")]);
+			Clone->Scale(CloneSF);
 
 			Clone->GetYaxis()->SetTitle("Normalized Yield");
 			DiffCanvas->cd();
-//Clone->GetYaxis()->SetRangeUser(-0.5,20);
 			Clone->Draw();
 
-TString HydrogenPathToFiles = "../../myFiles/1_161/hA2018_Final_RadCorr_LFGM/NoxBCut/";
-TString HydrogenFileName = HydrogenPathToFiles+"1H_1_161_hA2018_Final_RadCorr_LFGM_Plots_FSI_em.root";
-TFile* HydrogenFileSample = TFile::Open(HydrogenFileName);
+			Clone->Fit("gaus","","",0.8,1.06);
 
-TH1D* G2018histo = (TH1D*)(HydrogenFileSample->Get("h1_Wvar_weight"));
+			double dsigmadOmega = Integrate(Clone);
 
-UniversalE4vFunction(G2018histo,"G2018","1H","1_161","h1_Wvar_weight");
+			cout << "Data dsigmadOmega = " << dsigmadOmega << endl;
 
-G2018histo->SetLineColor(kBlue);
-G2018histo->SetLineWidth(3);
-G2018histo->Draw("C hist same");
+			//cout << "Data Sigma = " << dsigmadOmega*dOmega << endl;
 
-TLegend* leg = new TLegend(0.6,0.6,0.7,0.7);
+			// --------------------------------------------------------------------------------------------------------------
 
-leg->AddEntry(Clone,"Data","lep");
-leg->AddEntry(G2018histo,"GENIE","l");
+			TString HydrogenPathToFiles = "../../myFiles/1_161/hA2018_Final_RadCorr_LFGM/NoxBCut/";
+			TString HydrogenFileName = HydrogenPathToFiles+"1H_1_161_hA2018_Final_RadCorr_LFGM_Plots_FSI_em.root";
+			TFile* HydrogenFileSample = TFile::Open(HydrogenFileName);
 
-leg->SetTextFont(FontStyle);
-leg->SetTextSize(TextSize);
-leg->SetBorderSize(0);
+			TH1D* G2018histo = (TH1D*)(HydrogenFileSample->Get("h1_Wvar_weight"));
 
-leg->Draw();
+			UniversalE4vFunction(G2018histo,"G2018","1H","1_161","h1_Wvar_weight");
 
-//Clone->Fit("gaus","","",0.9,0.96);
+			//AbsoluteXSecScaling(G2018histo,"G2018","1H","1_161");
 
-//Clone->Fit("pol1","","",0.7,0.9);
-//Clone->Fit("pol0","","",0.7,0.9);
+			// -------------------------------------------------------------------------------------------
 
-//double sigma = 0; 
-//for (int WhichBin = 0; WhichBin < (int)Clone->GetNbinsX(); WhichBin++) {
+			double GeniedsigmadOmega = G2018histo->GetEntries() * G2018GenieXSec[std::make_pair("1H", "1_161")] * TMath::Power(10.,-38.) *\
+								ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair("1H", "1_161")] *\
+								dOmega) ;
 
-//	sigma += Clone->GetBinContent(WhichBin+1);
+			double GenieSF = G2018GenieXSec[std::make_pair("1H", "1_161")] * TMath::Power(10.,-38.) *\
+								ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair("1H", "1_161")] *\
+								dOmega) ;
 
-//}
+			cout << "Genie dsigmadOmega = " << GeniedsigmadOmega << endl;
 
-//cout << "sigma = " << sigma << endl;
+			//cout << "Genie Sigma = " << GeniedsigmadOmega*dOmega << endl;
 
+			// -------------------------------------------------------------------------------------------
+
+
+			//G2018histo->Scale(GenieSF);
+
+			G2018histo->SetLineColor(kBlue);
+			G2018histo->SetLineWidth(3);
+			G2018histo->Draw("C hist same");
+
+			TLegend* leg = new TLegend(0.6,0.6,0.7,0.7);
+
+			leg->AddEntry(Clone,"Data","lep");
+			leg->AddEntry(G2018histo,"GENIE","l");
+
+			leg->SetTextFont(FontStyle);
+			leg->SetTextSize(TextSize);
+			leg->SetBorderSize(0);
+
+			leg->Draw();
+
+			// -------------------------------------------------------------------------------------------
 
 		} // End of the loop over the energies
 

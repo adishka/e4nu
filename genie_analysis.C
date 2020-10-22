@@ -351,6 +351,7 @@ void genie_analysis::Loop(Int_t choice) {
 	std::cout << " Test InitEClimits Loop " << fiducialcut->up_lim1_ec->Eval(60) << std::endl;
 
 	//Definition and initialization of Histograms
+
 	TH1F *h1_el_Mott_crosssec = new TH1F("h1_el_Mott_crosssec","",200,0.,0.01);
 	TH1F *h1_Wvar = new TH1F("h1_Wvar","",400,0,3);
 	TH1F *h1_xbjk = new TH1F("h1_xbjk","",400,0,3);
@@ -393,6 +394,11 @@ void genie_analysis::Loop(Int_t choice) {
 	TH1F *h1_Omega_FullyInclusive_NoQ4Weight_xBCut_Theta_Slice_InSector[NSectors];
 	TH1F *h1_EePrime_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[NSectors];
 	TH1F *h1_EePrime_FullyInclusive_NoQ4Weight_xBCut_Theta_Slice_InSector[NSectors];
+
+	TH3D* h3_Electron_Mom_Theta_Phi = new TH3D("h3_Electron_Mom_Theta_Phi",";P_{e'} [GeV/c];#theta_{e'} [deg];#phi_{e'} [deg]",600,0.,6,360,0,360,360,0,360);
+	TH3D* h3_Proton_Mom_Theta_Phi = new TH3D("h3_Proton_Mom_Theta_Phi",";P_{p} [GeV/c];#theta_{p} [deg];#phi_{p} [deg]",600,0.,6,360,0,360,360,0,360);
+	TH3D* h3_PiPlus_Mom_Theta_Phi = new TH3D("h3_PiPlus_Mom_Theta_Phi",";P_{#pi^{+}} [GeV/c];#theta_{#pi^{+}} [deg];#phi_{#pi^{+}} [deg]",600,0.,6,360,0,360,360,0,360);
+	TH3D* h3_PiMinus_Mom_Theta_Phi = new TH3D("h3_PiMinus_Mom_Theta_Phi",";P_{#pi^{-}} [GeV/c];#theta_{#pi^{-}} [deg];#phi_{#pi^{-}} [deg]",600,0.,6,360,0,360,360,0,360);
 
 	for (int WhichSector = 0; WhichSector < NSectors; WhichSector++) {
 
@@ -731,6 +737,8 @@ void genie_analysis::Loop(Int_t choice) {
 	TH1F *h1_ECal_Slice2_InSector[NSectors];
 	TH1F *h1_ECal_Slice3_InSector[NSectors];
 
+	TH1F *h1_W_weight_InSector[NSectors];
+
 	for (int WhichSector = 0; WhichSector < NSectors; WhichSector++) {
 
 		h1_ECal_Slice1_InSector[WhichSector]  = new TH1F("h1_ECal_Slice1_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
@@ -747,6 +755,8 @@ void genie_analysis::Loop(Int_t choice) {
 		h1_DeltaAlphaT_InSector[WhichSector]  = new TH1F("h1_DeltaAlphaT_InSector_"+TString(std::to_string(WhichSector)),";#delta#alpha_{T} [deg]",NDeltaAlphaTBins,DeltaAlphaTMin,DeltaAlphaTMax);
 
 		h1_DeltaPhiT_InSector[WhichSector]  = new TH1F("h1_DeltaPhiT_InSector_"+TString(std::to_string(WhichSector)),";#delta#phi_{T} [deg]",NDeltaPhiTBins,DeltaPhiTMin,DeltaPhiTMax);
+
+		h1_W_weight_InSector[WhichSector]  = new TH1F("h1_W_weight_InSector_"+TString(std::to_string(WhichSector)),";W [GeV/c^{2}]",400,0,3);
 
 	}
 
@@ -1253,6 +1263,8 @@ void genie_analysis::Loop(Int_t choice) {
 		h1_Wvar->Fill(W_var);
 		h1_el_Mott_crosssec->Fill(Mott_cross_sec);
 		h2_el_theta_phi->Fill(el_phi_mod,el_theta,WeightIncl);
+		h3_Electron_Mom_Theta_Phi->Fill(V4_el.Rho(),el_theta,el_phi_mod,wght*e_acc_ratio);
+
 		h1_el_theta->Fill(el_theta);
 		h2_Q2_nu->Fill(nu,reco_Q2);
 		h2_Q2_xbjk_weight->Fill(x_bjk,reco_Q2,WeightIncl);
@@ -1349,7 +1361,7 @@ void genie_analysis::Loop(Int_t choice) {
 					ProtonMag = V3_prot_corr.Mag(); 
 
 					//acceptance_c takes phi in radians and here unmodified by 30 degree.
-					ProtonWeight = acceptance_c(ProtonMag,ProtonCosTheta, phi_prot, 2212,file_acceptance_p);
+					ProtonWeight = wght*acceptance_c(ProtonMag,ProtonCosTheta, phi_prot, 2212,file_acceptance_p);
 					if ( fabs(ProtonWeight) != ProtonWeight ) { continue; }
 
 					ProtonPhi_Deg = V3_prot_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.; 
@@ -1383,6 +1395,8 @@ void genie_analysis::Loop(Int_t choice) {
 
 				h1_Proton_AccMapWeights->Fill(ProtonWeight);
 				h1_Proton_Momentum->Fill(ProtonMag,ProtonWeight);
+
+				h3_Proton_Mom_Theta_Phi->Fill(ProtonMag,ProtonTheta_Deg,ProtonPhi_Deg,ProtonWeight);
 
 			}
 
@@ -1425,7 +1439,7 @@ void genie_analysis::Loop(Int_t choice) {
 					PiMinusMag = V3_pi_corr.Mag(); 
 
 					//acceptance_c takes phi in radians and here unmodified by 30 degree.
-					PiMinusWeight = acceptance_c(PiMinusMag,PiMinusCosTheta, phi_pion, -211,file_acceptance);
+					PiMinusWeight = wght * acceptance_c(PiMinusMag,PiMinusCosTheta, phi_pion, -211,file_acceptance);
 					if ( fabs(PiMinusWeight) != PiMinusWeight ) { continue; }
 
 					PiMinusPhi_Deg = V3_pi_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.;
@@ -1464,6 +1478,8 @@ void genie_analysis::Loop(Int_t choice) {
 
 				h1_PiMinus_AccMapWeights->Fill(PiMinusWeight);
 				h1_PiMinus_Momentum->Fill(PiMinusMag,PiMinusWeight);
+
+				h3_PiMinus_Mom_Theta_Phi->Fill(PiMinusMag,PiMinusTheta_Deg,PiMinusPhi_Deg,PiMinusWeight);
 
 			}
 
@@ -1505,7 +1521,7 @@ void genie_analysis::Loop(Int_t choice) {
 					PiPlusMag = V3_pi_corr.Mag(); 
 
 					//acceptance_c takes phi in radians and here unmodified by 30 degree.
-					PiPlusWeight = acceptance_c(PiPlusMag,PiPlusCosTheta, phi_pion, 211,file_acceptance_pip);
+					PiPlusWeight = wght * acceptance_c(PiPlusMag,PiPlusCosTheta, phi_pion, 211,file_acceptance_pip);
 					if ( fabs(PiPlusWeight) != PiPlusWeight ) { continue; }
 
 					PiPlusPhi_Deg = V3_pi_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.;
@@ -1544,6 +1560,8 @@ void genie_analysis::Loop(Int_t choice) {
 
 				h1_PiPlus_AccMapWeights->Fill(PiPlusWeight);
 				h1_PiPlus_Momentum->Fill(PiPlusMag,PiPlusWeight);
+
+				h3_PiPlus_Mom_Theta_Phi->Fill(PiPlusMag,PiPlusTheta_Deg,PiPlusPhi_Deg,PiPlusWeight);
 
 			}
 
@@ -1741,6 +1759,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_xbjk_weight->Fill(x_bjk,-P_N_2p[f]*histoweight);
 					h1_Q2_weight->Fill(reco_Q2,-P_N_2p[f]*histoweight);
 					h1_Wvar_weight->Fill(W_var,-P_N_2p[f]*histoweight);
+					h1_W_weight_InSector[ElectronSector]->Fill(W_var,-P_N_2p[f]*histoweight);
 					h1_nu_weight->Fill(nu,-P_N_2p[f]*histoweight);
 					h1_el_mom_corr->Fill(V4_el.Rho(),-P_N_2p[f]*histoweight);
 					h1_prot_mom->Fill(V3_2prot_corr[f].Mag(),-P_N_2p[f]*histoweight);
@@ -1959,6 +1978,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_xbjk_weight->Fill(x_bjk,P_2p1pito2p0pi[z]*histoweight);
 					h1_Q2_weight->Fill(reco_Q2,P_2p1pito2p0pi[z]*histoweight);
 					h1_Wvar_weight->Fill(W_var,P_2p1pito2p0pi[z]*histoweight);
+					h1_W_weight_InSector[ElectronSector]->Fill(W_var,P_2p1pito2p0pi[z]*histoweight);
 					h1_nu_weight->Fill(nu,P_2p1pito2p0pi[z]*histoweight);
 					h1_el_mom_corr->Fill(V4_el.Rho(),P_2p1pito2p0pi[z]*histoweight);
 					h1_prot_mom->Fill(V3_2prot_corr[z].Mag(),P_2p1pito2p0pi[z]*histoweight);
@@ -2115,6 +2135,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_xbjk_weight->Fill(x_bjk,P_2p1pito1p1pi[z]*histoweight);
 					h1_Q2_weight->Fill(reco_Q2,P_2p1pito1p1pi[z]*histoweight);
 					h1_Wvar_weight->Fill(W_var,P_2p1pito1p1pi[z]*histoweight);
+					h1_W_weight_InSector[ElectronSector]->Fill(W_var,P_2p1pito1p1pi[z]*histoweight);
 					h1_nu_weight->Fill(nu,P_2p1pito1p1pi[z]*histoweight);
 					h1_el_mom_corr->Fill(V4_el.Rho(),P_2p1pito1p1pi[z]*histoweight);
 					h1_prot_mom->Fill(V3_2prot_corr[z].Mag(),P_2p1pito1p1pi[z]*histoweight);
@@ -2275,6 +2296,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_xbjk_weight->Fill(x_bjk,-P_2p1pito1p0pi[z]*histoweight);
 					h1_Q2_weight->Fill(reco_Q2,-P_2p1pito1p0pi[z]*histoweight);
 					h1_Wvar_weight->Fill(W_var,-P_2p1pito1p0pi[z]*histoweight);
+					h1_W_weight_InSector[ElectronSector]->Fill(W_var,-P_2p1pito1p0pi[z]*histoweight);
 					h1_nu_weight->Fill(nu,-P_2p1pito1p0pi[z]*histoweight);
 					h1_el_mom_corr->Fill(V4_el.Rho(),-P_2p1pito1p0pi[z]*histoweight);
 					h1_prot_mom->Fill(V3_2prot_corr[z].Mag(),-P_2p1pito1p0pi[z]*histoweight);
@@ -2498,6 +2520,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_xbjk_weight->Fill(x_bjk,Ptot_2p[z]*histoweight);
 					h1_Q2_weight->Fill(reco_Q2,Ptot_2p[z]*histoweight);
 					h1_Wvar_weight->Fill(W_var,Ptot_2p[z]*histoweight);
+					h1_W_weight_InSector[ElectronSector]->Fill(W_var,Ptot_2p[z]*histoweight);
 					h1_nu_weight->Fill(nu,Ptot_2p[z]*histoweight);
 					h1_el_mom_corr->Fill(V4_el.Rho(),Ptot_2p[z]*histoweight);
 					h1_prot_mom->Fill(V3_2prot_corr[z].Mag(),Ptot_2p[z]*histoweight);
@@ -2757,6 +2780,7 @@ void genie_analysis::Loop(Int_t choice) {
 						h1_xbjk_weight->Fill(x_bjk,P_3pto2p[count][j]*histoweight);
 						h1_Q2_weight->Fill(reco_Q2,P_3pto2p[count][j]*histoweight);
 						h1_Wvar_weight->Fill(W_var,P_3pto2p[count][j]*histoweight);
+						h1_W_weight_InSector[ElectronSector]->Fill(W_var,P_3pto2p[count][j]*histoweight);
 						h1_nu_weight->Fill(nu,P_3pto2p[count][j]*histoweight);
 						h1_el_mom_corr->Fill(V4_el.Rho(),P_3pto2p[count][j]*histoweight);
 						h1_prot_mom->Fill(V3_prot_corr[j].Mag(),P_3pto2p[count][j]*histoweight);
@@ -2918,6 +2942,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_xbjk_weight->Fill(x_bjk,-P_3pto1p[j]*histoweight);
 					h1_Q2_weight->Fill(reco_Q2,-P_3pto1p[j]*histoweight);
 					h1_Wvar_weight->Fill(W_var,-P_3pto1p[j]*histoweight);
+					h1_W_weight_InSector[ElectronSector]->Fill(W_var,-P_3pto1p[j]*histoweight);
 					h1_nu_weight->Fill(nu,-P_3pto1p[j]*histoweight);
 					h1_el_mom_corr->Fill(V4_el.Rho(),-P_3pto1p[j]*histoweight);
 					h1_prot_mom->Fill(V3_prot_corr[j].Mag(),-P_3pto1p[j]*histoweight);
@@ -3123,6 +3148,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_xbjk_weight->Fill(x_bjk,P_tot_3p[j]*histoweight);
 					h1_Q2_weight->Fill(reco_Q2,P_tot_3p[j]*histoweight);
 					h1_Wvar_weight->Fill(W_var,P_tot_3p[j]*histoweight);
+					h1_W_weight_InSector[ElectronSector]->Fill(W_var,P_tot_3p[j]*histoweight);
 					h1_nu_weight->Fill(nu,P_tot_3p[j]*histoweight);
 					h1_el_mom_corr->Fill(V4_el.Rho(),P_tot_3p[j]*histoweight);
 					h1_prot_mom->Fill(V3_prot_corr[j].Mag(),P_tot_3p[j]*histoweight);
@@ -3447,6 +3473,7 @@ void genie_analysis::Loop(Int_t choice) {
 								h1_xbjk_weight->Fill(x_bjk,-P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight);
 								h1_Q2_weight->Fill(reco_Q2,-P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight);
 								h1_Wvar_weight->Fill(W_var,-P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight);
+								h1_W_weight_InSector[ElectronSector]->Fill(W_var,-P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight);
 								h1_nu_weight->Fill(nu,-P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight);
 								h1_el_mom_corr->Fill(V4_el.Rho(),-P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight);
 								h1_prot_mom->Fill(V3_prot_corr[j].Mag(),-P_4pto3p[count][j]*(N_p4_p3[g]/N_p_four)*histoweight);
@@ -3609,6 +3636,7 @@ void genie_analysis::Loop(Int_t choice) {
 							h1_xbjk_weight->Fill(x_bjk,P_43pto1p[j]*histoweight);
 							h1_Q2_weight->Fill(reco_Q2,P_43pto1p[j]*histoweight);
 							h1_Wvar_weight->Fill(W_var,P_43pto1p[j]*histoweight);
+							h1_W_weight_InSector[ElectronSector]->Fill(W_var,P_43pto1p[j]*histoweight);
 							h1_nu_weight->Fill(nu,P_43pto1p[j]*histoweight);
 							h1_el_mom_corr->Fill(V4_el.Rho(),P_43pto1p[j]*histoweight);
 							h1_prot_mom->Fill(V3_prot_corr[j].Mag(),P_43pto1p[j]*histoweight);
@@ -3796,6 +3824,7 @@ void genie_analysis::Loop(Int_t choice) {
 									h1_xbjk_weight->Fill(x_bjk,P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight);
 									h1_Q2_weight->Fill(reco_Q2,P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight);
 									h1_Wvar_weight->Fill(W_var,P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight);
+									h1_W_weight_InSector[ElectronSector]->Fill(W_var,P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight);
 									h1_nu_weight->Fill(nu,P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight);
 									h1_el_mom_corr->Fill(V4_el.Rho(),P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight);
 									h1_prot_mom->Fill(V3p2[j].Mag(),P_4pto2p[j]*(N_p4_p2[N_4to2]/N_p_four)*histoweight);
@@ -3970,6 +3999,7 @@ void genie_analysis::Loop(Int_t choice) {
 						h1_xbjk_weight->Fill(x_bjk,-P_4pto1p[j]*histoweight);
 						h1_Q2_weight->Fill(reco_Q2,-P_4pto1p[j]*histoweight);
 						h1_Wvar_weight->Fill(W_var,-P_4pto1p[j]*histoweight);
+						h1_W_weight_InSector[ElectronSector]->Fill(W_var,-P_4pto1p[j]*histoweight);
 						h1_nu_weight->Fill(nu,-P_4pto1p[j]*histoweight);
 						h1_el_mom_corr->Fill(V4_el.Rho(),-P_4pto1p[j]*histoweight);
 						h1_prot_mom->Fill(V3_prot_corr[j].Mag(),-P_4pto1p[j]*histoweight);
@@ -4604,6 +4634,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_xbjk_weight->Fill(x_bjk,histoweight);
 				h1_Q2_weight->Fill(reco_Q2,histoweight);
 				h1_Wvar_weight->Fill(W_var,histoweight);
+				h1_W_weight_InSector[ElectronSector]->Fill(W_var,histoweight);
 				h1_nu_weight->Fill(nu,histoweight);
 				h1_el_mom_corr->Fill(V4_el.Rho(),histoweight);
 				h1_prot_mom->Fill(V3_prot_corr.Mag(),histoweight);
@@ -4830,6 +4861,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_xbjk_weight->Fill(x_bjk,-(N_piphot_undet/N_piphot_det)*histoweight);
 					h1_Q2_weight->Fill(reco_Q2,-(N_piphot_undet/N_piphot_det)*histoweight);
 					h1_Wvar_weight->Fill(W_var,-(N_piphot_undet/N_piphot_det)*histoweight);
+					h1_W_weight_InSector[ElectronSector]->Fill(W_var,-(N_piphot_undet/N_piphot_det)*histoweight);
 					h1_nu_weight->Fill(nu,-(N_piphot_undet/N_piphot_det)*histoweight);
 					h1_el_mom_corr->Fill(V4_el.Rho(),-(N_piphot_undet/N_piphot_det)*histoweight);
 					h1_prot_mom->Fill(V3_prot_corr.Mag(),-(N_piphot_undet/N_piphot_det)*histoweight);
@@ -5060,6 +5092,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_xbjk_weight->Fill(x_bjk,P_1p1pi[z]*histoweight);
 					h1_Q2_weight->Fill(reco_Q2,P_1p1pi[z]*histoweight);
 					h1_Wvar_weight->Fill(W_var,P_1p1pi[z]*histoweight);
+					h1_W_weight_InSector[ElectronSector]->Fill(W_var,P_1p1pi[z]*histoweight);
 					h1_nu_weight->Fill(nu,P_1p1pi[z]*histoweight);
 					h1_el_mom_corr->Fill(V4_el.Rho(),P_1p1pi[z]*histoweight);
 					h1_prot_mom->Fill(V3_prot_corr.Mag(),P_1p1pi[z]*histoweight);
@@ -5232,6 +5265,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_xbjk_weight->Fill(x_bjk,-P_1p0pi*histoweight);
 				h1_Q2_weight->Fill(reco_Q2,-P_1p0pi*histoweight);
 				h1_Wvar_weight->Fill(W_var,-P_1p0pi*histoweight);
+				h1_W_weight_InSector[ElectronSector]->Fill(W_var,-P_1p0pi*histoweight);
 				h1_nu_weight->Fill(nu,-P_1p0pi*histoweight);
 				h1_el_mom_corr->Fill(V4_el.Rho(),-P_1p0pi*histoweight);
 				h1_prot_mom->Fill(V3_prot_corr.Mag(),-P_1p0pi*histoweight);
@@ -5454,6 +5488,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_xbjk_weight->Fill(x_bjk,P_1p3pi*histoweight);
 				h1_Q2_weight->Fill(reco_Q2,P_1p3pi*histoweight);
 				h1_Wvar_weight->Fill(W_var,P_1p3pi*histoweight);
+				h1_W_weight_InSector[ElectronSector]->Fill(W_var,P_1p3pi*histoweight);
 				h1_nu_weight->Fill(nu,P_1p3pi*histoweight);
 				h1_el_mom_corr->Fill(V4_el.Rho(),P_1p3pi*histoweight);
 				h1_prot_mom->Fill(V3_prot_corr.Mag(),P_1p3pi*histoweight);

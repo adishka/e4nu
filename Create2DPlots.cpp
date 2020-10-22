@@ -37,24 +37,25 @@ void Create2DPlots() {
 	std::vector<TString> FSILabel; std::vector<TString> NameOfPlots; std::vector<TString> XLabelOfPlots; std::vector<TString> YLabelOfPlots;  
 	std::vector<TString> OutputPlotNames; std::vector<TString> Title;
 
-	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");  JustNucleus.push_back("He");
+//	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");  JustNucleus.push_back("He");
 	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
-	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
+//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
 
-	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV");
-	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");
+//	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV");
+//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");
 	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
 
 	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Data"); DirNames.push_back("Data");
+	FSIModel.push_back("Pinned_Data_NewFiducials_SixSectors"); FSILabel.push_back("Data NF"); DirNames.push_back("Data NF");
 //	FSIModel.push_back("Data_Final_NoWCut"); FSILabel.push_back("Data"); DirNames.push_back("Data");
 //	FSIModel.push_back("hA2018_Final_NoRadCorr"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors_NoAccMaps"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors_NoAccMaps"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_NoWCut"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
 
 //	FSIModel.push_back("hA2018_Truth_NoRadCorr"); FSILabel.push_back("GENIE (Truth)");  DirNames.push_back("hA2018_Truth_NoRadCorr");

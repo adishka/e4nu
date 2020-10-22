@@ -103,9 +103,9 @@ void OverlayPlots() {
 	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
 //	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
 
-	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
+//	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
 //	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
-//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");  DoubleE.push_back(4.461);
+	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");  DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
@@ -120,7 +120,7 @@ void OverlayPlots() {
 	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(kCyan); BreakDownColors.push_back(kGreen); BreakDownColors.push_back(kMagenta);
 
 	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Data"); DirNames.push_back("Data");
-	FSIModel.push_back("Pinned_Data_NewFiducials_SixSectors"); FSILabel.push_back("Data (New Fiducials)"); DirNames.push_back("Data_New_Fiducials");
+//	FSIModel.push_back("Pinned_Data_NewFiducials_SixSectors"); FSILabel.push_back("Data (New Fiducials)"); DirNames.push_back("Data_New_Fiducials");
 
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 
@@ -157,7 +157,7 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("h1_Erec_p_bkgd_slice_sub2p1pi_2p_3"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_3");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_factor_fracfeed"); LabelOfPlots.push_back("E^{cal} Feeddown");  OutputPlotNames.push_back("EcalReso");
 //	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_factor_fracfeed"); LabelOfPlots.push_back("E^{QE} Feeddown"); OutputPlotNames.push_back("EQEReso");
-//	NameOfPlots.push_back("h1_el_mom_corr");  LabelOfPlots.push_back("P_{e} (GeV / c)"); OutputPlotNames.push_back("Pmu");
+	NameOfPlots.push_back("h1_el_mom_corr");  LabelOfPlots.push_back("P_{e} (GeV / c)"); OutputPlotNames.push_back("Pmu");
 //	NameOfPlots.push_back("h1_prot_mom"); LabelOfPlots.push_back("P_{p} (GeV / c)"); OutputPlotNames.push_back("Pp");
 //	NameOfPlots.push_back("h1_theta0"); LabelOfPlots.push_back("#theta_{0} (beam-reco angle) (degrees)"); OutputPlotNames.push_back("theta0");
 //	NameOfPlots.push_back("h1_Npi"); LabelOfPlots.push_back("#pi^{+/-} Multiplicity"); OutputPlotNames.push_back("PionMultiPlot");
@@ -180,12 +180,12 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("h1_E_tot_cut2"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{Cal} Before Subtraction [GeV]");  OutputPlotNames.push_back("h1_E_tot_cut2");
 //	NameOfPlots.push_back("h1_PiPlus_Momentum"); LabelOfPlots.push_back("P_{#pi^{+}} [GeV/c]"); OutputPlotNames.push_back("PiPlus_Momentum");
 
-	NameOfPlots.push_back("h1_ECal_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_0");
-	NameOfPlots.push_back("h1_ECal_InSector_1"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_1");
-	NameOfPlots.push_back("h1_ECal_InSector_2"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_2");
-	NameOfPlots.push_back("h1_ECal_InSector_3"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_3");
-	NameOfPlots.push_back("h1_ECal_InSector_4"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_4");
-	NameOfPlots.push_back("h1_ECal_InSector_5"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_5");
+//	NameOfPlots.push_back("h1_ECal_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_0");
+//	NameOfPlots.push_back("h1_ECal_InSector_1"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_1");
+//	NameOfPlots.push_back("h1_ECal_InSector_2"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_2");
+//	NameOfPlots.push_back("h1_ECal_InSector_3"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_3");
+//	NameOfPlots.push_back("h1_ECal_InSector_4"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_4");
+//	NameOfPlots.push_back("h1_ECal_InSector_5"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_5");
 
 
 	std::vector<TH1D*> Plots;

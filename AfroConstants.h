@@ -53,9 +53,9 @@
 
 	// Sector Uncertainties from Afro's study
 
-	const double SectorSystUnc1GeV = 0.05; // 5% syst uncertainty at 1.161 GeV
-	const double SectorSystUnc2GeV = 0.05; // 5% syst uncertainty at 2.261 GeV
-	const double SectorSystUnc4GeV = 0.05; // 5% syst uncertainty at 4.461 GeV
+	const double SectorSystUnc1GeV = 0.06; // 6% syst uncertainty at 1.161 GeV
+	const double SectorSystUnc2GeV = 0.06; // 6% syst uncertainty at 2.261 GeV
+	const double SectorSystUnc4GeV = 0.06; // 6% syst uncertainty at 4.461 GeV
 
 	// Larry/Axel's suggestion for scaling down the last 2 bins by EnhaceTail
 
@@ -270,7 +270,7 @@
 
 	static std::map<std::pair<TString,TString>,double> G2018GenieXSec =
 	{
-		{ std::make_pair("1H", "1_161"),  1.1038574e+09 }, // Q2 > 0.02
+		{ std::make_pair("1H", "1_161"),  1.4515324e+08 }, // Q2 > 0.1
 		{ std::make_pair("4He", "2_261"), 6.55943e+07 }, // Q2 > 0.4
 		{ std::make_pair("4He", "4_461"), 2.73355e+07 }, // Q2 > 0.8
 		{ std::make_pair("12C", "1_161"),  1.10931e+09 }, // Q2 > 0.1
@@ -284,7 +284,7 @@
 
 	static std::map<std::pair<TString,TString>,double> G2018NumberEvents =
 	{
-		{ std::make_pair("1H", "1_161"), 10000000 }, // Q2 > 0.02
+		{ std::make_pair("1H", "1_161"), 3000000 }, // Q2 > 0.1
 		{ std::make_pair("4He", "2_261"), 20000000 }, // Q2 > 0.4
 		{ std::make_pair("4He", "4_461"), 9000000 }, // Q2 > 0.8
 		{ std::make_pair("12C", "1_161"), 50000000 }, // Q2 > 0.1

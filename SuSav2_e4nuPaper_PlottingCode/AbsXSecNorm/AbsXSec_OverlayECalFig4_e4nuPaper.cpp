@@ -165,6 +165,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 						//                 apply acceptance systematics using sector-by -sector uncertainties
 
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
+						Plots[WhichFSIModel]->SetLineWidth(1);
 
 						//-----------------------------------------------------------------------------------------------
 
@@ -226,7 +227,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 								BreakDownPlots[j-1]->SetLineColor(BreakDownColors[j-1]);
 								
-								BreakDownPlots[j-1]->SetLineWidth(LineWidth);
+								BreakDownPlots[j-1]->SetLineWidth(1);
 
 								if (DoubleE[WhichEnergy] == 1.161) { BreakDownPlots[j-1]->Scale(1./2.); }
 								if (DoubleE[WhichEnergy] == 4.461) { BreakDownPlots[j-1]->Scale(5.); }
@@ -354,7 +355,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		TLatex latex1GeV;
 		latex1GeV.SetTextFont(FontStyle);
 		latex1GeV.SetTextSize(6*TextSize);
-		latex1GeV.DrawLatexNDC(0.03,0.45,"1.159 GeV");
+		latex1GeV.DrawLatexNDC(0.03,0.45,"1.159 GeV (x1/2)");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -380,11 +381,11 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		TLatex latex4GeV;
 		latex4GeV.SetTextFont(FontStyle);
 		latex4GeV.SetTextSize(6*TextSize);
-		latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV");
+		latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV (x5)");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
-		TPad* padPmiss = new TPad("padPmiss","padPmiss",0.42,0.01,0.78,0.14,21); 
+		TPad* padPmiss = new TPad("padPmiss","padPmiss",0.42,0.03,0.78,0.15,21); 
 		padPmiss->SetFillColor(kWhite); 
 		PlotCanvas->cd();
 		padPmiss->Draw();
@@ -392,7 +393,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 		TLatex latexPmiss;
 		latexPmiss.SetTextFont(FontStyle);
-		latexPmiss.SetTextSize(5*TextSize);
+		latexPmiss.SetTextSize(6*TextSize);
 		latexPmiss.DrawLatexNDC(0.1,0.5,"(e,e'p)_{1p0#pi} E_{cal} [GeV]");
 
 		// -------------------------------------------------------------------------------------------------
@@ -406,7 +407,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		TLatex latexx14C12;
 		latexx14C12.SetTextFont(FontStyle);
 		latexx14C12.SetTextSize(8*TextSize);
-		latexx14C12.DrawLatexNDC(0.,0.4,"x1/2");
+		//latexx14C12.DrawLatexNDC(0.,0.4,"x1/2");
 
 		// -------------------------------------------------------------------------------------------------
 	
@@ -419,7 +420,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		TLatex latexx5aC12;
 		latexx5aC12.SetTextFont(FontStyle);
 		latexx5aC12.SetTextSize(8*TextSize);
-		latexx5aC12.DrawLatexNDC(0.,0.4,"x5");
+		//latexx5aC12.DrawLatexNDC(0.,0.4,"x5");
 
 		// -------------------------------------------------------------------------------------------------
 	
@@ -432,7 +433,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		TLatex latexx5bC12;
 		latexx5bC12.SetTextFont(FontStyle);
 		latexx5bC12.SetTextSize(8*TextSize);
-		latexx5bC12.DrawLatexNDC(0.,0.4,"x5");
+		//latexx5bC12.DrawLatexNDC(0.,0.4,"x5");
 
 		// -------------------------------------------------------------------------------------------------
 	
@@ -482,44 +483,50 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
+		// Size for y axis label
+
+		double YaxisSize = 8*TextSize; 
+
+		// -----------------------------------------------------------------------------------------------------------------------------------------
+
 		// Extra pad for the Y-axis units carbon
 
 		PlotCanvas->cd();
-		TPad* padTitle = new TPad("padTitle","padTitle",0.042,0.58,0.092,1., 21); 
+		TPad* padTitle = new TPad("padTitle","padTitle",0.057,0.58,0.107,1., 21); 
 		padTitle->SetFillColor(kWhite); 
 		padTitle->Draw();
 		padTitle->cd();
 
 		TLatex latexYTitle;
 		latexYTitle.SetTextFont(FontStyle);
-		latexYTitle.SetTextSize(6*TextSize);
+		latexYTitle.SetTextSize(YaxisSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
-		latexYTitle.DrawLatexNDC(0.6,0.18,DoubleXSecTitle);
+		latexYTitle.DrawLatexNDC(0.8,0.08,DoubleXSecTitle);
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
 		// Extra pad for the Y-axis units iron
 
 		PlotCanvas->cd();
-		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.35,0.18,0.4,0.55,21); 
+		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.353,0.18,0.403,0.55,21); 
 		padTitleFe->SetFillColor(kWhite); 
 		padTitleFe->Draw();
 		padTitleFe->cd();
 
 		TLatex latexYTitleFe;
 		latexYTitleFe.SetTextFont(FontStyle);
-		latexYTitleFe.SetTextSize(6*TextSize);
+		latexYTitleFe.SetTextSize(YaxisSize);
 		latexYTitleFe.SetTextColor(kBlack);
 		latexYTitleFe.SetTextAngle(90);
-		latexYTitleFe.DrawLatexNDC(0.6,0.1,DoubleXSecTitle);
+		latexYTitleFe.DrawLatexNDC(0.8,0.,DoubleXSecTitle);
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
 		TString ext = "";
 		if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
-		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"Fig4_SuSav2_AbsXSec.pdf");
+		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"ECal_Fig4_SuSav2_AbsXSec.pdf");
 
 		//delete PlotCanvas;
 
