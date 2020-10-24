@@ -33,10 +33,10 @@ double Integrate(TH1D* h) {
 
 	for (int i = 0; i < NBins; i++) {
 
-		//if (h->GetBinCenter(i+1) >= 0.9 && h->GetBinCenter(i+1) <= 1.) {
-		if (h->GetBinContent(i+1) > 0) {
+		if (h->GetBinCenter(i+1) >= 0.9 && h->GetBinCenter(i+1) <= 1.) {
+		//if (h->GetBinContent(i+1) > 0) {
 
-		SumEntries += h->GetBinContent(i+1) /** h->GetBinWidth(i+1)*/;
+		SumEntries += h->GetBinContent(i+1) * h->GetBinWidth(i+1);
 //cout << "h->GetBinContent(i+1) = " << h->GetBinContent(i+1) << endl;
 		}
 
@@ -90,7 +90,8 @@ void HydrogenComparisons() {
 //	Style.push_back(9); Style.push_back(9); Style.push_back(9); Style.push_back(9); // fancy dashed lines 
 	Style.push_back(1); Style.push_back(kDashed); Style.push_back(1); Style.push_back(1);
 
-	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
+//	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
+	FSIModel.push_back("Pinned_Data_NoRotations"); FSILabel.push_back("Pinned Data No Rotations"); DirNames.push_back("Pinned Data No Rotations");
 
 //	FSIModel.push_back("Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
@@ -123,7 +124,8 @@ void HydrogenComparisons() {
 
 //	NameOfPlots.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0"); LabelOfPlots.push_back("1st Sector Energy Transfer [GeV]"); OutputPlotNames.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0");
 
-	NameOfPlots.push_back("h1_Wvar_weight"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_Wvar_weight"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+	NameOfPlots.push_back("h1_W_weight_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
 
 	std::vector<TH1D*> Plots;
@@ -347,9 +349,17 @@ void HydrogenComparisons() {
 
 			TString HydrogenPathToFiles = "../../myFiles/1_161/hA2018_Final_RadCorr_LFGM/NoxBCut/";
 			TString HydrogenFileName = HydrogenPathToFiles+"1H_1_161_hA2018_Final_RadCorr_LFGM_Plots_FSI_em.root";
+
+			if (FSILabel[0] == "Pinned Data No Rotations") { 
+
+				HydrogenPathToFiles = "../../myFiles/1_161/hA2018_NoRotations/NoxBCut/"; 
+				HydrogenFileName = HydrogenPathToFiles+"1H_1_161_hA2018_NoRotations_Plots_FSI_em.root";
+
+			}
+
 			TFile* HydrogenFileSample = TFile::Open(HydrogenFileName);
 
-			TH1D* G2018histo = (TH1D*)(HydrogenFileSample->Get("h1_Wvar_weight"));
+			TH1D* G2018histo = (TH1D*)(HydrogenFileSample->Get(NameOfPlots[0]));
 
 			UniversalE4vFunction(G2018histo,"G2018","1H","1_161","h1_Wvar_weight");
 

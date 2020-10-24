@@ -326,7 +326,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
-	if (Sample == "Pinned Data") { 
+	if (Sample == "Pinned Data" || Sample == "Pinned Data No Rotations") { 
 
 		SF = 1. / (IntegratedCharge_PinnedFiles[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
@@ -424,7 +424,7 @@ void AbsoluteXSec2DScaling(TH2D* h, TString Sample, TString Nucleus, TString E) 
 
 	}
 
-	if (Sample == "Pinned Data") { 
+	if (Sample == "Pinned Data" || Sample == "Pinned Data No Rotations") { 
 
 		SF = 1. / (IntegratedCharge_PinnedFiles[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
@@ -473,9 +473,9 @@ void ApplyRebinning(TH1D* h, TString Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("EQEReso") != std::string::npos || string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
 
-	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos || string(PlotVar).find("Etot") != std::string::npos) {
+	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos || string(PlotVar).find("Erec") != std::string::npos) {
 
-	} else if (string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("Erec") != std::string::npos) {
+	} else if (string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("Etot") != std::string::npos) {
 
 	} else if (string(PlotVar).find("PT") != std::string::npos || string(PlotVar).find("MissMomentum") != std::string::npos) {
 
@@ -489,7 +489,7 @@ void ApplyRebinning(TH1D* h, TString Energy, TString PlotVar) {
 
 		for (int i = 0; i < 1; i++) { h->Rebin();} 
 
-	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
+	} else if (string(PlotVar).find("Wvar") != std::string::npos || string(PlotVar).find("W_") != std::string::npos ) {
 
 		for (int i = 0; i < 0; i++) { h->Rebin();} 
 
@@ -527,7 +527,7 @@ void ApplyRange(TH1D* h, TString Energy, TString PlotVar) {
 		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.7,2.6); }
 		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(2.,5.); }
 
-	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos ) {
+	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos ) {
 
 		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.57,1.23); }
 		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.67,2.4); }
@@ -539,7 +539,7 @@ void ApplyRange(TH1D* h, TString Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("DeltaPhiT") != std::string::npos ) {
 
-	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
+	} else if (string(PlotVar).find("Wvar") != std::string::npos || string(PlotVar).find("W_") != std::string::npos ) {
 
 		h->GetXaxis()->SetRangeUser(0.6,1.5);
 

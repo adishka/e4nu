@@ -28,8 +28,6 @@ void ExtDataTable1() {
 
 	gStyle->SetOptStat(0);
 
-	double range = 0.05;
-
 	// ---------------------------------------------------------------------------------------------------------
 
 	std::vector<TString> xBCut; 
@@ -53,7 +51,8 @@ void ExtDataTable1() {
 
 	xBCut.push_back("NoxBCut");
 
-	FSIModel.push_back("Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
+//	FSIModel.push_back("Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
 	
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");	
@@ -66,7 +65,7 @@ void ExtDataTable1() {
 //	NameOfPlots.push_back("h1_EQE"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
 
 	NameOfPlots.push_back("h1_Ecal_SuperFine"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-	NameOfPlots.push_back("h1_EQE_SuperFine"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
+//	NameOfPlots.push_back("h1_EQE_SuperFine"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
 
 	std::vector<TH1D*> Plots;
 
@@ -113,7 +112,7 @@ void ExtDataTable1() {
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-						TString PathToFiles = "../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
+						TString PathToFiles = "../../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
 						TFile* FileSample = TFile::Open(FileName);
 						Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
@@ -128,6 +127,10 @@ void ExtDataTable1() {
 							// ----------------------------------------------------------------------------
 
 							// Percentages with respect to the true beam energy
+
+							double range = 0.05;
+							if (DoubleE[WhichEnergy] == 2.261) { range = 0.03; }
+							if (DoubleE[WhichEnergy] == 4.461) { range = 0.02; }
 
 							double MinE = (1.-range)*DoubleE[WhichEnergy];
 							double MaxE = (1.+range)*DoubleE[WhichEnergy];
@@ -155,26 +158,30 @@ if (E[WhichEnergy] == "4_461") { for (int i = 0; i < 3; i++) { Plots[WhichFSIMod
 							if (E[WhichEnergy] == "4_461") { Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(1.2,6.); }
 
 							Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
-							if ( FSIModel[WhichFSIModel] == "Data_Final" ) { Plots[WhichFSIModel]->Draw("e same"); }
+							if ( FSIModel[WhichFSIModel] == "Pinned_Data_Final" ) { Plots[WhichFSIModel]->Draw("e same"); }
 							else { Plots[WhichFSIModel]->Draw("c hist same"); }
- 
+
+							double ExtraHeight = 0.1;
+
+							TLine* line = new TLine(DoubleE[WhichEnergy],0,DoubleE[WhichEnergy],(1+ExtraHeight)*Plots[WhichFSIModel]->GetMaximum());
+							line->SetLineWidth(3);
+							line->SetLineStyle(kDashed);
+							line->Draw();
+
+							TLine* linelow = new TLine( MinE,0,MinE,(1+ExtraHeight)*Plots[WhichFSIModel]->GetMaximum());
+							linelow->SetLineWidth(3);
+							linelow->Draw();
+
+							TLine* linehigh = new TLine( MaxE,0,MaxE,(1+ExtraHeight)*Plots[WhichFSIModel]->GetMaximum());
+							linehigh->SetLineWidth(3);
+							linehigh->Draw();
+
+ 							Plots[0]->GetYaxis()->SetRangeUser(0.,(1+ExtraHeight)*Plots[WhichFSIModel]->GetMaximum());
+							Plots[0]->Draw("e same");
 
 						} // End of the if statement that we are talking about a reco energy plot
 
 					} // End of the loop over the FSI Models 
-
-TLine* line = new TLine(DoubleE[WhichEnergy],0,DoubleE[WhichEnergy],1.05*Plots[0]->GetMaximum());
-line->SetLineWidth(3);
-line->SetLineStyle(kDashed);
-line->Draw();
-
-TLine* linelow = new TLine(0.95*DoubleE[WhichEnergy],0,0.95*DoubleE[WhichEnergy],1.05*Plots[0]->GetMaximum());
-linelow->SetLineWidth(3);
-linelow->Draw();
-
-TLine* linehigh = new TLine(1.05*DoubleE[WhichEnergy],0,1.05*DoubleE[WhichEnergy],1.05*Plots[0]->GetMaximum());
-linehigh->SetLineWidth(3);
-linehigh->Draw();
 
 					// -----------------------------------------------------------------------------------------------------------------------------------------
 
