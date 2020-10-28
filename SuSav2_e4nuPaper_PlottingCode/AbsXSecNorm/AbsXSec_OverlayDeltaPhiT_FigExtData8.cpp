@@ -107,13 +107,13 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 
 	 			// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
 			
-				double MaxHeight = 0.39;
+				double MaxHeight = 0.19;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 1.7; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 0.84; }
 
 					// ---------------------------------------------------------------------------------------------------------------
 
@@ -197,7 +197,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 								BreakDownPlots.push_back( (TH1D*)( FileSample->Get("DeltaPhiT_Int_"+ToStringInt(j)) ) );
 
 								BreakDownPlots[j-1]->SetLineColor(BreakDownColors[j-1]);
-								BreakDownPlots[j-1]->SetLineWidth(LineWidth);
+								//BreakDownPlots[j-1]->SetLineWidth(LineWidth);
 
 								UniversalE4vFunction(BreakDownPlots[j-1],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E,NameOfPlots[WhichPlot]);
 

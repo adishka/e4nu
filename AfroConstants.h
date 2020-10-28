@@ -63,7 +63,7 @@
 
 	// Clas dOmega 
 
-	const double dOmega = 0.01; // sr
+	const double dOmega = 0.02; // sr
 
 	// 1e -> 1.6x10^-19 C
 	// 1C -> 6.25x10^18 e
@@ -76,7 +76,7 @@
 	// number of atoms in 12 grams of the isotope 12C
 	// 1 gr -> 6x10^23 / 12 = 5x10^22 atoms
 //	double ConversionFactorGramToAtoms = 5*TMath::Power(10.,22);
-	double AvogadroNumber = 6*TMath::Power(10.,23);
+	double AvogadroNumber = 6.02*TMath::Power(10.,23);
 	double OverallUnitConversionFactor = ConversionFactorChargeToElectrons * AvogadroNumber;
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------

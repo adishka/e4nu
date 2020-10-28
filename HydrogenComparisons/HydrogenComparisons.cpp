@@ -36,8 +36,8 @@ double Integrate(TH1D* h) {
 		if (h->GetBinCenter(i+1) >= 0.9 && h->GetBinCenter(i+1) <= 1.) {
 		//if (h->GetBinContent(i+1) > 0) {
 
-		SumEntries += h->GetBinContent(i+1) * h->GetBinWidth(i+1);
-//cout << "h->GetBinContent(i+1) = " << h->GetBinContent(i+1) << endl;
+		SumEntries += h->GetBinContent(i+1) /** h->GetBinWidth(i+1)*/;
+cout << "h->GetBinContent(i+1) = " << h->GetBinContent(i+1) << endl;
 		}
 
 	}
@@ -388,12 +388,12 @@ void HydrogenComparisons() {
 
 			G2018histo->SetLineColor(kBlue);
 			G2018histo->SetLineWidth(3);
-			G2018histo->Draw("C hist same");
+			//G2018histo->Draw("C hist same");
 
 			TLegend* leg = new TLegend(0.6,0.6,0.7,0.7);
 
 			leg->AddEntry(Clone,"Data","lep");
-			leg->AddEntry(G2018histo,"GENIE","l");
+			//leg->AddEntry(G2018histo,"GENIE","l");
 
 			leg->SetTextFont(FontStyle);
 			leg->SetTextSize(TextSize);

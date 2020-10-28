@@ -740,6 +740,9 @@ void genie_analysis::Loop(Int_t choice) {
 	TH1F *h1_W_weight_ThetaSlice_InAllSectors = new TH1F("h1_W_weight_ThetaSlice_InAllSectors",";W [GeV/c^{2}]",400,0,3);
 	TH1F *h1_W_weight_ThetaSlice_InSector[NSectors];
 
+	TH1F *h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors = new TH1F("h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors",";W [GeV/c^{2}]",400,0,3);
+	TH1F *h1_W_weight_FullyInclusive_ThetaSlice_InSector[NSectors];
+
 	for (int WhichSector = 0; WhichSector < NSectors; WhichSector++) {
 
 		h1_ECal_Slice1_InSector[WhichSector]  = new TH1F("h1_ECal_Slice1_InSector_"+TString(std::to_string(WhichSector)),"",n_bins,x_values);
@@ -758,6 +761,7 @@ void genie_analysis::Loop(Int_t choice) {
 		h1_DeltaPhiT_InSector[WhichSector]  = new TH1F("h1_DeltaPhiT_InSector_"+TString(std::to_string(WhichSector)),";#delta#phi_{T} [deg]",NDeltaPhiTBins,DeltaPhiTMin,DeltaPhiTMax);
 
 		h1_W_weight_ThetaSlice_InSector[WhichSector]  = new TH1F("h1_W_weight_ThetaSlice_InSector_"+TString(std::to_string(WhichSector)),";W [GeV/c^{2}]",400,0,3);
+		h1_W_weight_FullyInclusive_ThetaSlice_InSector[WhichSector]  = new TH1F("h1_W_weight_FullyInclusive_ThetaSlice_InSector_"+TString(std::to_string(WhichSector)),";W [GeV/c^{2}]",400,0,3);
 
 	}
 
@@ -1178,6 +1182,15 @@ void genie_analysis::Loop(Int_t choice) {
 		rotation->SetQVector(V3_q);
 //		rotation->PrintQVector();
 
+		int ElectronSector = el_phi_mod / 60.;
+
+		// apapadop: Oct 8 2020: ditching bad sectors
+		// Counting sectors from 0 to 5
+
+		if ( (ElectronSector == 2 || ElectronSector == 4) &&  fbeam_en == "1161") { continue; }
+		if ( (ElectronSector == 2 || ElectronSector == 3 || ElectronSector == 4) &&  fbeam_en == "2261") { continue; }
+//		if ( ElectronSector == 5 &&  fbeam_en == "4461") { continue; }
+
 		h1_EQE_FullyInclusive->Fill(E_rec,WeightIncl);
 		h1_EQE_FullyInclusive_IrregBins->Fill(E_rec,WeightIncl);
 
@@ -1188,25 +1201,18 @@ void genie_analysis::Loop(Int_t choice) {
 		if (el_phi_mod > 240 && el_phi_mod < 300) { h2_Electron_Theta_Momentum_FifthSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
 		if (el_phi_mod > 300 && el_phi_mod < 360) { h2_Electron_Theta_Momentum_SixthSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
 
-		int ElectronSector = el_phi_mod / 60.;
-
-		// apapadop: Oct 8 2020: ditching bad sectors
-		// Counting sectors from 0 to 5
-
-		if ( (ElectronSector == 2 || ElectronSector == 4) &&  fbeam_en == "1161") { continue; }
-		if ( (ElectronSector == 2 || ElectronSector == 3 || ElectronSector == 4) &&  fbeam_en == "2261") { continue; }
-
-//		if ( ElectronSector == 5 &&  fbeam_en == "4461") { continue; }
-
 		if (el_theta > 23 && el_theta < 27) {
+
+			h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors->Fill(W_var,WeightIncl/Q4);
+			h1_W_weight_FullyInclusive_ThetaSlice_InSector[ElectronSector]->Fill(W_var,WeightIncl/Q4);
 
 			// First Sector
 
 //			if (el_phi_mod > 0 && el_phi_mod < 60) {
 //	
-//				h1_EQE_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice->Fill(E_rec,WeightIncl*Q4);
-//				h1_Omega_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice->Fill(nu,WeightIncl*Q4);
-//				h1_EePrime_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice->Fill(V4_el.E(),WeightIncl*Q4);
+//				h1_EQE_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice->Fill(E_rec,WeightIncl/Q4);
+//				h1_Omega_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice->Fill(nu,WeightIncl/Q4);
+//				h1_EePrime_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice->Fill(V4_el.E(),WeightIncl/Q4);
 
 //			}
 
@@ -1214,24 +1220,24 @@ void genie_analysis::Loop(Int_t choice) {
 
 //			if (el_phi_mod > 60 && el_phi_mod < 120) {
 //	
-//				h1_EQE_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice->Fill(E_rec,WeightIncl*Q4);
-//				h1_Omega_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice->Fill(nu,WeightIncl*Q4);
-//				h1_EePrime_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice->Fill(V4_el.E(),WeightIncl*Q4);
+//				h1_EQE_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice->Fill(E_rec,WeightIncl/Q4);
+//				h1_Omega_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice->Fill(nu,WeightIncl/Q4);
+//				h1_EePrime_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice->Fill(V4_el.E(),WeightIncl/Q4);
 
 //			}
 
-			h1_EQE_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(E_rec,WeightIncl*Q4);
-			h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(nu,WeightIncl*Q4);
-			h1_EePrime_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(V4_el.E(),WeightIncl*Q4);
+			h1_EQE_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(E_rec,WeightIncl/Q4);
+			h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(nu,WeightIncl/Q4);
+			h1_EePrime_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(V4_el.E(),WeightIncl/Q4);
 
 
 			if (fabs(x_bjk - 1.) < 0.2) {
 
 //				if (el_phi_mod > 0 && el_phi_mod < 60) {
 //		
-//					h1_EQE_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice_xBCut->Fill(E_rec,WeightIncl*Q4);
-//					h1_Omega_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice_xBCut->Fill(nu,WeightIncl*Q4);
-//					h1_EePrime_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice_xBCut->Fill(V4_el.E(),WeightIncl*Q4);
+//					h1_EQE_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice_xBCut->Fill(E_rec,WeightIncl/Q4);
+//					h1_Omega_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice_xBCut->Fill(nu,WeightIncl/Q4);
+//					h1_EePrime_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice_xBCut->Fill(V4_el.E(),WeightIncl/Q4);
 
 //				}
 
@@ -1239,15 +1245,15 @@ void genie_analysis::Loop(Int_t choice) {
 
 //				if (el_phi_mod > 60 && el_phi_mod < 120) {
 //		
-//					h1_EQE_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice_xBCut->Fill(E_rec,WeightIncl*Q4);
-//					h1_Omega_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice_xBCut->Fill(nu,WeightIncl*Q4);
-//					h1_EePrime_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice_xBCut->Fill(V4_el.E(),WeightIncl*Q4);
+//					h1_EQE_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice_xBCut->Fill(E_rec,WeightIncl/Q4);
+//					h1_Omega_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice_xBCut->Fill(nu,WeightIncl/Q4);
+//					h1_EePrime_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice_xBCut->Fill(V4_el.E(),WeightIncl/Q4);
 
 //				}
 
-				h1_EQE_FullyInclusive_NoQ4Weight_xBCut_Theta_Slice_InSector[ElectronSector]->Fill(E_rec,WeightIncl*Q4);
-				h1_Omega_FullyInclusive_NoQ4Weight_xBCut_Theta_Slice_InSector[ElectronSector]->Fill(nu,WeightIncl*Q4);
-				h1_EePrime_FullyInclusive_NoQ4Weight_xBCut_Theta_Slice_InSector[ElectronSector]->Fill(V4_el.E(),WeightIncl*Q4);
+				h1_EQE_FullyInclusive_NoQ4Weight_xBCut_Theta_Slice_InSector[ElectronSector]->Fill(E_rec,WeightIncl/Q4);
+				h1_Omega_FullyInclusive_NoQ4Weight_xBCut_Theta_Slice_InSector[ElectronSector]->Fill(nu,WeightIncl/Q4);
+				h1_EePrime_FullyInclusive_NoQ4Weight_xBCut_Theta_Slice_InSector[ElectronSector]->Fill(V4_el.E(),WeightIncl/Q4);
 
 			}
 
