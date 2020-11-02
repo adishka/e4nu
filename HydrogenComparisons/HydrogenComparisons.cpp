@@ -37,7 +37,7 @@ double Integrate(TH1D* h) {
 		//if (h->GetBinContent(i+1) > 0) {
 
 		SumEntries += h->GetBinContent(i+1) /** h->GetBinWidth(i+1)*/;
-cout << "h->GetBinContent(i+1) = " << h->GetBinContent(i+1) << endl;
+//cout << "h->GetBinContent(i+1) = " << h->GetBinContent(i+1) << endl;
 		}
 
 	}
@@ -125,7 +125,8 @@ void HydrogenComparisons() {
 //	NameOfPlots.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0"); LabelOfPlots.push_back("1st Sector Energy Transfer [GeV]"); OutputPlotNames.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0");
 
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InAllSectors"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
-	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
 
 	std::vector<TH1D*> Plots;
