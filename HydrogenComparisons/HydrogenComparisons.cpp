@@ -124,9 +124,13 @@ void HydrogenComparisons() {
 
 //	NameOfPlots.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0"); LabelOfPlots.push_back("1st Sector Energy Transfer [GeV]"); OutputPlotNames.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0");
 
+//	NameOfPlots.push_back("h1_Q2_weight"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_Q2_weight"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_Wvar_weight"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InAllSectors"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
-	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
 
 	std::vector<TH1D*> Plots;
@@ -309,6 +313,12 @@ void HydrogenComparisons() {
 			double LowRange = 0.6;
 			double HighRange = 0.9;
 
+//			double LowRange = 1.1;
+//			double HighRange = 1.4;
+
+//			double LowRange = 0.9;
+//			double HighRange = 1.1;
+
 			int LowBin = Plots[1]->FindBin(LowRange);
 			int HighBin = Plots[1]->FindBin(HighRange);
 
@@ -364,7 +374,7 @@ void HydrogenComparisons() {
 
 			TH1D* G2018histo = (TH1D*)(HydrogenFileSample->Get(NameOfPlots[0]));
 
-			UniversalE4vFunction(G2018histo,"G2018","1H","1_161","h1_Wvar_weight");
+			//UniversalE4vFunction(G2018histo,"G2018","1H","1_161","h1_Wvar_weight");
 
 			//AbsoluteXSecScaling(G2018histo,"G2018","1H","1_161");
 
@@ -385,11 +395,11 @@ void HydrogenComparisons() {
 			// -------------------------------------------------------------------------------------------
 
 
-			//G2018histo->Scale(GenieSF);
+			G2018histo->Scale(GenieSF);
 
 			G2018histo->SetLineColor(kBlue);
 			G2018histo->SetLineWidth(3);
-			//G2018histo->Draw("C hist same");
+			G2018histo->Draw("C hist same");
 
 			TLegend* leg = new TLegend(0.6,0.6,0.7,0.7);
 

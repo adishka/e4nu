@@ -335,6 +335,15 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
+	if (Sample == "Mikhail Data") { 
+
+		SF = 1. / (IntegratedCharge_MikhailFiles[std::make_pair(Nucleus, E)] *\
+						    TargetLength[std::make_pair(Nucleus, E)] *\
+						    TargetDensity[std::make_pair(Nucleus, E)] *\
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+
+	}
+
 	// -------------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Simulation sets
@@ -427,6 +436,15 @@ void AbsoluteXSec2DScaling(TH2D* h, TString Sample, TString Nucleus, TString E) 
 	if (Sample == "Pinned Data" || Sample == "Pinned Data No Rotations") { 
 
 		SF = 1. / (IntegratedCharge_PinnedFiles[std::make_pair(Nucleus, E)] *\
+						    TargetLength[std::make_pair(Nucleus, E)] *\
+						    TargetDensity[std::make_pair(Nucleus, E)] *\
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+
+	}
+
+	if (Sample == "Mikhail Data") { 
+
+		SF = 1. / (IntegratedCharge_MikhailFiles[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
 						    TargetDensity[std::make_pair(Nucleus, E)] *\
 						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;

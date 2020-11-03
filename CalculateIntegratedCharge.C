@@ -30,15 +30,19 @@ void CalculateIntegratedCharge::Loop() {
 
 		// ---------------------------------------------------------------------------------------------------------------------
 
-		if (jentry%1000 == 0) std::cout << jentry/1000 << " k " << std::setprecision(3) << double(jentry)/nentries*100. << " %"<< std::endl;
+		if (jentry%1000 == 0) {std::cout << jentry/1000 << " k " << std::setprecision(3) << double(jentry)/fChain->GetEntries()*100. << " %"<< std::endl;}
 
 		// ------------------------------------------------------------------------------------------------------------------------
 
-		double fTorusCurrent = 0;
+		// apapadop Nov 2 2020: Watch out !!!
+		// new sampples cooked by Mikhail
+		// the helicity branches and the runnb one have been deactivated
 
-		if((runnb>18283 && runnb<18289) || (runnb>18300 && runnb<18304) || (runnb>18317 && runnb<18329)) fTorusCurrent=750; //setting appropriate torrus magnet current
-		else if ((runnb>18293 && runnb<18301) || (runnb>18305 && runnb<18317) || (runnb>18328 && runnb<18336))  fTorusCurrent=1500;
-		else fTorusCurrent=2250;
+//		double fTorusCurrent = 0;
+
+//		if((runnb>18283 && runnb<18289) || (runnb>18300 && runnb<18304) || (runnb>18317 && runnb<18329)) fTorusCurrent=750; //setting appropriate torrus magnet current
+//		else if ((runnb>18293 && runnb<18301) || (runnb>18305 && runnb<18317) || (runnb>18328 && runnb<18336))  fTorusCurrent=1500;
+//		else fTorusCurrent=2250;
 
 		//if (fbeam_en == "1161" && fTorusCurrent > 760) { continue; }                                                              
                 //if (fbeam_en == "1161" && fTorusCurrent < 760) { continue; }

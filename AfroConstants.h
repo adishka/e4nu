@@ -99,6 +99,7 @@
 
 	static std::map<TString,TString> FSIModelsToLabels =
 	{
+		{ "MikhailCook_Data", "Mikhail Data" },
 		{ "Pinned_Data_Final", "Pinned Data" },
 		{ "SuSav2_RadCorr_LFGM", "SuSav2" },
 		{ "hA2018_Final_RadCorr_LFGM", "G2018" },
@@ -130,6 +131,20 @@
 		{ std::make_pair("12C", "4_461"), 2.14 },
 		{ std::make_pair("56Fe", "2_261"), 0.22 },
 		{ std::make_pair("56Fe", "4_461"), 0.29 }
+	};
+
+	// mC // Good run list all runs // Mikhail cook pass3
+
+	static std::map<std::pair<TString,TString>,double> IntegratedCharge_MikhailFiles =
+	{
+		{ std::make_pair("4He", "2_261"), 0. },
+		{ std::make_pair("4He", "4_461"), 0. },
+		{ std::make_pair("12C", "1_161"), 0. },
+		{ std::make_pair("CH2", "1_161"), 0. },
+		{ std::make_pair("12C", "2_261"), 0. },
+		{ std::make_pair("12C", "4_461"), 0. },
+		{ std::make_pair("56Fe", "2_261"), 0. },
+		{ std::make_pair("56Fe", "4_461"), 0. }
 	};
 
 	// mC // Good run list all runs // pinned files by Stuart F

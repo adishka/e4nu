@@ -1,7 +1,7 @@
-#define GETCHARGE_FILTERDATA_C
+#define MikhailCook_FilterData_C
 
 //#include "e2a_ep_neutrino6_united4_radphot.h"
-#include "GetCharge_FilterData.h"
+#include "MikhailCook_FilterData.h"
 #include "Constants.h"
 
 #include <TH2.h>
@@ -56,9 +56,9 @@ extern Double_t FSub_pipl(Double_t *x,Double_t *par);
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-int GetCharge_CounterEvents = 0;
+int MikhailCook_CounterEvents = 0;
 
-void GetCharge_FilterData::Loop()
+void MikhailCook_FilterData::Loop()
 {
 
 	std::map<std::string,double>vert_min;
@@ -414,7 +414,7 @@ void GetCharge_FilterData::Loop()
 
 	//Output file definition
 
-	TString FileName = Form("/w/hallb-scifs17exp/clas/claseg2/apapadop/GetCharge_genie_filtered_data_e2a_ep_%s_%s_neutrino6_united4_radphot_test_100M.root",ftarget.c_str(),fbeam_en.c_str());
+	TString FileName = Form("/w/hallb-scifs17exp/clas/claseg2/apapadop/MikhailCook_genie_filtered_data_e2a_ep_%s_%s_neutrino6_united4_radphot_test_100M.root",ftarget.c_str(),fbeam_en.c_str());
 	std::cout << "File " << FileName << " to be  created" << std::endl;
 
 	TFile *file_out = new TFile(FileName, "Recreate");
@@ -695,30 +695,38 @@ void GetCharge_FilterData::Loop()
 			std::cout<<jentry<<std::endl;
 		}
 
-		if (runnb==18258 || runnb==18259 || (runnb>18382 && runnb<18438) || (runnb>18220 && runnb<18253)) {
-			vz_corr_func->SetParameters(pars); 
-			//setting appropriate parameters of the vertex correction function for the runs with the same target and beam energy, but different vertex correction
-		}
+		// apapadop Nov 2 2020
+		// Mikhail's cook doesn't contain the runnb branch
 
-		if(runnb==18258 || runnb==18259)   {   //setting appropriate e- vertex cut range for the runs with the same target and beam energy, but different vertex correction
-		  vert_max["56Fe"] = 6.;
-		  vert_min["56Fe"] = 5.2;//runs with exploaded cell
-		}
-		if(runnb>18382 && runnb<18438){
-		  vert_max["3He"] = 0.01;
-		  vert_min["3He"] = -3.31; //runs with thin exit window
-		}
-		if(runnb>18220 && runnb<18253){
-		  vert_max["4He"] = 0.77;
-		  vert_min["4He"] = -2.27;  //runs with 5cm liquid target cell
-		}
+//		if (runnb==18258 || runnb==18259 || (runnb>18382 && runnb<18438) || (runnb>18220 && runnb<18253)) {
+//			vz_corr_func->SetParameters(pars); 
+//			//setting appropriate parameters of the vertex correction function for the runs with the same target and beam energy, but different vertex correction
+//		}
 
-		if((runnb>18283 && runnb<18289) || (runnb>18300 && runnb<18304) || (runnb>18317 && runnb<18329)) fTorusCurrent=750; //setting appropriate torrus magnet current
-		else if ( (runnb>18293 && runnb<18301) || (runnb>18305 && runnb<18317) || (runnb>18328 && runnb<18336) || runnb == 18334)  fTorusCurrent=1500;
-		else fTorusCurrent=2250;
+//		if(runnb==18258 || runnb==18259)   {   //setting appropriate e- vertex cut range for the runs with the same target and beam energy, but different vertex correction
+//		  vert_max["56Fe"] = 6.;
+//		  vert_min["56Fe"] = 5.2;//runs with exploaded cell
+//		}
+//		if(runnb>18382 && runnb<18438){
+//		  vert_max["3He"] = 0.01;
+//		  vert_min["3He"] = -3.31; //runs with thin exit window
+//		}
+//		if(runnb>18220 && runnb<18253){
+//		  vert_max["4He"] = 0.77;
+//		  vert_min["4He"] = -2.27;  //runs with 5cm liquid target cell
+//		}
 
-		// apapadop, CH2 only run @ 1.1 GeV with 1500 torus current, but we don't have fiducials there, thus using the 750 torus current
-		if (runnb == 18334) { fTorusCurrent = 750; } 
+//		if((runnb>18283 && runnb<18289) || (runnb>18300 && runnb<18304) || (runnb>18317 && runnb<18329)) fTorusCurrent=750; //setting appropriate torrus magnet current
+//		else if ( (runnb>18293 && runnb<18301) || (runnb>18305 && runnb<18317) || (runnb>18328 && runnb<18336) || runnb == 18334)  fTorusCurrent=1500;
+//		else fTorusCurrent=2250;
+
+//		// apapadop, CH2 only run @ 1.1 GeV with 1500 torus current, but we don't have fiducials there, thus using the 750 torus current
+//		if (runnb == 18334) { fTorusCurrent = 750; } 
+
+		if (fbeam_en == "1161") { fTorusCurrent = 750; }  
+		else { fTorusCurrent = 2250; }  
+
+		// --------------------------------------------------------------------------                                                            
 
 		if (fbeam_en == "1161" && fTorusCurrent > 760) { continue; }                                                              
                 //if (fbeam_en == "1161" && fTorusCurrent < 760) { continue; }
@@ -847,7 +855,8 @@ void GetCharge_FilterData::Loop()
 		double el_phi_mod = TMath::ATan2(cy[ind_em],cx[ind_em])*TMath::RadToDeg()+30; //Add extra 30 degree rotation in phi
 		if(el_phi_mod<0)  el_phi_mod  = el_phi_mod+360; //Add 360 so that electron phi is between 0 and 360 degree
 		int el_ec_sector = ec_sect[ec[ind_em] - 1];
-		double el_vert_corr = el_vert+vz_corr(vz_corr_func,el_phi_mod,el_theta);
+//		double el_vert_corr = el_vert+vz_corr(vz_corr_func,el_phi_mod,el_theta);
+		double el_vert_corr = el_vert; // apapadop Nov 2 2020: Mikhail has already applied the vertex corrections
 
 		//Variables for electron cuts
 		double ece = TMath::Max( ec_ei[ec[ind_em] - 1] + ec_eo[ec[ind_em] - 1],   etot[ec[ind_em] - 1]);
@@ -993,7 +1002,7 @@ void GetCharge_FilterData::Loop()
 
 		// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		GetCharge_CounterEvents++;
+		MikhailCook_CounterEvents++;
 
 		//Loop for Hadrons, electrons have i=0
 	
@@ -1021,7 +1030,8 @@ void GetCharge_FilterData::Loop()
 				if(delta < fsum_prot->Eval(p[ind_p]) && delta > fsub_prot->Eval(p[ind_p]) && p[ind_p] >= prot_accept_mom_lim) {
 
 					TLorentzVector V4_uncorrprot(p[ind_p]*cx[ind_p],p[ind_p]*cy[ind_p],p[ind_p]*cz[ind_p],TMath::Sqrt(p[ind_p]*p[ind_p]+ m_prot*m_prot ) );
-					p_vert_corr = vz[ind_p]+vz_corr(vz_corr_func,prot_phi_mod,prot_theta);
+//					p_vert_corr = vz[ind_p]+vz_corr(vz_corr_func,prot_phi_mod,prot_theta);
+					p_vert_corr = vz[ind_p]; // apapadop Nov 2 2020: Mikhail has already applied the vertex corrections
 
 					if(PFiducialCut(fbeam_en, V4_uncorrprot.Vect())) { //proton fiducial cuts
 
@@ -1092,7 +1102,8 @@ void GetCharge_FilterData::Loop()
 					pimi_phi_mod = pimi_phi + 30;  //Add extra 30 degree rotation in phi
 					if (pimi_phi_mod<0)  pimi_phi_mod = pimi_phi_mod + 360;  //Pi minus is between 0 and 360 degree
 					pimi_theta = TMath::ACos(cz[i])*TMath::RadToDeg();
-					pimi_vert_corr = pimi_vert+vz_corr(vz_corr_func, pimi_phi_mod,pimi_theta);
+//					pimi_vert_corr = pimi_vert+vz_corr(vz_corr_func, pimi_phi_mod,pimi_theta);
+					pimi_vert_corr = pimi_vert; // apapadop Nov 2 2020: Mikhail has already applied the vertex corrections
 
 					if(PimiFiducialCut(fbeam_en, V3_pimi, &pimi_phimin, &pimi_phimax)) {  //Pi minus fiducial cuts
 
@@ -1157,7 +1168,8 @@ void GetCharge_FilterData::Loop()
 	 				pipl_phi_mod = pipl_phi + 30; //Add 30 degrees
 					if (pipl_phi_mod < 0)  pipl_phi_mod = pipl_phi_mod + 360;  //Pi plus is between 0 and 360 degree
 					pipl_theta = TMath::ACos(cz[i])*TMath::RadToDeg();
-					pipl_vert_corr = pipl_vert + vz_corr(vz_corr_func,pipl_phi_mod,pipl_theta);
+//					pipl_vert_corr = pipl_vert + vz_corr(vz_corr_func,pipl_phi_mod,pipl_theta);
+					pipl_vert_corr = pipl_vert; // apapadop Nov 2 2020: Mikhail has already applied the vertex corrections
 
 					if (PiplFiducialCut(fbeam_en, V3_pipl, &pipl_phimin, &pipl_phimax)){ //Pi Plus fiducial cut
 
@@ -1278,7 +1290,7 @@ void GetCharge_FilterData::Loop()
 
 		genie_q_l = q_l;
 
-		genie_RunNumber = runnb;
+//		genie_RunNumber = runnb;
 		genie_iev = NEventsTotal;
 		NEventsTotal++;
 
@@ -1294,7 +1306,7 @@ void GetCharge_FilterData::Loop()
 	} //end of event loop (jentry)
 
 	std::cout << "File " << FileName << " has been created" << std::endl;
-	std::cout << "GetCharge_CounterEvents = " << GetCharge_CounterEvents << std::endl;
+	std::cout << "MikhailCook_CounterEvents = " << MikhailCook_CounterEvents << std::endl;
 
 	gStyle->SetOptFit(1);
 	gDirectory->Write("hist_Files", TObject::kOverwrite);

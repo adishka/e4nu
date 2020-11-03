@@ -4,6 +4,7 @@
 // apapadop
 #include "FilterData.h"
 #include "GetCharge_FilterData.h"
+#include "MikhailCook_FilterData.h"
 
 #include <iostream>
 
@@ -31,6 +32,7 @@ int main(int argc, char **argv)
 	e2a_ep_neutrino6_united4_radphot	t(target,beam_en);
 	FilterData	filter(target,beam_en);
 	GetCharge_FilterData	getcharge_filter(target,beam_en);
+	MikhailCook_FilterData	mikhailcook_filter(target,beam_en);
 
 	if (choice == 0) {
 		t.Loop();
@@ -46,6 +48,12 @@ int main(int argc, char **argv)
 
 		cout << "Filtering sample && getting charge" << endl;
 		getcharge_filter.Loop();
+	}
+
+	if (choice == 3) {
+
+		cout << "Mikhail cook" << endl;
+		mikhailcook_filter.Loop();
 	}
 
 	return 0;

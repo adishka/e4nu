@@ -1,32 +1,38 @@
-//////////////////////////////////////////////////////////
-// This class has been automatically generated on
-// Thu Sep 24 14:41:10 2020 by ROOT version 5.34/36
-// from TTree CalculateIntegratedCharge/All_out
-// found on file: /cache/clas/e2a/production/pass2/v1/1161/C12/HROOT/hroot_18285_05_v1.root
-//////////////////////////////////////////////////////////
-
-#ifndef CalculateIntegratedCharge_h
-#define CalculateIntegratedCharge_h
+#ifndef MikhailCook_FilterData_H
+#define MikhailCook_FilterData_H
 
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
+#include <TVector3.h>
+#include <TLorentzVector.h>
+#include "Fiducial.h"
+
+#include <iostream>
+
+//using namespace std;
 
 // Header file for the classes stored in the TTree if any.
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-class CalculateIntegratedCharge {
+//std::string a_target = "C12";
+//std::string a_beam_en = "2261";
 
-private:
-
-	std::string fEnergy;
-	std::string fTarget;
-
+class MikhailCook_FilterData {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
-//   TChain          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
+
+   std::string ftarget;    // The target name  
+   std::string fbeam_en;   // The beam energy  
+
+   Fiducial   *fiducialcut;
+   int fTorusCurrent;
+   std::string target_name;
+   std::map<std::string,double> en_beam;
+   std::map<std::string,double> en_beam_Ecal;
+   std::map<std::string,double> en_beam_Eqe;
 
    // Declaration of leaf types
    UChar_t         npart;
@@ -36,6 +42,7 @@ public :
    Char_t          evntype;
    Int_t           evntclas;
    Float_t         q_l;
+   Float_t         q_u;
    Float_t         t_l;
    Float_t         tr_time;
    Float_t         rf_time;
@@ -45,7 +52,7 @@ public :
    Int_t           hlsc;
    Int_t           intt;
 //   Int_t           helicity_cor;
-   Int_t           gpart;
+   Int_t           gpart;  //Number of Particles in Event
    Int_t           id[40];   //[gpart]
    Int_t           stat[40];   //[gpart]
    Int_t           dc[40];   //[gpart]
@@ -143,6 +150,7 @@ public :
    TBranch        *b_evntype;   //!
    TBranch        *b_evntclas;   //!
    TBranch        *b_q_l;   //!
+   TBranch        *b_q_u;   //!
    TBranch        *b_t_l;   //!
    TBranch        *b_tr_time;   //!
    TBranch        *b_rf_time;   //!
@@ -242,71 +250,124 @@ public :
    TBranch        *b_lec_z;   //!
    TBranch        *b_lec_c2;   //!
 
-   CalculateIntegratedCharge(std::string energy, std::string target,TChain *tree=0);
-   virtual ~CalculateIntegratedCharge();
+   MikhailCook_FilterData(std::string a_target,std::string a_beam_en, TChain *tree=0);
+   virtual ~MikhailCook_FilterData();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
-//   virtual void     Init(TTree *tree);
-   virtual void     Init(TChain *tree);
+   virtual void     Init(TTree *tree);
    virtual void     Loop();
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
+
+   void SetFiducialCutParameters(std::string beam_en) {
+     fiducialcut->SetFiducialCutParameters(beam_en);
+   }
+
+   Bool_t EFiducialCut(std::string beam_en, TVector3 momentum) {
+     return fiducialcut->EFiducialCut(beam_en, momentum);
+   }
+   Bool_t PFiducialCut(std::string beam_en, TVector3 momentum) {
+     return fiducialcut->PFiducialCut(beam_en, momentum);
+   }
+   Bool_t PiplFiducialCut(std::string beam_en, TVector3 momentum,Float_t *philow,Float_t *phiup) {
+     return fiducialcut->PiplFiducialCut(beam_en, momentum, philow, phiup);
+   }
+   Bool_t PimiFiducialCut(std::string beam_en, TVector3 momentum,Float_t *philow,Float_t *phiup) {
+     return fiducialcut->PimiFiducialCut(beam_en, momentum, philow, phiup);
+   }
+   bool Phot_fid(TVector3 V3_phot) {
+     return fiducialcut->Phot_fid(V3_phot);
+   }
+   bool Pi_phot_fid_united(std::string beam_en, TVector3 V3_pi_phot, int q_pi_phot) {
+     return fiducialcut->Pi_phot_fid_united(beam_en,V3_pi_phot, q_pi_phot);
+   }
+   Bool_t GetEPhiLimits(std::string beam_en, Float_t momentum, Float_t theta, Int_t sector, Float_t *EPhiMin, Float_t *EPhiMax) {
+     return fiducialcut->GetEPhiLimits(beam_en, momentum, theta, sector, EPhiMin, EPhiMax);
+   }
+
 };
 
 #endif
+#ifdef MikhailCook_FilterData_C
 
-#ifdef CalculateIntegratedCharge_cxx
-CalculateIntegratedCharge::CalculateIntegratedCharge(std::string energy, std::string target,TChain *tree) : fChain(0) 
+MikhailCook_FilterData::MikhailCook_FilterData(std::string a_target,std::string a_beam_en, TChain *tree) : fChain(0)
 {
-	fEnergy = energy;
-	fTarget = target;
+// if parameter tree is not specified (or zero), connect the file
+// used to generate this class and read the Tree.
+   if (tree == 0) {
 
-	TChain* fmyLocalChain = new TChain("myChain","myChain");
+     fiducialcut = new Fiducial();
+     ftarget = a_target;
+     fbeam_en=a_beam_en;
+     fTorusCurrent = 0;
 
-/*	fmyLocalChain->Add(Form("/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*.root/h10",fEnergy.c_str(),fTarget.c_str()) );*/
+
+
+#ifdef SINGLE_TREE
+      // The following code should be used if you want this class to access
+      // a single tree instead of a chain
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("Memory Directory");
+      if (!f || !f->IsOpen()) {
+         f = new TFile("Memory Directory");
+      }
+      f->GetObject("ch",tree);
+
+#else // SINGLE_TREE
+
+      // The following code should be used if you want this class to access a chain
+      // of trees.
+      TChain * chain = new TChain("ch","MikhailCook_FilterData");
+//      chain->Add(Form("/work/clas/clase2/Mariana/data/e2a_%s_%s_v1/*.root/h10", ftarget.c_str(), fbeam_en.c_str()));
+//      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
 
 	TString StringEnergy = "1";
-	if (energy == "2261") { StringEnergy = "2"; }
-	if (energy == "4461") { StringEnergy = "4"; }
+	if (fbeam_en == "2261") { StringEnergy = "2"; }
+	if (fbeam_en == "4461") { StringEnergy = "4"; }
 
 	TString StringTarget = "c12";
-	if (target == "3He") { StringTarget = "3he"; }
-	if (target == "4He") { StringTarget = "4he"; }
-	if (target == "CH2") { StringTarget = "ch2"; }
-	if (target == "56Fe") { StringTarget = "56fe"; }
+	if (ftarget == "3He") { StringTarget = "3he"; }
+	if (ftarget == "4He") { StringTarget = "4he"; }
+	if (ftarget == "CH2") { StringTarget = "ch2"; }
+	if (ftarget == "56Fe") { StringTarget = "56fe"; }
 
-	fmyLocalChain->Add("/w/hallb-scifs17exp/clas/clas-production/osipenko/e2a_pass3/e"+StringEnergy+"gev_"+StringTarget+"/*.root/h10");
+        chain->Add("/w/hallb-scifs17exp/clas/clas-production/osipenko/e2a_pass3/e"+StringEnergy+"gev_"+StringTarget+"/*.root/h10");
 
-	Init(fmyLocalChain);
-		
-/*
-   if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/cache/clas/e2a/production/pass2/v1/1161/C12/HROOT/hroot_18285_05_v1.root");
-      if (!f || !f->IsOpen()) {
-         f = new TFile("/cache/clas/e2a/production/pass2/v1/1161/C12/HROOT/hroot_18285_05_v1.root");
-      }
-      f->GetObject("CalculateIntegratedCharge",tree);
+
+
+/*      if (fbeam_en == "1161" && ftarget == "C12") chain->Add(Form("/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/hroot_18297_*_v1.root/h10", fbeam_en.c_str(), ftarget.c_str()));*/
+/*//      if (fbeam_en == "1161" && ftarget == "C12") chain->Add(Form("/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/hroot_18298_*_v1.root/h10", fbeam_en.c_str(), ftarget.c_str())); // high current*/
+/*//      if (fbeam_en == "1161" && ftarget == "C12") chain->Add(Form("/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/hroot_18287_*_v1.root/h10", fbeam_en.c_str(), ftarget.c_str())); // low current*/
+
+/*      if (fbeam_en == "2261" && ftarget == "C12") chain->Add(Form("/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/hroot_18105_*_v1.root/h10", fbeam_en.c_str(), ftarget.c_str()));*/
+/*      if (fbeam_en == "4461" && ftarget == "C12") chain->Add(Form("/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/hroot_18018_*_v1.root/h10", fbeam_en.c_str(), ftarget.c_str()));*/
+
+/*      if (fbeam_en == "2261" && ftarget == "4He") chain->Add(Form("/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/hroot_17912_*_v1.root/h10", fbeam_en.c_str(), ftarget.c_str()));*/
+
+/*      if (fbeam_en == "4461" && ftarget == "56Fe") chain->Add(Form("/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/hroot_18043_*_v1.root/h10", fbeam_en.c_str(), ftarget.c_str()));*/
+
+      //chain->Add("datafile.root/h10");
+
+      tree = chain;
+#endif // SINGLE_TREE
 
    }
    Init(tree);
-*/
-
 }
 
-CalculateIntegratedCharge::~CalculateIntegratedCharge()
+MikhailCook_FilterData::~MikhailCook_FilterData()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
 }
 
-Int_t CalculateIntegratedCharge::GetEntry(Long64_t entry)
+Int_t MikhailCook_FilterData::GetEntry(Long64_t entry)
 {
 // Read contents of entry.
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
-Long64_t CalculateIntegratedCharge::LoadTree(Long64_t entry)
+Long64_t MikhailCook_FilterData::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
    if (!fChain) return -5;
@@ -319,8 +380,7 @@ Long64_t CalculateIntegratedCharge::LoadTree(Long64_t entry)
    return centry;
 }
 
-//void CalculateIntegratedCharge::Init(TTree *tree)
-void CalculateIntegratedCharge::Init(TChain *tree)
+void MikhailCook_FilterData::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -343,6 +403,7 @@ void CalculateIntegratedCharge::Init(TChain *tree)
    fChain->SetBranchAddress("evntype", &evntype, &b_evntype);
    fChain->SetBranchAddress("evntclas", &evntclas, &b_evntclas);
    fChain->SetBranchAddress("q_l", &q_l, &b_q_l);
+   fChain->SetBranchAddress("q_u", &q_u, &b_q_u);
    fChain->SetBranchAddress("t_l", &t_l, &b_t_l);
    fChain->SetBranchAddress("tr_time", &tr_time, &b_tr_time);
    fChain->SetBranchAddress("rf_time", &rf_time, &b_rf_time);
@@ -444,7 +505,7 @@ void CalculateIntegratedCharge::Init(TChain *tree)
    Notify();
 }
 
-Bool_t CalculateIntegratedCharge::Notify()
+Bool_t MikhailCook_FilterData::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -455,18 +516,19 @@ Bool_t CalculateIntegratedCharge::Notify()
    return kTRUE;
 }
 
-void CalculateIntegratedCharge::Show(Long64_t entry)
+void MikhailCook_FilterData::Show(Long64_t entry)
 {
 // Print contents of entry.
 // If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
 }
-Int_t CalculateIntegratedCharge::Cut(Long64_t entry)
+Int_t MikhailCook_FilterData::Cut(Long64_t entry)
 {
 // This function may be called from Loop.
 // returns  1 if entry is accepted.
 // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef CalculateIntegratedCharge_cxx
+
+#endif // #ifdef MikhailCook_FilterData_h
