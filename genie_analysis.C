@@ -111,6 +111,17 @@ void genie_analysis::Loop(Int_t choice) {
 	int NDeltaAlphaTBins = 36; double DeltaAlphaTMin = 0.; double DeltaAlphaTMax = 180.;
 	int NDeltaPhiTBins = 36; double DeltaPhiTMin = 0.; double DeltaPhiTMax = 180.;
 
+	// ---------------------------------------------------------------------------------------------------------------
+
+	// Do we want to apply fiducials & the acceptance map weights
+	// Do we want a truth level study ? if so, stop ditching sectors
+
+	bool ApplyFiducials = true;
+	bool ApplyAccWeights = true;
+	bool ApplyReso = true;
+	bool TruthLevel1p0piSignalStudy = false;
+
+	// ---------------------------------------------------------------------------------------------------------------
 
 	//Choice = 0 is for analysis of CLAS data while choice = 1 is for the analysis of GENIE Simulation
 	if (choice != 2 && choice != 1 && choice != 0) {
@@ -147,6 +158,14 @@ void genie_analysis::Loop(Int_t choice) {
 	//double reso_pipl = 0.007; //smearing for pions, executive decision by Larry (28.08.19)
 	//double reso_pimi = 0.007; //smearing for pions, executive decision by Larry (28.08.19)
 	double reso_pi = 0.007; //smearing for pions, executive decision by Larry (28.08.19)
+
+	if (!ApplyReso) {  
+
+		reso_p = 0.;
+		reso_e = 0.;
+		reso_pi = 0;
+
+	}
 
 	// Resolution defined above seems to be insufficient at 1.1 GeV -> tripled it for all particles
 	if(fbeam_en == "1161") { reso_p = 3*reso_p; reso_e = 3*reso_e; reso_pi = 3*reso_pi; }
@@ -1015,6 +1034,7 @@ void genie_analysis::Loop(Int_t choice) {
 	// ---------------------------------------------------------------------------------------------------------------
 
 	/** Beginning of Event Loop **/
+
 	for (Long64_t jentry=0; jentry<nentries;jentry++) {
 //	for (Long64_t jentry=0; jentry<Nentries;jentry++) {
 
@@ -1057,6 +1077,15 @@ void genie_analysis::Loop(Int_t choice) {
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+		// Counters for truth level studies
+
+		int TrueElectronsAboveThreshold = 0;
+		int TrueProtonsAboveThreshold = 0;
+		int TrueChargedPionsAboveThreshold = 0;
+		int TrueGammasAboveThreshold = 0;
+
+		// -----------------------------------------------------------------------------------------------------------------------------------------------------------
+
 		double SmearedPe;
 		double SmearedEe;
 		double e_acc_ratio = 1.;	//will be 1 for CLAS data
@@ -1081,15 +1110,15 @@ void genie_analysis::Loop(Int_t choice) {
 
 			V3_el.SetPhi(phi_ElectronOut + TMath::Pi() ); // Vec.Phi() is between (-180,180), GENIE coordinate system flipped with respect to CLAS
 
-			//Fiducial Cuts with the smeared values
-			if (!EFiducialCut(fbeam_en,V3_el) ) continue; // Electron theta & phi fiducial cuts
+//			//Fiducial Cuts with the smeared values // moved it further down after W & Q2 cuts
+//			if (ApplyFiducials)  { if (!EFiducialCut(fbeam_en,V3_el) ) continue;} // Electron theta & phi fiducial cuts
 
 			phi_ElectronOut += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
 			el_momentum = V3_el.Mag(); //Momentum after smearing
 			el_theta = V3_el.Theta(); //Angle after smearing
 
 			//acceptance_c takes phi in radians and here unmodified by 30 degree.
-			e_acc_ratio = acceptance_c(el_momentum, cos(el_theta), phi_ElectronOut, 11,file_acceptance);
+			e_acc_ratio = acceptance_c(el_momentum, cos(el_theta), phi_ElectronOut, 11,file_acceptance,ApplyAccWeights);
 			if ( fabs(e_acc_ratio) != e_acc_ratio ) { continue; }
 
 			// --------------------------------------------------------------------------------------------------
@@ -1108,9 +1137,6 @@ void genie_analysis::Loop(Int_t choice) {
 			// --------------------------------------------------------------------------------------------------		
 
 		}
-
-		h1_Electron_AccMapWeights->Fill(e_acc_ratio);
-		h1_Electron_Momentum->Fill(el_momentum,e_acc_ratio);
 
 		// Explicit cuts on electron momentum
 		if (fbeam_en=="1161" && el_momentum < 0.4) { continue; }
@@ -1178,18 +1204,43 @@ void genie_analysis::Loop(Int_t choice) {
 		//Cuts on Q2 and W, only keep events with Q2 > Q2cut and W < Wcut
 		if ( reco_Q2 < Q2cut || W_var > Wcut) continue;
 
+		// ---------------------------------------------------------------------------------------------------------------------
+
+		// apapadop Nov 4 2020: true electron counter for truth level studies
+		TrueElectronsAboveThreshold++;
+
+		if (choice > 0) { 			
+
+			//Fiducial Cuts with the smeared values
+			if (ApplyFiducials)  { if (!EFiducialCut(fbeam_en,V3_el) ) continue;} // Electron theta & phi fiducial cuts 
+		}
+
+		// ---------------------------------------------------------------------------------------------------------------------
+
 		//Set q vector for the following rotations for the subtraction procedure
 		rotation->SetQVector(V3_q);
 //		rotation->PrintQVector();
 
 		int ElectronSector = el_phi_mod / 60.;
 
+		// ---------------------------------------------------------------------------------------------------------------------
+
 		// apapadop: Oct 8 2020: ditching bad sectors
 		// Counting sectors from 0 to 5
 
-		if ( (ElectronSector == 2 || ElectronSector == 4) &&  fbeam_en == "1161") { continue; }
-		if ( (ElectronSector == 2 || ElectronSector == 3 || ElectronSector == 4) &&  fbeam_en == "2261") { continue; }
-//		if ( ElectronSector == 5 &&  fbeam_en == "4461") { continue; }
+		if (!TruthLevel1p0piSignalStudy) { 
+
+			if ( (ElectronSector == 2 || ElectronSector == 4) &&  fbeam_en == "1161") { continue; }
+			if ( (ElectronSector == 2 || ElectronSector == 3 || ElectronSector == 4) &&  fbeam_en == "2261") { continue; }
+
+		}
+
+		// ---------------------------------------------------------------------------------------------------------------------
+
+		// Fully inclusive plots & counters shown first below
+
+		h1_Electron_AccMapWeights->Fill(e_acc_ratio);
+		h1_Electron_Momentum->Fill(el_momentum,e_acc_ratio);
 
 		h1_EQE_FullyInclusive->Fill(E_rec,WeightIncl);
 		h1_EQE_FullyInclusive_IrregBins->Fill(E_rec,WeightIncl);
@@ -1265,6 +1316,7 @@ void genie_analysis::Loop(Int_t choice) {
 		h2_el_mom_diff->Fill(V4_el.Rho(),V4_el.Rho()-V4_el_uncorr.Rho(),WeightIncl);
 
 		//Filling Histogram for electron kinematics
+
 		h1_xbjk->Fill(x_bjk);
 		h1_Q2->Fill(reco_Q2);
 		h1_Wvar->Fill(W_var);
@@ -1338,6 +1390,7 @@ void genie_analysis::Loop(Int_t choice) {
 			// -----------------------------------------------------------------------------------------------------------------------------------------------
 
 			//Start of proton selection
+
 			if (pdgf[i] == 2212  && pf[i] > 0.3) {
 
 				double ProtonWeight = 1.;
@@ -1355,7 +1408,11 @@ void genie_analysis::Loop(Int_t choice) {
 					TVector3 V3_prot_corr(temp_smear_P/pf[i] * pxf[i],temp_smear_P/pf[i] * pyf[i],temp_smear_P/pf[i] * pzf[i]);
 					double phi_prot = V3_prot_corr.Phi();
 					V3_prot_corr.SetPhi(phi_prot + TMath::Pi()); // Vec.Phi() is between (-180,180), // GENIE coordinate system flipped with respect to CLAS
-					if (!PFiducialCut(fbeam_en, V3_prot_corr) ) { continue; } // Proton theta & phi fiducial cuts
+
+					// apapadop Nov 4 2020: true proton counter for truth level studies
+					TrueProtonsAboveThreshold++;
+
+					if (ApplyFiducials) { if (!PFiducialCut(fbeam_en, V3_prot_corr) ) { continue; } } // Proton theta & phi fiducial cuts
 
 					num_p = num_p + 1;
 					index_p[num_p - 1] = i;
@@ -1368,7 +1425,7 @@ void genie_analysis::Loop(Int_t choice) {
 					ProtonMag = V3_prot_corr.Mag(); 
 
 					//acceptance_c takes phi in radians and here unmodified by 30 degree.
-					ProtonWeight = wght*acceptance_c(ProtonMag,ProtonCosTheta, phi_prot, 2212,file_acceptance_p);
+					ProtonWeight = wght*acceptance_c(ProtonMag,ProtonCosTheta, phi_prot, 2212,file_acceptance_p,ApplyAccWeights);
 					if ( fabs(ProtonWeight) != ProtonWeight ) { continue; }
 
 					ProtonPhi_Deg = V3_prot_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.; 
@@ -1426,8 +1483,12 @@ void genie_analysis::Loop(Int_t choice) {
 					TVector3 V3_pi_corr(temp_smear_P/pf[i] * pxf[i],temp_smear_P/pf[i] * pyf[i],temp_smear_P/pf[i] * pzf[i]);
 					double phi_pion = V3_pi_corr.Phi();
 					V3_pi_corr.SetPhi(phi_pion + TMath::Pi()); // Vec.Phi() is between (-180,180)
+
+					// apapadop Nov 4 2020: true charged pion counter for truth level studies
+					TrueChargedPionsAboveThreshold++;
+
 					// Pi_phot_fid_united with +1 is for Piplus and Pi_phot_fid_united with -1 is for Piminus
-					if ( !Pi_phot_fid_united(fbeam_en, V3_pi_corr, -1) )     {  continue; }
+					if (ApplyFiducials) { if ( !Pi_phot_fid_united(fbeam_en, V3_pi_corr, -1) ) {  continue; } }
 
 					num_pimi = num_pimi + 1;
 					num_pi = num_pi + 1;
@@ -1446,7 +1507,7 @@ void genie_analysis::Loop(Int_t choice) {
 					PiMinusMag = V3_pi_corr.Mag(); 
 
 					//acceptance_c takes phi in radians and here unmodified by 30 degree.
-					PiMinusWeight = wght * acceptance_c(PiMinusMag,PiMinusCosTheta, phi_pion, -211,file_acceptance);
+					PiMinusWeight = wght * acceptance_c(PiMinusMag,PiMinusCosTheta, phi_pion, -211,file_acceptance,ApplyAccWeights);
 					if ( fabs(PiMinusWeight) != PiMinusWeight ) { continue; }
 
 					PiMinusPhi_Deg = V3_pi_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.;
@@ -1508,8 +1569,12 @@ void genie_analysis::Loop(Int_t choice) {
 					TVector3 V3_pi_corr(temp_smear_P/pf[i] * pxf[i],temp_smear_P/pf[i] * pyf[i],temp_smear_P/pf[i] * pzf[i]);
 					double phi_pion = V3_pi_corr.Phi();
 					V3_pi_corr.SetPhi(phi_pion + TMath::Pi()); // Vec.Phi() is between (-180,180)
+
+					// apapadop Nov 4 2020: true charged pion counter for truth level studies
+					TrueChargedPionsAboveThreshold++;
+
 					// Pi_phot_fid_united with +1 is for Piplus and Pi_phot_fid_united with -1 is for Piminus
-					if ( !Pi_phot_fid_united(fbeam_en, V3_pi_corr, 1) )     {  continue; }
+					if (ApplyFiducials) { if ( !Pi_phot_fid_united(fbeam_en, V3_pi_corr, 1) )     {  continue; } }
 
 					num_pipl = num_pipl + 1;
 					num_pi  = num_pi + 1;
@@ -1528,7 +1593,7 @@ void genie_analysis::Loop(Int_t choice) {
 					PiPlusMag = V3_pi_corr.Mag(); 
 
 					//acceptance_c takes phi in radians and here unmodified by 30 degree.
-					PiPlusWeight = wght * acceptance_c(PiPlusMag,PiPlusCosTheta, phi_pion, 211,file_acceptance_pip);
+					PiPlusWeight = wght * acceptance_c(PiPlusMag,PiPlusCosTheta, phi_pion, 211,file_acceptance_pip,ApplyAccWeights);
 					if ( fabs(PiPlusWeight) != PiPlusWeight ) { continue; }
 
 					PiPlusPhi_Deg = V3_pi_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.;
@@ -1582,7 +1647,11 @@ void genie_analysis::Loop(Int_t choice) {
 					//no smearing of GENIE photons
 					double phi_photon = V3_phot_angles.Phi();
 					V3_phot_angles.SetPhi(phi_photon + TMath::Pi()); // Vec.Phi() is between (-180,180)
-					if ( !Pi_phot_fid_united(fbeam_en, V3_phot_angles, 0) )  { continue;}
+
+					// apapadop Nov 4 2020: true photon counter for truth level studies
+					TrueGammasAboveThreshold++;
+
+					if (ApplyFiducials) { if ( !Pi_phot_fid_united(fbeam_en, V3_phot_angles, 0) )  { continue;} }
 				}
 
 				double neut_phi_mod = V3_phot_angles.Phi()*TMath::RadToDeg() + 30; //Add 30 degree
@@ -1621,6 +1690,21 @@ void genie_analysis::Loop(Int_t choice) {
 
 		// ----------------------------------------------------------------------------------------------------------------------------
 
+		// Truth level studies
+		// Requiring true level signal 1e 1p 0pi+/- 0 gammas
+		// With smearing / fiducial cuts / acceptance maps
+
+		if (TruthLevel1p0piSignalStudy) {
+
+			if (TrueElectronsAboveThreshold != 1) { continue; }
+			if (TrueProtonsAboveThreshold != 1) { continue; }
+			if (TrueChargedPionsAboveThreshold != 0) { continue; }
+			if (TrueGammasAboveThreshold != 0) { continue; }
+
+		}
+
+		// ----------------------------------------------------------------------------------------------------------------------------
+
 		//Skip event if there is at least one radiation photon
 		if (num_phot_rad > 0) {
 		  continue;
@@ -1650,6 +1734,7 @@ void genie_analysis::Loop(Int_t choice) {
 		// -----------------------------------------------------------------------------------------------------------------------------
 
 		//Filling Histograms with multiplicities
+
 		h1_Npi->Fill(num_pi);
 		h1_Nprot->Fill(num_p);
 
@@ -1698,7 +1783,7 @@ void genie_analysis::Loop(Int_t choice) {
 				double p_theta1 = V3_prot_corr1.Theta();
 				double prot_mom_corr1 = V3_prot_corr1.Mag();
 				//Proton 1 weight
-				p_acc_ratio1 = acceptance_c(prot_mom_corr1, cos(p_theta1), phi_prot1, 2212,file_acceptance_p);
+				p_acc_ratio1 = acceptance_c(prot_mom_corr1, cos(p_theta1), phi_prot1, 2212,file_acceptance_p,ApplyAccWeights);
 				if ( fabs(p_acc_ratio1) != p_acc_ratio1 ) { continue; }
 
 				V3_prot_corr2.SetXYZ(Smeared_Pp[1]/pf[index_p[1]] * pxf[index_p[1]],Smeared_Pp[1]/pf[index_p[1]] * pyf[index_p[1]],Smeared_Pp[1]/pf[index_p[1]] * pzf[index_p[1]]);
@@ -1709,7 +1794,7 @@ void genie_analysis::Loop(Int_t choice) {
 				double p_theta2 = V3_prot_corr2.Theta();
 				double prot_mom_corr2 = V3_prot_corr2.Mag();
 				//Proton 2 weight
-				p_acc_ratio2 = acceptance_c(prot_mom_corr2, cos(p_theta2), phi_prot2, 2212,file_acceptance_p);
+				p_acc_ratio2 = acceptance_c(prot_mom_corr2, cos(p_theta2), phi_prot2, 2212,file_acceptance_p,ApplyAccWeights);
 				if ( fabs(p_acc_ratio2) != p_acc_ratio2 ) { continue; }
 
 			}
@@ -1939,11 +2024,11 @@ void genie_analysis::Loop(Int_t choice) {
 					double pion_mom_corr = V3_1pi_corr.Mag();
 
 					if (charge_pi[0] == 1) { //acceptance for pi plus
-						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip);
+						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip,ApplyAccWeights);
 						if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 					}
 					else if (charge_pi[0] == -1) {    //acceptance for pi minus. using electron acceptance map
-						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance);
+						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
 						if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 					}
 					else if (charge_pi[0] == 0) {    //acceptance for neutral, setting to 1 for now F.H. 09/24/19
@@ -2502,11 +2587,11 @@ void genie_analysis::Loop(Int_t choice) {
 						double pion_mom_corr = V3_2pi_corr[i].Mag();
 
 						if (charge_pi[i] == 1) { //acceptance for pi plus
-							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip);
+							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip,ApplyAccWeights);
 							if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == -1) {		//acceptance for pi minus. using electron acceptance map
-							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance);
+							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
 							if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == 0) {		//acceptance for photon set to 1 for now F.H. 09/24/19
@@ -2761,7 +2846,7 @@ void genie_analysis::Loop(Int_t choice) {
 					double p_theta = V3_prot_corr[i].Theta();
 					double prot_mom_corr = V3_prot_corr[i].Mag();
 					//Proton acceptance weight
-					p_acc_ratio[i] = acceptance_c(prot_mom_corr, cos(p_theta), phi_prot, 2212,file_acceptance_p);
+					p_acc_ratio[i] = acceptance_c(prot_mom_corr, cos(p_theta), phi_prot, 2212,file_acceptance_p,ApplyAccWeights);
 					if ( fabs(p_acc_ratio[i]) != p_acc_ratio[i] ) { continue; }
 				}
 
@@ -3156,11 +3241,11 @@ void genie_analysis::Loop(Int_t choice) {
 					double pion_mom_corr = V3_pi_corr.Mag();
 
 					if (charge_pi[0] == 1) { //acceptance for pi plus
-						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip);
+						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip,ApplyAccWeights);
 						if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 					}
 					else if (charge_pi[0] == -1) {		//acceptance for pi minus. using electron acceptance map
-						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance);
+						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
 						if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 					}
 					else if (charge_pi[0] == 0) {		//acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -3405,7 +3490,7 @@ void genie_analysis::Loop(Int_t choice) {
 					double p_theta = V3_prot4_corr[i].Theta();
 					double prot_mom_corr = V3_prot4_corr[i].Mag();
 					//Proton acceptance weight
-					p_acc_ratio[i] = acceptance_c(prot_mom_corr, cos(p_theta), phi_prot, 2212,file_acceptance_p);
+					p_acc_ratio[i] = acceptance_c(prot_mom_corr, cos(p_theta), phi_prot, 2212,file_acceptance_p,ApplyAccWeights);
 					if ( fabs(p_acc_ratio[i]) != p_acc_ratio[i] ) { continue; }
 
 				}
@@ -4272,11 +4357,11 @@ void genie_analysis::Loop(Int_t choice) {
 				double pion_mom_corr = V3_pi_corr.Mag();
 
 				if (charge_pi[0] == 1) { //acceptance for pi plus
-					pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip);
+					pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip,ApplyAccWeights);
 					if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 				}
 				else if (charge_pi[0] == -1) {	 //acceptance for pi minus. using electron acceptance map
-					pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance);
+					pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
 					if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 				}
 				else if (charge_pi[0] == 0) {	 //acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -4334,11 +4419,11 @@ void genie_analysis::Loop(Int_t choice) {
 					double pion_mom_corr = V3_2pi_corr[i].Mag();
 
 					if (charge_pi[i] == 1) { //acceptance for pi plus
-						pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip);
+						pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip,ApplyAccWeights);
 						if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 					}
 					else if (charge_pi[i] == -1) {	//acceptance for pi minus. using electron acceptance map
-						pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance);
+						pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
 						if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 					}
 					else if (charge_pi[i] == 0) {	//acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -4420,11 +4505,11 @@ void genie_analysis::Loop(Int_t choice) {
 					double pion_mom_corr = V3_3pi_corr[i].Mag();
 
 					if (charge_pi[i] == 1) { //acceptance for pi plus
-						pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip);
+						pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip,ApplyAccWeights);
 						if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 					}
 					else if (charge_pi[i] == -1) {	//acceptance for pi minus. using electron acceptance map
-						pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance);
+						pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
 						if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 					}
 					else if (charge_pi[i] == 0) {	//acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -4538,11 +4623,11 @@ void genie_analysis::Loop(Int_t choice) {
 						double pion_mom_corr = V3_4pi_corr[i].Mag();
 
 						if (charge_pi[i] == 1) { //acceptance for pi plus
-							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip);
+							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip,ApplyAccWeights);
 							if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == -1) {    //acceptance for pi minus. using electron acceptance map
-							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance);
+							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
 							if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == 0) {    //acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -4640,7 +4725,7 @@ void genie_analysis::Loop(Int_t choice) {
 				double p_theta = V3_prot_corr.Theta();
 				double prot_mom_corr = V3_prot_corr.Mag();
 				//Proton weight
-				p_acc_ratio = acceptance_c(prot_mom_corr, cos(p_theta), phi_prot, 2212,file_acceptance_p);
+				p_acc_ratio = acceptance_c(prot_mom_corr, cos(p_theta), phi_prot, 2212,file_acceptance_p,ApplyAccWeights);
 				if ( fabs(p_acc_ratio) != p_acc_ratio ) { continue; }
 
 			}
@@ -4911,11 +4996,11 @@ void genie_analysis::Loop(Int_t choice) {
 
 					if (charge_pi[0] == 1) { //acceptance for pi plus
 					
-						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip);
+						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip,ApplyAccWeights);
 						if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 					}
 					else if (charge_pi[0] == -1) { //acceptance for pi minus. using electron acceptance map
-						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance);
+						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
 						if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 					}
 					else if (charge_pi[0] == 0) { //acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -5145,11 +5230,11 @@ void genie_analysis::Loop(Int_t choice) {
 						double pion_mom_corr = V3_2pi_corr[i].Mag();
 
 						if (charge_pi[i] == 1) { //acceptance for pi plus
-							 pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip);
+							 pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip,ApplyAccWeights);
 							  if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == -1) {	//acceptance for pi minus. using electron acceptance map
-							 pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance);
+							 pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
 							  if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == 0) {	//acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -5557,11 +5642,11 @@ void genie_analysis::Loop(Int_t choice) {
 						double pion_mom_corr = V3_3pi_corr[i].Mag();
 
 						if (charge_pi[i] == 1) { //acceptance for pi plus
-							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip);
+							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, 211, file_acceptance_pip,ApplyAccWeights);
 							if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == -1) {	//acceptance for pi minus. using electron acceptance map
-							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance);
+							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
 							if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == 0) {	//acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -6237,42 +6322,48 @@ void genie_analysis::Loop(Int_t choice) {
 // -------------------------------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------------------------------
 
-double genie_analysis::acceptance_c(double p, double cost, double phi, int particle_id,TFile* file_acceptance) {
+double genie_analysis::acceptance_c(double p, double cost, double phi, int particle_id,TFile* file_acceptance, bool ApplyAccWeights) {
 
-	//Redefinition of the phi angle
-	// because the acceptance maps are defined between (-30,330)
+	if (ApplyAccWeights) {
 
-	// Check that phi is between (0,360)
+		//Redefinition of the phi angle
+		//because the acceptance maps are defined between (-30,330)
 
-	//int redef = -30;
-	int redef = 0;
+		// Check that phi is between (0,360)
 
-	TH3D * acc;
-	TH3D * gen;
+		//int redef = -30;
+		int redef = 0;
 
-	acc = (TH3D*)file_acceptance->Get("Accepted Particles");
-	gen = (TH3D*)file_acceptance->Get("Generated Particles");
+		TH3D * acc;
+		TH3D * gen;
 
-	//map 330 till 360 to [-30:0] for the acceptance map histogram
-	if(phi > (2*TMath::Pi() - TMath::Pi()/6.) ) { phi -= 2*TMath::Pi(); }
-	//Find number of generated events
+		acc = (TH3D*)file_acceptance->Get("Accepted Particles");
+		gen = (TH3D*)file_acceptance->Get("Generated Particles");
 
-	double pbin_gen = gen->GetXaxis()->FindBin(p);
-	double tbin_gen = gen->GetYaxis()->FindBin(cost);
-	double phibin_gen = gen->GetZaxis()->FindBin(phi*180/TMath::Pi()+redef);
-	double num_gen = gen->GetBinContent(pbin_gen, tbin_gen, phibin_gen);
+		//map 330 till 360 to [-30:0] for the acceptance map histogram
+		if(phi > (2*TMath::Pi() - TMath::Pi()/6.) ) { phi -= 2*TMath::Pi(); }
+		//Find number of generated events
 
-	//Find number of accepted events
+		double pbin_gen = gen->GetXaxis()->FindBin(p);
+		double tbin_gen = gen->GetYaxis()->FindBin(cost);
+		double phibin_gen = gen->GetZaxis()->FindBin(phi*180/TMath::Pi()+redef);
+		double num_gen = gen->GetBinContent(pbin_gen, tbin_gen, phibin_gen);
 
-	double pbin_acc = acc->GetXaxis()->FindBin(p);
-	double tbin_acc = acc->GetYaxis()->FindBin(cost);
-	double phibin_acc = acc->GetZaxis()->FindBin(phi*180/TMath::Pi()+redef);
-	double num_acc = acc->GetBinContent(pbin_acc, tbin_acc, phibin_acc);
+		//Find number of accepted events
 
-	double acc_ratio = (double)num_acc / (double)num_gen;
-	double acc_err = (double)sqrt(acc_ratio*(1-acc_ratio)) / (double)num_gen;
+		double pbin_acc = acc->GetXaxis()->FindBin(p);
+		double tbin_acc = acc->GetYaxis()->FindBin(cost);
+		double phibin_acc = acc->GetZaxis()->FindBin(phi*180/TMath::Pi()+redef);
+		double num_acc = acc->GetBinContent(pbin_acc, tbin_acc, phibin_acc);
+
+		double acc_ratio = (double)num_acc / (double)num_gen;
+		double acc_err = (double)sqrt(acc_ratio*(1-acc_ratio)) / (double)num_gen;
 
 
-	return acc_ratio;
+		return acc_ratio;
+
+	}
+
+	else { return 1.; }
 
 }

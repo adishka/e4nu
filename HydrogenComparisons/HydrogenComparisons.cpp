@@ -33,7 +33,7 @@ double Integrate(TH1D* h) {
 
 	for (int i = 0; i < NBins; i++) {
 
-		if (h->GetBinCenter(i+1) >= 0.9 && h->GetBinCenter(i+1) <= 0.94) {
+		if (h->GetBinCenter(i+1) >= 0.9 && h->GetBinCenter(i+1) <= 0.95) {
 		//if (h->GetBinContent(i+1) > 0) {
 
 		SumEntries += h->GetBinContent(i+1) /** h->GetBinWidth(i+1)*/;
@@ -130,7 +130,7 @@ void HydrogenComparisons() {
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InAllSectors"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
-	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_1"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
 
@@ -144,6 +144,10 @@ void HydrogenComparisons() {
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	// This analysis is cutting on phi +/- 15 deg
+
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 	// Loop over the xB kinematics
 
 	for (int WhichxBCut = 0; WhichxBCut < NxBCuts; WhichxBCut ++) {
@@ -151,6 +155,8 @@ void HydrogenComparisons() {
 		// Loop over the energies
 
 		for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
+
+IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.004843377;
 
 			// Loop over the plots
 
@@ -231,7 +237,8 @@ void HydrogenComparisons() {
 
 						if (nucleus[WhichNucleus] == "12C") {
 
-							double SF = IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")] * (6./7.) * TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")] / (IntegratedCharge_PinnedFiles[std::make_pair("12C", "1_161")] * TargetLength[std::make_pair("12C","1_161")] * TargetDensity[std::make_pair("12C","1_161")]);
+							double SF = IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])] * (6./7.) * TargetLength[std::make_pair("CH2",E[WhichEnergy])] * TargetDensity[std::make_pair("CH2",E[WhichEnergy])] / (IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] * TargetLength[std::make_pair("12C",E[WhichEnergy])] * TargetDensity[std::make_pair("12C",E[WhichEnergy])]);
+
 
 							Plots[WhichNucleus]->Scale(SF);
 
@@ -244,8 +251,8 @@ void HydrogenComparisons() {
 						double localmax = Plots[WhichNucleus]->GetMaximum();
 
 						if (localmax > max) { max = localmax; }
-						double height = 1.05;
-						if ( xBCut[WhichxBCut] == "xBCut" ) { height = 1.1; }
+						double height = 1.1;
+						if ( xBCut[WhichxBCut] == "xBCut" ) { height = 1.15; }
 						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 
 //						TString XLabel = Plots[WhichNucleus]->GetXaxis()->GetTitle();
@@ -317,7 +324,7 @@ void HydrogenComparisons() {
 //			double LowRange = 1.1;
 //			double HighRange = 1.4;
 
-			double LowRange = 0.85;
+			double LowRange = 0.83;
 			double HighRange = 0.9;
 
 			int LowBin = Plots[1]->FindBin(LowRange);
@@ -328,7 +335,7 @@ void HydrogenComparisons() {
 
 //cout << "IntegralC/IntegralCH2 =" << IntegralC/IntegralCH2 << endl;
 
-			//Plots[1]->Scale(IntegralC/IntegralCH2);
+			Plots[1]->Scale(IntegralC/IntegralCH2);
 
 			// ----------------------------------------------------------------------------------------------------------------------
 
@@ -341,15 +348,15 @@ void HydrogenComparisons() {
 
 			// Getting to the cross section
 
-			double CloneSF = 7. * ConversionFactorChargeToElectrons / (dOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")] * AvogadroNumber *\
-			       TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")]);
+			double CloneSF = 7. * ConversionFactorChargeToElectrons / (dOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])] * AvogadroNumber *\
+			       TargetLength[std::make_pair("CH2",E[WhichEnergy])] * TargetDensity[std::make_pair("CH2",E[WhichEnergy])]);
 			Clone->Scale(CloneSF);
 
 			Clone->GetYaxis()->SetTitle("Normalized Yield");
 			DiffCanvas->cd();
 			Clone->Draw();
 
-			Clone->Fit("gaus","","",0.8,1.06);
+			Clone->Fit("gaus","","",0.9,0.96);
 
 			double dsigmadOmega = Integrate(Clone);
 

@@ -141,7 +141,7 @@
 		{ std::make_pair("4He", "4_461"), 0. },
 		{ std::make_pair("12C", "1_161"), 0. },
 		{ std::make_pair("12C", "2_261"), 0. },
-		{ std::make_pair("12C", "4_461"), 0. },
+		{ std::make_pair("12C", "4_461"), 2.31146 },
 		{ std::make_pair("CH2", "1_161"), 0. },
 		{ std::make_pair("CH2", "2_261"), 0. },
 		{ std::make_pair("CH2", "4_461"), 0.0422 }, // using (q_u_max - q_u_min) * average lifetime // 0.04385 using good run list 
@@ -288,6 +288,8 @@
 	static std::map<std::pair<TString,TString>,double> G2018GenieXSec =
 	{
 		{ std::make_pair("1H", "1_161"),  1.4515324e+08 }, // Q2 > 0.1
+		{ std::make_pair("1H", "2_261"),  1.9048538e+08 }, // Q2 > 0.1
+		{ std::make_pair("1H", "4_461"),  2.3041981e+08 }, // Q2 > 0.1
 		{ std::make_pair("4He", "2_261"), 6.55943e+07 }, // Q2 > 0.4
 		{ std::make_pair("4He", "4_461"), 2.73355e+07 }, // Q2 > 0.8
 		{ std::make_pair("12C", "1_161"),  1.10931e+09 }, // Q2 > 0.1

@@ -25,6 +25,7 @@ void CalculateIntegratedCharge::Loop() {
 
 	double Q_U_Min = 99;
 	double Q_U_Max = -1;
+	double Lifetime = -1;
 
 	double Events = 0;
 	double SumLifetime = 0;
@@ -61,30 +62,60 @@ void CalculateIntegratedCharge::Loop() {
 
 //		IntCharge->Fill(jentry,q_u*t_l);
 
+		// -------------------------------------------------------------------------------
+
+		// first click
+
+		if (jentry == 0) { 
+
+			Q_U_Min = q_u; 
+			Lifetime = t_l;
+			RunCharge = q_u;
+
+		}
+
+		// next click
+
+		if (RunCharge != q_u) {
+
+			Q_U_Max = q_u; 
+			IntegratedCharge += (Q_U_Max - Q_U_Min)*Lifetime; // in μC to be added only once per run
+			RunCharge = q_u;
+
+			Q_U_Min = q_u; 
+			Lifetime = t_l;
+		}
+
+		// -------------------------------------------------------------------------------
+
 //		if (RunCharge != q_u) {
 
 //			IntegratedCharge += q_u*t_l; // in μC to be added only once per run
 //			RunCharge = q_u;
 //		}
 
-		if (q_u < Q_U_Min) { Q_U_Min = q_u; }
-		if (q_u > Q_U_Max) { Q_U_Max = q_u; }
+		// -------------------------------------------------------------------------------
 
-		Events ++;
-		SumLifetime += t_l;
+//		if (q_u < Q_U_Min) { Q_U_Min = q_u; }
+//		if (q_u > Q_U_Max) { Q_U_Max = q_u; }
+
+//		Events ++;
+//		SumLifetime += t_l;
 
 
 	} // End of the loop over the events
 
 	// ---------------------------------------------------------------------------------------------------------------------------------
 
-	double AverageLifetime = SumLifetime / Events;
+//	double AverageLifetime = SumLifetime / Events;
 
-	cout << endl << "AverageLifetime = " << AverageLifetime << endl; 
-	cout << "Q_U_Min = " << Q_U_Min << endl;
-	cout << "Q_U_Max = " << Q_U_Max << endl;
+//	cout << endl << "AverageLifetime = " << AverageLifetime << endl; 
+//	cout << "Q_U_Min = " << Q_U_Min << endl;
+//	cout << "Q_U_Max = " << Q_U_Max << endl;
 
-	double IntCharge = (Q_U_Max - Q_U_Min)*AverageLifetime ;
-	cout << "IntCharge = " << IntCharge << endl;
+//	double IntCharge = (Q_U_Max - Q_U_Min)*AverageLifetime ;
+//	cout << "IntCharge = " << IntCharge << endl;
+
+	cout << "IntegratedCharge = " << IntegratedCharge << endl;
 
 }
