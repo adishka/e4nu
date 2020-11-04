@@ -202,12 +202,12 @@ void MikhailCook_FilterData::Loop()
 		EC_time_offset[std::make_pair("CH2",1)]=-0.70;  EC_time_offset[std::make_pair("CH2",2)]=-0.80; EC_time_offset[std::make_pair("CH2",3)]=-0.91;
 		EC_time_offset[std::make_pair("CH2",4)]=-0.92;  EC_time_offset[std::make_pair("CH2",5)]=-0.91; EC_time_offset[std::make_pair("CH2",6)]=-0.80;
 
-		elmom_corr_fact[0]=1.007;
-		elmom_corr_fact[1]=0.988;
-		elmom_corr_fact[2]=1.008;
-		elmom_corr_fact[3]=1.011;
-		elmom_corr_fact[4]=1.014;
-		elmom_corr_fact[5]=1.013;//a constant to multiply e- momentum with to correct the location of n peak in MM(3He(e,e'pp)n)
+		elmom_corr_fact[0]=1.;
+		elmom_corr_fact[1]=1.;
+		elmom_corr_fact[2]=1.;
+		elmom_corr_fact[3]=1.;
+		elmom_corr_fact[4]=1.;
+		elmom_corr_fact[5]=1.;
 	}
 
 	if(en_beam[fbeam_en]>2. && en_beam[fbeam_en]<3.) //2.2 GeV  Configuration parameters and cuts
@@ -241,30 +241,37 @@ void MikhailCook_FilterData::Loop()
 		vert_min["3He"]=-3.29;
 		vert_min["4He"]=-2.53;
 		vert_min["C12"]=4.8;
+		vert_min["CH2"]=4.8;
 		vert_min["56Fe"]=4.6;
+
 		vert_max["3He"]=-0.23;
 		vert_max["4He"]=1.73;
 		vert_max["C12"]=5.5;
+		vert_max["CH2"]=5.5;
 		vert_max["56Fe"]=5.3;
 
 		vertdiff_min["3He"]=-1.;
 		vertdiff_min["4He"]=-1.;
 		vertdiff_min["C12"]=-1.;
+		vertdiff_min["CH2"]=-1.;
 		vertdiff_min["56Fe"]=-1.;
 
 		vertdiff_max["3He"]=1.;
 		vertdiff_max["4He"]=1.;
 		vertdiff_max["C12"]=1.;
+		vertdiff_max["CH2"]=1.;
 		vertdiff_max["56Fe"]=1.;
 
 		EC_photon_beta["3He"]=0.93;
 		EC_photon_beta["4He"]=0.92;
 		EC_photon_beta["C12"]=0.92;
+		EC_photon_beta["CH2"]=0.92;
 		EC_photon_beta["56Fe"]=0.90;
 
 		LEC_photon_beta["3He"]=0.96;
 		LEC_photon_beta["4He"]=0.94;
 		LEC_photon_beta["C12"]=0.94;
+		LEC_photon_beta["CH2"]=0.94;
 		LEC_photon_beta["56Fe"]=0.95;
 
 		EC_time_offset[std::make_pair("3He",1)]=-1.37;  EC_time_offset[std::make_pair("3He",2)]=-1.42; EC_time_offset[std::make_pair("3He",3)]=-1.55;
@@ -276,15 +283,18 @@ void MikhailCook_FilterData::Loop()
 		EC_time_offset[std::make_pair("C12",1)]=0.50;  EC_time_offset[std::make_pair("C12",2)]=0.39; EC_time_offset[std::make_pair("C12",3)]=0.29;
 		EC_time_offset[std::make_pair("C12",4)]=0.29;  EC_time_offset[std::make_pair("C12",5)]=0.32; EC_time_offset[std::make_pair("C12",6)]=0.33;
 
+		EC_time_offset[std::make_pair("CH2",1)]=0.50;  EC_time_offset[std::make_pair("CH2",2)]=0.39; EC_time_offset[std::make_pair("CH2",3)]=0.29;
+		EC_time_offset[std::make_pair("CH2",4)]=0.29;  EC_time_offset[std::make_pair("CH2",5)]=0.32; EC_time_offset[std::make_pair("CH2",6)]=0.33;
+
 		EC_time_offset[std::make_pair("56Fe",1)]=0.75;  EC_time_offset[std::make_pair("56Fe",2)]=0.49; EC_time_offset[std::make_pair("56Fe",3)]=0.37;
 		EC_time_offset[std::make_pair("56Fe",4)]=0.39;  EC_time_offset[std::make_pair("56Fe",5)]=0.43; EC_time_offset[std::make_pair("56Fe",6)]=0.44;
 
-		elmom_corr_fact[0]=1.001;
-		elmom_corr_fact[1]=0.991;
-		elmom_corr_fact[2]=1.005;
-		elmom_corr_fact[3]=1.004;
-		elmom_corr_fact[4]=1.006;
-		elmom_corr_fact[5]=1.005;//a constant to multiply e- momentum with to correct the location of n peak in MM(3He(e,e'pp)n)
+		elmom_corr_fact[0]=1.;
+		elmom_corr_fact[1]=1.;
+		elmom_corr_fact[2]=1.;
+		elmom_corr_fact[3]=1.;
+		elmom_corr_fact[4]=1.;
+		elmom_corr_fact[5]=1.;
 
 	}
 
@@ -318,30 +328,37 @@ void MikhailCook_FilterData::Loop()
 		vert_min["3He"]=-3.27;
 		vert_min["4He"]=-2.51;
 		vert_min["C12"]=4.7;
+		vert_min["CH2"]=4.7;
 		vert_min["56Fe"]=4.6;
+
 		vert_max["3He"]=0.07;
 		vert_max["4He"]=1.71;
 		vert_max["C12"]=5.3;
+		vert_max["CH2"]=5.3;
 		vert_max["56Fe"]=5.4;
 
 		vertdiff_min["3He"]=-1.;
 		vertdiff_min["4He"]=-1;
 		vertdiff_min["C12"]=-1;
+		vertdiff_min["CH2"]=-1;
 		vertdiff_min["56Fe"]=-1;
 
 		vertdiff_max["3He"]=1.;
 		vertdiff_max["4He"]=1.;
 		vertdiff_max["C12"]=1;
+		vertdiff_max["CH2"]=1;
 		vertdiff_max["56Fe"]=1;
 
 		EC_photon_beta["3He"]=0.92;
 		EC_photon_beta["4He"]=0.91;
 		EC_photon_beta["C12"]=0.92;
+		EC_photon_beta["CH2"]=0.92;
 		EC_photon_beta["56Fe"]=0.91;
 
 		LEC_photon_beta["3He"]=0.97;
 		LEC_photon_beta["4He"]=0.97;
 		LEC_photon_beta["C12"]=0.95;
+		LEC_photon_beta["CH2"]=0.95;
 		LEC_photon_beta["56Fe"]=0.96;
 
 		EC_time_offset[std::make_pair("3He",1)]=-0.15;  EC_time_offset[std::make_pair("3He",2)]=-0.26; EC_time_offset[std::make_pair("3He",3)]=-0.41;
@@ -353,15 +370,18 @@ void MikhailCook_FilterData::Loop()
 		EC_time_offset[std::make_pair("C12",1)]=-0.01;  EC_time_offset[std::make_pair("C12",2)]=-0.11; EC_time_offset[std::make_pair("C12",3)]=-0.23;
 		EC_time_offset[std::make_pair("C12",4)]=-0.27;  EC_time_offset[std::make_pair("C12",5)]=-0.21; EC_time_offset[std::make_pair("C12",6)]=-0.08;
 
+		EC_time_offset[std::make_pair("CH2",1)]=-0.01;  EC_time_offset[std::make_pair("CH2",2)]=-0.11; EC_time_offset[std::make_pair("CH2",3)]=-0.23;
+		EC_time_offset[std::make_pair("CH2",4)]=-0.27;  EC_time_offset[std::make_pair("CH2",5)]=-0.21; EC_time_offset[std::make_pair("CH2",6)]=-0.08;
+
 		EC_time_offset[std::make_pair("56Fe",1)]=-0.49;  EC_time_offset[std::make_pair("56Fe",2)]=-0.14; EC_time_offset[std::make_pair("56Fe",3)]=-0.32;
 		EC_time_offset[std::make_pair("56Fe",4)]=-0.25;  EC_time_offset[std::make_pair("56Fe",5)]=-0.17; EC_time_offset[std::make_pair("56Fe",6)]=-0.35;
 
-		elmom_corr_fact[0]=1.001;
-		elmom_corr_fact[1]=0.991;
-		elmom_corr_fact[2]=1.005;
-		elmom_corr_fact[3]=1.004;
-		elmom_corr_fact[4]=1.006;
-		elmom_corr_fact[5]=1.005;//a constant to multiply e- momentum with to correct the location of n peak in MM(3He(e,e'pp)n)
+		elmom_corr_fact[0]=1.;
+		elmom_corr_fact[1]=1.;
+		elmom_corr_fact[2]=1.;
+		elmom_corr_fact[3]=1.;
+		elmom_corr_fact[4]=1.;
+		elmom_corr_fact[5]=1.;
 
 	}
 

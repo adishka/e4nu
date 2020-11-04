@@ -140,9 +140,11 @@
 		{ std::make_pair("4He", "2_261"), 0. },
 		{ std::make_pair("4He", "4_461"), 0. },
 		{ std::make_pair("12C", "1_161"), 0. },
-		{ std::make_pair("CH2", "1_161"), 0. },
 		{ std::make_pair("12C", "2_261"), 0. },
 		{ std::make_pair("12C", "4_461"), 0. },
+		{ std::make_pair("CH2", "1_161"), 0. },
+		{ std::make_pair("CH2", "2_261"), 0. },
+		{ std::make_pair("CH2", "4_461"), 0.0422 }, // using (q_u_max - q_u_min) * average lifetime // 0.04385 using good run list 
 		{ std::make_pair("56Fe", "2_261"), 0. },
 		{ std::make_pair("56Fe", "4_461"), 0. }
 	};

@@ -36,6 +36,7 @@ public :
    Char_t          evntype;
    Int_t           evntclas;
    Float_t         q_l;
+   Float_t         q_u;
    Float_t         t_l;
    Float_t         tr_time;
    Float_t         rf_time;
@@ -143,6 +144,7 @@ public :
    TBranch        *b_evntype;   //!
    TBranch        *b_evntclas;   //!
    TBranch        *b_q_l;   //!
+   TBranch        *b_q_u;   //!
    TBranch        *b_t_l;   //!
    TBranch        *b_tr_time;   //!
    TBranch        *b_rf_time;   //!
@@ -343,6 +345,7 @@ void CalculateIntegratedCharge::Init(TChain *tree)
    fChain->SetBranchAddress("evntype", &evntype, &b_evntype);
    fChain->SetBranchAddress("evntclas", &evntclas, &b_evntclas);
    fChain->SetBranchAddress("q_l", &q_l, &b_q_l);
+   fChain->SetBranchAddress("q_u", &q_u, &b_q_u);
    fChain->SetBranchAddress("t_l", &t_l, &b_t_l);
    fChain->SetBranchAddress("tr_time", &tr_time, &b_tr_time);
    fChain->SetBranchAddress("rf_time", &rf_time, &b_rf_time);

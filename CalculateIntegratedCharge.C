@@ -3,6 +3,7 @@
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
+#include <TProfile.h>
 
 #include <iostream>
 #include <iomanip>
@@ -14,12 +15,23 @@ using namespace std;
 
 void CalculateIntegratedCharge::Loop() {
 
-	 if (fChain == 0) return;
+	if (fChain == 0) return;
 
-	 Long64_t nentries = fChain->GetEntriesFast();
-	 Long64_t nbytes = 0, nb = 0;
+	Long64_t nentries = fChain->GetEntriesFast();
+	Long64_t nbytes = 0, nb = 0;
 
 	double IntegratedCharge = 0;
+	double RunCharge = -1;
+
+	double Q_U_Min = 99;
+	double Q_U_Max = -1;
+
+	double Events = 0;
+	double SumLifetime = 0;
+
+//	TProfile* IntCharge = new TProfile("Charge","Charge",fChain->GetEntries(),0,fChain->GetEntries());
+
+	// ---------------------------------------------------------------------------------------------------------------------------------	
 
 	for (Long64_t jentry=0; jentry<nentries;jentry++) {
 
@@ -47,12 +59,32 @@ void CalculateIntegratedCharge::Loop() {
 		//if (fbeam_en == "1161" && fTorusCurrent > 760) { continue; }                                                              
                 //if (fbeam_en == "1161" && fTorusCurrent < 760) { continue; }
 
-		IntegratedCharge += q_l;
+//		IntCharge->Fill(jentry,q_u*t_l);
+
+//		if (RunCharge != q_u) {
+
+//			IntegratedCharge += q_u*t_l; // in μC to be added only once per run
+//			RunCharge = q_u;
+//		}
+
+		if (q_u < Q_U_Min) { Q_U_Min = q_u; }
+		if (q_u > Q_U_Max) { Q_U_Max = q_u; }
+
+		Events ++;
+		SumLifetime += t_l;
+
 
 	} // End of the loop over the events
 
 	// ---------------------------------------------------------------------------------------------------------------------------------
 
-	cout << "Integrated charge = " << IntegratedCharge << endl;
+	double AverageLifetime = SumLifetime / Events;
+
+	cout << endl << "AverageLifetime = " << AverageLifetime << endl; 
+	cout << "Q_U_Min = " << Q_U_Min << endl;
+	cout << "Q_U_Max = " << Q_U_Max << endl;
+
+	double IntCharge = (Q_U_Max - Q_U_Min)*AverageLifetime ;
+	cout << "IntCharge = " << IntCharge << endl;
 
 }

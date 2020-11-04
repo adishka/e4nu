@@ -33,7 +33,7 @@ double Integrate(TH1D* h) {
 
 	for (int i = 0; i < NBins; i++) {
 
-		if (h->GetBinCenter(i+1) >= 0.9 && h->GetBinCenter(i+1) <= 1.) {
+		if (h->GetBinCenter(i+1) >= 0.9 && h->GetBinCenter(i+1) <= 0.94) {
 		//if (h->GetBinContent(i+1) > 0) {
 
 		SumEntries += h->GetBinContent(i+1) /** h->GetBinWidth(i+1)*/;
@@ -131,6 +131,7 @@ void HydrogenComparisons() {
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_1"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
 
 	std::vector<TH1D*> Plots;
@@ -185,7 +186,7 @@ void HydrogenComparisons() {
 
 					for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-						TString PathToFiles = "../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
+						TString PathToFiles = "mySamples/";
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
 						TFile* FileSample = TFile::Open(FileName);
 
@@ -310,14 +311,14 @@ void HydrogenComparisons() {
 
 			// Scaling the CH2 integral to the 12C one in the region 0.6 to 0.9
 
-			double LowRange = 0.6;
-			double HighRange = 0.9;
+//			double LowRange = 0.6;
+//			double HighRange = 0.9;
 
 //			double LowRange = 1.1;
 //			double HighRange = 1.4;
 
-//			double LowRange = 0.9;
-//			double HighRange = 1.1;
+			double LowRange = 0.85;
+			double HighRange = 0.9;
 
 			int LowBin = Plots[1]->FindBin(LowRange);
 			int HighBin = Plots[1]->FindBin(HighRange);
@@ -327,7 +328,7 @@ void HydrogenComparisons() {
 
 //cout << "IntegralC/IntegralCH2 =" << IntegralC/IntegralCH2 << endl;
 
-			Plots[1]->Scale(IntegralC/IntegralCH2);
+			//Plots[1]->Scale(IntegralC/IntegralCH2);
 
 			// ----------------------------------------------------------------------------------------------------------------------
 
@@ -399,7 +400,7 @@ void HydrogenComparisons() {
 
 			G2018histo->SetLineColor(kBlue);
 			G2018histo->SetLineWidth(3);
-			G2018histo->Draw("C hist same");
+			//G2018histo->Draw("C hist same");
 
 			TLegend* leg = new TLegend(0.6,0.6,0.7,0.7);
 
