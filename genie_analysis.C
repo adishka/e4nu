@@ -116,6 +116,7 @@ void genie_analysis::Loop(Int_t choice) {
 	// Do we want to apply fiducials & the acceptance map weights
 	// Do we want a truth level study ? if so, stop ditching sectors
 
+	bool UseAllSectors = false;
 	bool ApplyFiducials = true;
 	bool ApplyAccWeights = true;
 	bool ApplyReso = true;
@@ -1229,7 +1230,7 @@ void genie_analysis::Loop(Int_t choice) {
 		// apapadop: Oct 8 2020: ditching bad sectors
 		// Counting sectors from 0 to 5
 
-		if (!TruthLevel1p0piSignalStudy) { 
+		if (!UseAllSectors) { 
 
 			if ( (ElectronSector == 2 || ElectronSector == 4) &&  fbeam_en == "1161") { continue; }
 			if ( (ElectronSector == 2 || ElectronSector == 3 || ElectronSector == 4) &&  fbeam_en == "2261") { continue; }
