@@ -703,6 +703,15 @@ void GetCharge_FilterData::Loop()
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------
 
+	// Histo declaration
+
+	TH2D* h2_Electron_UncorrectedVertex_Phi = new TH2D("h2_Electron_UncorrectedVertex_Phi",";Uncorrected Vertex [cm];#phi_{e'} [deg]",2000,-10,10,360,0,360);
+	TH2D* h2_Electron_CorrectedVertex_Phi = new TH2D("h2_Electron_CorrectedVertex_Phi",";Corrected Vertex [cm];#phi_{e'} [deg]",2000,-10,10,360,0,360);
+
+	// ------------------------------------------------------------------------------------------------------------------------------------------------
+
+	// Starting the loop
+
 	for (Long64_t jentry=0; jentry<nentries;jentry++) {
 
 		Long64_t ientry = LoadTree(jentry);
@@ -869,6 +878,9 @@ void GetCharge_FilterData::Loop()
 		int el_ec_sector = ec_sect[ec[ind_em] - 1];
 		double el_vert_corr = el_vert+vz_corr(vz_corr_func,el_phi_mod,el_theta);
 
+		h2_Electron_UncorrectedVertex_Phi->Fill(el_vert,el_phi_mod);
+		h2_Electron_CorrectedVertex_Phi->Fill(el_vert_corr,el_phi_mod);
+
 		//Variables for electron cuts
 		double ece = TMath::Max( ec_ei[ec[ind_em] - 1] + ec_eo[ec[ind_em] - 1],   etot[ec[ind_em] - 1]);
 		el_segment = int((cc_segm[cc[ind_em]-1]-int(cc_segm[cc[ind_em]-1]/1000)*1000)/10); //does this work in all cases?? F.H. 08/07/19
@@ -959,7 +971,7 @@ void GetCharge_FilterData::Loop()
 		genie_cthl = cos(V4_el.Theta());
 		genie_vtxx = 0;
 		genie_vtxy = 0;
-		genie_vtxz = 0;
+		genie_vtxz = el_vert_corr;
 
 		// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

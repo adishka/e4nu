@@ -56,8 +56,8 @@ void AcceptanceCorrections() {
 	// 1st plot is true 1p0pi with smearing (S) / fiducials (F) / acceptance maps (A) / resolution (R) / thresholds (T)
 	// 2nd plot is true 1p0pi without smearing (S) / fiducials (F) / acceptance maps (A) / resolution (R) but with thresholds (T)
 
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");
 

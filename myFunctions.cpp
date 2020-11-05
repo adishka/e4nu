@@ -512,7 +512,7 @@ void ApplyRebinning(TH1D* h, TString Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("Wvar") != std::string::npos || string(PlotVar).find("W_") != std::string::npos ) {
 
-		for (int i = 0; i < 0; i++) { h->Rebin();} 
+		for (int i = 0; i < 1; i++) { h->Rebin();} 
 
 	}
 

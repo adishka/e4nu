@@ -131,8 +131,10 @@ void HydrogenComparisons() {
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
-//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
-	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_1"); LabelOfPlots.push_back("2nd (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_1"); LabelOfPlots.push_back("2nd (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_2"); LabelOfPlots.push_back("3rd (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_3"); LabelOfPlots.push_back("4th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_4"); LabelOfPlots.push_back("5th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_5"); LabelOfPlots.push_back("6th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
@@ -351,7 +353,7 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.00484337
 
 			// Getting to the cross section
 
-			double CloneSF = 7. * ConversionFactorChargeToElectrons / (dOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])] * AvogadroNumber *\
+			double CloneSF = 7. * ConversionFactorChargeToElectrons / (2*dOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])] * AvogadroNumber *\
 			       TargetLength[std::make_pair("CH2",E[WhichEnergy])] * TargetDensity[std::make_pair("CH2",E[WhichEnergy])]);
 			Clone->Scale(CloneSF);
 
@@ -393,11 +395,11 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.00484337
 
 			double GeniedsigmadOmega = G2018histo->GetEntries() * G2018GenieXSec[std::make_pair("1H", "1_161")] * TMath::Power(10.,-38.) *\
 								ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair("1H", "1_161")] *\
-								dOmega) ;
+								2* dOmega) ;
 
 			double GenieSF = G2018GenieXSec[std::make_pair("1H", "1_161")] * TMath::Power(10.,-38.) *\
 								ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair("1H", "1_161")] *\
-								dOmega) ;
+								2* dOmega) ;
 
 			cout << "Genie dsigmadOmega = " << GeniedsigmadOmega << endl;
 
