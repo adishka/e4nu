@@ -25,6 +25,9 @@ void GlobalSettings() {
 	gStyle->SetTitleFont(FontStyle,"t");
 	gStyle->SetOptStat(0);	
 
+	TH1D::SetDefaultSumw2();
+	TH2D::SetDefaultSumw2();
+
 }
 
 // -------------------------------------------------------------------------------------------------------------------------------------

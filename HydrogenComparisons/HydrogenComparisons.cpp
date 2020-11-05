@@ -33,7 +33,7 @@ double Integrate(TH1D* h) {
 
 	for (int i = 0; i < NBins; i++) {
 
-		if (h->GetBinCenter(i+1) >= 0.9 && h->GetBinCenter(i+1) <= 0.95) {
+		if (h->GetBinCenter(i+1) >= 0.915 && h->GetBinCenter(i+1) <= 0.945) {
 		//if (h->GetBinContent(i+1) > 0) {
 
 		SumEntries += h->GetBinContent(i+1) /** h->GetBinWidth(i+1)*/;
@@ -130,8 +130,11 @@ void HydrogenComparisons() {
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InAllSectors"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
-	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
-//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_1"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_1"); LabelOfPlots.push_back("2nd (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_4"); LabelOfPlots.push_back("5th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_5"); LabelOfPlots.push_back("6th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
 
 	std::vector<TH1D*> Plots;
@@ -335,7 +338,7 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.00484337
 
 //cout << "IntegralC/IntegralCH2 =" << IntegralC/IntegralCH2 << endl;
 
-			Plots[1]->Scale(IntegralC/IntegralCH2);
+			//Plots[1]->Scale(IntegralC/IntegralCH2);
 
 			// ----------------------------------------------------------------------------------------------------------------------
 
