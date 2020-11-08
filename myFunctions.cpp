@@ -640,7 +640,7 @@ void UniversalE4vFunction(TH1D* h, TString DataSetLabel, TString nucleus, TStrin
 
 	ReweightPlots(h);
 
-	// Rebin is necessary
+	// Rebin if necessary
 
 	ApplyRebinning(h,E,name);
 
@@ -649,13 +649,66 @@ void UniversalE4vFunction(TH1D* h, TString DataSetLabel, TString nucleus, TStrin
 	ApplyRange(h,E,name);
 
 	// if data sample: 
-	//                 apply systematics due to rotations et al
+
+	// 	apply systematics due to rotations et al
 
 	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplySystUnc(h, E); }
 
-	//                 apply acceptance systematics using sector-by -sector uncertainties
+	// 	apply acceptance systematics using sector-by -sector uncertainties
 
 	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplySectorSystUnc(h, E); }
+	
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TString E, TString name, TString xBCut) {
+
+	std::vector<TH1D*> Plots; Plots.clear();
+
+	std::vector<TString> FSIModel; FSIModel.clear();
+	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM");
+	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithoutFidAcc");
+	int NFSIModels = FSIModel.size();
+
+	for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
+
+		// --------------------------------------------------------------------------------------
+
+		TString PathToFiles = GlobalPathToFiles + E + "/" + FSIModel[WhichFSIModel] + "/" + xBCut + "/";
+		TString FileName = PathToFiles + nucleus +"_" + E + "_" + FSIModel[WhichFSIModel] + "_Plots_FSI_em.root";
+		TFile* FileSample = TFile::Open(FileName);
+
+		Plots.push_back( (TH1D*)( FileSample->Get(name) ) );
+
+		UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus,E,name);
+
+		// --------------------------------------------------------------------------------------
+
+	}
+
+	// --------------------------------------------------------------------------------------	
+
+	TH1D* OverallClone = (TH1D*)Plots[0]->Clone();	
+
+	int NBins = OverallClone->GetXaxis()->GetNbins();
+
+	for (int WhichBin = 0; WhichBin < NBins; WhichBin++) {
+
+		double AccCorr = Plots[0]->GetBinContent(WhichBin + 1) / Plots[1]->GetBinContent(WhichBin + 1);
+
+		double NewBinContent = Plots[0]->GetBinContent(WhichBin + 1) / AccCorr;
+		double NewBinError = Plots[0]->GetBinError(WhichBin + 1) / AccCorr;
+
+		OverallClone->SetBinContent(WhichBin + 1, NewBinContent);
+		OverallClone->SetBinError(WhichBin + 1, NewBinError);
+
+	}
+
+	// --------------------------------------------------------------------------------------	
+
+	return OverallClone;
+
 }
 
 // -------------------------------------------------------------------------------------------------------------------------------------

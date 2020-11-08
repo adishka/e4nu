@@ -55,9 +55,9 @@ void Create2DPlots() {
 //	FSIModel.push_back("hA2018_Final_NoRadCorr"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 
-	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");  DirNames.push_back("True 1p0pi W/");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");  DirNames.push_back("True 1p0pi W/O");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");  DirNames.push_back("True 1p0pi W/O");
 
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors_NoAccMaps"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
@@ -407,6 +407,16 @@ void Create2DPlots() {
 						sample->SetTextSize(TextSize);
 						if (FSILabel[WhichFSIModel] == "Data") { sample->DrawTextNDC(0.2,0.84,FSILabel[WhichFSIModel]); }
 						else { sample->DrawTextNDC(0.05,0.84,FSILabel[WhichFSIModel]); } 
+
+						if ( string(NameOfPlots[WhichPlot]).find("Electron_Theta_Momentum") != std::string::npos ) {
+
+							TF1 *f1 = new TF1("f1","[0]/x+[1]",0.,5);
+							f1->SetLineWidth(10); 
+							//f1->Draw("same");
+							Plots->Fit(f1);
+
+						}
+
 
 //						if ( NameOfPlots[WhichPlot] == "h2_Q2_nu_weight" ) {
 

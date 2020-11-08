@@ -761,8 +761,12 @@ void genie_analysis::Loop(Int_t choice) {
 
 	TH1F *h1_W_weight_ThetaSlice_InAllSectors = new TH1F("h1_W_weight_ThetaSlice_InAllSectors",";W [GeV/c^{2}]",NBinsW,MinW,MaxW);
 	TH1F *h1_W_weight_ThetaSlice_InSector[NSectors];
+
 	TH1F *h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors = new TH1F("h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors",";W [GeV/c^{2}]",NBinsW,MinW,MaxW);
 	TH1F *h1_W_weight_FullyInclusive_ThetaSlice_InSector[NSectors];
+
+	TH1F *h1_W_weight_SingleProton_ThetaSlice_InAllSectors = new TH1F("h1_W_weight_SingleProton_ThetaSlice_InAllSectors",";W [GeV/c^{2}]",NBinsW,MinW,MaxW);
+	TH1F *h1_W_weight_SingleProton_ThetaSlice_InSector[NSectors];
 
 	for (int WhichSector = 0; WhichSector < NSectors; WhichSector++) {
 
@@ -783,6 +787,9 @@ void genie_analysis::Loop(Int_t choice) {
 
 		h1_W_weight_ThetaSlice_InSector[WhichSector]  = new TH1F("h1_W_weight_ThetaSlice_InSector_"+TString(std::to_string(WhichSector)),";W [GeV/c^{2}]",NBinsW,MinW,MaxW);
 		h1_W_weight_FullyInclusive_ThetaSlice_InSector[WhichSector]  = new TH1F("h1_W_weight_FullyInclusive_ThetaSlice_InSector_"+TString(std::to_string(WhichSector)),";W [GeV/c^{2}]",NBinsW,MinW,MaxW);
+
+		h1_W_weight_SingleProton_ThetaSlice_InSector[WhichSector]  = new TH1F("h1_W_weight_SingleProton_InSector_"+TString(std::to_string(WhichSector)),";W [GeV/c^{2}]",NBinsW,MinW,MaxW);
+		h1_W_weight_SingleProton_ThetaSlice_InSector[WhichSector]  = new TH1F("h1_W_weight_SingleProton_ThetaSlice_InSector_"+TString(std::to_string(WhichSector)),";W [GeV/c^{2}]",NBinsW,MinW,MaxW);
 
 	}
 
@@ -1730,6 +1737,20 @@ void genie_analysis::Loop(Int_t choice) {
 			if (mec) { Interaction = 2; }
 			if (res) { Interaction = 3; }
 			if (dis) { Interaction = 4; }
+
+		}
+
+		// -----------------------------------------------------------------------------------------------------------------------------
+
+
+		if (num_p == 1) {
+
+			if (el_theta > 23 && el_theta < 27) {
+
+				h1_W_weight_SingleProton_ThetaSlice_InAllSectors->Fill(W_var,WeightIncl/Q4);
+				h1_W_weight_SingleProton_ThetaSlice_InSector[ElectronSector]->Fill(W_var,WeightIncl/Q4);
+
+			}
 
 		}
 
