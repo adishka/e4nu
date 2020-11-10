@@ -496,7 +496,7 @@ void ApplyRebinning(TH1D* h, TString Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos || string(PlotVar).find("Erec") != std::string::npos) {
 
-	} else if (string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("Etot") != std::string::npos) {
+	} else if (string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("E_tot") != std::string::npos) {
 
 	} else if (string(PlotVar).find("PT") != std::string::npos || string(PlotVar).find("MissMomentum") != std::string::npos) {
 
@@ -548,7 +548,7 @@ void ApplyRange(TH1D* h, TString Energy, TString PlotVar) {
 		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.7,2.6); }
 		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(2.,5.); }
 
-	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos ) {
+	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("E_tot") != std::string::npos) {
 
 		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.57,1.23); }
 		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.67,2.4); }

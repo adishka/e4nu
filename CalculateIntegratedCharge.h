@@ -1,10 +1,3 @@
-//////////////////////////////////////////////////////////
-// This class has been automatically generated on
-// Thu Sep 24 14:41:10 2020 by ROOT version 5.34/36
-// from TTree CalculateIntegratedCharge/All_out
-// found on file: /cache/clas/e2a/production/pass2/v1/1161/C12/HROOT/hroot_18285_05_v1.root
-//////////////////////////////////////////////////////////
-
 #ifndef CalculateIntegratedCharge_h
 #define CalculateIntegratedCharge_h
 
@@ -244,7 +237,7 @@ public :
    TBranch        *b_lec_z;   //!
    TBranch        *b_lec_c2;   //!
 
-   CalculateIntegratedCharge(std::string energy, std::string target,TChain *tree=0);
+   CalculateIntegratedCharge(std::string energy, std::string target,TString RunNumber,TChain *tree=0);
    virtual ~CalculateIntegratedCharge();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -259,7 +252,7 @@ public :
 #endif
 
 #ifdef CalculateIntegratedCharge_cxx
-CalculateIntegratedCharge::CalculateIntegratedCharge(std::string energy, std::string target,TChain *tree) : fChain(0) 
+CalculateIntegratedCharge::CalculateIntegratedCharge(std::string energy, std::string target,TString RunNumber,TChain *tree) : fChain(0) 
 {
 	fEnergy = energy;
 	fTarget = target;
@@ -276,9 +269,9 @@ CalculateIntegratedCharge::CalculateIntegratedCharge(std::string energy, std::st
 	if (target == "3He") { StringTarget = "3he"; }
 	if (target == "4He") { StringTarget = "4he"; }
 	if (target == "CH2") { StringTarget = "ch2"; }
-	if (target == "56Fe") { StringTarget = "56fe"; }
+	if (target == "56Fe") { StringTarget = "fe56"; }
 
-	fmyLocalChain->Add("/w/hallb-scifs17exp/clas/clas-production/osipenko/e2a_pass3/e"+StringEnergy+"gev_"+StringTarget+"/*.root/h10");
+	fmyLocalChain->Add("/w/hallb-scifs17exp/clas/clas-production/osipenko/e2a_pass3/e"+StringEnergy+"gev_"+StringTarget+"/*"+RunNumber+"*.root/h10");
 
 	Init(fmyLocalChain);
 		

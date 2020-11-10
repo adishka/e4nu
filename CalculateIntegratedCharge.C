@@ -76,7 +76,7 @@ void CalculateIntegratedCharge::Loop() {
 
 		// next click
 
-		if (RunCharge != q_u) {
+		if (RunCharge != q_u && t_l > 0.8) {
 
 			Q_U_Max = q_u; 
 			IntegratedCharge += (Q_U_Max - Q_U_Min)*Lifetime; // in μC to be added only once per run

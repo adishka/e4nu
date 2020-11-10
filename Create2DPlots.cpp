@@ -94,7 +94,7 @@ void Create2DPlots() {
 //	NameOfPlots.push_back("h2_PiMinus_Theta_Phi"); XLabelOfPlots.push_back("#phi_{#pi^{-}} [deg]"); YLabelOfPlots.push_back("#theta_{#pi^{-}} [deg]"); OutputPlotNames.push_back("h2_piminus_theta_phi"); Title.push_back("");
 
 
-	NameOfPlots.push_back("h2_Electron_Theta_Momentum_FirstSector"); XLabelOfPlots.push_back("P_{e'} [GeV/c]"); YLabelOfPlots.push_back("#theta_{e'}"); OutputPlotNames.push_back("h2_Electron_Theta_Momentum_FirstSector"); Title.push_back(" (1st Sector)");
+	NameOfPlots.push_back("h2_Electron_Theta_Momentum_FirstSector"); XLabelOfPlots.push_back("P_{e'} [GeV/c]"); YLabelOfPlots.push_back("#theta_{e'}"); OutputPlotNames.push_back("h2_Electron_Theta_Momentum_FirstSector"); Title.push_back("");
 
 /*	NameOfPlots.push_back("h2_Electron_Theta_Momentum_SecondSector"); XLabelOfPlots.push_back("P_{e'} [GeV/c]"); YLabelOfPlots.push_back("#theta_{e'}"); OutputPlotNames.push_back("h2_Electron_Theta_Momentum_SecondSector"); Title.push_back(" (2nd Sector)");
 
@@ -405,16 +405,54 @@ void Create2DPlots() {
 						sample->SetTextFont(FontStyle); 
 						sample->SetTextColor(kBlack); 
 						sample->SetTextSize(TextSize);
-						if (FSILabel[WhichFSIModel] == "Data") { sample->DrawTextNDC(0.2,0.84,FSILabel[WhichFSIModel]); }
-						else { sample->DrawTextNDC(0.05,0.84,FSILabel[WhichFSIModel]); } 
+//						if (FSILabel[WhichFSIModel] == "Data") { sample->DrawTextNDC(0.2,0.84,FSILabel[WhichFSIModel]); }
+//						else { sample->DrawTextNDC(0.05,0.84,FSILabel[WhichFSIModel]); } 
 
 						if ( string(NameOfPlots[WhichPlot]).find("Electron_Theta_Momentum") != std::string::npos ) {
 
-							TF1 *f1 = new TF1("f1","[0]/x+[1]",0.,5);
-							f1->SetLineWidth(10); 
-							//f1->Draw("same");
-							Plots->Fit(f1);
+//							TF1 *f1 = new TF1("f1","[0]+[1]/x",0.,5);
+//							f1->SetLineWidth(10); 
+//							//f1->Draw("same");
+//							Plots->Fit(f1);
 
+TH1D* ProjX = (TH1D*)Plots->ProjectionX("ProjX");
+TH1D* ProjY = (TH1D*)Plots->ProjectionY("ProjY");
+
+double MinBinProjX = ProjX->FindFirstBinAbove(0,1);
+double MaxBinProjX = ProjX->FindLastBinAbove(0,1);
+double MinValueProjX = ProjX->GetBinLowEdge(MinBinProjX);
+double MaxValueProjX = ProjX->GetBinCenter(MaxBinProjX) + ProjX->GetBinWidth(MaxBinProjX);
+
+double MinBinProjY = ProjY->FindFirstBinAbove(0,1);
+double MaxBinProjY = ProjY->FindLastBinAbove(0,1);
+double MinValueProjY = ProjY->GetBinLowEdge(MinBinProjY);
+double MaxValueProjY = ProjY->GetBinCenter(MaxBinProjY) + ProjY->GetBinWidth(MaxBinProjY);
+
+//double A = (MaxValueProjY*MaxValueProjX - MinValueProjY*MinValueProjX) / ( MaxValueProjX - MinValueProjX  );
+//double B = MinValueProjX * MaxValueProjX * ( MinValueProjY - MaxValueProjY ) / ( MaxValueProjX - MinValueProjX );
+
+if (DirNames[WhichFSIModel] == "True 1p0pi W/") {
+	cout << "Min ProjX Low Edge = " << ProjX->GetBinLowEdge(MinBinProjX) << endl;
+	cout << "Max ProjX High Edge = " << ProjX->GetBinCenter(MaxBinProjX) + ProjX->GetBinWidth(MaxBinProjX) << endl;
+
+	cout << "Min ProjY Low Edge = " << ProjY->GetBinLowEdge(MinBinProjY) << endl;
+	cout << "Max ProjY High Edge = " << ProjY->GetBinCenter(MaxBinProjY) + ProjY->GetBinWidth(MaxBinProjY) << endl;
+}
+//cout << "A = " << A << endl;
+//cout << "B = " << B << endl;
+
+//TF1 *myFit = new TF1("myFit","[0]+[1]/x",0.,5);
+//myFit->SetParameters(A,B);
+
+TF1 *myFit = new TF1("myFit","[0]+[1]/x",0.,5);
+
+if (E[WhichEnergy] == "1_161") { myFit->SetParameters(15,7); }
+if (E[WhichEnergy] == "2_261") { myFit->SetParameters(14,10.5); }
+if (E[WhichEnergy] == "4_461") { myFit->SetParameters(11.5,15); }
+
+myFit->SetLineColor(kRed);
+myFit->SetLineWidth(4);
+myFit->Draw("same");
 						}
 
 

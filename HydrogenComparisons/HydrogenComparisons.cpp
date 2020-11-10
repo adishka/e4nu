@@ -33,7 +33,7 @@ double Integrate(TH1D* h) {
 
 	for (int i = 0; i < NBins; i++) {
 
-		if (h->GetBinCenter(i+1) >= 0.915 && h->GetBinCenter(i+1) <= 0.945) {
+		if (h->GetBinCenter(i+1) >= 0.915 && h->GetBinCenter(i+1) <= 0.96) {
 		//if (h->GetBinContent(i+1) > 0) {
 
 		SumEntries += h->GetBinContent(i+1) /** h->GetBinWidth(i+1)*/;
@@ -138,6 +138,12 @@ void HydrogenComparisons() {
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_4"); LabelOfPlots.push_back("5th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_5"); LabelOfPlots.push_back("6th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
+//	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_1"); LabelOfPlots.push_back("2nd sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_2"); LabelOfPlots.push_back("3rd sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_3"); LabelOfPlots.push_back("4th sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_4"); LabelOfPlots.push_back("5th sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_5"); LabelOfPlots.push_back("6th sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
 	std::vector<TH1D*> Plots;
 
@@ -151,6 +157,8 @@ void HydrogenComparisons() {
 
 	// This analysis is cutting on phi +/- 15 deg
 
+double LocaldOmega = 0.017;
+
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Loop over the xB kinematics
@@ -161,7 +169,10 @@ void HydrogenComparisons() {
 
 		for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
-IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.004843377;
+// 1 C12 , 1500 run -> 18306
+//IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.004843377;
+// full 1500 sample
+IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 
 			// Loop over the plots
 
@@ -340,7 +351,7 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.00484337
 
 //cout << "IntegralC/IntegralCH2 =" << IntegralC/IntegralCH2 << endl;
 
-			//Plots[1]->Scale(IntegralC/IntegralCH2);
+			Plots[1]->Scale(IntegralC/IntegralCH2);
 
 			// ----------------------------------------------------------------------------------------------------------------------
 
@@ -353,15 +364,16 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.00484337
 
 			// Getting to the cross section
 
-			double CloneSF = 7. * ConversionFactorChargeToElectrons / (2*dOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])] * AvogadroNumber *\
+			double CloneSF = 7. * ConversionFactorChargeToElectrons / (LocaldOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])] * AvogadroNumber *\
 			       TargetLength[std::make_pair("CH2",E[WhichEnergy])] * TargetDensity[std::make_pair("CH2",E[WhichEnergy])]);
 			Clone->Scale(CloneSF);
 
+			Clone->GetXaxis()->SetRangeUser(0.87,1);
 			Clone->GetYaxis()->SetTitle("Normalized Yield");
 			DiffCanvas->cd();
 			Clone->Draw();
 
-			Clone->Fit("gaus","","",0.9,0.96);
+			Clone->Fit("gaus","","",0.91,0.98);
 
 			double dsigmadOmega = Integrate(Clone);
 
@@ -373,12 +385,12 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.00484337
 
 			// Hydrogen GENIE File
 
-			TString HydrogenPathToFiles = "../../myFiles/1_161/hA2018_Final_RadCorr_LFGM/NoxBCut/";
+			TString HydrogenPathToFiles = "mySamples/";
 			TString HydrogenFileName = HydrogenPathToFiles+"1H_1_161_hA2018_Final_RadCorr_LFGM_Plots_FSI_em.root";
 
 			if (FSILabel[0] == "Pinned Data No Rotations") { 
 
-				HydrogenPathToFiles = "../../myFiles/1_161/hA2018_NoRotations/NoxBCut/"; 
+				HydrogenPathToFiles = "mySamples/"; 
 				HydrogenFileName = HydrogenPathToFiles+"1H_1_161_hA2018_NoRotations_Plots_FSI_em.root";
 
 			}
@@ -395,11 +407,11 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.00484337
 
 			double GeniedsigmadOmega = G2018histo->GetEntries() * G2018GenieXSec[std::make_pair("1H", "1_161")] * TMath::Power(10.,-38.) *\
 								ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair("1H", "1_161")] *\
-								2* dOmega) ;
+								LocaldOmega) ;
 
 			double GenieSF = G2018GenieXSec[std::make_pair("1H", "1_161")] * TMath::Power(10.,-38.) *\
 								ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair("1H", "1_161")] *\
-								2* dOmega) ;
+								LocaldOmega) ;
 
 			cout << "Genie dsigmadOmega = " << GeniedsigmadOmega << endl;
 
@@ -414,7 +426,7 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.00484337
 			G2018histo->SetLineWidth(3);
 			//G2018histo->Draw("C hist same");
 
-			TLegend* leg = new TLegend(0.6,0.6,0.7,0.7);
+			TLegend* leg = new TLegend(0.65,0.6,0.75,0.7);
 
 			leg->AddEntry(Clone,"Data","lep");
 			//leg->AddEntry(G2018histo,"GENIE","l");

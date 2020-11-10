@@ -47,8 +47,8 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 	xBCut.push_back("NoxBCut");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");	
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
 
 	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
 
@@ -212,11 +212,14 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 							Plots[WhichFSIModel]->SetMarkerColor(kBlack); 
 
 							gStyle->SetErrorX(0); // Removing the horizontal errors
-							Plots[WhichFSIModel]->Draw("e same"); 
+							//Plots[WhichFSIModel]->Draw("e same"); 
 
 							TH1D* DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
+							DataPlot->SetMarkerStyle(20); 
+							DataPlot->SetMarkerSize(2.); 
 							DataPlot->SetLineColor(kRed);	
+							DataPlot->SetMarkerColor(kRed);	
 							DataPlot->Draw("e same"); 							
 
 						} else { 
@@ -227,7 +230,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 							if (FSILabel[WhichFSIModel] == "SuSav2") 
 								{ legGenieBlackLine->AddEntry(Plots[WhichFSIModel],"SuSav2 (Total)", "l"); }
 
-							Plots[0]->Draw("e same"); 
+							//Plots[0]->Draw("e same"); 
 
 						}
 

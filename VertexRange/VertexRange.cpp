@@ -76,28 +76,39 @@ void VertexRange(TString Nucleus, TString Energy, TString TorusCurrent) {
 
 	TF1* FitFunction = nullptr; 
 
-	if (Nucleus == "4He") {
+	double Min = -10, Max = 10;
+	double MinDraw = -10, MaxDraw = 10;
+	double MinXRange = -10, MaxXRange = 10;
 
-		double Min = -4.;
-		double Max = 4.;
+	if (Nucleus == "4He" || Nucleus == "3He") {
+
+		Min = -4.;
+		Max = 4.;
 
 		h1->GetXaxis()->SetRangeUser(Min,Max);
 		FitFunction = new TF1("fpol0","pol0",Min,Max);
 
 	} else {
 
-		double Min = 3.;
-		double Max = 8.;
+		MinXRange = 3.;
+		MaxXRange = 8.;
 
-		if (Nucleus == "56Fe" && Energy == "2261") {
+		Min = 3.;
+		Max = 8.;
 
-			Min = 4.5;
-			Max = 5.3;
+		MinDraw = 4.5;
+		MaxDraw = 6.3;
 
-		}
+		if (Nucleus == "CH2" && Energy == "1161") { Min = 5.;	Max = 5.4; }
+		if (Nucleus == "C12" && Energy == "1161" && TorusCurrent == "750") { Min = 5.15; Max = 5.55; }
+		if (Nucleus == "C12" && Energy == "1161" && TorusCurrent == "1500") { Min = 5.1; Max = 5.5; }
+		if (Nucleus == "C12" && Energy == "2261") { Min = 4.9; Max = 5.3; }
+		if (Nucleus == "C12" && Energy == "4461") { Min = 4.8; Max = 5.2; }
+		if (Nucleus == "56Fe" && Energy == "2261") { Min = 4.75; Max = 5.15; }
+		if (Nucleus == "56Fe" && Energy == "4461") { Min = 4.7; Max = 5.1; }
 
-		h1->GetXaxis()->SetRangeUser(Min,Max);
-		FitFunction = new TF1("fgaus","gaus",Min,Max);	
+		h1->GetXaxis()->SetRangeUser(MinXRange,MaxXRange);
+		FitFunction = new TF1("fgaus","gaus",MinDraw,MaxDraw);	
 
 	}
 
@@ -111,14 +122,16 @@ void VertexRange(TString Nucleus, TString Energy, TString TorusCurrent) {
 
 	h1->SetTitle(Nucleus + ", " + Energy + ", " + TorusCurrent);
 	h1->Draw();
-	h1->Fit(FitFunction);
+	h1->Fit(FitFunction,"","",Min,Max);
+
+	FitFunction->Draw("same");
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	double mean = FitFunction->GetParameter(1);
 	double sigma = FitFunction->GetParameter(2);
-	double MinRange = mean - 3*sigma;
-	double MaxRange = mean + 3*sigma;
+	double MinRange = mean - 4*sigma;
+	double MaxRange = mean + 4*sigma;
 
 	TLatex* Mean = new TLatex();
 	Mean->SetTextFont(132);

@@ -161,12 +161,39 @@ void FilterData::Loop()
 		Ecal_lowlim[5]=0.;
 		Ecal_uplim[5]=1.35;
 
+		// -----------------------------------------
+
+		// Mariana's fitting
+
+//		vert_min["3He"]=-3.05;
+//		vert_min["C12"]=4.95;
+//		vert_min["CH2"]=4.85;
+
+//		vert_max["3He"]=-0.18;
+//		vert_max["C12"]=5.76;
+//		vert_max["CH2"]=5.62;
+
+		// apapadop's fitting // Nov 9 2020
+
+//		vert_min["3He"]=-3.05;
+//		vert_min["C12"]=4.43;
+//		vert_min["CH2"]=4.64;
+
+//		vert_max["3He"]=-0.18;
+//		vert_max["C12"]=6.16;
+//		vert_max["CH2"]=5.82;
+
+		// Or's eyeballing // Nov 10 2020
+
 		vert_min["3He"]=-3.05;
-		vert_min["C12"]=4.95;
-		vert_min["CH2"]=4.85;
+		vert_min["C12"]=4.3;
+		vert_min["CH2"]=4.3;
+
 		vert_max["3He"]=-0.18;
-		vert_max["C12"]=5.76;
-		vert_max["CH2"]=5.62;
+		vert_max["C12"]=6.5;
+		vert_max["CH2"]=6.5;
+
+		// -----------------------------------------
 
 		vertdiff_min["3He"]=-1.;
 		vertdiff_min["C12"]=-1.;
@@ -229,14 +256,45 @@ void FilterData::Loop()
 		Ecal_lowlim[5]=0.;
 		Ecal_uplim[5]=2.;
 
+		// -----------------------------------------
+
+		// Mariana's fitting
+
+//		vert_min["3He"]=-3.29;
+//		vert_min["4He"]=-2.53;
+//		vert_min["C12"]=4.8;
+//		vert_min["56Fe"]=4.6;
+
+//		vert_max["3He"]=-0.23;
+//		vert_max["4He"]=1.73;
+//		vert_max["C12"]=5.5;
+//		vert_max["56Fe"]=5.3;
+
+//		// apapadop's fitting // Nov 9 2020
+
+//		vert_min["3He"]=-3.29;
+//		vert_min["4He"]=-2.53;
+//		vert_min["C12"]=4.58;
+//		vert_min["56Fe"]=4.46;
+
+//		vert_max["3He"]=-0.23;
+//		vert_max["4He"]=1.73;
+//		vert_max["C12"]=5.6;
+//		vert_max["56Fe"]=5.47;
+
+		// Or's eyeballing // Nov 10 2020
+
 		vert_min["3He"]=-3.29;
 		vert_min["4He"]=-2.53;
-		vert_min["C12"]=4.8;
-		vert_min["56Fe"]=4.6;
+		vert_min["C12"]=4.3;
+		vert_min["56Fe"]=4.3;
+
 		vert_max["3He"]=-0.23;
 		vert_max["4He"]=1.73;
-		vert_max["C12"]=5.5;
-		vert_max["56Fe"]=5.3;
+		vert_max["C12"]=6.5;
+		vert_max["56Fe"]=6.5;
+
+		// -----------------------------------------
 
 		vertdiff_min["3He"]=-1.;
 		vertdiff_min["4He"]=-1.;
@@ -306,14 +364,45 @@ void FilterData::Loop()
 		Ecal_lowlim[5]=0.;
 		Ecal_uplim[5]=4.;
 
+		// -----------------------------------------
+
+		// Mariana's fitting
+
+//		vert_min["3He"]=-3.27;
+//		vert_min["4He"]=-2.51;
+//		vert_min["C12"]=4.7;
+//		vert_min["56Fe"]=4.6;
+
+//		vert_max["3He"]=0.07;
+//		vert_max["4He"]=1.71;
+//		vert_max["C12"]=5.3;
+//		vert_max["56Fe"]=5.4;
+
+		// apapadop's fitting // Nov 9 2020
+
+//		vert_min["3He"]=-3.27;
+//		vert_min["4He"]=-2.51;
+//		vert_min["C12"]=4.44;
+//		vert_min["56Fe"]=4.41;
+
+//		vert_max["3He"]=0.07;
+//		vert_max["4He"]=1.71;
+//		vert_max["C12"]=5.56;
+//		vert_max["56Fe"]=5.46;
+
+		// Or's eyeballing // Nov 10 2020
+
 		vert_min["3He"]=-3.27;
 		vert_min["4He"]=-2.51;
-		vert_min["C12"]=4.7;
-		vert_min["56Fe"]=4.6;
+		vert_min["C12"]=4.3;
+		vert_min["56Fe"]=4.3;
+
 		vert_max["3He"]=0.07;
 		vert_max["4He"]=1.71;
-		vert_max["C12"]=5.3;
-		vert_max["56Fe"]=5.4;
+		vert_max["C12"]=6.5;
+		vert_max["56Fe"]=6.5;
+
+		// -----------------------------------------
 
 		vertdiff_min["3He"]=-1.;
 		vertdiff_min["4He"]=-1;

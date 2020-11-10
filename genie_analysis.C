@@ -1108,6 +1108,22 @@ void genie_analysis::Loop(Int_t choice) {
 		double el_momentum = V3_el.Mag();
 		double el_theta = V3_el.Theta();
 
+		// ----------------------------------------------------------------------------------------------------------------------
+
+		// Justification for the parameter choice
+		// https://docs.google.com/presentation/d/1ghG08JfCYXRXh6O8hcXKrhJOFxkAs_9i5ZfoIkiiEHU/edit?usp=sharing
+
+		TF1 *myFit = new TF1("myFit","[0]+[1]/x",0.,5);
+
+		if (en_beam[fbeam_en] == 1.161) { myFit->SetParameters(15,7); }
+		if (en_beam[fbeam_en] == 2.261) { myFit->SetParameters(14,10.5); }
+		if (en_beam[fbeam_en] == 4.461) { myFit->SetParameters(11.5,15); }
+
+		double theta_min = myFit->Eval(el_momentum);
+		if (el_theta < theta_min) { continue; }	
+
+		// ----------------------------------------------------------------------------------------------------------------------	
+
 		if (choice > 0) { //smearing, fiducials and acceptance ratio for GENIE simulation data
 
 			//Smearing of Electron Vector from Simulation
@@ -1155,6 +1171,9 @@ void genie_analysis::Loop(Int_t choice) {
 		//Definition as for data. It is also correct for GENIE simulation data since V3_el is rotated above by 180 degree in phi
 		double el_phi_mod = V3_el.Phi()*TMath::RadToDeg()  + 30; //Add 30 degree for plotting and photon phi cut
 		if(el_phi_mod<0)  el_phi_mod  = el_phi_mod+360; //Add 360 so that electron phi is between 0 and 360 degree
+
+		double PhiOpeningAngle = 15;
+		//if ( !(TMath::Abs(el_phi_mod - 30)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 90)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 150)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 210)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 270)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 330)  < PhiOpeningAngle ) ) { continue; }
 
 
 		//Calculated Mott Cross Section and Weights for Inclusive Histograms
@@ -5997,7 +6016,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 //	TH1F *h_Etot_subtruct_piplpimi_factor =(TH1F*)  h1_E_tot_cut2->Clone("epRecoEnergy_slice_0");
 	TH1F *h_Etot_subtruct_piplpimi_factor=(TH1F*)  h1_E_tot_cut2->Clone("h_Etot_subtruct_piplpimi_factor");
-	h_Etot_subtruct_piplpimi_factor->Add(h1_E_tot_undetfactor,-1);
+	h_Etot_subtruct_piplpimi_factor->Add(h1_E_tot_undetfactor,-1); // 1p1pi subtraction
 
 	TH2F *h2_Erec_pperp_1p1pisub=(TH2F*) h2_Erec_pperp_newcut2->Clone("h2_Erec_pperp_1p1pisub");
 	h2_Erec_pperp_1p1pisub->Add(h2_Erec_pperp_1p1pi,-1);
@@ -6014,7 +6033,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_prot->Add(h1_E_rec_p_bkgd,-1);
 
 	TH1F *h_Etot_subtruct_piplpimi_prot=(TH1F*)	h_Etot_subtruct_piplpimi_factor->Clone("h_Etot_subtruct_piplpimi_prot");
-	h_Etot_subtruct_piplpimi_prot->Add(h1_E_tot_p_bkgd,-1);
+	h_Etot_subtruct_piplpimi_prot->Add(h1_E_tot_p_bkgd,-1); // 2p0pi->1p0pi
 
 	TH2F *h2_Erec_pperp_2psub=(TH2F*) h2_Erec_pperp_1p1pisub->Clone("h2_Erec_pperp_2psub");
 	h2_Erec_pperp_2psub->Add(h2_Erec_pperp_2p,-1);
@@ -6031,7 +6050,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_32prot->Add(h1_E_rec_3pto2p);
 
 	TH1F *h_Etot_subtruct_piplpimi_32prot=(TH1F*)	h_Etot_subtruct_piplpimi_prot->Clone("h_Etot_subtruct_piplpimi_32prot");
-	h_Etot_subtruct_piplpimi_32prot->Add(h1_E_tot_3pto2p);
+	h_Etot_subtruct_piplpimi_32prot->Add(h1_E_tot_3pto2p); // 3p to 2p->1p
 
 	TH2F *h2_Erec_pperp_32psub=(TH2F*) h2_Erec_pperp_2psub->Clone("h2_Erec_pperp_32psub");
 	h2_Erec_pperp_32psub->Add(h2_Erec_pperp_321p);
@@ -6048,7 +6067,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_31prot->Add(h1_E_rec_3pto1p,-1);
 
 	TH1F *h_Etot_subtruct_piplpimi_31prot=(TH1F*)	h_Etot_subtruct_piplpimi_32prot->Clone("h_Etot_subtruct_piplpimi_31prot");
-	h_Etot_subtruct_piplpimi_31prot->Add(h1_E_tot_3pto1p,-1);
+	h_Etot_subtruct_piplpimi_31prot->Add(h1_E_tot_3pto1p,-1); // 3p to 1p
 
 	TH2F *h2_Erec_pperp_31psub=(TH2F*) h2_Erec_pperp_32psub->Clone("h2_Erec_pperp_31psub");
 	h2_Erec_pperp_31psub->Add(h2_Erec_pperp_31p,-1);
@@ -6065,7 +6084,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_43prot->Add(h1_E_rec_4pto3p,-1);
 
 	TH1F *h_Etot_subtruct_piplpimi_43prot=(TH1F*)	h_Etot_subtruct_piplpimi_31prot->Clone("h_Etot_subtruct_piplpimi_43prot");
-	h_Etot_subtruct_piplpimi_43prot->Add(h1_E_tot_4pto3p,-1);
+	h_Etot_subtruct_piplpimi_43prot->Add(h1_E_tot_4pto3p,-1); // 4p to 3p->2->1
 
 	TH2F *h2_Erec_pperp_43psub=(TH2F*) h2_Erec_pperp_31psub->Clone("h2_Erec_pperp_43psub");
 	h2_Erec_pperp_43psub->Add(h2_Erec_pperp_4321p,-1);
@@ -6082,7 +6101,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_431prot->Add(h1_E_rec_43pto1p);
 
 	TH1F *h_Etot_subtruct_piplpimi_431prot=(TH1F*)	h_Etot_subtruct_piplpimi_43prot->Clone("h_Etot_subtruct_piplpimi_431prot");
-	h_Etot_subtruct_piplpimi_431prot->Add(h1_E_tot_43pto1p);
+	h_Etot_subtruct_piplpimi_431prot->Add(h1_E_tot_43pto1p); // 4p to 3p->1p
 
 	TH2F *h2_Erec_pperp_431psub=(TH2F*) h2_Erec_pperp_43psub->Clone("h2_Erec_pperp_431psub");
 	h2_Erec_pperp_431psub->Add(h2_Erec_pperp_431p);
@@ -6099,7 +6118,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_42prot->Add(h1_E_rec_4pto2p);
 
 	TH1F *h_Etot_subtruct_piplpimi_42prot=(TH1F*) h_Etot_subtruct_piplpimi_431prot->Clone("h_Etot_subtruct_piplpimi_42prot");
-	h_Etot_subtruct_piplpimi_42prot->Add(h1_E_tot_4pto2p);
+	h_Etot_subtruct_piplpimi_42prot->Add(h1_E_tot_4pto2p); // 4p to 2p->1
 
 	TH2F *h2_Erec_pperp_42psub=(TH2F*) h2_Erec_pperp_431psub->Clone("h2_Erec_pperp_42psub");
 	h2_Erec_pperp_42psub->Add(h2_Erec_pperp_421p);
@@ -6116,7 +6135,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_41prot->Add(h1_E_rec_4pto1p,-1);
 
 	TH1F *h_Etot_subtruct_piplpimi_41prot=(TH1F*)	h_Etot_subtruct_piplpimi_42prot->Clone("h_Etot_subtruct_piplpimi_41prot");
-	h_Etot_subtruct_piplpimi_41prot->Add(h1_E_tot_4pto1p,-1);
+	h_Etot_subtruct_piplpimi_41prot->Add(h1_E_tot_4pto1p,-1); // 4p to 1p
 
 	TH2F *h2_Erec_pperp_41psub=(TH2F*) h2_Erec_pperp_42psub->Clone("h2_Erec_pperp_41psub");
 	h2_Erec_pperp_41psub->Add(h2_Erec_pperp_41p,-1);
@@ -6133,7 +6152,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_1p2pi->Add(h1_E_rec_1p2pi);
 
 	TH1F *h_Etot_subtruct_piplpimi_1p2pi=(TH1F*)	h_Etot_subtruct_piplpimi_41prot->Clone("h_Etot_subtruct_piplpimi_1p2pi");
-	h_Etot_subtruct_piplpimi_1p2pi->Add(h1_E_tot_1p2pi);
+	h_Etot_subtruct_piplpimi_1p2pi->Add(h1_E_tot_1p2pi); // 1p 2pi->1p1pi
 
 	TH2F *h2_Erec_pperp_sub_1p2pi_1p1pi=(TH2F*) h2_Erec_pperp_41psub->Clone("h2_Erec_pperp_sub_1p2pi_1p1pi");
 	h2_Erec_pperp_sub_1p2pi_1p1pi->Add(h2_Erec_pperp_1p2pi_1p1pi);
@@ -6150,7 +6169,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_1p2pi_1p0pi->Add(h1_E_rec_1p2pi_1p0pi,-1);
 
 	TH1F *h_Etot_subtruct_piplpimi_1p2pi_1p0pi=(TH1F*) h_Etot_subtruct_piplpimi_1p2pi->Clone("h_Etot_subtruct_piplpimi_1p2pi_1p0pi");
-	h_Etot_subtruct_piplpimi_1p2pi_1p0pi->Add(h1_E_tot_1p2pi_1p0pi,-1);
+	h_Etot_subtruct_piplpimi_1p2pi_1p0pi->Add(h1_E_tot_1p2pi_1p0pi,-1); // 1p 2pi->1p0pi
 
 	TH2F *h2_Erec_pperp_sub_1p2pi_1p0pi=(TH2F*) h2_Erec_pperp_sub_1p2pi_1p1pi->Clone("h2_Erec_pperp_sub_1p2pi_1p0pi");
 	h2_Erec_pperp_sub_1p2pi_1p0pi->Add(h2_Erec_pperp_1p2pi_1p0pi,-1);
@@ -6167,7 +6186,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_1p3pi->Add(h1_E_rec_1p3pi);
 
 	TH1F *h_Etot_subtruct_piplpimi_1p3pi=(TH1F*) h_Etot_subtruct_piplpimi_1p2pi_1p0pi->Clone("h_Etot_subtruct_piplpimi_1p3pi");
-	h_Etot_subtruct_piplpimi_1p3pi->Add(h1_E_tot_1p3pi);
+	h_Etot_subtruct_piplpimi_1p3pi->Add(h1_E_tot_1p3pi); // 1p 3pi-> 1p 0pi
 
 	TH2F *h2_Erec_pperp_sub_1p3pi=(TH2F*) h2_Erec_pperp_sub_1p2pi_1p0pi->Clone("h2_Erec_pperp_sub_1p3pi");
 	h2_Erec_pperp_sub_1p3pi->Add(h2_Erec_pperp_1p3pi);
@@ -6185,7 +6204,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_2p2pi->Add(h1_E_rec_2p2pi);
 
 	TH1F *h_Etot_subtruct_piplpimi_2p2pi=(TH1F*) h_Etot_subtruct_piplpimi_1p3pi->Clone("h_Etot_subtruct_piplpimi_2p2pi");
-	h_Etot_subtruct_piplpimi_2p2pi->Add(h1_E_tot_2p2pi);
+	h_Etot_subtruct_piplpimi_2p2pi->Add(h1_E_tot_2p2pi); // 2p 2pi -> 1p 0pi
 
 	TH2F *h2_Erec_pperp_sub_2p2pi=(TH2F*) h2_Erec_pperp_sub_1p3pi->Clone("h2_Erec_pperp_sub_2p2pi");
 	h2_Erec_pperp_sub_2p2pi->Add(h2_Erec_pperp_2p2pi);
@@ -6203,7 +6222,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_3p1pi->Add(h1_E_rec_3p1pi);
 
 	TH1F *h_Etot_subtruct_piplpimi_3p1pi=(TH1F*) h_Etot_subtruct_piplpimi_2p2pi->Clone("h_Etot_subtruct_piplpimi_3p1pi");
-	h_Etot_subtruct_piplpimi_3p1pi->Add(h1_E_tot_3p1pi);
+	h_Etot_subtruct_piplpimi_3p1pi->Add(h1_E_tot_3p1pi); // 3p 1pi -> 1p 0pi
 
 	TH2F *h2_Erec_pperp_sub_3p1pi=(TH2F*) h2_Erec_pperp_sub_2p2pi->Clone("h2_Erec_pperp_sub_3p1pi");
 	h2_Erec_pperp_sub_3p1pi->Add(h2_Erec_pperp_3p1pi);
@@ -6220,7 +6239,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_2p1pi_2p0pi->Add(h1_E_rec_2p1pi_2p0pi);
 
 	TH1F *h_Etot_subtruct_piplpimi_2p1pi_2p0pi=(TH1F*) h_Etot_subtruct_piplpimi_3p1pi->Clone("h_Etot_subtruct_piplpimi_2p1pi_2p0pi");
-	h_Etot_subtruct_piplpimi_2p1pi_2p0pi->Add(h1_E_tot_2p1pi_2p0pi);
+	h_Etot_subtruct_piplpimi_2p1pi_2p0pi->Add(h1_E_tot_2p1pi_2p0pi); // 2p 1pi -> 2p 0pi
 
 	TH2F *h2_Erec_pperp_sub_2p1pi_2p0pi=(TH2F*) h2_Erec_pperp_sub_3p1pi->Clone("h2_Erec_pperp_sub_2p1pi_2p0pi");
 	h2_Erec_pperp_sub_2p1pi_2p0pi->Add(h2_Erec_pperp_2p1pi_2p0pi);
@@ -6237,7 +6256,7 @@ void genie_analysis::Loop(Int_t choice) {
 	h_Erec_subtruct_piplpimi_2p1pi_1p1pi->Add(h1_E_rec_2p1pi_1p1pi);
 
 	TH1F *h_Etot_subtruct_piplpimi_2p1pi_1p1pi=(TH1F*) h_Etot_subtruct_piplpimi_2p1pi_2p0pi->Clone("h_Etot_subtruct_piplpimi_2p1pi_1p1pi");
-	h_Etot_subtruct_piplpimi_2p1pi_1p1pi->Add(h1_E_tot_2p1pi_1p1pi);
+	h_Etot_subtruct_piplpimi_2p1pi_1p1pi->Add(h1_E_tot_2p1pi_1p1pi); // 2p 1pi -> 1p 1pi
 
 	TH2F *h2_Erec_pperp_sub_2p1pi_1p1pi=(TH2F*) h2_Erec_pperp_sub_2p1pi_2p0pi->Clone("h2_Erec_pperp_sub_2p1pi_1p1pi");
 	h2_Erec_pperp_sub_2p1pi_1p1pi->Add(h2_Erec_pperp_2p1pi_1p1pi);
@@ -6256,7 +6275,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 //	TH1F *h_Etot_subtruct_piplpimi_2p1pi_1p0pi=(TH1F*) h_Etot_subtruct_piplpimi_2p1pi_1p1pi->Clone("h_Etot_subtruct_piplpimi_2p1pi_1p0pi");
 	TH1F *h_Etot_subtruct_piplpimi_2p1pi_1p0pi=(TH1F*) h_Etot_subtruct_piplpimi_2p1pi_1p1pi->Clone("epRecoEnergy_slice_0");
-	h_Etot_subtruct_piplpimi_2p1pi_1p0pi->Add(h1_E_tot_2p1pi_1p0pi,-1);
+	h_Etot_subtruct_piplpimi_2p1pi_1p0pi->Add(h1_E_tot_2p1pi_1p0pi,-1); // 2p 1pi ->1p 0pi
 
 	TH2F *h2_Erec_pperp_sub_2p1pi_1p0pi=(TH2F*) h2_Erec_pperp_sub_2p1pi_1p1pi->Clone("h2_Erec_pperp_sub_2p1pi_1p0pi");
 	h2_Erec_pperp_sub_2p1pi_1p0pi->Add(h2_Erec_pperp_2p1pi_1p0pi,-1);
