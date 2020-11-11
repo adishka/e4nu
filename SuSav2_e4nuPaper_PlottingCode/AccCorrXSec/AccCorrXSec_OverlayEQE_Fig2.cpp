@@ -149,6 +149,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 						//                 apply acceptance systematics using sector-by -sector uncertainties
 
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
+						Plots[WhichFSIModel]->GetYaxis()->SetTitle(DoubleAccCorrXSecTitle);
 
 						// ----------------------------------------------------------------------------------
 
@@ -212,14 +213,14 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 							Plots[WhichFSIModel]->SetMarkerColor(kBlack); 
 
 							gStyle->SetErrorX(0); // Removing the horizontal errors
-							//Plots[WhichFSIModel]->Draw("e same"); 
+							Plots[WhichFSIModel]->Draw("e same"); 
 
 							TH1D* DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
 							DataPlot->SetMarkerStyle(20); 
 							DataPlot->SetMarkerSize(2.); 
-							DataPlot->SetLineColor(kRed);	
-							DataPlot->SetMarkerColor(kRed);	
+							DataPlot->SetLineColor(kBlack);	
+							DataPlot->SetMarkerColor(kBlack);	
 							DataPlot->Draw("e same"); 							
 
 						} else { 

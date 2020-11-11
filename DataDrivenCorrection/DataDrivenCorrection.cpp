@@ -55,6 +55,7 @@ void DataDrivenCorrection() {
 
 	xBCut.push_back("NoxBCut");
 
+//	FSIModel.push_back("Pinned_Data_Final");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
@@ -65,12 +66,12 @@ void DataDrivenCorrection() {
 
 	NameOfPlots.push_back("h1_E_tot_cut2");SampleLabel.push_back("1p0pi W/O Sub");
 
-//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_factor"); SampleLabel.push_back("1p1pi");
-//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_prot"); SampleLabel.push_back("2p0pi->1p0pi");
-//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_32prot"); SampleLabel.push_back("3p to 2p->1p");
-//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_31prot"); SampleLabel.push_back("3p to 1p");
-//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_43prot"); SampleLabel.push_back("4p to 3p->2->1");
-//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_431prot"); SampleLabel.push_back("4p to 3p->1p");
+	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_factor"); SampleLabel.push_back("1p1pi");
+	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_prot"); SampleLabel.push_back("2p0pi->1p0pi");
+	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_32prot"); SampleLabel.push_back("3p to 2p->1p");
+	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_31prot"); SampleLabel.push_back("3p to 1p");
+	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_43prot"); SampleLabel.push_back("4p to 3p->2->1");
+	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_431prot"); SampleLabel.push_back("4p to 3p->1p");
 
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_431prot"); SampleLabel.push_back("4p to 3p->1p");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_42prot"); SampleLabel.push_back("4p to 2p->1");
@@ -79,11 +80,11 @@ void DataDrivenCorrection() {
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_1p2pi_1p0pi"); SampleLabel.push_back("1p 2pi->1p0pi");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_1p3pi"); SampleLabel.push_back("1p 3pi-> 1p 0pi");
 
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_1p3pi"); SampleLabel.push_back("1p 3pi-> 1p 0pi");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p2pi"); SampleLabel.push_back("2p 2pi -> 1p 0pi");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_3p1pi"); SampleLabel.push_back("3p 1pi -> 1p 0pi");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_2p0pi"); SampleLabel.push_back("2p 1pi -> 2p 0pi");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_1p1pi"); SampleLabel.push_back("2p 1pi -> 1p 1pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_1p3pi"); SampleLabel.push_back("1p 3pi-> 1p 0pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p2pi"); SampleLabel.push_back("2p 2pi -> 1p 0pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_3p1pi"); SampleLabel.push_back("3p 1pi -> 1p 0pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_2p0pi"); SampleLabel.push_back("2p 1pi -> 2p 0pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_1p1pi"); SampleLabel.push_back("2p 1pi -> 1p 1pi");
 
 	// Final plot
 
@@ -170,7 +171,7 @@ void DataDrivenCorrection() {
 
 						double localmax = Plots[WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }
-						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
+						Plots[0]->GetYaxis()->SetRangeUser(-3.,height*max);
 
 						double localmin = Plots[WhichFSIModel]->GetBinContent(Plots[WhichFSIModel]->FindBin(4)); // multiplicity 4 is the highest one in data
 						if (localmin < min && localmin != 0) { min = localmin; }

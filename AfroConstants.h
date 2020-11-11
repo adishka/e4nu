@@ -41,6 +41,7 @@
 	const TString version = "v3_0_6/";	
 /*	const TString DoubleXSecTitle = "#frac{d^{2}#sigma}{d#Omega dE} [#frac{#mub}{sr GeV nucleus}]";*/
 	const TString DoubleXSecTitle = "Normalized Yield";
+	const TString DoubleAccCorrXSecTitle = "Cross Section";
 
 	// Conversion factors for extraction of absolute cross sections
 

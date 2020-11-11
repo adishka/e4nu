@@ -106,52 +106,50 @@ void  Subtraction::prot3_rot_func(TVector3  V3prot[3],TVector3  V3prot_uncorr[3]
 
 void  Subtraction::prot2_rot_func(TVector3  V3prot[2],TVector3  V3prot_uncorr[2],TLorentzVector V4el,double Ecal_2pto1p[2],double  pmiss_perp_2pto1p[2],double  P2pto1p[2], double *Nboth){
 
+	const int N2 = 2;
+	double rot_angle, N_p2to1[N2] = {0}, m_prot = 0.9382720813;
+	TVector3 V3_2prot[N2], V3_prot_el_2pto1p[N2];
+	double N_2 = 0;
 
-    const int N2=2;
-    double rot_angle, N_p2to1[N2]={0},m_prot=0.9382720813;
-    TVector3 V3_2prot[N2], V3_prot_el_2pto1p[N2];
-    double N_2=0;
+	for(int g1 = 0; g1 < N_tot; g1++) {
 
+		rot_angle=gRandom->Uniform(0,2*TMath::Pi());
 
+		V3_2prot[0]=V3prot_uncorr[0];
+	  V3_2prot[1]=V3prot_uncorr[1];
+	  V3_2prot[0].Rotate(rot_angle,V3q);
+	  V3_2prot[1].Rotate(rot_angle,V3q);
 
-    for(int g1=0; g1<N_tot; g1++){
+	  if(PFiducialCut(fbeam_en, V3_2prot[0])  && !PFiducialCut(fbeam_en, V3_2prot[1])) N_p2to1[0]=N_p2to1[0]+1;
+	  if(!PFiducialCut(fbeam_en, V3_2prot[0]) && PFiducialCut(fbeam_en, V3_2prot[1]))  N_p2to1[1]=N_p2to1[1]+1;
+	  if(PFiducialCut(fbeam_en, V3_2prot[0])  && PFiducialCut(fbeam_en, V3_2prot[1]))  N_2=N_2+1;
 
+	}
 
-      rot_angle=gRandom->Uniform(0,2*TMath::Pi());
+	 //-----------------------------------------  2p to 1p  -----------------------------------------------------------------------
 
-      V3_2prot[0]=V3prot_uncorr[0];
-      V3_2prot[1]=V3prot_uncorr[1];
-      V3_2prot[0].Rotate(rot_angle,V3q);
-      V3_2prot[1].Rotate(rot_angle,V3q);
+	  V3_prot_el_2pto1p[0]=V4el.Vect()+ V3prot[0];
+	  Ecal_2pto1p[0]=V4el.E()+ TMath::Sqrt(m_prot*m_prot+V3prot[0].Mag()*V3prot[0].Mag())-m_prot+bind_en[target_name];
+	  pmiss_perp_2pto1p[0]=TMath::Sqrt(V3_prot_el_2pto1p[0].Px()*V3_prot_el_2pto1p[0].Px()+V3_prot_el_2pto1p[0].Py()*V3_prot_el_2pto1p[0].Py());
 
-
-      if(PFiducialCut(fbeam_en, V3_2prot[0])  && !PFiducialCut(fbeam_en, V3_2prot[1])) N_p2to1[0]=N_p2to1[0]+1;
-      if(!PFiducialCut(fbeam_en, V3_2prot[0]) && PFiducialCut(fbeam_en, V3_2prot[1]))  N_p2to1[1]=N_p2to1[1]+1;
-      if(PFiducialCut(fbeam_en, V3_2prot[0])  && PFiducialCut(fbeam_en, V3_2prot[1]))  N_2=N_2+1;
-    }
-
-     //-----------------------------------------  2p to 1p  -----------------------------------------------------------------------
-      V3_prot_el_2pto1p[0]=V4el.Vect()+ V3prot[0];
-      Ecal_2pto1p[0]=V4el.E()+ TMath::Sqrt(m_prot*m_prot+V3prot[0].Mag()*V3prot[0].Mag())-m_prot+bind_en[target_name];
-      pmiss_perp_2pto1p[0]=TMath::Sqrt(V3_prot_el_2pto1p[0].Px()*V3_prot_el_2pto1p[0].Px()+V3_prot_el_2pto1p[0].Py()*V3_prot_el_2pto1p[0].Py());
-
-      V3_prot_el_2pto1p[1]=V4el.Vect()+ V3prot[1];
-      Ecal_2pto1p[1]=V4el.E()+ TMath::Sqrt(m_prot*m_prot+V3prot[1].Mag()*V3prot[1].Mag())-m_prot+bind_en[target_name];
-      pmiss_perp_2pto1p[1]=TMath::Sqrt(V3_prot_el_2pto1p[1].Px()*V3_prot_el_2pto1p[1].Px()+V3_prot_el_2pto1p[1].Py()*V3_prot_el_2pto1p[1].Py());
+	  V3_prot_el_2pto1p[1]=V4el.Vect()+ V3prot[1];
+	  Ecal_2pto1p[1]=V4el.E()+ TMath::Sqrt(m_prot*m_prot+V3prot[1].Mag()*V3prot[1].Mag())-m_prot+bind_en[target_name];
+	  pmiss_perp_2pto1p[1]=TMath::Sqrt(V3_prot_el_2pto1p[1].Px()*V3_prot_el_2pto1p[1].Px()+V3_prot_el_2pto1p[1].Py()*V3_prot_el_2pto1p[1].Py());
 
 
-    if( N_2!=0){
-    P2pto1p[0]=N_p2to1[0]/N_2;
-      P2pto1p[1]=N_p2to1[1]/N_2;
-    }
-    else{
-    P2pto1p[0]=0;
-      P2pto1p[1]=0;
-    }
+	if( N_2!=0){
+	P2pto1p[0]=N_p2to1[0]/N_2;
+	  P2pto1p[1]=N_p2to1[1]/N_2;
+	}
+	else{
+	P2pto1p[0]=0;
+	  P2pto1p[1]=0;
+	}
 
-    *Nboth=N_2;
-  }
+	*Nboth=N_2;
+}
 
+// --------------------------------------------------------------------------------------------------------------------------------
 
 void Subtraction::prot1_pi1_rot_func(TVector3  V3prot,TVector3 V3pi, int q_pi, double *N_pi_p,double *N_nopi_p){
 

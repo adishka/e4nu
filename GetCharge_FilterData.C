@@ -818,14 +818,22 @@ void GetCharge_FilterData::Loop()
 		}
 
 		if((runnb>18283 && runnb<18289) || (runnb>18300 && runnb<18304) || (runnb>18317 && runnb<18329)) fTorusCurrent=750; //setting appropriate torrus magnet current
-		else if ( (runnb>18293 && runnb<18301) || (runnb>18305 && runnb<18317) || (runnb>18328 && runnb<18336) || runnb == 18334)  fTorusCurrent=1500;
+		else if ( 
+			(runnb>18293 && runnb<18301) || (runnb>18305 && runnb<18317) || (runnb>18328 && runnb<18336) 
+			|| runnb == 18334 /*CH2*/
+			)  
+			{ fTorusCurrent = 1500; }
 		else fTorusCurrent=2250;
 
 		// apapadop, CH2 only run @ 1.1 GeV with 1500 torus current, but we don't have fiducials there, thus using the 750 torus current
 		if (runnb == 18334) { fTorusCurrent = 750; } 
 
-		if (fbeam_en == "1161" && fTorusCurrent > 760) { continue; }                                                              
+		if (fbeam_en == "1161" && fTorusCurrent > 760) { continue; }  
+	
+		// For the 1500 (high torus current runs) on 12C @ 1.1 GeV, comment in the lines below                                                            
                 //if (fbeam_en == "1161" && fTorusCurrent < 760) { continue; }
+		//if ( !(runnb == 18294 || runnb == 18297 || runnb == 18298 || runnb == 18306 || runnb == 18307 || runnb == 18306 ) ) { continue; }
+		//fTorusCurrent = 750;
 
 		if(jentry == 0){ //was n_evt == 1 before but jentry = n_evnt - 1
 			//SetMomCorrParameters(); Functions is missing F.H. 08/01/19

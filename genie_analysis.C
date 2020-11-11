@@ -121,6 +121,8 @@ void genie_analysis::Loop(Int_t choice) {
 	bool ApplyAccWeights = true;
 	bool ApplyReso = true;
 	bool TruthLevel1p0piSignalStudy = false;
+	double PhiOpeningAngle = 15;
+	bool ApplyPhiOpeningAngle = false;
 
 	// ---------------------------------------------------------------------------------------------------------------
 
@@ -1040,6 +1042,15 @@ void genie_analysis::Loop(Int_t choice) {
 	
 //	int Nentries = TMath::Min(Ntfileentries,NtweightsEntries);
 
+	// Justification for the parameter choice
+	// https://docs.google.com/presentation/d/1ghG08JfCYXRXh6O8hcXKrhJOFxkAs_9i5ZfoIkiiEHU/edit?usp=sharing
+
+	TF1 *myFit = new TF1("myFit","[0]+[1]/x",0.,5.);
+
+	if (en_beam[fbeam_en] == 1.161) { myFit->SetParameters(15,7); }
+	if (en_beam[fbeam_en] == 2.261) { myFit->SetParameters(14,10.5); }
+	if (en_beam[fbeam_en] == 4.461) { myFit->SetParameters(11.5,15); }
+
 	// ---------------------------------------------------------------------------------------------------------------
 
 	/** Beginning of Event Loop **/
@@ -1110,17 +1121,8 @@ void genie_analysis::Loop(Int_t choice) {
 
 		// ----------------------------------------------------------------------------------------------------------------------
 
-		// Justification for the parameter choice
-		// https://docs.google.com/presentation/d/1ghG08JfCYXRXh6O8hcXKrhJOFxkAs_9i5ZfoIkiiEHU/edit?usp=sharing
-
-		TF1 *myFit = new TF1("myFit","[0]+[1]/x",0.,5);
-
-		if (en_beam[fbeam_en] == 1.161) { myFit->SetParameters(15,7); }
-		if (en_beam[fbeam_en] == 2.261) { myFit->SetParameters(14,10.5); }
-		if (en_beam[fbeam_en] == 4.461) { myFit->SetParameters(11.5,15); }
-
 		double theta_min = myFit->Eval(el_momentum);
-		if (el_theta < theta_min) { continue; }	
+		if (el_theta*180./TMath::Pi() < theta_min) { continue; }	
 
 		// ----------------------------------------------------------------------------------------------------------------------	
 
@@ -1172,8 +1174,7 @@ void genie_analysis::Loop(Int_t choice) {
 		double el_phi_mod = V3_el.Phi()*TMath::RadToDeg()  + 30; //Add 30 degree for plotting and photon phi cut
 		if(el_phi_mod<0)  el_phi_mod  = el_phi_mod+360; //Add 360 so that electron phi is between 0 and 360 degree
 
-		double PhiOpeningAngle = 15;
-		//if ( !(TMath::Abs(el_phi_mod - 30)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 90)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 150)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 210)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 270)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 330)  < PhiOpeningAngle ) ) { continue; }
+		if (ApplyPhiOpeningAngle) { if ( !(TMath::Abs(el_phi_mod - 30)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 90)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 150)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 210)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 270)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 330)  < PhiOpeningAngle ) ) { continue; } }
 
 
 		//Calculated Mott Cross Section and Weights for Inclusive Histograms
