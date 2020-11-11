@@ -113,16 +113,16 @@ void  Subtraction::prot2_rot_func(TVector3  V3prot[2],TVector3  V3prot_uncorr[2]
 
 	for(int g1 = 0; g1 < N_tot; g1++) {
 
-		rot_angle=gRandom->Uniform(0,2*TMath::Pi());
+		rot_angle = gRandom->Uniform(0,2*TMath::Pi());
 
-		V3_2prot[0]=V3prot_uncorr[0];
-	  V3_2prot[1]=V3prot_uncorr[1];
-	  V3_2prot[0].Rotate(rot_angle,V3q);
-	  V3_2prot[1].Rotate(rot_angle,V3q);
+		V3_2prot[0] = V3prot_uncorr[0];
+	  	V3_2prot[1] = V3prot_uncorr[1];
+	  	V3_2prot[0].Rotate(rot_angle,V3q);
+	  	V3_2prot[1].Rotate(rot_angle,V3q);
 
-	  if(PFiducialCut(fbeam_en, V3_2prot[0])  && !PFiducialCut(fbeam_en, V3_2prot[1])) N_p2to1[0]=N_p2to1[0]+1;
-	  if(!PFiducialCut(fbeam_en, V3_2prot[0]) && PFiducialCut(fbeam_en, V3_2prot[1]))  N_p2to1[1]=N_p2to1[1]+1;
-	  if(PFiducialCut(fbeam_en, V3_2prot[0])  && PFiducialCut(fbeam_en, V3_2prot[1]))  N_2=N_2+1;
+		if(PFiducialCut(fbeam_en, V3_2prot[0])  && !PFiducialCut(fbeam_en, V3_2prot[1])) { N_p2to1[0] = N_p2to1[0]+1; }
+		if(!PFiducialCut(fbeam_en, V3_2prot[0]) && PFiducialCut(fbeam_en, V3_2prot[1]))  { N_p2to1[1] = N_p2to1[1]+1; }
+		if(PFiducialCut(fbeam_en, V3_2prot[0])  && PFiducialCut(fbeam_en, V3_2prot[1]))  { N_2 = N_2 + 1; }
 
 	}
 
@@ -137,13 +137,12 @@ void  Subtraction::prot2_rot_func(TVector3  V3prot[2],TVector3  V3prot_uncorr[2]
 	  pmiss_perp_2pto1p[1]=TMath::Sqrt(V3_prot_el_2pto1p[1].Px()*V3_prot_el_2pto1p[1].Px()+V3_prot_el_2pto1p[1].Py()*V3_prot_el_2pto1p[1].Py());
 
 
-	if( N_2!=0){
-	P2pto1p[0]=N_p2to1[0]/N_2;
-	  P2pto1p[1]=N_p2to1[1]/N_2;
-	}
-	else{
-	P2pto1p[0]=0;
-	  P2pto1p[1]=0;
+	if(N_2 != 0) {
+		P2pto1p[0]=N_p2to1[0]/N_2;
+		P2pto1p[1]=N_p2to1[1]/N_2;
+	} else {
+		P2pto1p[0]=0;
+		P2pto1p[1]=0;
 	}
 
 	*Nboth=N_2;

@@ -51,6 +51,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
 
 	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
+//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 
 	// ------------------------------------------------------------------------
 
@@ -170,6 +171,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 							for (int j = 1; j < 5; j++) {
 
 								BreakDownPlots.push_back( (TH1D*)( FileSample->Get("InclusiveEQE_Int_"+ToStringInt(j)) ) ); 
+								//BreakDownPlots.push_back( (TH1D*)( FileSample->Get("ECal_Int_"+ToStringInt(j)) ) ); 
 
 								UniversalE4vFunction(BreakDownPlots[j-1],FSIModelsToLabels[FSIModel[WhichFSIModel]],\
 										     nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
@@ -221,7 +223,15 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 							DataPlot->SetMarkerSize(2.); 
 							DataPlot->SetLineColor(kBlack);	
 							DataPlot->SetMarkerColor(kBlack);	
-							DataPlot->Draw("e same"); 							
+							DataPlot->Draw("e same"); 
+
+							TH1D* DataPlotG2018 = AcceptanceCorrection(Plots[WhichFSIModel],"hA2018_Final", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+
+							DataPlotG2018->SetMarkerStyle(20); 
+							DataPlotG2018->SetMarkerSize(2.); 
+							DataPlotG2018->SetLineColor(kRed);	
+							DataPlotG2018->SetMarkerColor(kRed);	
+							DataPlotG2018->Draw("e same"); 							
 
 						} else { 
 

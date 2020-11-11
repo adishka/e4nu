@@ -696,9 +696,21 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 	for (int WhichBin = 0; WhichBin < NBins; WhichBin++) {
 
 		double AccCorr = Plots[0]->GetBinContent(WhichBin + 1) / Plots[1]->GetBinContent(WhichBin + 1);
-if (AccCorr == 0) { cout << "000000000000000000000000000000000000000" << endl; }
-		double NewBinContent = h->GetBinContent(WhichBin + 1) / AccCorr;
-		double NewBinError = h->GetBinError(WhichBin + 1) / AccCorr;
+
+		double NewBinContent = 1.;
+		double NewBinError = 0.;		
+
+		if (Plots[1]->GetBinContent(WhichBin + 1) <= 0) { 
+
+			NewBinContent = 0.;
+			NewBinError = 0.;
+
+		} else {
+
+			NewBinContent = h->GetBinContent(WhichBin + 1) / AccCorr;
+			NewBinError = h->GetBinError(WhichBin + 1) / AccCorr;
+
+		}
 
 		OverallClone->SetBinContent(WhichBin + 1, NewBinContent);
 		OverallClone->SetBinError(WhichBin + 1, NewBinError);

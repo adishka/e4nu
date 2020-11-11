@@ -95,13 +95,13 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 			for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
 				// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
-				double MaxHeight = 12.;
+				double MaxHeight = 92.;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 34.; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 302.; }
 
 					// ----------------------------------------------------------------------------
 
@@ -407,42 +407,42 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 
 		// -------------------------------------------------------------------------------------------------
 	
-		TPad* padx14C12 = new TPad("padx14C12","padx14C12",0.255,0.65,0.305,0.72,21); 
-		padx14C12->SetFillColor(kWhite); 
-		PlotCanvas->cd();
-		padx14C12->Draw();
-		padx14C12->cd();
+//		TPad* padx14C12 = new TPad("padx14C12","padx14C12",0.255,0.65,0.305,0.72,21); 
+//		padx14C12->SetFillColor(kWhite); 
+//		PlotCanvas->cd();
+//		padx14C12->Draw();
+//		padx14C12->cd();
 
-		TLatex latexx14C12;
-		latexx14C12.SetTextFont(FontStyle);
-		latexx14C12.SetTextSize(8*TextSize);
-		//latexx14C12.DrawLatexNDC(0.,0.4,"x1/2");
-
-		// -------------------------------------------------------------------------------------------------
-	
-		TPad* padx5aC12 = new TPad("padx5aC12","padx5aC12",0.855,0.7,0.905,0.77,21); 
-		padx5aC12->SetFillColor(kWhite); 
-		PlotCanvas->cd();
-		padx5aC12->Draw();
-		padx5aC12->cd();
-
-		TLatex latexx5aC12;
-		latexx5aC12.SetTextFont(FontStyle);
-		latexx5aC12.SetTextSize(8*TextSize);
-		//latexx5aC12.DrawLatexNDC(0.,0.4,"x5");
+//		TLatex latexx14C12;
+//		latexx14C12.SetTextFont(FontStyle);
+//		latexx14C12.SetTextSize(8*TextSize);
+//		latexx14C12.DrawLatexNDC(0.,0.4,"x1/2");
 
 		// -------------------------------------------------------------------------------------------------
 	
-		TPad* padx5bC12 = new TPad("padx5bC12","padx5bC12",0.855,0.35,0.905,0.42,21); 
-		padx5bC12->SetFillColor(kWhite); 
-		PlotCanvas->cd();
-		padx5bC12->Draw();
-		padx5bC12->cd();
+//		TPad* padx5aC12 = new TPad("padx5aC12","padx5aC12",0.855,0.7,0.905,0.77,21); 
+//		padx5aC12->SetFillColor(kWhite); 
+//		PlotCanvas->cd();
+//		padx5aC12->Draw();
+//		padx5aC12->cd();
 
-		TLatex latexx5bC12;
-		latexx5bC12.SetTextFont(FontStyle);
-		latexx5bC12.SetTextSize(8*TextSize);
-		//latexx5bC12.DrawLatexNDC(0.,0.4,"x5");
+//		TLatex latexx5aC12;
+//		latexx5aC12.SetTextFont(FontStyle);
+//		latexx5aC12.SetTextSize(8*TextSize);
+//		latexx5aC12.DrawLatexNDC(0.,0.4,"x5");
+
+		// -------------------------------------------------------------------------------------------------
+	
+//		TPad* padx5bC12 = new TPad("padx5bC12","padx5bC12",0.855,0.35,0.905,0.42,21); 
+//		padx5bC12->SetFillColor(kWhite); 
+//		PlotCanvas->cd();
+//		padx5bC12->Draw();
+//		padx5bC12->cd();
+
+//		TLatex latexx5bC12;
+//		latexx5bC12.SetTextFont(FontStyle);
+//		latexx5bC12.SetTextSize(8*TextSize);
+//		latexx5bC12.DrawLatexNDC(0.,0.4,"x5");
 
 		// -------------------------------------------------------------------------------------------------
 	
@@ -511,7 +511,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 		latexYTitle.SetTextSize(YaxisSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
-		latexYTitle.DrawLatexNDC(0.8,0.08,DoubleXSecTitle);
+		latexYTitle.DrawLatexNDC(0.8,0.08,DoubleAccCorrXSecTitle);
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -528,7 +528,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 		latexYTitleFe.SetTextSize(YaxisSize);
 		latexYTitleFe.SetTextColor(kBlack);
 		latexYTitleFe.SetTextAngle(90);
-		latexYTitleFe.DrawLatexNDC(0.8,0.,DoubleXSecTitle);
+		latexYTitleFe.DrawLatexNDC(0.8,0.,DoubleAccCorrXSecTitle);
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 

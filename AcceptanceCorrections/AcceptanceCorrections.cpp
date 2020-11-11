@@ -49,8 +49,8 @@ void AcceptanceCorrections() {
 	nucleus.push_back("12C"); JustNucleus.push_back("C");
 //	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
 
-//	E.push_back("1_161"); LabelE.push_back(" @ E = 1.157 GeV"); DoubleE.push_back(1.161);	
-	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
+	E.push_back("1_161"); LabelE.push_back(" @ E = 1.157 GeV"); DoubleE.push_back(1.161);	
+//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
 //	E.push_back("4_461"); LabelE.push_back(" @ E = 4.457 GeV"); DoubleE.push_back(4.461);	
 
 	xBCut.push_back("NoxBCut");
@@ -62,11 +62,11 @@ void AcceptanceCorrections() {
 	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");
 
 //	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
-	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-//	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("eRecoEnergy_slice_0");
+//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h1_EQE_FullyInclusive"); LabelOfPlots.push_back("(e,e') E^{QE} [GeV]");  OutputPlotNames.push_back("FullyInclusiveeRecoEnergy_slice_0");
 
 	// ------------------------------------------------------------------------
@@ -194,75 +194,75 @@ void AcceptanceCorrections() {
 
 					// ---------------------------------------------------------------------------------------------------
 
-//					// Let's take the ratios to account for
+					// Let's take the ratios to account for
 
-//					// 1st ratio: Correct for bkg subtraction
-//					// 2nd ratio: Correct for proton & electron acceptance
-//					// 3rd ratio: Overall correction factor
+					// 1st ratio: Correct for bkg subtraction
+					// 2nd ratio: Correct for proton & electron acceptance
+					// 3rd ratio: Overall correction factor
 
-//					// ---------------------------------------------------------------------------------------------------
+					// ---------------------------------------------------------------------------------------------------
 
-//					// 1st ratio: Correct for bkg subtraction
+					// 1st ratio: Correct for bkg subtraction
 
-//					TString BkgCorrPlotCanvasName = "BkgCorr_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
-//					TCanvas* BkgCorrPlotCanvas = new TCanvas(BkgCorrPlotCanvasName,BkgCorrPlotCanvasName,205,34,1024,768);
+					TString BkgCorrPlotCanvasName = "BkgCorr_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
+					TCanvas* BkgCorrPlotCanvas = new TCanvas(BkgCorrPlotCanvasName,BkgCorrPlotCanvasName,205,34,1024,768);
 
-//					BkgCorrPlotCanvas->SetLeftMargin(0.15);
-//					BkgCorrPlotCanvas->SetBottomMargin(0.15);	
+					BkgCorrPlotCanvas->SetLeftMargin(0.15);
+					BkgCorrPlotCanvas->SetBottomMargin(0.15);	
 
-//					TH1D* RecoClone = (TH1D*)Plots[0]->Clone();	
-//					RecoClone->Divide(Plots[1]);			
+					TH1D* RecoClone = (TH1D*)Plots[0]->Clone();	
+					RecoClone->Divide(Plots[1]);			
 
-//					BkgCorrPlotCanvas->cd();
+					BkgCorrPlotCanvas->cd();
 
-//					RecoClone->SetTitle("Background Correction");
+					RecoClone->SetTitle("Background Correction");
 
-//					RecoClone->GetYaxis()->SetRangeUser( 0,1 );
-//					RecoClone->GetYaxis()->SetTitle("Reco / True 1p0pi W/" );
+					RecoClone->GetYaxis()->SetRangeUser( 0.5,1.5 );
+					RecoClone->GetYaxis()->SetTitle("Reco / True 1p0pi W/" );
 
-//					RecoClone->Draw();
+					RecoClone->Draw();
 
-//					// ---------------------------------------------------------------------------------------------------
+					// ---------------------------------------------------------------------------------------------------
 
-//					// 2nd ratio: Correct for proton & electron acceptance
+					// 2nd ratio: Correct for proton & electron acceptance
 
-//					TString ThresCorrPlotCanvasName = "ThresCorr_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
-//					TCanvas* ThresCorrPlotCanvas = new TCanvas(ThresCorrPlotCanvasName,ThresCorrPlotCanvasName,205,34,1024,768);
+					TString ThresCorrPlotCanvasName = "ThresCorr_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
+					TCanvas* ThresCorrPlotCanvas = new TCanvas(ThresCorrPlotCanvasName,ThresCorrPlotCanvasName,205,34,1024,768);
 
-//					ThresCorrPlotCanvas->SetLeftMargin(0.15);
-//					ThresCorrPlotCanvas->SetBottomMargin(0.15);	
+					ThresCorrPlotCanvas->SetLeftMargin(0.15);
+					ThresCorrPlotCanvas->SetBottomMargin(0.15);	
 
-//					TH1D* TrueClone = (TH1D*)Plots[1]->Clone();	
-//					TrueClone->Divide(Plots[2]);			
+					TH1D* TrueClone = (TH1D*)Plots[1]->Clone();	
+					TrueClone->Divide(Plots[2]);			
 
-//					ThresCorrPlotCanvas->cd();
+					ThresCorrPlotCanvas->cd();
 
-//					TrueClone->SetTitle("Threshold Correction");
-//					TrueClone->GetYaxis()->SetRangeUser( 0,1 );
-//					TrueClone->GetYaxis()->SetTitle("True 1p0pi W/ / True 1p0pi W/O" );
+					TrueClone->SetTitle("Truth Ratios");
+					TrueClone->GetYaxis()->SetRangeUser( 0,1 );
+					TrueClone->GetYaxis()->SetTitle("True 1p0pi W/ / True 1p0pi W/O" );
 
-//					TrueClone->Draw();
+					TrueClone->Draw();
 
-//					// ---------------------------------------------------------------------------------------------------
+					// ---------------------------------------------------------------------------------------------------
 
-//					// 3rd ratio: Overall correction factor
+					// 3rd ratio: Overall correction factor
 
-//					TString OverallCorrPlotCanvasName = "OverallCorr_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
-//					TCanvas* OverallCorrPlotCanvas = new TCanvas(OverallCorrPlotCanvasName,OverallCorrPlotCanvasName,205,34,1024,768);
+					TString OverallCorrPlotCanvasName = "OverallCorr_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
+					TCanvas* OverallCorrPlotCanvas = new TCanvas(OverallCorrPlotCanvasName,OverallCorrPlotCanvasName,205,34,1024,768);
 
-//					OverallCorrPlotCanvas->SetLeftMargin(0.15);
-//					OverallCorrPlotCanvas->SetBottomMargin(0.15);	
+					OverallCorrPlotCanvas->SetLeftMargin(0.15);
+					OverallCorrPlotCanvas->SetBottomMargin(0.15);	
 
-//					TH1D* OverallClone = (TH1D*)Plots[0]->Clone();	
-//					OverallClone->Divide(Plots[2]);			
+					TH1D* OverallClone = (TH1D*)Plots[0]->Clone();	
+					OverallClone->Divide(Plots[2]);			
 
-//					OverallCorrPlotCanvas->cd();
+					OverallCorrPlotCanvas->cd();
 
-//					OverallClone->SetTitle("Acceptance Correction");
-//					OverallClone->GetYaxis()->SetRangeUser( 0,1 );
-//					OverallClone->GetYaxis()->SetTitle("Reco / True 1p0pi W/O" );
+					OverallClone->SetTitle("Acceptance Correction");
+					OverallClone->GetYaxis()->SetRangeUser( 0.,0.5 );
+					OverallClone->GetYaxis()->SetTitle("Reco / True 1p0pi W/O" );
 
-//					OverallClone->Draw();
+					OverallClone->Draw();
 
 					// ------------------------------------------------------------------------------
 

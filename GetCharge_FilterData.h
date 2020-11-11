@@ -319,6 +319,17 @@ GetCharge_FilterData::GetCharge_FilterData(std::string a_target,std::string a_be
 //      chain->Add(Form("/work/clas/clase2/Mariana/data/e2a_%s_%s_v1/*.root/h10", ftarget.c_str(), fbeam_en.c_str()));
       chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
 
+/*
+	12C @ 1.1 GeV & 1500 high torus current
+      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*18294*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*18297*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*18298*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*18306*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*18307*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*18335*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+*/
+
+
 /*      if (fbeam_en == "1161" && ftarget == "C12") chain->Add(Form("/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/hroot_18297_*_v1.root/h10", fbeam_en.c_str(), ftarget.c_str()));*/
 /*//      if (fbeam_en == "1161" && ftarget == "C12") chain->Add(Form("/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/hroot_18298_*_v1.root/h10", fbeam_en.c_str(), ftarget.c_str())); // high current*/
 /*//      if (fbeam_en == "1161" && ftarget == "C12") chain->Add(Form("/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/hroot_18287_*_v1.root/h10", fbeam_en.c_str(), ftarget.c_str())); // low current*/
