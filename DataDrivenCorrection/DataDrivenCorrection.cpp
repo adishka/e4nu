@@ -29,6 +29,10 @@ void DataDrivenCorrection() {
 	const std::vector<int> LocalDataSetColors{1,410,kRed,kBlue,kOrange,kCyan,kGreen,kGray+1};
 	double split = 0.1;
 
+	TString identifier = "_1p0pi";
+//	TString identifier = "_PhiThetaBand_NoThetaCut";
+//	TString identifier = "_PhiThetaBand_WithThetaCut";
+
 	// ------------------------------------------------------------------------
 
 	std::vector<TString> xBCut; 
@@ -90,6 +94,13 @@ void DataDrivenCorrection() {
 
 	NameOfPlots.push_back("epRecoEnergy_slice_0"); SampleLabel.push_back("1p0pi W/ Sub");
 
+	// -------------------------------------------------------------------------------------------
+
+//	NameOfPlots.push_back("h1_E_rec_0pi");SampleLabel.push_back("0pi W/O Sub");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot"); SampleLabel.push_back("1pi");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_2pi"); SampleLabel.push_back("2pi");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); SampleLabel.push_back("0pi W/ Sub");
+
 	// ------------------------------------------------------------------------
 
 	std::vector<TH1D*> Plots;
@@ -138,8 +149,9 @@ void DataDrivenCorrection() {
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-						TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
-						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
+//						TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
+						TString PathToFiles = "./";
+						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em"+identifier+".root";
 						TFile* FileSample = TFile::Open(FileName);
 
 						Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
@@ -171,7 +183,8 @@ void DataDrivenCorrection() {
 
 						double localmax = Plots[WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }
-						Plots[0]->GetYaxis()->SetRangeUser(-3.,height*max);
+						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
+//						Plots[0]->GetYaxis()->SetRangeUser(-1.,height*max);
 
 						double localmin = Plots[WhichFSIModel]->GetBinContent(Plots[WhichFSIModel]->FindBin(4)); // multiplicity 4 is the highest one in data
 						if (localmin < min && localmin != 0) { min = localmin; }
@@ -208,8 +221,9 @@ void DataDrivenCorrection() {
 
 				// --------------------------------------------------------------------------------------				
 
-				TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/SuSav2_RadCorr_LFGM_Truth_WithFidAcc/"+xBCut[WhichxBCut]+"/";
-				TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_SuSav2_RadCorr_LFGM_Truth_WithFidAcc_Plots_FSI_em.root";
+//				TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/SuSav2_RadCorr_LFGM_Truth_WithFidAcc/"+xBCut[WhichxBCut]+"/";
+				TString PathToFiles = "./";
+				TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_SuSav2_RadCorr_LFGM_Truth_WithFidAcc_Plots_FSI_em"+identifier+".root";
 				TFile* FileSample = TFile::Open(FileName);
 
 				TH1D* TruePlot = (TH1D*)( FileSample->Get(NameOfPlots[NPlots-1]));

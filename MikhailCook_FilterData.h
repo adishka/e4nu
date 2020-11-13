@@ -329,7 +329,7 @@ MikhailCook_FilterData::MikhailCook_FilterData(std::string a_target,std::string 
 	if (ftarget == "3He") { StringTarget = "3he"; }
 	if (ftarget == "4He") { StringTarget = "4he"; }
 	if (ftarget == "CH2") { StringTarget = "ch2"; }
-	if (ftarget == "56Fe") { StringTarget = "56fe"; }
+	if (ftarget == "56Fe") { StringTarget = "fe56"; }
 
         chain->Add("/w/hallb-scifs17exp/clas/clas-production/osipenko/e2a_pass3/e"+StringEnergy+"gev_"+StringTarget+"/*.root/h10");
 

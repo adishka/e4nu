@@ -27,4 +27,17 @@
 
 	static const Float_t par_EcUVW[6][3] = {{60, 360, 400}, {55, 360, 400}, {50, 363, 400}, {52, 365, 396}, {60, 360, 398}, {50, 362, 398}};
 
+	const double PhiOpeningAngle = 15;
+
+	const double MinThetaProton = 0.;
+	const double MinThetaPiPlus = 0.;
+	const double MinThetaPiMinus = 0.;
+
+	const double CenterFirstSector = 30;
+	const double CenterSecondSector = 90;
+	const double CenterThirdSector = 150;
+	const double CenterFourthSector = 210;
+	const double CenterFifthSector = 270;
+	const double CenterSixthSector = 330;
+
 #endif

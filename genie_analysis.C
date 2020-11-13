@@ -121,8 +121,8 @@ void genie_analysis::Loop(Int_t choice) {
 	bool ApplyAccWeights = true;
 	bool ApplyReso = true;
 	bool TruthLevel1p0piSignalStudy = false;
-	double PhiOpeningAngle = 15;
 	bool ApplyPhiOpeningAngle = false;
+	bool UsePhiThetaBand = false;
 
 	// ---------------------------------------------------------------------------------------------------------------
 
@@ -643,31 +643,6 @@ void genie_analysis::Loop(Int_t choice) {
 
 	TH2F* h2_QVector_theta_phi = new TH2F("h2_QVector_theta_phi","",200,0,360,200,0,80);
 
-//	//Binning for energy reconstruction histograms
-//	int n_bins;
-//	double *x_values;
-
-//	if(en_beam[fbeam_en]>1. && en_beam[fbeam_en]<2.){
-//		n_bins=38;
-//		x_values=new double[n_bins+1];
-//		for (int i=0;i<=17;i++) x_values[i]=0.4+i*0.04;
-//		for (int i=0;i<=20;i++) x_values[i+18]=1.08+(i+1)*0.02;
-//	}
-
-//	if(en_beam[fbeam_en]>2. && en_beam[fbeam_en]<3.){
-//		n_bins=54;
-//		x_values=new double[n_bins+1];
-//		for (int i=0;i<=23;i++) x_values[i]=i*0.09;
-//		for (int i=0;i<=30;i++) x_values[i+24]=2.07+(i+1)*0.03;
-//	}
-
-//	if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
-//		n_bins=38;
-//		x_values=new double[n_bins+1];
-//		for (int i=0;i<=21;i++)	x_values[i]=i*0.2;
-//		for (int i=0;i<=16;i++)	x_values[i+22]=4.2+(i+1)*0.05;
-//	}
-
 	//Definitions of further Histograms
 	TH1F *h1_E_rec_2p_det = new TH1F("h1_E_rec_2p_det","",n_bins,x_values);
 	TH1F *h1_E_tot_2p_det = new TH1F("h1_E_tot_2p_det","",n_bins,x_values);
@@ -1053,6 +1028,10 @@ void genie_analysis::Loop(Int_t choice) {
 
 	// ---------------------------------------------------------------------------------------------------------------
 
+	// Keeping track of the energy
+
+	// ---------------------------------------------------------------------------------------------------------------
+
 	/** Beginning of Event Loop **/
 
 	for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -1072,6 +1051,13 @@ void genie_analysis::Loop(Int_t choice) {
 			//cout<<jentry<<endl;
 		}
 
+		// ---------------------------------------------------------------------------------------------------------------
+
+		std::string StoreEnergy = fbeam_en;
+		if (UsePhiThetaBand) { StoreEnergy = ""; }
+
+		// ---------------------------------------------------------------------------------------------------------------
+
 		if(jentry == 0){ //first entry to initialize TorusCurrent, Fiducials and Subtraction classes
 
 			//The TorusField has to be set before the Fiducialcut parameters are initialized
@@ -1088,7 +1074,8 @@ void genie_analysis::Loop(Int_t choice) {
 			fiducialcut->SetConstants(fTorusCurrent, target_name, en_beam);
 			fiducialcut->SetFiducialCutParameters(fbeam_en);
 			std::cout << " EventLoop: Finished setting up fiducial cut class " << std::endl;
-			rotation->InitSubtraction(fbeam_en, target_name, bind_en, N_tot, fiducialcut);
+//			rotation->InitSubtraction(fbeam_en, target_name, bind_en, N_tot, fiducialcut);
+			rotation->InitSubtraction(StoreEnergy, target_name, bind_en, N_tot, fiducialcut);
 			std::cout << " EventLoop: Finished setting up rotation initialize " << std::endl;
 		}
 
@@ -1102,6 +1089,8 @@ void genie_analysis::Loop(Int_t choice) {
 		int TrueElectronsAboveThreshold = 0;
 		int TrueProtonsAboveThreshold = 0;
 		int TrueChargedPionsAboveThreshold = 0;
+		int TruePiPlusAboveThreshold = 0;
+		int TruePiMinusAboveThreshold = 0;
 		int TrueGammasAboveThreshold = 0;
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1286,50 +1275,12 @@ void genie_analysis::Loop(Int_t choice) {
 			h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors->Fill(W_var,WeightIncl/Q4);
 			h1_W_weight_FullyInclusive_ThetaSlice_InSector[ElectronSector]->Fill(W_var,WeightIncl/Q4);
 
-			// First Sector
-
-//			if (el_phi_mod > 0 && el_phi_mod < 60) {
-//	
-//				h1_EQE_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice->Fill(E_rec,WeightIncl/Q4);
-//				h1_Omega_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice->Fill(nu,WeightIncl/Q4);
-//				h1_EePrime_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice->Fill(V4_el.E(),WeightIncl/Q4);
-
-//			}
-
-//			// Second Sector
-
-//			if (el_phi_mod > 60 && el_phi_mod < 120) {
-//	
-//				h1_EQE_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice->Fill(E_rec,WeightIncl/Q4);
-//				h1_Omega_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice->Fill(nu,WeightIncl/Q4);
-//				h1_EePrime_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice->Fill(V4_el.E(),WeightIncl/Q4);
-
-//			}
-
 			h1_EQE_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(E_rec,WeightIncl/Q4);
 			h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(nu,WeightIncl/Q4);
 			h1_EePrime_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(V4_el.E(),WeightIncl/Q4);
 
 
 			if (fabs(x_bjk - 1.) < 0.2) {
-
-//				if (el_phi_mod > 0 && el_phi_mod < 60) {
-//		
-//					h1_EQE_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice_xBCut->Fill(E_rec,WeightIncl/Q4);
-//					h1_Omega_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice_xBCut->Fill(nu,WeightIncl/Q4);
-//					h1_EePrime_FullyInclusive_NoQ4Weight_FirstSector_Theta_Slice_xBCut->Fill(V4_el.E(),WeightIncl/Q4);
-
-//				}
-
-//				// Second Sector
-
-//				if (el_phi_mod > 60 && el_phi_mod < 120) {
-//		
-//					h1_EQE_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice_xBCut->Fill(E_rec,WeightIncl/Q4);
-//					h1_Omega_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice_xBCut->Fill(nu,WeightIncl/Q4);
-//					h1_EePrime_FullyInclusive_NoQ4Weight_SecondSector_Theta_Slice_xBCut->Fill(V4_el.E(),WeightIncl/Q4);
-
-//				}
 
 				h1_EQE_FullyInclusive_NoQ4Weight_xBCut_Theta_Slice_InSector[ElectronSector]->Fill(E_rec,WeightIncl/Q4);
 				h1_Omega_FullyInclusive_NoQ4Weight_xBCut_Theta_Slice_InSector[ElectronSector]->Fill(nu,WeightIncl/Q4);
@@ -1388,6 +1339,7 @@ void genie_analysis::Loop(Int_t choice) {
 		int num_p = 0;
 		int num_pi = 0;
 		int num_pi_phot = 0; //couting all pions and photons
+		int num_phot = 0; //couting all photons
 		int num_pimi = 0;
 		int num_pipl = 0;
 		int num_pi_phot_nonrad = 0; //counting all pions and non-radiation photons
@@ -1441,7 +1393,8 @@ void genie_analysis::Loop(Int_t choice) {
 					// apapadop Nov 4 2020: true proton counter for truth level studies
 					TrueProtonsAboveThreshold++;
 
-					if (ApplyFiducials) { if (!PFiducialCut(fbeam_en, V3_prot_corr) ) { continue; } } // Proton theta & phi fiducial cuts
+//					if (ApplyFiducials) { if (!PFiducialCut(fbeam_en, V3_prot_corr) ) { continue; } } // Proton theta & phi fiducial cuts
+					if (ApplyFiducials) { if (!PFiducialCut(StoreEnergy, V3_prot_corr) ) { continue; } } // Proton theta & phi fiducial cuts
 
 					num_p = num_p + 1;
 					index_p[num_p - 1] = i;
@@ -1515,9 +1468,11 @@ void genie_analysis::Loop(Int_t choice) {
 
 					// apapadop Nov 4 2020: true charged pion counter for truth level studies
 					TrueChargedPionsAboveThreshold++;
+					TruePiMinusAboveThreshold++;
 
 					// Pi_phot_fid_united with +1 is for Piplus and Pi_phot_fid_united with -1 is for Piminus
-					if (ApplyFiducials) { if ( !Pi_phot_fid_united(fbeam_en, V3_pi_corr, -1) ) {  continue; } }
+//					if (ApplyFiducials) { if ( !Pi_phot_fid_united(fbeam_en, V3_pi_corr, -1) ) {  continue; } }
+					if (ApplyFiducials) { if ( !Pi_phot_fid_united(StoreEnergy, V3_pi_corr, -1) ) {  continue; } }
 
 					num_pimi = num_pimi + 1;
 					num_pi = num_pi + 1;
@@ -1601,9 +1556,11 @@ void genie_analysis::Loop(Int_t choice) {
 
 					// apapadop Nov 4 2020: true charged pion counter for truth level studies
 					TrueChargedPionsAboveThreshold++;
+					TruePiPlusAboveThreshold++;
 
 					// Pi_phot_fid_united with +1 is for Piplus and Pi_phot_fid_united with -1 is for Piminus
-					if (ApplyFiducials) { if ( !Pi_phot_fid_united(fbeam_en, V3_pi_corr, 1) )     {  continue; } }
+//					if (ApplyFiducials) { if ( !Pi_phot_fid_united(fbeam_en, V3_pi_corr, 1) )     {  continue; } }
+					if (ApplyFiducials) { if ( !Pi_phot_fid_united(StoreEnergy, V3_pi_corr, 1) )     {  continue; } }
 
 					num_pipl = num_pipl + 1;
 					num_pi  = num_pi + 1;
@@ -1681,6 +1638,7 @@ void genie_analysis::Loop(Int_t choice) {
 					TrueGammasAboveThreshold++;
 
 					if (ApplyFiducials) { if ( !Pi_phot_fid_united(fbeam_en, V3_phot_angles, 0) )  { continue;} }
+
 				}
 
 				double neut_phi_mod = V3_phot_angles.Phi()*TMath::RadToDeg() + 30; //Add 30 degree
@@ -1728,6 +1686,8 @@ void genie_analysis::Loop(Int_t choice) {
 			if (TrueElectronsAboveThreshold != 1) { continue; }
 			if (TrueProtonsAboveThreshold != 1) { continue; }
 			if (TrueChargedPionsAboveThreshold != 0) { continue; }
+//			if (TruePiPlusAboveThreshold != 0) { continue; }
+//			if (TruePiMinusAboveThreshold != 0) { continue; }
 			if (TrueGammasAboveThreshold != 0) { continue; }
 
 		}
@@ -3560,6 +3520,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 				        for(int i_p = 0; i_p < N_p4; i_p++) {
 						prot4_stat[i_p] = PFiducialCut(fbeam_en, V3_p4_rot[i_p]);
+//						prot4_stat[i_p] = PFiducialCut("", V3_p4_rot[i_p]);
 					}
 
 					if( prot4_stat[0]  && !prot4_stat[1]   && !prot4_stat[2] && !prot4_stat[3])  N_p4_p1[0]=N_p4_p1[0]+1;//Detecting 1p out of 4p
@@ -5057,9 +5018,9 @@ void genie_analysis::Loop(Int_t choice) {
 
 				//histoweight is 1/Mott_cross_sec for CLAS data
 				double histoweight = pion_acc_ratio * p_acc_ratio * e_acc_ratio * wght/Mott_cross_sec; 
-				//1proton, 1 Pion, 1 electron acceptance, GENIE weight and Mott
+				// 1 proton, 1 Pion, 1 electron acceptance, GENIE weight and Mott
 
-				if(N_piphot_det!=0){
+				if (N_piphot_det != 0) {
 
 					h1_E_rec_undetfactor->Fill(E_rec,(N_piphot_undet/N_piphot_det)*histoweight);
 					h1_E_tot_undetfactor->Fill(E_tot,(N_piphot_undet/N_piphot_det)*histoweight);
@@ -6295,6 +6256,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 	TH1F *h_Erec_subtruct_piplpimi_noprot_frac_feed = (TH1F*)  h1_E_rec_0pi_frac_feed->Clone("h_Erec_subtruct_piplpimi_noprot_frac_feed");
 	h_Erec_subtruct_piplpimi_noprot_frac_feed->Add(h1_E_rec_1pi_weight_frac_feed,-1);
+
 	 //-----------------------------------looking only at e-, 2pi undetected pion subtraction  ---------------------------------------
 
 	TH1F *h_Erec_subtruct_piplpimi_noprot_2pi = (TH1F*)	h_Erec_subtruct_piplpimi_noprot->Clone("h_Erec_subtruct_piplpimi_noprot_2pi");

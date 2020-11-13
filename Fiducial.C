@@ -997,12 +997,54 @@ Bool_t Fiducial::EFiducialCut(std::string beam_en, TVector3 momentum)
     return status;
   }
 
+// ------------------------------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------------------------------------
 
+// apapadop // Nov 11 2020 // Narrow band 30 deg in phi and either accepting ALL theta or theta_pos > 12 deg (piplus & protons) and theta_pi- > 30
 
+double Fiducial::GetPhi(TVector3 momentum) {
+
+	double phi = momentum.Phi() * 180. / TMath::Pi() + 30.;
+	if (phi < 0) { phi += 360; }
+	if (phi > 360) { phi -= 360; }
+
+	return phi;
+
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------------------
+
+double Fiducial::GetTheta(TVector3 momentum) {
+
+	double theta = momentum.Theta() * 180. / TMath::Pi();
+	if (theta < 0) { theta += 180; }
+	if (theta > 180) { theta -= 180; }
+
+	return theta;
+
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------------------------------------
 
 Bool_t Fiducial::PFiducialCut(std::string beam_en, TVector3 momentum){
     //Positive Hadron Fiducial Cut
     //Please refer to <A HREF="http://www.jlab.org/Hall-B/secure/e2/bzh/pfiducialcut.html">Electron Fiducial Cuts</A> -- Bin Zhang (MIT).
+
+	if (beam_en == "") {
+
+		bool status = true;
+
+		double phi = GetPhi(momentum);
+		double theta = GetTheta(momentum);
+
+		if ( !(TMath::Abs(phi - CenterFirstSector) < PhiOpeningAngle || TMath::Abs(phi - CenterSecondSector) < PhiOpeningAngle || TMath::Abs(phi - CenterThirdSector) < PhiOpeningAngle || TMath::Abs(phi - CenterFourthSector) < PhiOpeningAngle || TMath::Abs(phi - CenterFifthSector) < PhiOpeningAngle || TMath::Abs(phi - CenterSixthSector) < PhiOpeningAngle) ) { status = false; }
+
+		if (theta < MinThetaProton) { status = false; }
+
+		return status;
+
+	} else {
 
      Bool_t status = kTRUE;
      std::string fbeam_en = beam_en;
@@ -1555,12 +1597,32 @@ Bool_t Fiducial::PFiducialCut(std::string beam_en, TVector3 momentum){
 
     }
     return status;
+
+	} // end of the if statement for non-"" beam energy
+
   }
 
+// ---------------------------------------------------------------------------------------------
 
 Bool_t Fiducial::PiplFiducialCut(std::string beam_en, TVector3 momentum, Float_t *philow, Float_t *phiup){
     //Positive Hadron Fiducial Cut
     //Please refer to <A HREF="http://www.jlab.org/Hall-B/secure/e2/bzh/pfiducialcut.html">Electron Fiducial Cuts</A> -- Bin Zhang (MIT).
+
+	if (beam_en == "") {
+
+		bool status = true;
+
+		double phi = GetPhi(momentum);
+		double theta = GetTheta(momentum);
+
+		if ( !(TMath::Abs(phi - CenterFirstSector) < PhiOpeningAngle || TMath::Abs(phi - CenterSecondSector) < PhiOpeningAngle || TMath::Abs(phi - CenterThirdSector) < PhiOpeningAngle || TMath::Abs(phi - CenterFourthSector) < PhiOpeningAngle || TMath::Abs(phi - CenterFifthSector) < PhiOpeningAngle || TMath::Abs(phi - CenterSixthSector) < PhiOpeningAngle) ) { status = false; }
+
+		if (theta < MinThetaPiPlus) { status = false; }
+
+		return status;
+
+	} else {
+
     std::string fbeam_en = beam_en;
     Bool_t status = kTRUE;
 
@@ -2111,7 +2173,12 @@ Bool_t Fiducial::PiplFiducialCut(std::string beam_en, TVector3 momentum, Float_t
 
     }
     return status;
-  }
+
+	} // end of the if statement for the non-"" case
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------------
 
 
   //using two GeV pimi fiducial cuts for both 2 and 4 GeV analysis
@@ -2123,6 +2190,22 @@ Bool_t Fiducial::PiplFiducialCut(std::string beam_en, TVector3 momentum, Float_t
 //                  October 19th, 2020 - New theta gap parameters at 1 GeV (750A), and 2/4 GeV (2250A), an initial fix
 //                                       Replaces reuse of electron ones, which are too messy to reuse accurately and account for CC cuts inappropriate to pions
 Bool_t Fiducial::PimiFiducialCut(std::string beam_en, TVector3 momentum, Float_t *pimi_philow, Float_t *pimi_phiup){
+
+	if (beam_en == "") {
+
+		bool status = true;
+
+		double phi = GetPhi(momentum);
+		double theta = GetTheta(momentum);
+
+		if ( !(TMath::Abs(phi - CenterFirstSector) < PhiOpeningAngle || TMath::Abs(phi - CenterSecondSector) < PhiOpeningAngle || TMath::Abs(phi - CenterThirdSector) < PhiOpeningAngle || TMath::Abs(phi - CenterFourthSector) < PhiOpeningAngle || TMath::Abs(phi - CenterFifthSector) < PhiOpeningAngle || TMath::Abs(phi - CenterSixthSector) < PhiOpeningAngle) ) { status = false; }
+
+		if (theta < MinThetaPiMinus) { status = false; }
+
+		return status;
+
+	} else {
+
   // Electron fiducial cut, return kTRUE if pass or kFALSE if not
   //--------------------------------------------------------------
   //Preamble, set up common variables
@@ -2587,7 +2670,12 @@ Bool_t Fiducial::PimiFiducialCut(std::string beam_en, TVector3 momentum, Float_t
      }
    } //end of 2 and 4GEV pi minus fiducial
    return status;
+
+	} // end of the if statemnet for the non-"" case
+
 }
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 bool Fiducial::Phot_fid(TVector3 V3_phot){
@@ -2615,6 +2703,7 @@ bool Fiducial::Phot_fid(TVector3 V3_phot){
        return status;
   }
 
+// ----------------------------------------------------------------------------------------------------
 
 bool Fiducial::Pi_phot_fid_united(std::string beam_en, TVector3 V3_pi_phot, int q_pi_phot){
 
@@ -2629,6 +2718,8 @@ bool Fiducial::Pi_phot_fid_united(std::string beam_en, TVector3 V3_pi_phot, int 
 
 
 }
+
+// ----------------------------------------------------------------------------------------------------
 
 
 

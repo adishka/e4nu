@@ -126,15 +126,15 @@ void  Subtraction::prot2_rot_func(TVector3  V3prot[2],TVector3  V3prot_uncorr[2]
 
 	}
 
-	 //-----------------------------------------  2p to 1p  -----------------------------------------------------------------------
+	//-----------------------------------------  2p to 1p  -----------------------------------------------------------------------
 
-	  V3_prot_el_2pto1p[0]=V4el.Vect()+ V3prot[0];
-	  Ecal_2pto1p[0]=V4el.E()+ TMath::Sqrt(m_prot*m_prot+V3prot[0].Mag()*V3prot[0].Mag())-m_prot+bind_en[target_name];
-	  pmiss_perp_2pto1p[0]=TMath::Sqrt(V3_prot_el_2pto1p[0].Px()*V3_prot_el_2pto1p[0].Px()+V3_prot_el_2pto1p[0].Py()*V3_prot_el_2pto1p[0].Py());
+	V3_prot_el_2pto1p[0]=V4el.Vect()+ V3prot[0];
+	Ecal_2pto1p[0]=V4el.E()+ TMath::Sqrt(m_prot*m_prot+V3prot[0].Mag()*V3prot[0].Mag())-m_prot+bind_en[target_name];
+	pmiss_perp_2pto1p[0]=TMath::Sqrt(V3_prot_el_2pto1p[0].Px()*V3_prot_el_2pto1p[0].Px()+V3_prot_el_2pto1p[0].Py()*V3_prot_el_2pto1p[0].Py());
 
-	  V3_prot_el_2pto1p[1]=V4el.Vect()+ V3prot[1];
-	  Ecal_2pto1p[1]=V4el.E()+ TMath::Sqrt(m_prot*m_prot+V3prot[1].Mag()*V3prot[1].Mag())-m_prot+bind_en[target_name];
-	  pmiss_perp_2pto1p[1]=TMath::Sqrt(V3_prot_el_2pto1p[1].Px()*V3_prot_el_2pto1p[1].Px()+V3_prot_el_2pto1p[1].Py()*V3_prot_el_2pto1p[1].Py());
+	V3_prot_el_2pto1p[1]=V4el.Vect()+ V3prot[1];
+	Ecal_2pto1p[1]=V4el.E()+ TMath::Sqrt(m_prot*m_prot+V3prot[1].Mag()*V3prot[1].Mag())-m_prot+bind_en[target_name];
+	pmiss_perp_2pto1p[1]=TMath::Sqrt(V3_prot_el_2pto1p[1].Px()*V3_prot_el_2pto1p[1].Px()+V3_prot_el_2pto1p[1].Py()*V3_prot_el_2pto1p[1].Py());
 
 
 	if(N_2 != 0) {
@@ -152,34 +152,35 @@ void  Subtraction::prot2_rot_func(TVector3  V3prot[2],TVector3  V3prot_uncorr[2]
 
 void Subtraction::prot1_pi1_rot_func(TVector3  V3prot,TVector3 V3pi, int q_pi, double *N_pi_p,double *N_nopi_p){
 
-    double rotation_ang;
-    TVector3 V3_pi_rot, V3_p_rot;
-    Float_t pi_cphil=0,pi_cphir=0,pi_phimin=0,pi_phimax=0;
-    bool pi_stat=true;
+	double rotation_ang;
+	TVector3 V3_pi_rot, V3_p_rot;
+	Float_t pi_cphil=0,pi_cphir=0,pi_phimin=0,pi_phimax=0;
+	bool pi_stat=true;
 
-       double Npi_p = 0;
-       double Nnopi_p = 0;
+	double Npi_p = 0;
+	double Nnopi_p = 0;
 
-       for(int g=0; g<N_tot; g++){
+	for(int g=0; g<N_tot; g++){
 
-         rotation_ang=gRandom->Uniform(0,2*TMath::Pi());
-         V3_p_rot= V3prot;
-         V3_p_rot.Rotate(rotation_ang,V3q);
+		rotation_ang = gRandom->Uniform(0,2*TMath::Pi());
+		V3_p_rot = V3prot;
+		V3_p_rot.Rotate(rotation_ang,V3q);
 
+		V3_pi_rot = V3pi;
+		V3_pi_rot.Rotate(rotation_ang,V3q);
+		pi_stat = Pi_phot_fid_united(fbeam_en, V3_pi_rot,q_pi);
 
-         V3_pi_rot=V3pi;
-         V3_pi_rot.Rotate(rotation_ang,V3q);
-         pi_stat=Pi_phot_fid_united(fbeam_en, V3_pi_rot,q_pi);
+		if(PFiducialCut(fbeam_en, V3_p_rot)  && pi_stat) { Npi_p = Npi_p+1; }
+		if(PFiducialCut(fbeam_en, V3_p_rot)  && !pi_stat) { Nnopi_p = Nnopi_p+1; }
 
+	}
 
-         if(PFiducialCut(fbeam_en, V3_p_rot)  && pi_stat) Npi_p=Npi_p+1;
-         if(PFiducialCut(fbeam_en, V3_p_rot)  && !pi_stat) Nnopi_p=Nnopi_p+1;
+	*N_pi_p=Npi_p;
+	*N_nopi_p=Nnopi_p;
 
-       }
-       *N_pi_p=Npi_p;
-       *N_nopi_p=Nnopi_p;
-  }
+}
 
+// ---------------------------------------------------------------------------------------------------------------------
 
 void Subtraction::prot1_pi2_rot_func(TVector3  V3prot,TVector3 V3pi[2], int q_pi[2], double *P_1p0pi,double P_1p1pi[2]){
 
@@ -615,30 +616,30 @@ void Subtraction::prot3_pi1_rot_func(TVector3 V3_3prot_corr[3],TVector3 V3_3prot
 
   }
 
+// ---------------------------------------------------------------------------------------
 
 void Subtraction::pi1_rot_func(TVector3 V3_pi, int q_pi, double *P_pi){
 
+	double N_pion = 0;
+	double rot_angle;
+	TVector3 V3_rot_pi;
+	Float_t pi_cphil = 0, pi_cphir = 0, pi_phimin = 0, pi_phimax = 0;
 
-    double N_pion=0;
-    double rot_angle;
-    TVector3 V3_rot_pi;
-    Float_t pi_cphil=0,pi_cphir=0,pi_phimin=0,pi_phimax=0;
+	for(int g = 0; g < N_tot; g++) {
 
+		V3_rot_pi = V3_pi;
+		rot_angle = gRandom->Uniform(0,2*TMath::Pi());
+		V3_rot_pi.Rotate(rot_angle,V3q);
+		if( Pi_phot_fid_united(fbeam_en, V3_rot_pi,q_pi) ) { N_pion = N_pion + 1; }
+	}
 
-    for(int g=0; g<N_tot; g++){
+	if(N_pion != 0) { *P_pi = (N_tot-N_pion)/N_pion; }
+	else { *P_pi = 0; }
 
-      V3_rot_pi=V3_pi;
-      rot_angle=gRandom->Uniform(0,2*TMath::Pi());
-      V3_rot_pi.Rotate(rot_angle,V3q);
-      if(Pi_phot_fid_united(fbeam_en, V3_rot_pi,q_pi)) N_pion=N_pion+1;
-    }
-
-    if(N_pion!=0)     *P_pi=(N_tot-N_pion)/N_pion;
-    else *P_pi=0;
-
-    // if(!radstat) cout<<"nereqev     "<<N_pion<<"   radstat"<<"     "<<radstat<<endl;
+	//if(!radstat) cout<<"nereqev     "<<N_pion<<"   radstat"<<"     "<<radstat<<endl;
   }
 
+// ---------------------------------------------------------------------------------------
 
 void Subtraction::pi2_rot_func(TVector3 V3_pi[2], int q_pi[2], double *P_0pi,double P_1pi[2]){
 

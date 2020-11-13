@@ -64,6 +64,11 @@ void AcceptanceCorrections() {
 	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");
 
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
+////	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");
+
 //	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
 //	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("eRecoEnergy_slice_0");

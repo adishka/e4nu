@@ -14,6 +14,8 @@
 #include <vector>
 #include <map>
 
+#include "Constants.h"
+
 struct Fiducial {
 
   void InitEClimits();
@@ -26,6 +28,15 @@ struct Fiducial {
   Bool_t PimiFiducialCut(std::string beam_en, TVector3 momentum, Float_t *pimi_philow, Float_t *pimi_phiup);
   bool Phot_fid(TVector3 V3_phot);
   bool Pi_phot_fid_united(std::string beam_en, TVector3 V3_pi_phot, int q_pi_phot);
+
+  // --------------------------------------------------------------------------
+
+  // apapadop // Nov 11 2020 // Narrow band 30 deg in phi and either accepting ALL theta or theta_pos > 12 deg (piplus & protons) and theta_pi- > 30
+
+  double GetPhi(TVector3 momentum);
+  double GetTheta(TVector3 momentum);
+
+  // -------------------------------------------------------------------------- 
 
   int fTorusCurrent;
   std::string target_name;
