@@ -1022,9 +1022,13 @@ void genie_analysis::Loop(Int_t choice) {
 
 	TF1 *myFit = new TF1("myFit","[0]+[1]/x",0.,5.);
 
-	if (en_beam[fbeam_en] == 1.161) { myFit->SetParameters(15,7); }
-	if (en_beam[fbeam_en] == 2.261) { myFit->SetParameters(14,10.5); }
-	if (en_beam[fbeam_en] == 4.461) { myFit->SetParameters(11.5,15); }
+//	if (en_beam[fbeam_en] == 1.161) { myFit->SetParameters(15,7); }
+//	if (en_beam[fbeam_en] == 2.261) { myFit->SetParameters(14,10.5); }
+//	if (en_beam[fbeam_en] == 4.461) { myFit->SetParameters(11.5,15); }
+
+	if (en_beam[fbeam_en] == 1.161) { myFit->SetParameters(17,7); }
+	if (en_beam[fbeam_en] == 2.261) { myFit->SetParameters(16,10.5); }
+	if (en_beam[fbeam_en] == 4.461) { myFit->SetParameters(13.5,15); }
 
 	// ---------------------------------------------------------------------------------------------------------------
 

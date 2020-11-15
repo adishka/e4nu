@@ -58,6 +58,7 @@ void Create2DPlots() {
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");  DirNames.push_back("True 1p0pi W/");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");  DirNames.push_back("True 1p0pi W/O");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut"); FSILabel.push_back("True 1p0pi W/O");  DirNames.push_back("True 1p0pi W/O");
 
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");  DirNames.push_back("True 1p0pi W/");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");  DirNames.push_back("True 1p0pi W/O");
@@ -450,9 +451,13 @@ if (DirNames[WhichFSIModel] == "True 1p0pi W/") {
 TF1 *myFit = new TF1("myFit","[0]+[1]/x",0.,5);
 
 //if (E[WhichEnergy] == "1_161") { myFit->SetParameters(15,7); } // Default
-if (E[WhichEnergy] == "1_161") { myFit->SetParameters(15,8); } // or 2deg higher A?
-if (E[WhichEnergy] == "2_261") { myFit->SetParameters(14,10.5); }
-if (E[WhichEnergy] == "4_461") { myFit->SetParameters(11.5,15); }
+if (E[WhichEnergy] == "1_161") { myFit->SetParameters(17,7); } // O.H. 2 deg higher [Nov 13 2020] ro be beyond the edges
+
+//if (E[WhichEnergy] == "2_261") { myFit->SetParameters(14,10.5); }
+if (E[WhichEnergy] == "2_261") { myFit->SetParameters(16,10.5); }
+
+//if (E[WhichEnergy] == "4_461") { myFit->SetParameters(11.5,15); }
+if (E[WhichEnergy] == "4_461") { myFit->SetParameters(13.5,15); }
 
 myFit->SetLineColor(kRed);
 myFit->SetLineWidth(4);
