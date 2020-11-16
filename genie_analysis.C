@@ -121,6 +121,7 @@ void genie_analysis::Loop(Int_t choice) {
 	bool ApplyAccWeights = true;
 	bool ApplyReso = true;
 	bool TruthLevel1p0piSignalStudy = false;
+	bool TruthLevel0piSignalStudy = false;
 	bool ApplyPhiOpeningAngle = false;
 	bool UsePhiThetaBand = false;
 
@@ -1685,10 +1686,10 @@ void genie_analysis::Loop(Int_t choice) {
 		// Requiring true level signal 1e 1p 0pi+/- 0 gammas
 		// With smearing / fiducial cuts / acceptance maps
 
-		if (TruthLevel1p0piSignalStudy) {
+		if (TruthLevel1p0piSignalStudy || TruthLevel0piSignalStudy) {
 
 			if (TrueElectronsAboveThreshold != 1) { continue; }
-			if (TrueProtonsAboveThreshold != 1) { continue; }
+			if (TruthLevel1p0piSignalStudy) { if (TrueProtonsAboveThreshold != 1) { continue; } }
 			if (TrueChargedPionsAboveThreshold != 0) { continue; }
 //			if (TruePiPlusAboveThreshold != 0) { continue; }
 //			if (TruePiMinusAboveThreshold != 0) { continue; }

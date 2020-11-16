@@ -46,12 +46,22 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 	xBCut.push_back("NoxBCut");
 
-	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
-
 	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
 //	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
+
+	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
+
+		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
+		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
+
+	} else {
+
+		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
+		FSIModel.push_back("hA2018_Final_RadCorr_LFGM0pi_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
+
+	}
 
 	// ------------------------------------------------------------------------
 
@@ -216,7 +226,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 							gStyle->SetErrorX(0); // Removing the horizontal errors
 							Plots[WhichFSIModel]->Draw("e same"); 
-
+/*
 							TH1D* DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
 							DataPlot->SetMarkerStyle(20); 
@@ -232,7 +242,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 							DataPlotG2018->SetLineColor(kRed);	
 							DataPlotG2018->SetMarkerColor(kRed);	
 							DataPlotG2018->Draw("e same"); 							
-
+*/
 						} else { 
 
 							if (FSILabel[WhichFSIModel] == "G2018") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }

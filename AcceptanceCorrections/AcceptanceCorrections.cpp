@@ -29,6 +29,9 @@ void AcceptanceCorrections() {
 	const std::vector<int> LocalDataSetColors{1,610,410,kRed+2,kBlue};
 	double split = 0.1;
 
+	TString Label = "SuSav2";
+	//TString Label = "hA2018_Final";
+
 	// ------------------------------------------------------------------------
 
 	std::vector<TString> xBCut; 
@@ -55,24 +58,39 @@ void AcceptanceCorrections() {
 
 	xBCut.push_back("NoxBCut");
 
+//	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
+//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e')_{1p0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("eRecoEnergy_slice_0");
+//	NameOfPlots.push_back("h1_EQE_FullyInclusive"); LabelOfPlots.push_back("(e,e') E^{QE} [GeV]");  OutputPlotNames.push_back("FullyInclusiveeRecoEnergy_slice_0");
+
 	// 0th plot is CV
 	// 1st plot is true 1p0pi with smearing (S) / fiducials (F) / acceptance maps (A) / resolution (R) / thresholds (T)
 	// 2nd plot is true 1p0pi without smearing (S) / fiducials (F) / acceptance maps (A) / resolution (R) but with thresholds (T)
 
-	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");
+	FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
 
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
+	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi"){
+
+		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("TrueWithFid");
+		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("True");
+
+	} else {
+
+		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("TrueWithFid");
+		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True");
+
+	}
+
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
+////	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");
+
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
 ////	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");
-
-//	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
-//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("eRecoEnergy_slice_0");
-//	NameOfPlots.push_back("h1_EQE_FullyInclusive"); LabelOfPlots.push_back("(e,e') E^{QE} [GeV]");  OutputPlotNames.push_back("FullyInclusiveeRecoEnergy_slice_0");
 
 	// ------------------------------------------------------------------------
 
@@ -103,13 +121,15 @@ void AcceptanceCorrections() {
 				double min = 1E12;
 				double height = 1.05;
 
+				TFile* StoreEfficiencyFile = TFile::Open("myFiles/Efficiency_"+Label+"_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+xBCut[WhichxBCut]+".root","update");
+
 				for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
 					TString PlotCanvasName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
 					TCanvas* PlotCanvas = new TCanvas(PlotCanvasName,PlotCanvasName,205,34,1024,768);
 
 					PlotCanvas->SetLeftMargin(0.15);
-					PlotCanvas->SetBottomMargin(0.17);
+					PlotCanvas->SetBottomMargin(0.19);
 
 					// ---------------------------------------------------------------------------------------
 
@@ -157,11 +177,13 @@ void AcceptanceCorrections() {
 						if (localmax > max) { max = localmax; }
 						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 
-						double localmin = Plots[WhichFSIModel]->GetBinContent(Plots[WhichFSIModel]->FindBin(4)); // multiplicity 4 is the highest one in data
-						if (localmin < min && localmin != 0) { min = localmin; }
-
 						TString XLabel = Plots[WhichFSIModel]->GetXaxis()->GetTitle();
 						Plots[0]->GetXaxis()->SetTitle(XLabel);
+
+						// --------------------------------------------------------------------------------------------------
+
+						StoreEfficiencyFile->cd();
+						Plots[WhichFSIModel]->Write(Label+"_"+FSILabel[WhichFSIModel]+"_"+NameOfPlots[WhichPlot]);
 
 						// --------------------------------------------------------------------------------------------------
 
@@ -180,6 +202,7 @@ void AcceptanceCorrections() {
 						
 							if (FSILabel[WhichFSIModel] =="G2018") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }
 							Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
+//							Plots[WhichFSIModel]->Draw("hist same");  // draw them as lines
 
 							if (string(FSILabel[0]).find("Data") != std::string::npos) { Plots[0]->Draw("e same"); } 
 
@@ -206,14 +229,14 @@ void AcceptanceCorrections() {
 					// 3rd ratio: Overall correction factor
 
 					// ---------------------------------------------------------------------------------------------------
-
+/*
 					// 1st ratio: Correct for bkg subtraction
 
 					TString BkgCorrPlotCanvasName = "BkgCorr_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
 					TCanvas* BkgCorrPlotCanvas = new TCanvas(BkgCorrPlotCanvasName,BkgCorrPlotCanvasName,205,34,1024,768);
 
 					BkgCorrPlotCanvas->SetLeftMargin(0.15);
-					BkgCorrPlotCanvas->SetBottomMargin(0.15);	
+					BkgCorrPlotCanvas->SetBottomMargin(0.17);	
 
 					TH1D* RecoClone = (TH1D*)Plots[0]->Clone();	
 					RecoClone->Divide(Plots[1]);			
@@ -222,7 +245,7 @@ void AcceptanceCorrections() {
 
 					RecoClone->SetTitle("Background Correction");
 
-					RecoClone->GetYaxis()->SetRangeUser( 0.5,1.5 );
+					RecoClone->GetYaxis()->SetRangeUser( 0.8,1.5 );
 					RecoClone->GetYaxis()->SetTitle("Reco / True 1p0pi W/" );
 
 					RecoClone->Draw();
@@ -235,7 +258,7 @@ void AcceptanceCorrections() {
 					TCanvas* ThresCorrPlotCanvas = new TCanvas(ThresCorrPlotCanvasName,ThresCorrPlotCanvasName,205,34,1024,768);
 
 					ThresCorrPlotCanvas->SetLeftMargin(0.15);
-					ThresCorrPlotCanvas->SetBottomMargin(0.15);	
+					ThresCorrPlotCanvas->SetBottomMargin(0.17);	
 
 					TH1D* TrueClone = (TH1D*)Plots[1]->Clone();	
 					TrueClone->Divide(Plots[2]);			
@@ -243,7 +266,7 @@ void AcceptanceCorrections() {
 					ThresCorrPlotCanvas->cd();
 
 					TrueClone->SetTitle("Truth Ratios");
-					TrueClone->GetYaxis()->SetRangeUser( 0,1 );
+					TrueClone->GetYaxis()->SetRangeUser( 0,0.3 );
 					TrueClone->GetYaxis()->SetTitle("True 1p0pi W/ / True 1p0pi W/O" );
 
 					TrueClone->Draw();
@@ -256,7 +279,7 @@ void AcceptanceCorrections() {
 					TCanvas* OverallCorrPlotCanvas = new TCanvas(OverallCorrPlotCanvasName,OverallCorrPlotCanvasName,205,34,1024,768);
 
 					OverallCorrPlotCanvas->SetLeftMargin(0.15);
-					OverallCorrPlotCanvas->SetBottomMargin(0.15);	
+					OverallCorrPlotCanvas->SetBottomMargin(0.17);	
 
 					TH1D* OverallClone = (TH1D*)Plots[0]->Clone();	
 					OverallClone->Divide(Plots[2]);			
@@ -264,13 +287,20 @@ void AcceptanceCorrections() {
 					OverallCorrPlotCanvas->cd();
 
 					OverallClone->SetTitle("Acceptance Correction");
-					OverallClone->GetYaxis()->SetRangeUser( 0.,0.5 );
+					OverallClone->GetYaxis()->SetRangeUser( 0.,0.3 );
 					OverallClone->GetYaxis()->SetTitle("Reco / True 1p0pi W/O" );
 
 					OverallClone->Draw();
 
 					// ------------------------------------------------------------------------------
 
+					StoreEfficiencyFile->cd();
+					RecoClone->Write(Label+"_"+"BkgCorrection_"+NameOfPlots[WhichPlot]);
+					TrueClone->Write(Label+"_"+"FidCorrection_"+NameOfPlots[WhichPlot]);
+					OverallClone->Write(Label+"_"+"AccCorrection_"+NameOfPlots[WhichPlot]);
+
+*/
+					// ------------------------------------------------------------------------------
 
 				} // End of the loop over the plots
 
