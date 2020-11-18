@@ -1496,7 +1496,11 @@ void genie_analysis::Loop(Int_t choice) {
 					PiMinusMag = V3_pi_corr.Mag(); 
 
 					//acceptance_c takes phi in radians and here unmodified by 30 degree.
-					PiMinusWeight = wght * acceptance_c(PiMinusMag,PiMinusCosTheta, phi_pion, -211,file_acceptance,ApplyAccWeights);
+//					PiMinusWeight = wght * acceptance_c(PiMinusMag,PiMinusCosTheta, phi_pion, -211,file_acceptance,ApplyAccWeights);
+
+					// UNTIL AXEL CREATES THE CORRECT PIMINUS MAP, WE SET THE PIMINUS ACCEPTANCE TO BE 1
+					PiMinusWeight = wght * acceptance_c(PiMinusMag,PiMinusCosTheta, phi_pion, -211,file_acceptance,false);
+
 					if ( fabs(PiMinusWeight) != PiMinusWeight ) { continue; }
 
 					PiMinusPhi_Deg = V3_pi_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.;
@@ -2036,7 +2040,12 @@ void genie_analysis::Loop(Int_t choice) {
 						if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 					}
 					else if (charge_pi[0] == -1) {    //acceptance for pi minus. using electron acceptance map
-						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+						//pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+						// UNTIL AXEL CREATES THE CORRECT PIMINUS MAP, WE SET THE PIMINUS ACCEPTANCE TO BE 1
+						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,false);
+
 						if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 					}
 					else if (charge_pi[0] == 0) {    //acceptance for neutral, setting to 1 for now F.H. 09/24/19
@@ -2599,7 +2608,13 @@ void genie_analysis::Loop(Int_t choice) {
 							if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == -1) {		//acceptance for pi minus. using electron acceptance map
-							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+							//pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+							
+							// UNTIL AXEL CREATES THE CORRECT PIMINUS MAP, WE SET THE PIMINUS ACCEPTANCE TO BE 1
+							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,false);
+
+
 							if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == 0) {		//acceptance for photon set to 1 for now F.H. 09/24/19
@@ -3253,7 +3268,12 @@ void genie_analysis::Loop(Int_t choice) {
 						if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 					}
 					else if (charge_pi[0] == -1) {		//acceptance for pi minus. using electron acceptance map
-						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+//						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+						// UNTIL AXEL CREATES THE CORRECT PIMINUS MAP, WE SET THE PIMINUS ACCEPTANCE TO BE 1
+						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,false);
+
 						if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 					}
 					else if (charge_pi[0] == 0) {		//acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -4370,7 +4390,12 @@ void genie_analysis::Loop(Int_t choice) {
 					if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 				}
 				else if (charge_pi[0] == -1) {	 //acceptance for pi minus. using electron acceptance map
-					pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+					//pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+					// UNTIL AXEL CREATES THE CORRECT PIMINUS MAP, WE SET THE PIMINUS ACCEPTANCE TO BE 1
+					pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,false);
+
 					if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 				}
 				else if (charge_pi[0] == 0) {	 //acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -4432,7 +4457,12 @@ void genie_analysis::Loop(Int_t choice) {
 						if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 					}
 					else if (charge_pi[i] == -1) {	//acceptance for pi minus. using electron acceptance map
-						pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+//						pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+						// UNTIL AXEL CREATES THE CORRECT PIMINUS MAP, WE SET THE PIMINUS ACCEPTANCE TO BE 1
+						pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,false);
+
 						if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 					}
 					else if (charge_pi[i] == 0) {	//acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -4518,7 +4548,12 @@ void genie_analysis::Loop(Int_t choice) {
 						if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 					}
 					else if (charge_pi[i] == -1) {	//acceptance for pi minus. using electron acceptance map
-						pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+						//pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+						// UNTIL AXEL CREATES THE CORRECT PIMINUS MAP, WE SET THE PIMINUS ACCEPTANCE TO BE 1
+						pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,false);
+
 						if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 					}
 					else if (charge_pi[i] == 0) {	//acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -4636,7 +4671,12 @@ void genie_analysis::Loop(Int_t choice) {
 							if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == -1) {    //acceptance for pi minus. using electron acceptance map
-							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+							//pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+							// UNTIL AXEL CREATES THE CORRECT PIMINUS MAP, WE SET THE PIMINUS ACCEPTANCE TO BE 1
+							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,false);
+
 							if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == 0) {    //acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -5009,7 +5049,12 @@ void genie_analysis::Loop(Int_t choice) {
 						if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 					}
 					else if (charge_pi[0] == -1) { //acceptance for pi minus. using electron acceptance map
-						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+						//pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+						// UNTIL AXEL CREATES THE CORRECT PIMINUS MAP, WE SET THE PIMINUS ACCEPTANCE TO BE 1
+						pion_acc_ratio = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,false);
+
 						if ( fabs(pion_acc_ratio) != pion_acc_ratio ) { continue; }
 					}
 					else if (charge_pi[0] == 0) { //acceptance for photon/pi0 is 1 for now F.H. 09/24/19
@@ -5243,8 +5288,13 @@ void genie_analysis::Loop(Int_t choice) {
 							  if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == -1) {	//acceptance for pi minus. using electron acceptance map
-							 pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
-							  if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
+
+							//pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+							// UNTIL AXEL CREATES THE CORRECT PIMINUS MAP, WE SET THE PIMINUS ACCEPTANCE TO BE 1
+							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,false);
+
+							if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == 0) {	//acceptance for photon/pi0 is 1 for now F.H. 09/24/19
 							 pion_acc_ratio[i] = 1;
@@ -5655,7 +5705,12 @@ void genie_analysis::Loop(Int_t choice) {
 							if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == -1) {	//acceptance for pi minus. using electron acceptance map
-							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+//							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,ApplyAccWeights);
+
+							// UNTIL AXEL CREATES THE CORRECT PIMINUS MAP, WE SET THE PIMINUS ACCEPTANCE TO BE 1
+							pion_acc_ratio[i] = acceptance_c(pion_mom_corr, cos(pion_theta), phi_pion, -211, file_acceptance,false);
+
 							if ( fabs(pion_acc_ratio[i]) != pion_acc_ratio[i] ) { continue; }
 						}
 						else if (charge_pi[i] == 0) {	//acceptance for photon/pi0 is 1 for now F.H. 09/24/19

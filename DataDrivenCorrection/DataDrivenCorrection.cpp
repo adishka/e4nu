@@ -29,7 +29,14 @@ void DataDrivenCorrection() {
 	const std::vector<int> LocalDataSetColors{1,410,kRed,kBlue,kOrange,kCyan,kGreen,kGray+1};
 	double split = 0.1;
 
-	TString identifier = "_1p0pi_1p1piminus";
+	TString identifier = "_1p0pi_1p1piminus_MinThetaq";
+//	TString identifier = "_1p0pi_1p1piminus_PhiThetaBand_AngThres_RotBeamLine";
+//	TString identifier = "_1p0pi_1p1piminus_PhiThetaBand_AngThres";
+//	TString identifier = "_1p0pi_1p1piplus_PhiThetaBand_1000Rot";
+//	TString identifier = "_1p0pi_2p0pi";
+//	TString identifier = "_1p0pi_1p1piminus_PhiThetaBand";
+//	TString identifier = "_1p0pi_1p1piplus_PhiThetaBand";
+//	TString identifier = "_1p0pi_1p1piminus";
 //	TString identifier = "_1p0pi_1p1piplus";
 //	TString identifier = "_1p0pi_1p1pi";
 //	TString identifier = "";
@@ -211,7 +218,8 @@ void DataDrivenCorrection() {
 
 						} else { 
 						
-							Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
+//							Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
+							Plots[WhichFSIModel]->Draw("e hist same");  // draw them as histos
 
 						}
 
@@ -239,7 +247,8 @@ void DataDrivenCorrection() {
 				TruePlot->GetXaxis()->SetTitle(LabelOfPlots);
 
 				UniversalE4vFunction(TruePlot,"SuSav2",nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[NPlots-1]);
-				TruePlot->Draw("C hist same");
+//				TruePlot->Draw("C hist same");
+				TruePlot->Draw("hist same");
 
 				//legGenie->AddEntry(Plots[NPlots-1],SampleLabel[NPlots-1]);
 				legGenie->AddEntry(TruePlot,"True 1p0pi");
