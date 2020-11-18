@@ -154,8 +154,8 @@ void Subtraction::prot1_pi1_rot_func(TVector3  V3prot,TVector3 V3pi, int q_pi, d
 
 	double rotation_ang;
 	TVector3 V3_pi_rot, V3_p_rot;
-	Float_t pi_cphil=0,pi_cphir=0,pi_phimin=0,pi_phimax=0;
-	bool pi_stat=true;
+	Float_t pi_cphil = 0, pi_cphir = 0, pi_phimin = 0, pi_phimax = 0;
+	bool pi_stat = true;
 
 	double Npi_p = 0;
 	double Nnopi_p = 0;
@@ -175,8 +175,8 @@ void Subtraction::prot1_pi1_rot_func(TVector3  V3prot,TVector3 V3pi, int q_pi, d
 
 	}
 
-	*N_pi_p=Npi_p;
-	*N_nopi_p=Nnopi_p;
+	*N_pi_p = Npi_p;
+	*N_nopi_p = Nnopi_p;
 
 }
 

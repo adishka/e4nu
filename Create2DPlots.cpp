@@ -38,16 +38,17 @@ void Create2DPlots() {
 	std::vector<TString> OutputPlotNames; std::vector<TString> Title;
 
 //	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");  JustNucleus.push_back("He");
-//	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
-	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
+	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
+//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV");
-	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");
-//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
+//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");
+	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
 
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Data"); DirNames.push_back("Data");
 //	FSIModel.push_back("Pinned_Data_NewFiducials_SixSectors"); FSILabel.push_back("Data NF"); DirNames.push_back("Data NF");
 
@@ -55,9 +56,9 @@ void Create2DPlots() {
 //	FSIModel.push_back("hA2018_Final_NoRadCorr"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");  DirNames.push_back("True 1p0pi W/");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");  DirNames.push_back("True 1p0pi W/O");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");  DirNames.push_back("True 1p0pi W/");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");  DirNames.push_back("True 1p0pi W/O");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut"); FSILabel.push_back("True 1p0pi W/O");  DirNames.push_back("True 1p0pi W/O");
 
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");  DirNames.push_back("True 1p0pi W/");
@@ -98,7 +99,7 @@ void Create2DPlots() {
 //	NameOfPlots.push_back("h2_PiMinus_Theta_Phi"); XLabelOfPlots.push_back("#phi_{#pi^{-}} [deg]"); YLabelOfPlots.push_back("#theta_{#pi^{-}} [deg]"); OutputPlotNames.push_back("h2_piminus_theta_phi"); Title.push_back("");
 
 
-	NameOfPlots.push_back("h2_Electron_Theta_Momentum_FirstSector"); XLabelOfPlots.push_back("P_{e'} [GeV/c]"); YLabelOfPlots.push_back("#theta_{e'}"); OutputPlotNames.push_back("h2_Electron_Theta_Momentum_FirstSector"); Title.push_back("");
+//	NameOfPlots.push_back("h2_Electron_Theta_Momentum_FirstSector"); XLabelOfPlots.push_back("P_{e'} [GeV/c]"); YLabelOfPlots.push_back("#theta_{e'}"); OutputPlotNames.push_back("h2_Electron_Theta_Momentum_FirstSector"); Title.push_back("");
 
 /*	NameOfPlots.push_back("h2_Electron_Theta_Momentum_SecondSector"); XLabelOfPlots.push_back("P_{e'} [GeV/c]"); YLabelOfPlots.push_back("#theta_{e'}"); OutputPlotNames.push_back("h2_Electron_Theta_Momentum_SecondSector"); Title.push_back(" (2nd Sector)");
 
@@ -140,7 +141,7 @@ void Create2DPlots() {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
-//	NameOfPlots.push_back("h2_PiMinus_Theta_Momentum_FirstSector"); XLabelOfPlots.push_back("P_{#pi^{-}} [GeV/c]"); YLabelOfPlots.push_back("#theta_{#pi^{-}}"); OutputPlotNames.push_back("h2_PiPlus_Theta_Momentum_FirstSector"); Title.push_back(" (1st Sector)");
+	NameOfPlots.push_back("h2_PiMinus_Theta_Momentum_FirstSector"); XLabelOfPlots.push_back("P_{#pi^{-}} [GeV/c]"); YLabelOfPlots.push_back("#theta_{#pi^{-}}"); OutputPlotNames.push_back("h2_PiPlus_Theta_Momentum_FirstSector"); Title.push_back(" (1st Sector)");
 
 //	NameOfPlots.push_back("h2_PiMinus_Theta_Momentum_SecondSector"); XLabelOfPlots.push_back("P_{#pi^{-}} [GeV/c]"); YLabelOfPlots.push_back("#theta_{#pi^{-}}"); OutputPlotNames.push_back("h2_PiPlus_Theta_Momentum_SecondSector"); Title.push_back(" (2nd Sector)");
 

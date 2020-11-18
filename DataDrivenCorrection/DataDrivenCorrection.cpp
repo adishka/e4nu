@@ -29,7 +29,11 @@ void DataDrivenCorrection() {
 	const std::vector<int> LocalDataSetColors{1,410,kRed,kBlue,kOrange,kCyan,kGreen,kGray+1};
 	double split = 0.1;
 
-	TString identifier = "_1p0pi";
+	TString identifier = "_1p0pi_1p1piminus";
+//	TString identifier = "_1p0pi_1p1piplus";
+//	TString identifier = "_1p0pi_1p1pi";
+//	TString identifier = "";
+//	TString identifier = "_1p0pi";
 //	TString identifier = "_PhiThetaBand_NoThetaCut";
 //	TString identifier = "_PhiThetaBand_WithThetaCut";
 
@@ -71,11 +75,11 @@ void DataDrivenCorrection() {
 	NameOfPlots.push_back("h1_E_tot_cut2");SampleLabel.push_back("1p0pi W/O Sub");
 
 	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_factor"); SampleLabel.push_back("1p1pi");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_prot"); SampleLabel.push_back("2p0pi->1p0pi");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_32prot"); SampleLabel.push_back("3p to 2p->1p");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_31prot"); SampleLabel.push_back("3p to 1p");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_43prot"); SampleLabel.push_back("4p to 3p->2->1");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_431prot"); SampleLabel.push_back("4p to 3p->1p");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_prot"); SampleLabel.push_back("2p0pi->1p0pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_32prot"); SampleLabel.push_back("3p to 2p->1p");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_31prot"); SampleLabel.push_back("3p to 1p");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_43prot"); SampleLabel.push_back("4p to 3p->2->1");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_431prot"); SampleLabel.push_back("4p to 3p->1p");
 
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_431prot"); SampleLabel.push_back("4p to 3p->1p");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_42prot"); SampleLabel.push_back("4p to 2p->1");
@@ -92,7 +96,7 @@ void DataDrivenCorrection() {
 
 	// Final plot
 
-	NameOfPlots.push_back("epRecoEnergy_slice_0"); SampleLabel.push_back("1p0pi W/ Sub");
+//	NameOfPlots.push_back("epRecoEnergy_slice_0"); SampleLabel.push_back("1p0pi W/ Sub");
 
 	// -------------------------------------------------------------------------------------------
 
