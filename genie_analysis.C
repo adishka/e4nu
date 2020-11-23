@@ -1021,15 +1021,11 @@ void genie_analysis::Loop(Int_t choice) {
 	// Justification for the parameter choice
 	// https://docs.google.com/presentation/d/1ghG08JfCYXRXh6O8hcXKrhJOFxkAs_9i5ZfoIkiiEHU/edit?usp=sharing
 
-	TF1 *myFit = new TF1("myFit","[0]+[1]/x",0.,5.);
+	TF1 *myElectronFit = new TF1("myElectronFit","[0]+[1]/x",0.,5.);
 
-//	if (en_beam[fbeam_en] == 1.161) { myFit->SetParameters(15,7); }
-//	if (en_beam[fbeam_en] == 2.261) { myFit->SetParameters(14,10.5); }
-//	if (en_beam[fbeam_en] == 4.461) { myFit->SetParameters(11.5,15); }
-
-	if (en_beam[fbeam_en] == 1.161) { myFit->SetParameters(17,7); }
-	if (en_beam[fbeam_en] == 2.261) { myFit->SetParameters(16,10.5); }
-	if (en_beam[fbeam_en] == 4.461) { myFit->SetParameters(13.5,15); }
+	if (en_beam[fbeam_en] == 1.161) { myElectronFit->SetParameters(17,7); }
+	if (en_beam[fbeam_en] == 2.261) { myElectronFit->SetParameters(16,10.5); }
+	if (en_beam[fbeam_en] == 4.461) { myElectronFit->SetParameters(13.5,15); }
 
 	// ---------------------------------------------------------------------------------------------------------------
 
@@ -1115,7 +1111,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 		// ----------------------------------------------------------------------------------------------------------------------
 
-		double theta_min = myFit->Eval(el_momentum);
+		double theta_min = myElectronFit->Eval(el_momentum);
 		if (el_theta*180./TMath::Pi() < theta_min) { continue; }	
 
 		// ----------------------------------------------------------------------------------------------------------------------	
@@ -1307,7 +1303,7 @@ void genie_analysis::Loop(Int_t choice) {
 		h1_Wvar->Fill(W_var);
 		h1_el_Mott_crosssec->Fill(Mott_cross_sec);
 		h2_el_theta_phi->Fill(el_phi_mod,el_theta,WeightIncl);
-		h3_Electron_Mom_Theta_Phi->Fill(V4_el.Rho(),el_theta,el_phi_mod,wght*e_acc_ratio);
+		//h3_Electron_Mom_Theta_Phi->Fill(V4_el.Rho(),el_theta,el_phi_mod,wght*e_acc_ratio);
 
 		h1_el_theta->Fill(el_theta);
 		h2_Q2_nu->Fill(nu,reco_Q2);
@@ -1395,8 +1391,12 @@ void genie_analysis::Loop(Int_t choice) {
 					double phi_prot = V3_prot_corr.Phi();
 					V3_prot_corr.SetPhi(phi_prot + TMath::Pi()); // Vec.Phi() is between (-180,180), // GENIE coordinate system flipped with respect to CLAS
 
-					// apapadop Nov 4 2020: true proton counter for truth level studies
-					TrueProtonsAboveThreshold++;
+					ProtonPhi_Deg = V3_prot_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.; 
+					if (ProtonPhi_Deg > 360.) { ProtonPhi_Deg -= 360.; } 
+					ProtonTheta_Deg = V3_prot_corr.Theta() * 180. / TMath::Pi();
+
+					// apapadop Nov 4 2020: true proton counter for truth level studies above a min theta threshold (12 deg)
+					if (PFiducialCutExtra(StoreEnergy, V3_prot_corr)) { TrueProtonsAboveThreshold++; }
 
 //					if (ApplyFiducials) { if (!PFiducialCut(fbeam_en, V3_prot_corr) ) { continue; } } // Proton theta & phi fiducial cuts
 					if (ApplyFiducials) { if (!PFiducialCut(StoreEnergy, V3_prot_corr) ) { continue; } } // Proton theta & phi fiducial cuts
@@ -1413,11 +1413,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 					//acceptance_c takes phi in radians and here unmodified by 30 degree.
 					ProtonWeight = wght*acceptance_c(ProtonMag,ProtonCosTheta, phi_prot, 2212,file_acceptance_p,ApplyAccWeights);
-					if ( fabs(ProtonWeight) != ProtonWeight ) { continue; }
-
-					ProtonPhi_Deg = V3_prot_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.; 
-					if (ProtonPhi_Deg > 360.) { ProtonPhi_Deg -= 360.; } 
-					ProtonTheta_Deg = V3_prot_corr.Theta() * 180. / TMath::Pi(); 
+					if ( fabs(ProtonWeight) != ProtonWeight ) { continue; } 
 
 				}
 				else { //CLAS data does not need Fiducial Cut again
@@ -1447,7 +1443,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_Proton_AccMapWeights->Fill(ProtonWeight);
 				h1_Proton_Momentum->Fill(ProtonMag,ProtonWeight);
 
-				h3_Proton_Mom_Theta_Phi->Fill(ProtonMag,ProtonTheta_Deg,ProtonPhi_Deg,ProtonWeight);
+				//h3_Proton_Mom_Theta_Phi->Fill(ProtonMag,ProtonTheta_Deg,ProtonPhi_Deg,ProtonWeight);
 
 			}
 
@@ -1471,9 +1467,15 @@ void genie_analysis::Loop(Int_t choice) {
 					double phi_pion = V3_pi_corr.Phi();
 					V3_pi_corr.SetPhi(phi_pion + TMath::Pi()); // Vec.Phi() is between (-180,180)
 
-					// apapadop Nov 4 2020: true charged pion counter for truth level studies
-					TrueChargedPionsAboveThreshold++;
-					TruePiMinusAboveThreshold++;
+					// apapadop Nov 4 2020: true charged pion counter for truth level studies above a min theta threshold 
+					// given by a functional form A + B / P
+
+					if (PimiFiducialCutExtra(StoreEnergy, V3_pi_corr)) { 
+
+						TrueChargedPionsAboveThreshold++;
+						TruePiMinusAboveThreshold++;
+
+					}
 
 					// Pi_phot_fid_united with +1 is for Piplus and Pi_phot_fid_united with -1 is for Piminus
 //					if (ApplyFiducials) { if ( !Pi_phot_fid_united(fbeam_en, V3_pi_corr, -1) ) {  continue; } }
@@ -1540,7 +1542,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_PiMinus_AccMapWeights->Fill(PiMinusWeight);
 				h1_PiMinus_Momentum->Fill(PiMinusMag,PiMinusWeight);
 
-				h3_PiMinus_Mom_Theta_Phi->Fill(PiMinusMag,PiMinusTheta_Deg,PiMinusPhi_Deg,PiMinusWeight);
+				//h3_PiMinus_Mom_Theta_Phi->Fill(PiMinusMag,PiMinusTheta_Deg,PiMinusPhi_Deg,PiMinusWeight);
 
 			}
 
@@ -1563,9 +1565,14 @@ void genie_analysis::Loop(Int_t choice) {
 					double phi_pion = V3_pi_corr.Phi();
 					V3_pi_corr.SetPhi(phi_pion + TMath::Pi()); // Vec.Phi() is between (-180,180)
 
-					// apapadop Nov 4 2020: true charged pion counter for truth level studies
-					TrueChargedPionsAboveThreshold++;
-					TruePiPlusAboveThreshold++;
+					// apapadop Nov 4 2020: true charged pion counter for truth level studies with min theta threshold (12 deg)
+
+					if (PiplFiducialCutExtra(StoreEnergy, V3_pi_corr)) { 
+
+						TrueChargedPionsAboveThreshold++;
+						TruePiPlusAboveThreshold++;
+
+					}
 
 					// Pi_phot_fid_united with +1 is for Piplus and Pi_phot_fid_united with -1 is for Piminus
 //					if (ApplyFiducials) { if ( !Pi_phot_fid_united(fbeam_en, V3_pi_corr, 1) )     {  continue; } }
@@ -1628,7 +1635,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_PiPlus_AccMapWeights->Fill(PiPlusWeight);
 				h1_PiPlus_Momentum->Fill(PiPlusMag,PiPlusWeight);
 
-				h3_PiPlus_Mom_Theta_Phi->Fill(PiPlusMag,PiPlusTheta_Deg,PiPlusPhi_Deg,PiPlusWeight);
+				//h3_PiPlus_Mom_Theta_Phi->Fill(PiPlusMag,PiPlusTheta_Deg,PiPlusPhi_Deg,PiPlusWeight);
 
 			}
 
@@ -2006,7 +2013,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_E_tot_2p_det->Fill(E_tot_2p[0],histoweight);
 				h1_E_rec_2p_det->Fill(E_rec,histoweight);
 
-			}//no pions cut and N_prot_both!=0
+			}//no pion cut and N_prot_both!=0
 
 			//---------------------------------- 2p 1pi   ----------------------------------------------
 			//Const int can be placed somewhere up after if for 2 protons F.H. 05.09.19
@@ -2820,7 +2827,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 		// -------------------------------------------------------------------------------------------------------------------------------------
 
-		//Events with exactly 3 protons
+		// Events with exactly 3 protons
 
 		if(num_p == 3) {
 
@@ -2890,17 +2897,18 @@ void genie_analysis::Loop(Int_t choice) {
 			rotation->prot3_rot_func( V3_prot_corr,V3_prot_uncorr,V4_el,E_cal_3pto2p,p_miss_perp_3pto2p, P_3pto2p,N_p1, E_cal_3pto1p,p_miss_perp_3pto1p,&N_p_three);
 
 			//acceptance weight for all three protons ( = 1 for CLAS data)
+
 			double weight_protons =	p_acc_ratio[0] * p_acc_ratio[1] * p_acc_ratio[2];
 
-			if(num_pi_phot==0 && N_p_three!=0){
+			if (num_pi_phot == 0 && N_p_three != 0){
 
 				//histoweight is 1/Mott_cross_sec for CLAS data
 				double histoweight = weight_protons * e_acc_ratio * wght/Mott_cross_sec; 
 				//Weight for 3protons, 1 electron, GENIE weight and Mott cross section
 
-				for(int count = 0; count < N_comb; count++) { //Loop over number of combinations
+				for(int count = 0; count < N_comb; count++) { // Loop over number of combinations
 
-					for(int j = 0; j < N_2p; j++) { //loop over two protons
+					for(int j = 0; j < N_2p; j++) { // Loop over two protons
 
 						//-----------------------------------------  3p to 2p->1p  ------------------------------
 

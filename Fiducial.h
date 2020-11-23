@@ -38,6 +38,14 @@ struct Fiducial {
 
   // -------------------------------------------------------------------------- 
 
+  // apapadop // Nov 23 2020 // Narrow band 30 deg in phi and either accepting ALL theta or theta_pos > 12 deg (piplus & protons) and theta_pi- > 30
+
+  Bool_t PFiducialCutExtra(std::string beam_en, TVector3 momentum);
+  Bool_t PiplFiducialCutExtra(std::string beam_en, TVector3 momentum);
+  Bool_t PimiFiducialCutExtra(std::string beam_en, TVector3 momentum);
+
+  // -------------------------------------------------------------------------- 
+
   int fTorusCurrent;
   std::string target_name;
   std::map<std::string,double> en_beam;

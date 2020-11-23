@@ -1046,65 +1046,85 @@ Bool_t Fiducial::PFiducialCut(std::string beam_en, TVector3 momentum){
 
 	} else {
 
-     Bool_t status = kTRUE;
-     std::string fbeam_en = beam_en;
+		Bool_t status = kTRUE;
+		std::string fbeam_en = beam_en;
 
+		if (en_beam[fbeam_en]>1. && en_beam[fbeam_en]<2.) {
 
-    if(en_beam[fbeam_en]>1. && en_beam[fbeam_en]<2.){
+			Float_t theta = momentum.Theta()*180/M_PI;
+			Float_t phi = momentum.Phi()  *180/M_PI;
+			if(phi<-30) phi+=360;
+			Int_t sector = Int_t ((phi+30)/60);
+			if(sector<0) sector=0;
+			if(sector>5) sector=5;
+			phi -= sector*60;
+			Float_t p = momentum.Mag();
 
-  	Float_t theta = momentum.Theta()*180/M_PI;
-  	Float_t phi   = momentum.Phi()  *180/M_PI;
-  	if(phi<-30) phi+=360;
-  	Int_t sector = Int_t ((phi+30)/60);
-  	if(sector<0) sector=0;
-  	if(sector>5) sector=5;
-  	phi -= sector*60;
-  	Float_t p = momentum.Mag();
+			if ( fTorusCurrent < 1510 && fTorusCurrent > 1490) {
 
+				Double_t phipars[5] = {0,0,0,0,0};
+				status = true;
+				bool SCpdcut = true;
+				if (p < .3) { return false; }
+				if (p > 1) { p = 1; }
 
-  if ( fTorusCurrent < 1510 && fTorusCurrent > 1490){
-      Double_t phipars[5]={0,0,0,0,0};
-      status = true;
-      bool SCpdcut = true;
-      if (p < .3)
-        return false;
-      if (p > 1)
-        p = 1;
-      for(Int_t mompar=0;mompar<6;mompar++) {
-        for(Int_t phipar=0;phipar<5;phipar++) {
-          phipars[phipar]+=fgPar_1gev_1500_Pfid[sector][phipar][mompar]*pow(p,mompar);
-          //std::cout << p << " " << mompar << " " << phipar << " " << phipars[1] << " " << phipars[2] << " " << phipars[3] << " " << phipars[4] << " " << phipars[5] << std::endl;
-        }
-      }
+				for (Int_t mompar=0;mompar<6;mompar++) {
 
-      Double_t phicutoff;
-      if(phi<=0) {
-        phicutoff = phipars[1]*(1.-(1./((theta-phipars[4])/phipars[3]+1.)));
-        //std::cout << "bottom " << theta << std::endl;
-        status = ((phi>phicutoff) && (theta>phipars[4]));
-      }
-      else {
-        phicutoff = phipars[0]*(1.-(1./((theta-phipars[4])/phipars[2]+1.)));
-        //std::cout << "top " << phicutoff << std::endl;
-        status = ((phi<phicutoff) && (theta>phipars[4]));
-      }
-      if(status && SCpdcut){ // cut bad scintillator paddles
-  			Int_t tsector = sector + 1;
-  			Float_t mom_scpd = p;          // Momentum for bad sc paddles cuts
-  			if (mom_scpd<0.2)mom_scpd=0.2; // momentum smaller than 200 MeV/c, use 200 MeV/c
-        if (mom_scpd>1.0)mom_scpd=1.0; // momentum greater than 1000 MeV/c, use 1000 MeV/c
-  			if(tsector==2){      // sector 2 has one bad paddle
-  				Float_t badpar2[2];// 2 parameters to determine the position of the theta gap
-  				for (Int_t i=0; i<2; i++){
-  					badpar2[i] = 0;
-  					for (Int_t d=5; d>=0; d--){
-  						badpar2[i] = badpar2[i]*mom_scpd + fgPar_1gev_1500_Pfid_ScpdS2[i][d];
-  					}                // calculate the parameters using pol5
-  				}
-  				status = status && !(theta>badpar2[0]&&theta<badpar2[1]);
-  			}
-  			else if(tsector==3){ // sector 3 has four bad paddles
-  				Float_t badpar3[8];// 8 parameters to determine the positions of the theta gaps
+					for(Int_t phipar=0;phipar<5;phipar++) {
+          
+						phipars[phipar]+=fgPar_1gev_1500_Pfid[sector][phipar][mompar]*pow(p,mompar);
+						//std::cout << p << " " << mompar << " " << phipar << " " << phipars[1] << " " << phipars[2] << std::endl;
+						//std::cout << " " << phipars[3] << " " << phipars[4] << " " << phipars[5] << std::endl;
+
+					}
+
+				}
+
+				Double_t phicutoff;
+
+				if (phi<=0) {
+
+					phicutoff = phipars[1]*(1.-(1./((theta-phipars[4])/phipars[3]+1.)));
+					//std::cout << "bottom " << theta << std::endl;
+					status = ((phi>phicutoff) && (theta>phipars[4]));
+
+				} else {
+
+					phicutoff = phipars[0]*(1.-(1./((theta-phipars[4])/phipars[2]+1.)));
+					//std::cout << "top " << phicutoff << std::endl;
+					status = ((phi<phicutoff) && (theta>phipars[4]));
+
+				}
+
+				if (status && SCpdcut) { // cut bad scintillator paddles
+
+					Int_t tsector = sector + 1;
+					Float_t mom_scpd = p;          // Momentum for bad sc paddles cuts
+					if (mom_scpd<0.2)mom_scpd=0.2; // momentum smaller than 200 MeV/c, use 200 MeV/c
+					if (mom_scpd>1.0)mom_scpd=1.0; // momentum greater than 1000 MeV/c, use 1000 MeV/c
+
+					if (tsector==2) { // sector 2 has one bad paddle
+
+						Float_t badpar2[2]; // 2 parameters to determine the position of the theta gap
+
+						for (Int_t i=0; i<2; i++) {
+
+							badpar2[i] = 0;
+  					
+							for (Int_t d=5; d>=0; d--) {
+
+								badpar2[i] = badpar2[i]*mom_scpd + fgPar_1gev_1500_Pfid_ScpdS2[i][d];
+
+							} // calculate the parameters using pol5
+
+						}
+
+						status = status && !(theta>badpar2[0]&&theta<badpar2[1]);
+
+				} else if(tsector==3) { // sector 3 has four bad paddles
+
+					Float_t badpar3[8]; // 8 parameters to determine the positions of the theta gaps
+
   				for (Int_t i=0; i<8; i++){
   					badpar3[i] = 0;
   					for (Int_t d=5; d>=0; d--){
@@ -1143,6 +1163,14 @@ Bool_t Fiducial::PFiducialCut(std::string beam_en, TVector3 momentum){
   				}
   			}
   		}
+
+	// ---------------------------------------------------------------------------------------------
+
+	// apapadop: Nov 23 2020, adding a lower theta bound of 12 deg for the protons
+	if (!PFiducialCutExtra(fbeam_en, momentum)) { status = false; } 
+
+	// ---------------------------------------------------------------------------------------------
+
       return status;
     }
     if (fTorusCurrent < 760 && fTorusCurrent > 740){
@@ -1255,6 +1283,15 @@ Bool_t Fiducial::PFiducialCut(std::string beam_en, TVector3 momentum){
         }
 
   		}
+
+
+	// ---------------------------------------------------------------------------------------------
+
+	// apapadop: Nov 23 2020, adding a lower theta bound of 12 deg for the protons
+	if (!PFiducialCutExtra(fbeam_en, momentum)) { status = false; } 
+
+	// ---------------------------------------------------------------------------------------------
+
       return status;
     }
 
@@ -1596,6 +1633,14 @@ Bool_t Fiducial::PFiducialCut(std::string beam_en, TVector3 momentum){
 
 
     }
+
+	// ---------------------------------------------------------------------------------------------
+
+	// apapadop: Nov 23 2020, adding a lower theta bound of 12 deg for the protons
+	if (!PFiducialCutExtra(fbeam_en, momentum)) { status = false; } 
+
+	// ---------------------------------------------------------------------------------------------
+
     return status;
 
 	} // end of the if statement for non-"" beam energy
@@ -1718,6 +1763,14 @@ Bool_t Fiducial::PiplFiducialCut(std::string beam_en, TVector3 momentum, Float_t
   				}
   			}
   		}
+
+	// ---------------------------------------------------------------------------------------------
+
+	// apapadop: Nov 23 2020, adding a lower theta bound of 12 deg for the pi plus
+	if (!PiplFiducialCutExtra(fbeam_en, momentum)) { status = false; } 
+
+	// ---------------------------------------------------------------------------------------------
+
       return status;
     }
     if (fTorusCurrent < 760 && fTorusCurrent > 740){
@@ -1823,6 +1876,14 @@ Bool_t Fiducial::PiplFiducialCut(std::string beam_en, TVector3 momentum, Float_t
             }
         }
       }
+
+	// ---------------------------------------------------------------------------------------------
+
+	// apapadop: Nov 23 2020, adding a lower theta bound of 12 deg for the pi plus
+	if (!PiplFiducialCutExtra(fbeam_en, momentum)) { status = false; } 
+
+	// ---------------------------------------------------------------------------------------------
+
       return status;
     }
   }
@@ -2172,6 +2233,14 @@ Bool_t Fiducial::PiplFiducialCut(std::string beam_en, TVector3 momentum, Float_t
       }
 
     }
+
+	// ---------------------------------------------------------------------------------------------
+
+	// apapadop: Nov 23 2020, adding a lower theta bound of 12 deg for the pi plus
+	if (!PiplFiducialCutExtra(fbeam_en, momentum)) { status = false; } 
+
+	// ---------------------------------------------------------------------------------------------
+
     return status;
 
 	} // end of the if statement for the non-"" case
@@ -2180,6 +2249,55 @@ Bool_t Fiducial::PiplFiducialCut(std::string beam_en, TVector3 momentum, Float_t
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 
+Bool_t Fiducial::PFiducialCutExtra(std::string beam_en, TVector3 momentum) {
+
+	bool status = true;
+
+	double theta = momentum.Theta() * 180. / TMath::Pi();
+
+	if (theta < MinThetaProton) { status = false; }
+
+	return status;
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------------
+
+Bool_t Fiducial::PiplFiducialCutExtra(std::string beam_en, TVector3 momentum) {
+
+	bool status = true;
+
+	double theta = momentum.Theta() * 180. / TMath::Pi();
+
+	if (theta < MinThetaPiPlus) { status = false; }
+
+	return status;
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------------
+
+Bool_t Fiducial::PimiFiducialCutExtra(std::string beam_en, TVector3 momentum) {
+
+	bool status = true;
+
+	TF1* f = nullptr;
+
+	if (beam_en == "1161") { f = new TF1("f","17.+4./TMath::Power(x,1.)",0,5.); }
+	if (beam_en == "2261") { f = new TF1("f","(x<0.35)*(25.+7./TMath::Power(x,1.)) + (x>0.35)*(16.+10/TMath::Power(x,1.))",0,5.); }
+	if (beam_en == "4461") { f = new TF1("f","(x<0.35)*(25.+7./TMath::Power(x,1.)) + (x>0.35)*(16.+10/TMath::Power(x,1.))",0,5.); }
+
+	double theta = momentum.Theta() * 180. / TMath::Pi();
+	double mom = momentum.Mag();
+	double theta_min = f->Eval(mom);
+
+	if (theta < theta_min) { status = false; }
+
+	return status;
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------------
 
   //using two GeV pimi fiducial cuts for both 2 and 4 GeV analysis
 
@@ -2193,6 +2311,7 @@ Bool_t Fiducial::PiplFiducialCut(std::string beam_en, TVector3 momentum, Float_t
 //                                       momentum is still much too tight
 //                                       A future update will implement new phi fiducial cuts at all momenta, but the current bug fixes are considered
 //                                       adequate for the zero pion analyses
+
 Bool_t Fiducial::PimiFiducialCut(std::string beam_en, TVector3 momentum, Float_t *pimi_philow, Float_t *pimi_phiup){
 
 	if (beam_en == "") {
@@ -2324,6 +2443,14 @@ Bool_t Fiducial::PimiFiducialCut(std::string beam_en, TVector3 momentum, Float_t
               }
             }
           }
+
+	// ---------------------------------------------------------------------------------------------
+
+	// apapadop: Nov 23 2020, adding a lower theta bound of A + B/P for the pi minus
+	if (!PimiFiducialCutExtra(fbeam_en, momentum)) { status = false; } 
+
+	// ---------------------------------------------------------------------------------------------
+
           return status;
         }
       else{     //momentum below 300 MeV
@@ -2366,6 +2493,14 @@ Bool_t Fiducial::PimiFiducialCut(std::string beam_en, TVector3 momentum, Float_t
             }
           }
         }
+
+	// ---------------------------------------------------------------------------------------------
+
+	// apapadop: Nov 23 2020, adding a lower theta bound of A + B/P for the pi minus
+	if (!PimiFiducialCutExtra(fbeam_en, momentum)) { status = false; } 
+
+	// ---------------------------------------------------------------------------------------------
+
         return (status);
       }
     }
@@ -2470,6 +2605,14 @@ Bool_t Fiducial::PimiFiducialCut(std::string beam_en, TVector3 momentum, Float_t
           }
         }
       }
+
+	// ---------------------------------------------------------------------------------------------
+
+	// apapadop: Nov 23 2020, adding a lower theta bound of A + B/P for the pi minus
+	if (!PimiFiducialCutExtra(fbeam_en, momentum)) { status = false; } 
+
+	// ---------------------------------------------------------------------------------------------
+
       return (status);
     }
    }
@@ -2643,6 +2786,14 @@ Bool_t Fiducial::PimiFiducialCut(std::string beam_en, TVector3 momentum, Float_t
        }
      }
    } //end of 2 and 4GEV pi minus fiducial
+
+	// ---------------------------------------------------------------------------------------------
+
+	// apapadop: Nov 23 2020, adding a lower theta bound of A + B/P for the pi minus
+	if (!PimiFiducialCutExtra(fbeam_en, momentum)) { status = false; } 
+
+	// ---------------------------------------------------------------------------------------------
+
    return status;
 
 	} // end of the if statemnet for the non-"" case

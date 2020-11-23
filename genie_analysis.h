@@ -232,6 +232,32 @@ public :
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 
+	// ------------------------------------------------------------------------------------------
+
+	// apapadop // Nov 23 2020: adding extra fiducials with lower theta bounds for protons, pi pluses & pi minuses
+	// Protons & Pi pluses are easy, just a min angle
+	// Pi minuses are a functional form theta = A + B / P
+
+	Bool_t PFiducialCutExtra(std::string beam_en, TVector3 momentum) {
+	
+		return fiducialcut->PFiducialCutExtra(beam_en, momentum);
+	
+	}
+
+	Bool_t PiplFiducialCutExtra(std::string beam_en, TVector3 momentum) {
+     
+		return fiducialcut->PiplFiducialCutExtra(beam_en, momentum);
+	
+	}
+
+	Bool_t PimiFiducialCutExtra(std::string beam_en, TVector3 momentum) {
+     
+		return fiducialcut->PimiFiducialCutExtra(beam_en, momentum);
+	
+	}
+
+	// ------------------------------------------------------------------------------------------
+
    void SetFiducialCutParameters(std::string beam_en) {
      fiducialcut->SetFiducialCutParameters(beam_en);
    }

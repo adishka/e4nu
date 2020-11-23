@@ -3,6 +3,8 @@
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
+#include <TMath.h>
+#include <TString.h>
 
 #include <vector>
 #include <iomanip>
@@ -21,12 +23,25 @@ void gst::Loop() {
 
 	// --------------------------------------------------------------
 
-	TFile* FilteredFile = new TFile("FilteredGenie_56Fe_4461GeV_1p0pi_1p1pi.root","recreate");
-	TTree *maketreenew = fChain->CloneTree(0); 
+	TString FileName = "/pnfs/genie/persistent/users/apapadop/FilteredSamples/FilteredGenie_56Fe_4461GeV_1p0pi_1p1pi.root";
+	TFile* FilteredFile = new TFile(FileName,"recreate");
+	TTree *maketreenew = fChain->GetTree()->CloneTree(0); 
 
 	// --------------------------------------------------------------
 
-	for (Long64_t jentry=0; jentry<nentries;jentry++) {
+	int SelectedEvents = 0;
+
+	// --------------------------------------------------------------
+
+	TF1 *myElectronFit = new TF1("myElectronFit","[0]+[1]/x",0.,5.);
+	myElectronFit->SetParameters(13.5,15);
+
+	TF1* myPiMinusFit = new TF1("myPiMinusFit","(x<0.35)*(25.+7./TMath::Power(x,1.)) + (x>0.35)*(16.+10/TMath::Power(x,1.))",0,5.);
+
+	// --------------------------------------------------------------
+
+//	for (Long64_t jentry=0; jentry<nentries;jentry++) {
+	for (Long64_t jentry=0; jentry<10000000;jentry++) {
 	
 		Long64_t ientry = LoadTree(jentry);
 		if (ientry < 0) break;
@@ -44,16 +59,45 @@ void gst::Loop() {
 		if (Q2 < 0.8) { continue; }
 		if (W > 2) { continue; }
 
+		TVector3 ElectronV3(pxl,pyl,pzl);
+		double el_momentum = ElectronV3.Mag();
+		double el_theta = ElectronV3.Theta();
+
+		double theta_min = myElectronFit->Eval(el_momentum);
+		if (el_theta*180./TMath::Pi() < theta_min) { continue; }
+
 		// --------------------------------------------------------------
 
 		int ProtonCounter = 0;
 		int ChargedPionCounter = 0;
+		int PiPlusCounter = 0;
+		int PiMinusCounter = 0;
+		int GammaCounter = 0;
 
 		//Loop for Hadrons
 		for (int i = 0; i < nf; i++) {
 
-			if (pdgf[i] == 2212  && pf[i] > 0.3) { ProtonCounter++; }
-			if (TMath::Abs(pdgf[i]) == 211  && pf[i] > 0.15) { ChargedPionCounter++; }
+			double theta = TMath::ACos(cthf[i]) * 180./TMath::Pi();
+
+			if (pdgf[i] == 2212  && pf[i] > 0.3 && theta > 12) { ProtonCounter++; }
+			if (pdgf[i] == 211  && pf[i] > 0.15 && theta > 12) { PiPlusCounter++; ChargedPionCounter++; }
+			if (pdgf[i] == -211  && pf[i] > 0.15) { 
+
+				TVector3 PiMinusV3(pxf[i],pyf[i],pzf[i]);
+				double piminus_momentum = PiMinusV3.Mag();
+				double piminus_theta = PiMinusV3.Theta();
+
+				double piminus_theta_min = myPiMinusFit->Eval(piminus_momentum);
+				if (piminus_theta*180./TMath::Pi() > piminus_theta_min) {
+
+					PiMinusCounter++; 
+					ChargedPionCounter++; 
+
+				}
+
+			}
+
+			if (pdgf[i] == 22  && pf[i] > 0.3 && theta > 0) { GammaCounter++; }
 
 
 		}
@@ -61,23 +105,40 @@ void gst::Loop() {
 		// --------------------------------------------------------------
 
 		// 1p0pi + 1p1pi		
-		if (ProtonCounter != 1) { continue; }
-		if (ChargedPionCounter != 0 || ChargedPionCounter != 1) { continue; }
+		if ( !( (ProtonCounter == 1 && ChargedPionCounter == 0) || (ProtonCounter == 1 && ChargedPionCounter == 1) ) ) { continue; }
+		if (GammaCounter != 0) { continue; }
+
+		// --------------------------------------------------------------
+
+		// 1p0pi + 1p1piminus		
+//		if (ProtonCounter != 1) { continue; }
+//		if (PiMinusCounter != 0 && PiMinusCounter != 1) { continue; }
+//		if (GammaCounter != 0) { continue; }
+
+		// --------------------------------------------------------------
+
+//		// 1p0pi + 1p1pi		
+//		if (ProtonCounter != 1) { continue; }
+//		if (ChargedPionCounter != 0 && ChargedPionCounter != 1) { continue; }
 
 		// --------------------------------------------------------------
 
 		// 1p0pi + 2p0pi		
-		//if (ProtonCounter != 1 || ProtonCounter != 2) { continue; }
+		//if (ProtonCounter != 1 && ProtonCounter != 2) { continue; }
 		//if (ChargedPionCounter != 0) { continue; }
 
 		// --------------------------------------------------------------
 
+		SelectedEvents++;
 		maketreenew->Fill();
 
 		// --------------------------------------------------------------
 
 
    } // End of the loop over the events
+
+   std::cout << "Selected events = " << SelectedEvents << std::endl;
+   std::cout << "Created file " << FileName << std::endl; 
 
    maketreenew->Write();
    FilteredFile->Close();

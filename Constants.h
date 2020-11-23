@@ -29,8 +29,8 @@
 
 	const double PhiOpeningAngle = 15;
 
-	const double MinThetaProton = 0.;
-	const double MinThetaPiPlus = 0.;
+	const double MinThetaProton = 12.;
+	const double MinThetaPiPlus = 12.;
 	const double MinThetaPiMinus = 0.;
 
 	const double CenterFirstSector = 30;
