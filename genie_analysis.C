@@ -1653,7 +1653,12 @@ void genie_analysis::Loop(Int_t choice) {
 					V3_phot_angles.SetPhi(phi_photon + TMath::Pi()); // Vec.Phi() is between (-180,180)
 
 					// apapadop Nov 4 2020: true photon counter for truth level studies
-					TrueGammasAboveThreshold++;
+
+					if (Phot_fidExtra(V3_phot_angles)) { 
+	
+						TrueGammasAboveThreshold++;
+
+					}
 
 					if (ApplyFiducials) { if ( !Pi_phot_fid_united(fbeam_en, V3_phot_angles, 0) )  { continue;} }
 

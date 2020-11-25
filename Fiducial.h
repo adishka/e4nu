@@ -44,6 +44,8 @@ struct Fiducial {
   Bool_t PFiducialCutExtra(std::string beam_en, TVector3 momentum);
   Bool_t PiplFiducialCutExtra(std::string beam_en, TVector3 momentum);
   Bool_t PimiFiducialCutExtra(std::string beam_en, TVector3 momentum);
+  bool Phot_fidExtra(TVector3 V3_phot);
+  bool Pi_phot_fid_unitedExtra(std::string beam_en, TVector3 V3_pi_phot, int q_pi_phot);
 
   // -------------------------------------------------------------------------- 
 
@@ -521,6 +523,5 @@ struct Fiducial {
   Float_t pipl_thetamax1[5]={143.52 , -114.506 , 409.901 , -461.16 , 97.7215};
   Float_t el_thetamax1[5]={105.51 , -262.424 , 469.016 , -365.019 , 102.453};
   
-
 };
 #endif

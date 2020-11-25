@@ -256,6 +256,12 @@ public :
 	
 	}
 
+	Bool_t Phot_fidExtra(TVector3 momentum) {
+     
+		return fiducialcut->Phot_fidExtra(momentum);
+	
+	}
+
 	// ------------------------------------------------------------------------------------------
 
    void SetFiducialCutParameters(std::string beam_en) {

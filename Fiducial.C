@@ -2286,6 +2286,20 @@ Bool_t Fiducial::PiplFiducialCutExtra(std::string beam_en, TVector3 momentum) {
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 
+Bool_t Fiducial::Phot_fidExtra(TVector3 momentum) {
+
+	bool status = true;
+
+	double theta = momentum.Theta() * 180. / TMath::Pi();
+
+	if (theta < MinThetaGamma) { status = false; }
+
+	return status;
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------------
+
 Bool_t Fiducial::PimiFiducialCutExtra(std::string beam_en, TVector3 momentum) {
 
 	bool status = true;
@@ -2844,6 +2858,19 @@ bool Fiducial::Pi_phot_fid_united(std::string beam_en, TVector3 V3_pi_phot, int 
     if(q_pi_phot<0) status=PimiFiducialCut(fbeam_en, V3_pi_phot, &pi_phimin, &pi_phimax);
     return status;
 
+}
+
+// ----------------------------------------------------------------------------------------------------
+
+bool Fiducial::Pi_phot_fid_unitedExtra(std::string beam_en, TVector3 V3_pi_phot, int q_pi_phot){
+
+    bool status = false;
+    std::string fbeam_en = beam_en;
+
+    if(q_pi_phot==0) status=Phot_fidExtra(V3_pi_phot);
+    if(q_pi_phot>0) status=PiplFiducialCutExtra(fbeam_en, V3_pi_phot);
+    if(q_pi_phot<0) status=PimiFiducialCutExtra(fbeam_en, V3_pi_phot);
+    return status;
 
 }
 
