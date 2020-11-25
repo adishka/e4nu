@@ -5,6 +5,8 @@
 #include <TCanvas.h>
 #include <TMath.h>
 #include <TString.h>
+#include <TVector3.h>
+#include <TF1.h>
 
 #include <vector>
 #include <iomanip>

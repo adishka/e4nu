@@ -15,6 +15,15 @@
  //maybe if we add all Constants:: back here or in e2a
  //using namespace Constants;
 
+void Fiducial::InitPiMinusFit(std::string beam_en)
+{
+
+	if (beam_en == "1161") { myPiMinusFit = new TF1("myPiMinusFit","17.+4./TMath::Power(x,1.)",0,5.); }
+	if (beam_en == "2261") { myPiMinusFit = new TF1("myPiMinusFit","(x<0.35)*(25.+7./TMath::Power(x,1.)) + (x>0.35)*(16.+10/TMath::Power(x,1.))",0,5.); }
+	if (beam_en == "4461") { myPiMinusFit = new TF1("myPiMinusFit","(x<0.35)*(25.+7./TMath::Power(x,1.)) + (x>0.35)*(16.+10/TMath::Power(x,1.))",0,5.); }
+
+}
+
 void Fiducial::InitEClimits()
 {
    up_lim1_ec =new TF1("up_lim1_ec","[0]+(x-[1])*(x-[1])*[2]",0,360);
@@ -2281,15 +2290,9 @@ Bool_t Fiducial::PimiFiducialCutExtra(std::string beam_en, TVector3 momentum) {
 
 	bool status = true;
 
-	TF1* f = nullptr;
-
-	if (beam_en == "1161") { f = new TF1("f","17.+4./TMath::Power(x,1.)",0,5.); }
-	if (beam_en == "2261") { f = new TF1("f","(x<0.35)*(25.+7./TMath::Power(x,1.)) + (x>0.35)*(16.+10/TMath::Power(x,1.))",0,5.); }
-	if (beam_en == "4461") { f = new TF1("f","(x<0.35)*(25.+7./TMath::Power(x,1.)) + (x>0.35)*(16.+10/TMath::Power(x,1.))",0,5.); }
-
 	double theta = momentum.Theta() * 180. / TMath::Pi();
 	double mom = momentum.Mag();
-	double theta_min = f->Eval(mom);
+	double theta_min = myPiMinusFit->Eval(mom);
 
 	if (theta < theta_min) { status = false; }
 

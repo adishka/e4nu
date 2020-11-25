@@ -223,7 +223,7 @@ void Create2DPlots_FitOutline_PiPlus() {
 							TF1* f = new TF1("f","8.+2./TMath::Power(x,1.)",0,5.);
 							f->SetLineWidth(3);
 							f->SetLineColor(kGreen);
-							f->Draw("same");
+							//f->Draw("same");
 
 							TF1* f2 = new TF1("f2","12",0,5.);
 							f2->SetLineWidth(3);
@@ -237,7 +237,7 @@ void Create2DPlots_FitOutline_PiPlus() {
 							TF1* f = new TF1("f","9.+1/TMath::Power(x,1.)",0,5.);
 							f->SetLineWidth(3);
 							f->SetLineColor(kGreen);
-							f->Draw("same");
+							//f->Draw("same");
 
 							TF1* f2 = new TF1("f2","12",0,5.);
 							f2->SetLineWidth(3);
@@ -251,7 +251,7 @@ void Create2DPlots_FitOutline_PiPlus() {
 							TF1* f = new TF1("f","11.+2/TMath::Power(x,1.)",0,5.);
 							f->SetLineWidth(3);
 							f->SetLineColor(kGreen);
-							f->Draw("same");
+							//f->Draw("same");
 
 							TF1* f2 = new TF1("f2","12",0,5.);
 							f2->SetLineWidth(3);

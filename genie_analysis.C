@@ -369,6 +369,8 @@ void genie_analysis::Loop(Int_t choice) {
 
 	// ---------------------------------------------------------------------------------------------------------------
 
+	fiducialcut->InitPiMinusFit(fbeam_en);
+
 	//initialize Fiducial functions for EC limits
 	fiducialcut->InitEClimits();
 	std::cout << " Test InitEClimits Loop " << fiducialcut->up_lim1_ec->Eval(60) << std::endl;
@@ -3480,7 +3482,7 @@ void genie_analysis::Loop(Int_t choice) {
 		// -------------------------------------------------------------------------------------------------------------------------------------
 
 		//Events with exactly 4 protons
-
+/*
 	 	if (num_p == 4) {
 
 			const int N_p4=4;
@@ -3540,7 +3542,7 @@ void genie_analysis::Loop(Int_t choice) {
 			//acceptance weight for all four protons. It is 1 for CLAS data
 			double weight_protons =  p_acc_ratio[0] * p_acc_ratio[1] * p_acc_ratio[2] * p_acc_ratio[3];
 
-			if ( num_pi_phot == 0){ //no pion or photon
+			if ( num_pi_phot == 0) { //no pion or photon
 
 				for(int g = 0; g < N_tot; g++){ //this looks like a 4-proton rotation function -> could be placed maybe in an extra function
 
@@ -3556,20 +3558,20 @@ void genie_analysis::Loop(Int_t choice) {
 //						prot4_stat[i_p] = PFiducialCut("", V3_p4_rot[i_p]);
 					}
 
-					if( prot4_stat[0]  && !prot4_stat[1]   && !prot4_stat[2] && !prot4_stat[3])  N_p4_p1[0]=N_p4_p1[0]+1;//Detecting 1p out of 4p
-					if(!prot4_stat[0]  &&   prot4_stat[1]  && !prot4_stat[2] && !prot4_stat[3])  N_p4_p1[1]=N_p4_p1[1]+1;
-					if(!prot4_stat[0]  &&  !prot4_stat[1]  &&  prot4_stat[2] && !prot4_stat[3])  N_p4_p1[2]=N_p4_p1[2]+1;
-					if(!prot4_stat[0]  &&  !prot4_stat[1]  && !prot4_stat[2] &&  prot4_stat[3])  N_p4_p1[3]=N_p4_p1[3]+1;
-					if( prot4_stat[0]  &&  prot4_stat[1]   &&  prot4_stat[2] &&  prot4_stat[3])  N_p_four=N_p_four+1;   //Detecting 4p out of 4p
+					if( prot4_stat[0]  && !prot4_stat[1]  && !prot4_stat[2] && !prot4_stat[3])  N_p4_p1[0]=N_p4_p1[0]+1;// Detecting 1p out of 4p
+					if(!prot4_stat[0]  &&  prot4_stat[1]  && !prot4_stat[2] && !prot4_stat[3])  N_p4_p1[1]=N_p4_p1[1]+1;
+					if(!prot4_stat[0]  && !prot4_stat[1]  &&  prot4_stat[2] && !prot4_stat[3])  N_p4_p1[2]=N_p4_p1[2]+1;
+					if(!prot4_stat[0]  && !prot4_stat[1]  && !prot4_stat[2] &&  prot4_stat[3])  N_p4_p1[3]=N_p4_p1[3]+1;
+					if( prot4_stat[0]  &&  prot4_stat[1]  &&  prot4_stat[2] &&  prot4_stat[3])  N_p_four=N_p_four+1;   // Detecting 4p out of 4p
 
-					if( prot4_stat[0]  &&  prot4_stat[1]  && !prot4_stat[2]  && !prot4_stat[3])  N_p4_p2[0]=N_p4_p2[0]+1;//Detecting 2p out of 4p
+					if( prot4_stat[0]  &&  prot4_stat[1]  && !prot4_stat[2]  && !prot4_stat[3])  N_p4_p2[0]=N_p4_p2[0]+1;// Detecting 2p out of 4p
 					if( prot4_stat[0]  && !prot4_stat[1]  &&  prot4_stat[2]  && !prot4_stat[3])  N_p4_p2[1]=N_p4_p2[1]+1;
 					if( prot4_stat[0]  && !prot4_stat[1]  && !prot4_stat[2]  &&  prot4_stat[3])  N_p4_p2[2]=N_p4_p2[2]+1;
 					if(!prot4_stat[0]  &&  prot4_stat[1]  &&  prot4_stat[2]  && !prot4_stat[3])  N_p4_p2[3]=N_p4_p2[3]+1;
 					if(!prot4_stat[0]  &&  prot4_stat[1]  && !prot4_stat[2]  &&  prot4_stat[3])  N_p4_p2[4]=N_p4_p2[4]+1;
 					if(!prot4_stat[0]  && !prot4_stat[1]  &&  prot4_stat[2]  &&  prot4_stat[3])  N_p4_p2[5]=N_p4_p2[5]+1;
 
-					if( prot4_stat[0]  &&  prot4_stat[1]  &&  prot4_stat[2]  && !prot4_stat[3])  N_p4_p3[0]=N_p4_p3[0]+1;//Detecting 3p out of 4p
+					if( prot4_stat[0]  &&  prot4_stat[1]  &&  prot4_stat[2]  && !prot4_stat[3])  N_p4_p3[0]=N_p4_p3[0]+1;// Detecting 3p out of 4p
 					if( prot4_stat[0]  &&  prot4_stat[1]  &&  !prot4_stat[2] &&  prot4_stat[3])  N_p4_p3[1]=N_p4_p3[1]+1;
 					if( prot4_stat[0]  && !prot4_stat[1]  &&  prot4_stat[2]  &&  prot4_stat[3])  N_p4_p3[2]=N_p4_p3[2]+1;
 					if(!prot4_stat[0]  &&  prot4_stat[1]  &&  prot4_stat[2]  &&  prot4_stat[3])  N_p4_p3[3]=N_p4_p3[3]+1;
@@ -3591,7 +3593,7 @@ void genie_analysis::Loop(Int_t choice) {
 				double histoweight = weight_protons * e_acc_ratio * wght/Mott_cross_sec; 
 				//Weight for 3protons, 1 electron, GENIE weight and Mott cross section
 
-				for(int g = 0; g < Ncomb_4to3; g++){   //estimating the undetected 4p contribution to  3p
+				for(int g = 0; g < Ncomb_4to3; g++) {   //estimating the undetected 4p contribution to  3p
 
 					if(g==0) {
 						V3_prot_uncorr[0]=V3_prot4_uncorr[0]; V3_prot_uncorr[1]=V3_prot4_uncorr[1]; V3_prot_uncorr[2]=V3_prot4_uncorr[2];
@@ -3977,14 +3979,15 @@ void genie_analysis::Loop(Int_t choice) {
 
 				//-----------------------------------------  4p to 2p->1  ---------------------------------------------------
 
-				for(int ind1 = 0; ind1 < N_p4; ind1++){          //estimating the undetected 4p contribution to  2p
+				for (int ind1 = 0; ind1 < N_p4; ind1++){          //estimating the undetected 4p contribution to  2p
 
-					for(int ind2 = 0; ind2 < N_p4; ind2++){
+					for (int ind2 = 0; ind2 < N_p4; ind2++){
 
-						if(ind1!=ind2 && ind1 < ind2){
+						if (ind1 != ind2 && ind1 < ind2){
 
 							V3p2[0]=V3_prot4_corr[ind1];
 							V3p2[1]=V3_prot4_corr[ind2];
+
 							V3p2_uncorr[0]=V3_prot4_uncorr[ind1];
 							V3p2_uncorr[1]=V3_prot4_uncorr[ind2];
 
@@ -4347,7 +4350,7 @@ void genie_analysis::Loop(Int_t choice) {
 			}//no pion statement ends
 
 		} // End of 4-proton case
-
+*/
 		//We are not looking for 4 Proton and 1 Pion events!
 
 		// ---------------------------------------------------------------------------------------------------------------------------------------
