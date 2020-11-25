@@ -31,6 +31,8 @@ void  Subtraction::prot3_rot_func(TVector3  V3prot[3],TVector3  V3prot_uncorr[3]
 
 		do {
 
+			RotStatus = true;
+
 			rot_angle = gRandom->Uniform(0,2*TMath::Pi());
 
 			for (int i = 0; i < N_3p; i++) {
@@ -86,7 +88,9 @@ void  Subtraction::prot3_rot_func(TVector3  V3prot[3],TVector3  V3prot_uncorr[3]
 
 					do {
 
-					rot_angle = gRandom->Uniform(0,2*TMath::Pi());
+						RotStatus = true;
+
+						rot_angle = gRandom->Uniform(0,2*TMath::Pi());
 
 						V3_2p_rot[ind1] = V3prot_uncorr[ind1];
 						V3_2p_rot[ind2] = V3prot_uncorr[ind2];
@@ -144,6 +148,8 @@ void  Subtraction::prot2_rot_func(TVector3  V3prot[2],TVector3  V3prot_uncorr[2]
 		bool RotStatus = true;
 
 		do {
+
+			RotStatus = true;
 
 			rot_angle = gRandom->Uniform(0,2*TMath::Pi());
 
@@ -207,6 +213,8 @@ void Subtraction::prot1_pi1_rot_func(TVector3  V3prot,TVector3 V3pi, int q_pi, d
 
 		do {
 
+			RotStatus = true;
+
 			rotation_ang = gRandom->Uniform(0,2*TMath::Pi());
 			V3_p_rot = V3prot;
 			V3_p_rot.Rotate(rotation_ang,V3q);
@@ -247,6 +255,8 @@ void Subtraction::prot1_pi2_rot_func(TVector3  V3prot,TVector3 V3pi[2], int q_pi
 		bool RotStatus = true;
 
 		do {
+
+			RotStatus = true;
 
 			rotation_ang = gRandom->Uniform(0,2*TMath::Pi());
 			V3_p_rot = V3prot;
@@ -319,6 +329,8 @@ void Subtraction::prot1_pi3_rot_func(TVector3  V3prot,TVector3 V3pi[3], int q_pi
 		bool RotStatus = true;
 
 		do {
+
+			RotStatus = true;
 
 			rotation_ang = gRandom->Uniform(0,2*TMath::Pi());
 			V3_p_rot = V3prot;
@@ -420,6 +432,8 @@ void Subtraction::prot2_pi1_rot_func(TVector3 V3_2prot_corr[2],TVector3 V3_2prot
 
 		do {
 
+			RotStatus = true;
+
 			rot_angle = gRandom->Uniform(0,2*TMath::Pi());
 
 			V3_2p_rotated[0] = V3_2prot_uncorr[0];
@@ -500,6 +514,8 @@ void Subtraction::prot2_pi2_rot_func(TVector3 V3_2prot_corr[2],TVector3 V3_2prot
 		bool RotStatus = true;
 
 		do {
+
+			RotStatus = true;
 
 			rot_angle=gRandom->Uniform(0,2*TMath::Pi());
 
@@ -611,6 +627,8 @@ void Subtraction::prot3_pi1_rot_func(TVector3 V3_3prot_corr[3],TVector3 V3_3prot
 		bool RotStatus = true;
 
 		do {
+
+			RotStatus = true;
 
 			rot_angle=gRandom->Uniform(0,2*TMath::Pi());
        
@@ -738,6 +756,7 @@ void Subtraction::pi1_rot_func(TVector3 V3_pi, int q_pi, double *P_pi){
 		bool RotStatus = true;
 
 		do {
+			RotStatus = true;
 
 			rot_angle = gRandom->Uniform(0,2*TMath::Pi());
 			V3_rot_pi = V3_pi;
@@ -774,6 +793,7 @@ void Subtraction::pi2_rot_func(TVector3 V3_pi[2], int q_pi[2], double *P_0pi,dou
 
 		do {
 
+			RotStatus = true;
 			rot_angle = gRandom->Uniform(0,2*TMath::Pi());
        
 			for (int i = 0; i < N_pi; i++) {
@@ -826,6 +846,7 @@ void Subtraction::pi3_rot_func(TVector3 V3_pi[3], int q_pi[3], double *P_0pi, do
 
 		do {
 
+			RotStatus = true;
 			rot_angle=gRandom->Uniform(0,2*TMath::Pi());
 
 			for (int i = 0; i < N_pi; i++) {
@@ -921,6 +942,7 @@ void Subtraction::pi4_rot_func(TVector3 V3_pi[4], int q_pi[4], double *P_0pi,dou
 
 		do {
 
+			RotStatus = true;
 			rot_angle=gRandom->Uniform(0,2*TMath::Pi());
 
 			for (int i = 0; i < N_pi; i++) {
