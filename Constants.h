@@ -32,7 +32,7 @@
 	const double MinThetaProton = 12.;
 	const double MinThetaPiPlus = 12.;
 	const double MinThetaPiMinus = 0.;
-	const double MinThetaGamma = 20.;
+	const double MinThetaGamma = 10.;
 
 	const double CenterFirstSector = 30;
 	const double CenterSecondSector = 90;

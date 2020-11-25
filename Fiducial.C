@@ -2864,7 +2864,7 @@ bool Fiducial::Pi_phot_fid_united(std::string beam_en, TVector3 V3_pi_phot, int 
 
 bool Fiducial::Pi_phot_fid_unitedExtra(std::string beam_en, TVector3 V3_pi_phot, int q_pi_phot){
 
-    bool status = false;
+    bool status = true;
     std::string fbeam_en = beam_en;
 
     if(q_pi_phot==0) status=Phot_fidExtra(V3_pi_phot);
