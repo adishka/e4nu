@@ -103,6 +103,7 @@
 	{
 		{ "MikhailCook_Data", "Mikhail Data" },
 		{ "Pinned_Data_Final", "Pinned Data" },
+		{ "Pinned_Data_NewFiducials_SixSectors", "Pinned Data" },
 		{ "SuSav2_RadCorr_LFGM", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithFidAcc", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc", "SuSav2" },

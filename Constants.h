@@ -41,4 +41,6 @@
 	const double CenterFifthSector = 270;
 	const double CenterSixthSector = 330;
 
+	const int RotCounterLimit = 100;
+
 #endif
