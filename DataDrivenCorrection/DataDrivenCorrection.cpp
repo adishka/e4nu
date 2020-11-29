@@ -29,7 +29,7 @@ void DataDrivenCorrection() {
 	const std::vector<int> LocalDataSetColors{1,410,kRed,kBlue,kOrange,kCyan,kGreen,kGray+1, kRed + 2, kBlue-2, kOrange+3, kGray+5};
 	double split = 0.1;
 
-	TString identifier = "_1p0pi_4p0pi";
+//	TString identifier = "_1p0pi_4p0pi";
 //	TString identifier = "_1p0pi_1p1pi_1p2pi_1p3pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi_4p0pi";
 //	TString identifier = "_1p0pi_1p1pi_1p2pi_1p3pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi";
 //	TString identifier = "_1p0pi_1p1pi_1p2pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi";
@@ -57,7 +57,7 @@ void DataDrivenCorrection() {
 //	TString identifier = "_1p0pi_1p1piminus";
 //	TString identifier = "_1p0pi_1p1piplus";
 //	TString identifier = "_1p0pi_1p1pi";
-//	TString identifier = "";
+	TString identifier = "";
 //	TString identifier = "_1p0pi";
 //	TString identifier = "_PhiThetaBand_NoThetaCut";
 //	TString identifier = "_PhiThetaBand_WithThetaCut";
@@ -184,8 +184,8 @@ void DataDrivenCorrection() {
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-//						TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
-						TString PathToFiles = "./OlderSamples/";
+						TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
+//						TString PathToFiles = "./OlderSamples/";
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em"+identifier+".root";
 						TFile* FileSample = TFile::Open(FileName);
 
@@ -257,8 +257,8 @@ void DataDrivenCorrection() {
 
 				// --------------------------------------------------------------------------------------				
 
-//				TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/SuSav2_RadCorr_LFGM_Truth_WithFidAcc/"+xBCut[WhichxBCut]+"/";
-				TString PathToFiles = "./OlderSamples/";
+				TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/SuSav2_RadCorr_LFGM_Truth_WithFidAcc/"+xBCut[WhichxBCut]+"/";
+//				TString PathToFiles = "./OlderSamples/";
 				TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_SuSav2_RadCorr_LFGM_Truth_WithFidAcc_Plots_FSI_em"+identifier+".root";
 				TFile* FileSample = TFile::Open(FileName);
 

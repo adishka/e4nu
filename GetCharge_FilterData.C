@@ -772,6 +772,8 @@ void GetCharge_FilterData::Loop()
 	fsum_e = new TF1("fsum_e",FSum_e,0.,5.,2);
 	fsub_e = new TF1("fsub_e",FSub_e,0.,5.,2);
 
+	fiducialcut->InitPiMinusFit(fbeam_en);
+
 	//initialize Fiducial functions for EC limits
 
 	fiducialcut->InitEClimits();

@@ -201,8 +201,8 @@ void AcceptanceCorrections() {
 						} else { 
 						
 							if (FSILabel[WhichFSIModel] =="G2018") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }
-							Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
-//							Plots[WhichFSIModel]->Draw("hist same");  // draw them as lines
+//							Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
+							Plots[WhichFSIModel]->Draw("e hist same");  // draw them as lines
 
 							if (string(FSILabel[0]).find("Data") != std::string::npos) { Plots[0]->Draw("e same"); } 
 

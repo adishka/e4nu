@@ -6,9 +6,16 @@
 #include <TFile.h>
 #include <TVector3.h>
 #include <TLorentzVector.h>
+#include <TString.h>
 #include "Fiducial.h"
 
 #include <iostream>
+#include <iomanip>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <map>
+#include <utility>
 
 //using namespace std;
 
@@ -20,7 +27,11 @@
 //std::string a_beam_en = "2261";
 
 class MikhailCook_FilterData {
+
 public :
+
+	int runnb;
+
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
 
@@ -260,6 +271,8 @@ public :
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 
+   virtual TString ToStringFilter(int num);
+
    void SetFiducialCutParameters(std::string beam_en) {
      fiducialcut->SetFiducialCutParameters(beam_en);
    }
@@ -301,8 +314,7 @@ MikhailCook_FilterData::MikhailCook_FilterData(std::string a_target,std::string 
      ftarget = a_target;
      fbeam_en=a_beam_en;
      fTorusCurrent = 0;
-
-
+     runnb = 18259;
 
 #ifdef SINGLE_TREE
       // The following code should be used if you want this class to access
@@ -331,7 +343,7 @@ MikhailCook_FilterData::MikhailCook_FilterData(std::string a_target,std::string 
 	if (ftarget == "CH2") { StringTarget = "ch2"; }
 	if (ftarget == "56Fe") { StringTarget = "fe56"; }
 
-        chain->Add("/w/hallb-scifs17exp/clas/clas-production/osipenko/e2a_pass3/e"+StringEnergy+"gev_"+StringTarget+"/*.root/h10");
+        chain->Add("/w/hallb-scifs17exp/clas/clas-production/osipenko/e2a_pass3/e"+StringEnergy+"gev_"+StringTarget+"/*"+ToStringFilter(runnb)+"*.root/h10");
 
 
 
@@ -529,6 +541,15 @@ Int_t MikhailCook_FilterData::Cut(Long64_t entry)
 // returns  1 if entry is accepted.
 // returns -1 otherwise.
    return 1;
+}
+
+TString MikhailCook_FilterData::ToStringFilter(int num) {
+
+	std::ostringstream start;
+	start << num;
+	std::string start1 = start.str();
+	return start1;
+
 }
 
 #endif // #ifdef MikhailCook_FilterData_h

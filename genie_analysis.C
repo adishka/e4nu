@@ -606,6 +606,15 @@ void genie_analysis::Loop(Int_t choice) {
 	TH2F *h2_PiPlus_Theta_Momentum = new TH2F("h2_PiPlus_Theta_Momentum",";P_{#pi^{+}} [GeV/c];#theta_{#pi^{+}}",6000,0.,6,360,0,360);
 	TH2F *h2_PiMinus_Theta_Momentum = new TH2F("h2_PiMinus_Theta_Momentum",";P_{#pi^{-}} [GeV/c];#theta_{#pi^{-}}",6000,0.,6,360,0,360);
 
+	TH2F *h2_Gamma_Theta_Phi = new TH2F("h2_Gamma_Theta_Phi",";#phi_{#gamma} [GeV/c];#theta_{#gamma}",360,0.,360,360,0,360);
+
+	TH2F *h2_Gamma_Theta_Momentum_FirstSector = new TH2F("h2_Gamma_Theta_Momentum_FirstSector",";P_{#gamma} [GeV/c];#theta_{#gamma}",6000,0.,6,360,0,360);
+	TH2F *h2_Gamma_Theta_Momentum_SecondSector = new TH2F("h2_Gamma_Theta_Momentum_SecondSector",";P_{#gamma} [GeV/c];#theta_{#gamma}",6000,0.,6,360,0,360);
+	TH2F *h2_Gamma_Theta_Momentum_ThirdSector = new TH2F("h2_Gamma_Theta_Momentum_ThirdSector",";P_{#gamma} [GeV/c];#theta_{#gamma}",6000,0.,6,360,0,360);
+	TH2F *h2_Gamma_Theta_Momentum_FourthSector = new TH2F("h2_Gamma_Theta_Momentum_FourthSector",";P_{#gamma} [GeV/c];#theta_{#gamma}",6000,0.,6,360,0,360);
+	TH2F *h2_Gamma_Theta_Momentum_FifthSector = new TH2F("h2_Gamma_Theta_Momentum_FifthSector",";P_{#gamma} [GeV/c];#theta_{#gamma}",6000,0.,6,360,0,360);
+	TH2F *h2_Gamma_Theta_Momentum_SixthSector = new TH2F("h2_Gamma_Theta_Momentum_SixthSector",";P_{#gamma} [GeV/c];#theta_{#gamma}",6000,0.,6,360,0,360);
+
 	TH2F *h2_el_CosTheta_E = new TH2F("h2_el_CosTheta_E",";cos(#theta_{e'});E_{e'} [GeV]",200,-1,1,600,0,6);
 	TH2F *h2_el_mom_diff = new TH2F("h2_el_mom_diff","",500,0.,1.,500,-0.1,0.1);
 
@@ -1347,6 +1356,7 @@ void genie_analysis::Loop(Int_t choice) {
 		int num_pipl = 0;
 		int num_pi_phot_nonrad = 0; //counting all pions and non-radiation photons
 		int num_phot_rad = 0; //counting radiation photons
+		int num_phot_nonrad = 0;
 		//Index and number variables for neutral particles
 		int ec_index_n[20];
 		int ec_num_n = 0;
@@ -1512,7 +1522,7 @@ void genie_analysis::Loop(Int_t choice) {
 					PiMinusTheta_Deg = V3_pi_corr.Theta() * 180. / TMath::Pi();
 
 				}
-				else { //CLAS data does not need Fiducial Cut again
+				else { // CLAS data does not need Fiducial Cut again
 					num_pimi = num_pimi + 1;
 					num_pi = num_pi + 1;
 					num_pi_phot = num_pi_phot + 1;
@@ -1678,11 +1688,11 @@ void genie_analysis::Loop(Int_t choice) {
 				CosDeltaThetaElectronPhotonAboveThreshold->Fill( cos( V3_phot_angles.Angle(V3_el) ) );
 				CosDeltaPhiElectronPhotonAboveThreshold->Fill( cos( neut_phi_mod-el_phi_mod*TMath::Pi()/180. ) );
 
-				 //within 40 degrees in theta and 30 degrees in phi. Electron phi has already added 30 degree and between 0 to 360
+				 // within 40 degrees in theta and 30 degrees in phi. Electron phi has already added 30 degree and between 0 to 360
 
 				 if(V3_phot_angles.Angle(V3_el)*TMath::RadToDeg() < phot_rad_cut && fabs(neut_phi_mod-el_phi_mod) < phot_e_phidiffcut ) {
 
-					ec_radstat_n[num_pi_phot - 1] = true; //select radiation photons
+					ec_radstat_n[num_pi_phot - 1] = true; // select radiation photons
 					num_phot_rad = num_phot_rad + 1;
 					RadCosThetaGammaEgamma->Fill(V3_phot_angles.CosTheta(),V3_phot_angles.Mag() ,WeightIncl);
 					RadCosDeltaThetaGammaEgamma->Fill( cos( V3_phot_angles.Angle(V3_el) ) ,V3_phot_angles.Mag() ,WeightIncl);
@@ -1690,13 +1700,30 @@ void genie_analysis::Loop(Int_t choice) {
 				 }
 
 				 if(!ec_radstat_n[num_pi_phot - 1]) {
+
 					num_pi_phot_nonrad = num_pi_phot_nonrad + 1;
 					charge_pi[num_pi_phot - 1] = 0;
 					NonRadThetaVsPhiGamma->Fill(neut_phi_mod,V3_phot_angles.Theta()*TMath::RadToDeg(),WeightIncl);
+
+					double GammaPhi_Deg = neut_phi_mod;
+					double GammaTheta_Deg = V3_phot_angles.Theta()*TMath::RadToDeg();
+					double GammaMag = V3_phot_angles.Mag();
+					double GammaWeight = wght;
+
+					if (GammaPhi_Deg > 0 && GammaPhi_Deg < 60) { h2_Gamma_Theta_Momentum_FirstSector->Fill(GammaMag,GammaTheta_Deg,GammaWeight); } 
+					if (GammaPhi_Deg > 60 && GammaPhi_Deg < 120) { h2_Gamma_Theta_Momentum_SecondSector->Fill(GammaMag,GammaTheta_Deg,GammaWeight); } 
+					if (GammaPhi_Deg > 120 && GammaPhi_Deg < 180) { h2_Gamma_Theta_Momentum_ThirdSector->Fill(GammaMag,GammaTheta_Deg,GammaWeight); } 
+					if (GammaPhi_Deg > 180 && GammaPhi_Deg < 240) { h2_Gamma_Theta_Momentum_FourthSector->Fill(GammaMag,GammaTheta_Deg,GammaWeight); } 
+					if (GammaPhi_Deg > 240 && GammaPhi_Deg < 300) { h2_Gamma_Theta_Momentum_FifthSector->Fill(GammaMag,GammaTheta_Deg,GammaWeight); } 
+					if (GammaPhi_Deg > 300 && GammaPhi_Deg < 360) { h2_Gamma_Theta_Momentum_SixthSector->Fill(GammaMag,GammaTheta_Deg,GammaWeight); }
+
+					h2_Gamma_Theta_Phi->Fill(GammaPhi_Deg,GammaTheta_Deg,GammaWeight);
+
 				 }
+
 			}
 
-		} //end of hadron loop
+		} // end of hadron loop
 
 		// ----------------------------------------------------------------------------------------------------------------------------
 
@@ -1782,7 +1809,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 		// Events with exactly 2 protons
 
-		if(num_p == 2) {
+		if (num_p == 2) {
 
 			//LorentzVectors for protons without momentum smearing or corrections
 			TLorentzVector V4_prot_uncorr1(pxf[index_p[0]],pyf[index_p[0]],pzf[index_p[0]],TMath::Sqrt(m_prot*m_prot+pf[index_p[0]]*pf[index_p[0]]));
