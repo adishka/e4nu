@@ -382,7 +382,7 @@ void genie_analysis::Loop(Int_t choice) {
 	TH1F *h1_xbjk = new TH1F("h1_xbjk","",400,0,3);
 	TH1F *h1_Q2 = new TH1F("h1_Q2","",400,0,6);
 	TH1F *h1_el_theta = new TH1F("h1_el_theta","",200,0,180);
-	TH1F *h1_Nprot=new TH1F("h1_Nprot","",10,-0.5,4.5);
+	TH1F *h1_Nprot=new TH1F("h1_Nprot","",18,-0.5,8.5);
 	TH1F *h1_Nprot_NonZeroProt=new TH1F("h1_Nprot_NonZeroProt","",8,0.5,4.5);
 	TH1F *h1_Nphot=new TH1F("h1_Nphot","",10,-0.5,4.5);
 	TH1F *h1_Npiphot=new TH1F("h1_Npiphot","",10,-0.5,4.5);
@@ -558,7 +558,7 @@ void genie_analysis::Loop(Int_t choice) {
 	TH2F *h2_EqeEcaldiff_Eqe=new TH2F("h2_EqeEcaldiff_Eqe","",600,0,5,300,-3,3);
 	TH2F *h2_N_prot_pi=new TH2F("h2_N_prot_pi","",10,0,5,10,0,5);
 	TH2F *h2_N_prot_pi_phot=new TH2F("h2_N_prot_pi_phot","",10,0,5,10,0,5);
-	TH2F *h2_N_prot_pi_phot_nonrad=new TH2F("h2_N_prot_pi_phot_nonrad","",10,0,5,10,0,5);
+	TH2F *h2_N_prot_pi_phot_nonrad=new TH2F("h2_N_prot_pi_phot_nonrad","",20,0,10,20,0,10);
 //	TH2F *h2_el_theta_phi = new TH2F("h2_el_theta_phi","",200,0,360,200,0,180);
 	TH2F *h2_el_theta_phi = new TH2F("h2_el_theta_phi","",200,0,360,200,10,60);
 
@@ -1461,7 +1461,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 			// -------------------------------------------------------------------------------------------------------------------
 
-			if (pdgf[i] == -211  && pf[i] > 0.15)  { //PI minus
+			if (pdgf[i] == -211  && pf[i] > 0.15)  { //Pi minus
 
 				double PiMinusWeight = 1.;
 				double PiMinusPhi_Deg = -999.;
@@ -1701,6 +1701,8 @@ void genie_analysis::Loop(Int_t choice) {
 
 				 if(!ec_radstat_n[num_pi_phot - 1]) {
 
+					num_phot_nonrad = num_phot_nonrad + 1;
+
 					num_pi_phot_nonrad = num_pi_phot_nonrad + 1;
 					charge_pi[num_pi_phot - 1] = 0;
 					NonRadThetaVsPhiGamma->Fill(neut_phi_mod,V3_phot_angles.Theta()*TMath::RadToDeg(),WeightIncl);
@@ -1872,11 +1874,11 @@ void genie_analysis::Loop(Int_t choice) {
 
 			rotation->prot2_rot_func( V3_2prot_corr, V3_2prot_uncorr, V4_el, E_tot_2p, p_perp_tot_2p, P_N_2p , &N_prot_both);
 
-			if(num_pi_phot==0 && N_prot_both!=0){
+			if (num_pi_phot == 0 && N_prot_both != 0){
 
 				double histoweight = weight_protons*e_acc_ratio*wght/Mott_cross_sec; //total weight from 2p acceptance , 1e acceptance, Mott, and GENIE weight
 
-				for(int f = 0; f < num_p; f++){    //looping through two protons
+				for (int f = 0; f < num_p; f++){    //looping through two protons
 
 					h1_E_tot_p_bkgd->Fill(E_tot_2p[f],P_N_2p[f]*histoweight);
 					h1_E_rec_p_bkgd->Fill(E_rec,P_N_2p[f]*histoweight);
@@ -2056,7 +2058,7 @@ void genie_analysis::Loop(Int_t choice) {
 			double Ecal_2p1pi_to2p0pi[N_2prot]={0};
 			double p_miss_perp_2p1pi_to2p0pi[N_2prot]={0};
 
-			if (num_pi_phot==1) {
+			if (num_pi_phot == 1) {
 
 				TVector3 V3_1pi_corr;
 				double pion_acc_ratio = 1;
@@ -2105,7 +2107,7 @@ void genie_analysis::Loop(Int_t choice) {
 				double histoweight = pion_acc_ratio * weight_protons * e_acc_ratio * wght/Mott_cross_sec; 
 				//Is this correct in the following loop? F.H. 09/01/19
 
-				for(int z=0; z < N_2prot; z++){ //looping over two protons
+				for (int z=0; z < N_2prot; z++){ //looping over two protons
 
 					//---------------------------------- 2p 1pi ->2p 0pi ----------------------------------------------
 
@@ -3275,7 +3277,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 				} //end loop over N_3p
 
-			} //end if num_pi_phot==0 && N_p_three!=0, no pions
+			} // end if num_pi_phot==0 && N_p_three!=0, no pions
 
 			//----------------------------------3p 1pi ----------------------------------------------------------
 
@@ -3514,7 +3516,7 @@ void genie_analysis::Loop(Int_t choice) {
 		// -------------------------------------------------------------------------------------------------------------------------------------
 
 		//Events with exactly 4 protons
-/*
+
 	 	if (num_p == 4) {
 
 			const int N_p4=4;
@@ -3624,7 +3626,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 				double histoweight = weight_protons * e_acc_ratio * wght/Mott_cross_sec; 
 				//Weight for 3protons, 1 electron, GENIE weight and Mott cross section
-
+/*
 				for(int g = 0; g < Ncomb_4to3; g++) {   //estimating the undetected 4p contribution to  3p
 
 					if(g==0) {
@@ -4205,10 +4207,10 @@ void genie_analysis::Loop(Int_t choice) {
 					} //end loop over ind2
 
 				} //end loop over ind1
-
+*/
 				//-----------------------------------------  4p to 1p  -------------------------------------------------------
 
-				if( N_p_four!=0){
+				if (N_p_four != 0){
 
 					for(int j = 0; j < N_p4; j++)    {       //estimating the undetected 4p contribution to  1p
 
@@ -4382,8 +4384,8 @@ void genie_analysis::Loop(Int_t choice) {
 			}//no pion statement ends
 
 		} // End of 4-proton case
-*/
-		//We are not looking for 4 Proton and 1 Pion events!
+
+		// We are not looking for 4 Proton and 1 Pion events!
 
 		// ---------------------------------------------------------------------------------------------------------------------------------------
 

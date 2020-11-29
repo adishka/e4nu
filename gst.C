@@ -99,7 +99,7 @@ void gst::Loop() {
 
 			}
 
-			if (pdgf[i] == 22  && pf[i] > 0.3 && theta > 0) { GammaCounter++; }
+			if (pdgf[i] == 22  && pf[i] > 0.3 && theta > 10) { GammaCounter++; }
 
 
 		}
@@ -112,22 +112,7 @@ void gst::Loop() {
 
 		// --------------------------------------------------------------
 
-		// 1p0pi + 1p1piminus		
-//		if (ProtonCounter != 1) { continue; }
-//		if (PiMinusCounter != 0 && PiMinusCounter != 1) { continue; }
-//		if (GammaCounter != 0) { continue; }
 
-		// --------------------------------------------------------------
-
-//		// 1p0pi + 1p1pi		
-//		if (ProtonCounter != 1) { continue; }
-//		if (ChargedPionCounter != 0 && ChargedPionCounter != 1) { continue; }
-
-		// --------------------------------------------------------------
-
-		// 1p0pi + 2p0pi		
-		//if (ProtonCounter != 1 && ProtonCounter != 2) { continue; }
-		//if (ChargedPionCounter != 0) { continue; }
 
 		// --------------------------------------------------------------
 
