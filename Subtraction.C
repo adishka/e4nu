@@ -82,7 +82,7 @@ void  Subtraction::prot3_rot_func(TVector3  V3prot[3],TVector3  V3prot_uncorr[3]
 
 	//-----------------------------------------  3p to 2p->1p  -----------------------------------------------------------------------
      
-	for (int ind1 = 0; ind1 < N_3p; ind1++) {   // looping through 2p combinations out of 3p
+	for (int ind1 = 0; ind1 < N_3p; ind1++) { // Looping through 2p combinations out of 3p
 
 		for (int ind2 = 0; ind2 < N_3p; ind2++) {
 
@@ -814,6 +814,7 @@ void Subtraction::pi1_rot_func(TVector3 V3_pi, int q_pi, double *P_pi){
 	double rot_angle;
 	TVector3 V3_rot_pi;
 	Float_t pi_cphil = 0, pi_cphir = 0, pi_phimin = 0, pi_phimax = 0;
+	double ValidRotCounter = 0;
 
 	for(int g = 0; g < N_tot; g++) {
 
@@ -834,13 +835,16 @@ void Subtraction::pi1_rot_func(TVector3 V3_pi, int q_pi, double *P_pi){
 
 		if (RotCounter < RotCounterLimit) {
 
+			ValidRotCounter = ValidRotCounter + 1;
+
 			if( Pi_phot_fid_united(fbeam_en, V3_rot_pi,q_pi) ) { N_pion = N_pion + 1; }
 
 		}
 
 	}
 
-	if(N_pion != 0) { *P_pi = (N_tot-N_pion)/N_pion; }
+//	if(N_pion != 0) { *P_pi = (N_tot-N_pion)/N_pion; }
+	if(N_pion != 0) { *P_pi = (ValidRotCounter-N_pion)/N_pion; }
 	else { *P_pi = 0; }
 
 	//if(!radstat) cout<<"nereqev     "<<N_pion<<"   radstat"<<"     "<<radstat<<endl;

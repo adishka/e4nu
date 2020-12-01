@@ -801,7 +801,7 @@ void MikhailCook_FilterData::Loop()
 			std::cout<<jentry<<std::endl;
 		}
 
-		if (t_l < 0.8) { continue; }
+//		if (t_l < 0.8) { continue; }
 
 		if (runnb==18258 || runnb==18259 || (runnb>18382 && runnb<18438) || (runnb>18220 && runnb<18253)) {
 			vz_corr_func->SetParameters(pars); 

@@ -29,9 +29,11 @@ void DataDrivenCorrection() {
 	const std::vector<int> LocalDataSetColors{1,410,kRed,kBlue,kOrange,kCyan,kGreen,kGray+1, kRed + 2, kBlue-2, kOrange+3, kGray+5};
 	double split = 0.1;
 
+//	TString identifier = "_1p0pi_4p0pi_5p0pi";
+//	TString identifier = "_1p0pi_5p0pi";
 //	TString identifier = "_1p0pi_4p0pi";
 //	TString identifier = "_1p0pi_1p1pi_1p2pi_1p3pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi_4p0pi";
-//	TString identifier = "_1p0pi_1p1pi_1p2pi_1p3pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi";
+	TString identifier = "_1p0pi_1p1pi_1p2pi_1p3pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi";
 //	TString identifier = "_1p0pi_1p1pi_1p2pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi";
 //	TString identifier = "_1p0pi_1p1pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi_4p0pi";
 //	TString identifier = "_1p0pi_1p1pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi";
@@ -45,7 +47,7 @@ void DataDrivenCorrection() {
 //	TString identifier = "_1p0pi_2p0pi_3p0pi_4p0pi";
 //	TString identifier = "_1p0pi_2p0pi_3p0pi";
 //	TString identifier = "_1p0pi_4p0pi";
-//	TString identifier = "_1p0pi_2p1pi";
+///	TString identifier = "_1p0pi_2p1pi";
 //	TString identifier = "_1p0pi_3p0pi";
 //	TString identifier = "_1p0pi_1p1piminus_MinThetaq";
 //	TString identifier = "_1p0pi_1p1piminus_PhiThetaBand_AngThres_RotBeamLine";
@@ -57,7 +59,7 @@ void DataDrivenCorrection() {
 //	TString identifier = "_1p0pi_1p1piminus";
 //	TString identifier = "_1p0pi_1p1piplus";
 //	TString identifier = "_1p0pi_1p1pi";
-	TString identifier = "";
+//	TString identifier = "";
 //	TString identifier = "_1p0pi";
 //	TString identifier = "_PhiThetaBand_NoThetaCut";
 //	TString identifier = "_PhiThetaBand_WithThetaCut";
@@ -99,8 +101,8 @@ void DataDrivenCorrection() {
 
 	NameOfPlots.push_back("h1_E_tot_cut2");SampleLabel.push_back("1p0pi W/O Sub");
 
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_factor"); SampleLabel.push_back("1p1pi");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_prot"); SampleLabel.push_back("2p0pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_factor"); SampleLabel.push_back("1p1pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_prot"); SampleLabel.push_back("2p0pi");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_32prot"); SampleLabel.push_back("3p to 2p->1p");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_31prot"); SampleLabel.push_back("3p to 1p");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_43prot"); SampleLabel.push_back("4p to 3p->2->1");
@@ -109,15 +111,15 @@ void DataDrivenCorrection() {
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_431prot"); SampleLabel.push_back("4p to 3p->1p");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_42prot"); SampleLabel.push_back("4p to 2p->1");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_41prot"); SampleLabel.push_back("4p to 1p");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_1p2pi"); SampleLabel.push_back("1p 2pi->1p1pi");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_1p2pi_1p0pi"); SampleLabel.push_back("1p 2pi->1p0pi");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_1p3pi"); SampleLabel.push_back("1p 3pi-> 1p 0pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_1p2pi"); SampleLabel.push_back("1p 2pi->1p1pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_1p2pi_1p0pi"); SampleLabel.push_back("1p 2pi->1p0pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_1p3pi"); SampleLabel.push_back("1p 3pi-> 1p 0pi");
 
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_1p3pi"); SampleLabel.push_back("1p 3pi-> 1p 0pi");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p2pi"); SampleLabel.push_back("2p 2pi -> 1p 0pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p2pi"); SampleLabel.push_back("2p 2pi -> 1p 0pi");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_3p1pi"); SampleLabel.push_back("3p 1pi -> 1p 0pi");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_2p0pi"); SampleLabel.push_back("2p 1pi -> 2p 0pi");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_1p1pi"); SampleLabel.push_back("2p 1pi -> 1p 1pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_2p0pi"); SampleLabel.push_back("2p 1pi -> 2p 0pi");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_1p1pi"); SampleLabel.push_back("2p 1pi -> 1p 1pi");
 
 //	NameOfPlots.push_back("h1_E_tot_4pto1p"); SampleLabel.push_back("4p0pi effect");
 //	NameOfPlots.push_back("h1_E_tot_4pto3p"); SampleLabel.push_back("4p to 3p->2p->1p effect");
@@ -184,8 +186,8 @@ void DataDrivenCorrection() {
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-						TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
-//						TString PathToFiles = "./OlderSamples/";
+//						TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
+						TString PathToFiles = "./OlderSamples/";
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em"+identifier+".root";
 						TFile* FileSample = TFile::Open(FileName);
 
@@ -257,8 +259,8 @@ void DataDrivenCorrection() {
 
 				// --------------------------------------------------------------------------------------				
 
-				TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/SuSav2_RadCorr_LFGM_Truth_WithFidAcc/"+xBCut[WhichxBCut]+"/";
-//				TString PathToFiles = "./OlderSamples/";
+//				TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/SuSav2_RadCorr_LFGM_Truth_WithFidAcc/"+xBCut[WhichxBCut]+"/";
+				TString PathToFiles = "./OlderSamples/";
 				TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_SuSav2_RadCorr_LFGM_Truth_WithFidAcc_Plots_FSI_em"+identifier+".root";
 				TFile* FileSample = TFile::Open(FileName);
 

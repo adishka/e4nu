@@ -229,7 +229,7 @@ void AcceptanceCorrections() {
 					// 3rd ratio: Overall correction factor
 
 					// ---------------------------------------------------------------------------------------------------
-/*
+
 					// 1st ratio: Correct for bkg subtraction
 
 					TString BkgCorrPlotCanvasName = "BkgCorr_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
@@ -266,7 +266,7 @@ void AcceptanceCorrections() {
 					ThresCorrPlotCanvas->cd();
 
 					TrueClone->SetTitle("Truth Ratios");
-					TrueClone->GetYaxis()->SetRangeUser( 0,0.3 );
+					TrueClone->GetYaxis()->SetRangeUser( 0.,1. );
 					TrueClone->GetYaxis()->SetTitle("True 1p0pi W/ / True 1p0pi W/O" );
 
 					TrueClone->Draw();
@@ -287,7 +287,7 @@ void AcceptanceCorrections() {
 					OverallCorrPlotCanvas->cd();
 
 					OverallClone->SetTitle("Acceptance Correction");
-					OverallClone->GetYaxis()->SetRangeUser( 0.,0.3 );
+					OverallClone->GetYaxis()->SetRangeUser( 0.,1. );
 					OverallClone->GetYaxis()->SetTitle("Reco / True 1p0pi W/O" );
 
 					OverallClone->Draw();
@@ -299,7 +299,7 @@ void AcceptanceCorrections() {
 					TrueClone->Write(Label+"_"+"FidCorrection_"+NameOfPlots[WhichPlot]);
 					OverallClone->Write(Label+"_"+"AccCorrection_"+NameOfPlots[WhichPlot]);
 
-*/
+
 					// ------------------------------------------------------------------------------
 
 				} // End of the loop over the plots

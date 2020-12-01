@@ -341,7 +341,7 @@ void Create2DPlots_FitOutline_PiMinus() {
 						TGraph* g = new TGraph(n,x,y);
 						g->SetLineWidth(3);
 						g->SetLineColor(kRed);
-						g->Draw("c");
+						//g->Draw("c");
 
 						// ----------------------------------------------------------------------------------------------------------------
 

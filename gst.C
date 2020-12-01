@@ -13,6 +13,8 @@
 #include <sstream>
 #include <iostream>
 
+#include "Constants.h"
+
 using namespace std;
 
 void gst::Loop() {
@@ -77,12 +79,13 @@ void gst::Loop() {
 		int GammaCounter = 0;
 
 		//Loop for Hadrons
+
 		for (int i = 0; i < nf; i++) {
 
 			double theta = TMath::ACos(cthf[i]) * 180./TMath::Pi();
 
-			if (pdgf[i] == 2212  && pf[i] > 0.3 && theta > 12) { ProtonCounter++; }
-			if (pdgf[i] == 211  && pf[i] > 0.15 && theta > 12) { PiPlusCounter++; ChargedPionCounter++; }
+			if (pdgf[i] == 2212  && pf[i] > 0.3 && theta > MinThetaProton) { ProtonCounter++; }
+			if (pdgf[i] == 211  && pf[i] > 0.15 && theta > MinThetaPiPlus) { PiPlusCounter++; ChargedPionCounter++; }
 			if (pdgf[i] == -211  && pf[i] > 0.15) { 
 
 				TVector3 PiMinusV3(pxf[i],pyf[i],pzf[i]);
@@ -99,7 +102,7 @@ void gst::Loop() {
 
 			}
 
-			if (pdgf[i] == 22  && pf[i] > 0.3 && theta > 10) { GammaCounter++; }
+			if (pdgf[i] == 22  && pf[i] > 0.3 && theta > MinThetaGamma) { GammaCounter++; }
 
 
 		}
@@ -112,7 +115,9 @@ void gst::Loop() {
 
 		// --------------------------------------------------------------
 
-
+		// 1p0pi + 2p0pi		
+//		if ( !( (ProtonCounter == 1 && ChargedPionCounter == 0) || (ProtonCounter == 2 && ChargedPionCounter == 0) ) ) { continue; }
+//		if (GammaCounter != 0) { continue; }
 
 		// --------------------------------------------------------------
 

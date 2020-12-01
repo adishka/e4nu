@@ -1,3 +1,10 @@
+RadSamples/
+Rad_G2018_NoxBcut/
+Rad_G2018_NoxBcut_NoChargedPions/
+Rad_G2018_xBcut/
+Rad_SuSav2_NoxBcut/
+systematics
+*.pcm
 *_maincxx
 *_.cxx
 *.so
