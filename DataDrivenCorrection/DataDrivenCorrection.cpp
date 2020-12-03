@@ -29,11 +29,12 @@ void DataDrivenCorrection() {
 	const std::vector<int> LocalDataSetColors{1,410,kRed,kBlue,kOrange,kCyan,kGreen,kGray+1, kRed + 2, kBlue-2, kOrange+3, kGray+5};
 	double split = 0.1;
 
+	TString identifier = "_1p0pi_Np4pi";
 //	TString identifier = "_1p0pi_4p0pi_5p0pi";
 //	TString identifier = "_1p0pi_5p0pi";
 //	TString identifier = "_1p0pi_4p0pi";
 //	TString identifier = "_1p0pi_1p1pi_1p2pi_1p3pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi_4p0pi";
-	TString identifier = "_1p0pi_1p1pi_1p2pi_1p3pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi";
+//	TString identifier = "_1p0pi_1p1pi_1p2pi_1p3pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi";
 //	TString identifier = "_1p0pi_1p1pi_1p2pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi";
 //	TString identifier = "_1p0pi_1p1pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi_4p0pi";
 //	TString identifier = "_1p0pi_1p1pi_2p0pi_2p1pi_2p2pi_3p0pi_3p1pi";
@@ -99,7 +100,7 @@ void DataDrivenCorrection() {
 
 	// Subtraction Layers
 
-	NameOfPlots.push_back("h1_E_tot_cut2");SampleLabel.push_back("1p0pi W/O Sub");
+//	NameOfPlots.push_back("h1_E_tot_cut2");SampleLabel.push_back("1p0pi W/O Sub");
 
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_factor"); SampleLabel.push_back("1p1pi");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_prot"); SampleLabel.push_back("2p0pi");
@@ -121,7 +122,7 @@ void DataDrivenCorrection() {
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_2p0pi"); SampleLabel.push_back("2p 1pi -> 2p 0pi");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_1p1pi"); SampleLabel.push_back("2p 1pi -> 1p 1pi");
 
-//	NameOfPlots.push_back("h1_E_tot_4pto1p"); SampleLabel.push_back("4p0pi effect");
+//	NameOfPlots.push_back("h1_E_tot_4pto1p"); SampleLabel.push_back("4p->1p effect");
 //	NameOfPlots.push_back("h1_E_tot_4pto3p"); SampleLabel.push_back("4p to 3p->2p->1p effect");
 //	NameOfPlots.push_back("h1_E_tot_4pto2p"); SampleLabel.push_back("4p to 2p->1p effect");
 //	NameOfPlots.push_back("h1_E_tot_43pto1p"); SampleLabel.push_back("4p to 3p->1p effect");
@@ -129,13 +130,16 @@ void DataDrivenCorrection() {
 	// Final plot
 
 //	NameOfPlots.push_back("epRecoEnergy_slice_0"); SampleLabel.push_back("2p 1pi -> 1p 0pi");
-	NameOfPlots.push_back("epRecoEnergy_slice_0"); SampleLabel.push_back("1p0pi W/ Sub");
+//	NameOfPlots.push_back("epRecoEnergy_slice_0"); SampleLabel.push_back("1p0pi W/ Sub");
 
 	// -------------------------------------------------------------------------------------------
 
-//	NameOfPlots.push_back("h1_E_rec_0pi");SampleLabel.push_back("0pi W/O Sub");
-//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot"); SampleLabel.push_back("1pi");
-//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_2pi"); SampleLabel.push_back("2pi");
+	NameOfPlots.push_back("h1_E_rec_0pi");SampleLabel.push_back("0pi W/O Sub");
+	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot"); SampleLabel.push_back("1pi");
+	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_2pi"); SampleLabel.push_back("2pi");
+	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); SampleLabel.push_back("3pi");
+	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_4pi"); SampleLabel.push_back("4pi");
+
 //	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); SampleLabel.push_back("0pi W/ Sub");
 
 	// ------------------------------------------------------------------------

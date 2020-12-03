@@ -1017,15 +1017,13 @@ void Subtraction::pi3_rot_func(TVector3 V3_pi[3], int q_pi[3], double *P_0pi, do
 
 void Subtraction::pi4_rot_func(TVector3 V3_pi[4], int q_pi[4], double *P_0pi,double *P_410,double *P_420,double *P_4210,double *P_430,double *P_4310,double *P_4320,double *P_43210){
 
-   const int N_pi=4;
-    TVector3 V3_rot_pi[N_pi];
-   double rot_angle;
-   bool status_pi[N_pi]={true};
-   double N_1pi[N_pi]={0},N_allpi=0,N_nopi=0,N_2pi[6]={0},N_3pi[4]={0};
+	const int N_pi = 4;
+	TVector3 V3_rot_pi[N_pi];
+	double rot_angle;
+	bool status_pi[N_pi] = {true};
+	double N_1pi[N_pi] = {0}, N_allpi = 0, N_nopi = 0, N_2pi[6] = {0}, N_3pi[4] = {0};
 
-
-
-	for(int g=0; g<N_tot; g++){
+	for (int g = 0; g < N_tot; g++) {
 
 		bool RotStatus = true;
 		int RotCounter = 0;
@@ -1050,140 +1048,172 @@ void Subtraction::pi4_rot_func(TVector3 V3_pi[4], int q_pi[4], double *P_0pi,dou
 
 		if (RotCounter < RotCounterLimit) {
 
-			if( status_pi[0]  && !status_pi[1] &&  !status_pi[2]  &&  !status_pi[3]) N_1pi[0]=N_1pi[0]+1; //1pi or phot
-			if( !status_pi[0]  && status_pi[1] &&  !status_pi[2]  &&  !status_pi[3]) N_1pi[1]=N_1pi[1]+1;
-			if( !status_pi[0]  && !status_pi[1] &&  status_pi[2]  &&  !status_pi[3]) N_1pi[2]=N_1pi[2]+1;
-			if( !status_pi[0]  && !status_pi[1] &&  !status_pi[2]  &&  status_pi[3]) N_1pi[3]=N_1pi[3]+1;
+			if (  status_pi[0]  && !status_pi[1] &&  !status_pi[2]  &&  !status_pi[3] ) { N_1pi[0] = N_1pi[0] + 1; } // 1pi or phot
+			if ( !status_pi[0]  &&  status_pi[1] &&  !status_pi[2]  &&  !status_pi[3] ) { N_1pi[1] = N_1pi[1] + 1; }
+			if ( !status_pi[0]  && !status_pi[1] &&   status_pi[2]  &&  !status_pi[3] ) { N_1pi[2] = N_1pi[2] + 1; }
+			if ( !status_pi[0]  && !status_pi[1] &&  !status_pi[2]  &&   status_pi[3] ) { N_1pi[3] = N_1pi[3] + 1; }
 
-			if( status_pi[0]  && status_pi[1] &&  !status_pi[2]  &&  !status_pi[3]) N_2pi[0]=N_2pi[0]+1;//2pi or phot
-			if( status_pi[0]  &&! status_pi[1] &&  status_pi[2]  &&  !status_pi[3]) N_2pi[1]=N_2pi[1]+1;
-			if( status_pi[0]  &&! status_pi[1] &&  !status_pi[2]  &&  status_pi[3]) N_2pi[2]=N_2pi[2]+1;
-			if( !status_pi[0]  && status_pi[1] &&  status_pi[2]  &&  !status_pi[3]) N_2pi[3]=N_2pi[3]+1;
-			if( !status_pi[0]  && status_pi[1] &&  !status_pi[2]  &&  status_pi[3]) N_2pi[4]=N_2pi[4]+1;
-			if( !status_pi[0]  && !status_pi[1] &&  status_pi[2]  &&  status_pi[3]) N_2pi[5]=N_2pi[5]+1;
+			if (  status_pi[0]  &&  status_pi[1] &&  !status_pi[2]  &&  !status_pi[3] ) { N_2pi[0] = N_2pi[0] + 1; } // 2pi or phot
+			if (  status_pi[0]  && !status_pi[1] &&   status_pi[2]  &&  !status_pi[3] ) { N_2pi[1] = N_2pi[1] + 1; }
+			if (  status_pi[0]  && !status_pi[1] &&  !status_pi[2]  &&   status_pi[3] ) { N_2pi[2] = N_2pi[2] + 1; }
+			if ( !status_pi[0]  &&  status_pi[1] &&   status_pi[2]  &&  !status_pi[3] ) { N_2pi[3] = N_2pi[3] + 1; }
+			if ( !status_pi[0]  &&  status_pi[1] &&  !status_pi[2]  &&   status_pi[3] ) { N_2pi[4] = N_2pi[4] + 1; }
+			if ( !status_pi[0]  && !status_pi[1] &&   status_pi[2]  &&   status_pi[3] ) { N_2pi[5] = N_2pi[5] + 1; }
 
-			if( status_pi[0]  && status_pi[1] &&  status_pi[2]  &&  !status_pi[3]) N_3pi[0]=N_3pi[0]+1;//3pi or phot
-			if( status_pi[0]  && status_pi[1] &&  !status_pi[2]  &&  status_pi[3]) N_3pi[1]=N_3pi[1]+1;
-			if( status_pi[0]  && !status_pi[1] &&  status_pi[2]  &&  status_pi[3]) N_3pi[2]=N_3pi[2]+1;
-			if( !status_pi[0]  && status_pi[1] &&  status_pi[2]  &&  status_pi[3]) N_3pi[3]=N_3pi[3]+1;
+			if (  status_pi[0]  &&  status_pi[1] &&   status_pi[2]  &&  !status_pi[3] ) { N_3pi[0] = N_3pi[0] + 1; } // 3pi or phot
+			if (  status_pi[0]  &&  status_pi[1] &&  !status_pi[2]  &&   status_pi[3] ) { N_3pi[1] = N_3pi[1] + 1; }
+			if (  status_pi[0]  && !status_pi[1] &&   status_pi[2]  &&   status_pi[3] ) { N_3pi[2] = N_3pi[2] + 1; }
+			if ( !status_pi[0]  &&  status_pi[1] &&   status_pi[2]  &&   status_pi[3] ) { N_3pi[3] = N_3pi[3] + 1; }
 
-			if( !status_pi[0]  && !status_pi[1] &&  !status_pi[2]  &&  !status_pi[3]) N_nopi=N_nopi+1; //0 pi or phot
-			if( status_pi[0]  && status_pi[1] &&  status_pi[2]  && status_pi[3]) N_allpi=N_allpi+1; //4pi or phot
+			if ( !status_pi[0]  && !status_pi[1] &&  !status_pi[2]  &&  !status_pi[3] ) { N_nopi = N_nopi + 1; } // 0 pi or phot
+			if (  status_pi[0]  &&  status_pi[1] &&   status_pi[2]  &&   status_pi[3] ) { N_allpi = N_allpi + 1; } // 4pi or phot
 
 		}
     
 	}
 
+	double P_pi = 0;
+	const int N_pi3 = 3;
+	TVector3 V3_pion[N_pi3];
+	double P_1pion[N_pi3] = {0}, P_0pion = 0, P_320_pion[3] = {0}, P_3210_pion[3][2] = {0};
+	int q_pion[N_pi3];
 
-    double P_pi=0;
-    const int N_pi3=3;
-    TVector3 V3_pion[N_pi3];
-    double P_1pion[N_pi3]={0},P_0pion=0, P_320_pion[3]={0}, P_3210_pion[3][2]={0};
-    int q_pion[N_pi3];
+	if (N_allpi != 0) {
 
-    if(N_allpi!=0){
-   //---------------------------4pi->0pi----------------------------------------------
-      *P_0pi=N_nopi/N_allpi;
-   //---------------------------4pi->1pi->0pi----------------------------------------------
-      for(int h=0;h<N_pi;h++){
-        pi1_rot_func(V3_pi[h],q_pi[h],&P_pi);
-        *P_410=*P_410+P_pi*(N_1pi[h]/N_allpi);
+		//---------------------------4pi->0pi----------------------------------------------
 
-      //---------------------------4pi->3pi->0pi----------------------------------------------
-        if(h==0)   {
-  	       V3_pion[0]=V3_pi[0];V3_pion[1]=V3_pi[1];V3_pion[2]=V3_pi[2];
-  	       q_pion[0]=q_pi[0];q_pion[1]=q_pi[1];q_pion[2]=q_pi[2];
-        }
-        if(h==1)   {
-  	       V3_pion[0]=V3_pi[0];V3_pion[1]=V3_pi[1];V3_pion[2]=V3_pi[3];
-  	       q_pion[0]=q_pi[0];q_pion[1]=q_pi[1];q_pion[2]=q_pi[3];
-        }
-        if(h==2)   {
-  	       V3_pion[0]=V3_pi[0];V3_pion[1]=V3_pi[2];V3_pion[2]=V3_pi[3];
-  	       q_pion[0]=q_pi[0];q_pion[1]=q_pi[2];q_pion[2]=q_pi[3];
-        }
-        if(h==3)   {
-  	       V3_pion[0]=V3_pi[1];V3_pion[1]=V3_pi[2];V3_pion[2]=V3_pi[3];
-  	       q_pion[0]=q_pi[1];q_pion[1]=q_pi[2];q_pion[2]=q_pi[3];
-        }
+		*P_0pi = N_nopi / N_allpi;
 
-        pi3_rot_func(V3_pion,q_pion,&P_0pion, P_1pion,P_320_pion,P_3210_pion);
-        *P_430=*P_430+P_0pion*(N_3pi[h]/N_allpi);
+		//---------------------------4pi->1pi->0pi----------------------------------------------
 
-  //---------------------------4pi->3pi->1pi->0pi----------------------------------------------
+		for (int h = 0; h < N_pi; h++) {
 
-        *P_4310= *P_4310+(P_1pion[0]+P_1pion[1]+P_1pion[2])*(N_3pi[h]/N_allpi);
+			pi1_rot_func(V3_pi[h],q_pi[h],&P_pi);
+			*P_410 = *P_410 + P_pi * (N_1pi[h] / N_allpi);
 
-  //---------------------------4pi->3pi->2pi->0pi----------------------------------------------
+			//---------------------------4pi->3pi->0pi----------------------------------------------
 
-        *P_4320=*P_4320+(P_320_pion[0]+P_320_pion[1]+P_320_pion[2])*(N_3pi[h]/N_allpi);
+			if (h == 0) {
 
-  //---------------------------4pi->3pi->2pi->1pi->0pi----------------------------------------------
+				V3_pion[0] = V3_pi[0]; V3_pion[1] = V3_pi[1]; V3_pion[2] = V3_pi[2];
+				q_pion[0] = q_pi[0]; q_pion[1] = q_pi[1]; q_pion[2] = q_pi[2];
 
-        *P_43210=*P_43210+((P_3210_pion[0][0]+P_3210_pion[0][1])+(P_3210_pion[1][0]+P_3210_pion[1][1])+
-  			 (P_3210_pion[2][0]+P_3210_pion[2][1]))*(N_3pi[h]/N_allpi);
+			}
 
-      }//end of 4pi loop
+			if (h == 1) {
 
+		  	       V3_pion[0] = V3_pi[0]; V3_pion[1] = V3_pi[1]; V3_pion[2] = V3_pi[3];
+		  	       q_pion[0] = q_pi[0]; q_pion[1] = q_pi[1];q_pion[2] = q_pi[3];
 
-  //---------------------------4pi->2pi->0pi----------------------------------------------
-    const int N2pi=2;
-    TVector3 V3_2pi[N2pi];
-    int q_2pi[N2pi];
-    double P_0pi=0, P_1pi[N2pi]={0};
+			}
 
-    for(int h=0;h<6;h++){
+			if (h == 2) {
 
-      if(h==0)   {
-         V3_2pi[0]=V3_pi[0];      V3_2pi[1]=V3_pi[1];
-         q_2pi[0]=q_pi[0];        q_2pi[1]=q_pi[1];
+				V3_pion[0] = V3_pi[0]; V3_pion[1] = V3_pi[2]; V3_pion[2] = V3_pi[3];
+				q_pion[0] = q_pi[0]; q_pion[1] = q_pi[2]; q_pion[2] = q_pi[3];
+		
+			}
 
-      }
-      if(h==1)   {
-         V3_2pi[0]=V3_pi[0];      V3_2pi[1]=V3_pi[2];
-         q_2pi[0]=q_pi[0];        q_2pi[1]=q_pi[2];
-      }
-      if(h==2)   {
-         V3_2pi[0]=V3_pi[0];      V3_2pi[1]=V3_pi[3];
-         q_2pi[0]=q_pi[0];        q_2pi[1]=q_pi[3];
-      }
-      if(h==3)   {
-         V3_2pi[0]=V3_pi[1];      V3_2pi[1]=V3_pi[2];
-         q_2pi[0]=q_pi[1];        q_2pi[1]=q_pi[2];
-      }
-      if(h==4)   {
-         V3_2pi[0]=V3_pi[1];      V3_2pi[1]=V3_pi[3];
-         q_2pi[0]=q_pi[1];        q_2pi[1]=q_pi[3];
-      }
-      if(h==5)   {
-         V3_2pi[0]=V3_pi[2];      V3_2pi[1]=V3_pi[3];
-         q_2pi[0]=q_pi[2];        q_2pi[1]=q_pi[3];
-      }
+			if (h == 3) {
 
-      pi2_rot_func( V3_2pi,q_2pi,&P_0pi, P_1pi);
+				V3_pion[0] = V3_pi[1]; V3_pion[1] = V3_pi[2]; V3_pion[2] = V3_pi[3];
+				q_pion[0] = q_pi[1]; q_pion[1] = q_pi[2]; q_pion[2] = q_pi[3];
 
-      *P_420=*P_420+P_0pi*(N_2pi[h]/N_allpi);
+			}
 
-  //---------------------------4pi->2pi->1pi->0pi----------------------------------------------
+			pi3_rot_func(V3_pion,q_pion,&P_0pion, P_1pion,P_320_pion,P_3210_pion);
+			*P_430 = *P_430 + P_0pion * (N_3pi[h] / N_allpi);
 
-      *P_4210=*P_4210+(P_1pi[0]+P_1pi[0])*(N_2pi[h]/N_allpi);
+			//---------------------------4pi->3pi->1pi->0pi----------------------------------------------
 
-    }
+			*P_4310 = *P_4310 + (P_1pion[0] + P_1pion[1] + P_1pion[2]) * (N_3pi[h] / N_allpi);
 
-   }// end of N_allpi!=0 statement
+			//---------------------------4pi->3pi->2pi->0pi----------------------------------------------
 
-   else{
-     *P_0pi=0;
-     *P_410=0;
-     *P_430=0;
-     *P_4310=0;
-     *P_4320=0;
-     *P_43210=0;
-     *P_420=0;
-     *P_4210=0;
-  }
+			*P_4320 = *P_4320 + (P_320_pion[0] + P_320_pion[1] + P_320_pion[2]) * (N_3pi[h] / N_allpi);
 
+			//---------------------------4pi->3pi->2pi->1pi->0pi----------------------------------------------
 
+			*P_43210 = *P_43210 + ( (P_3210_pion[0][0] + P_3210_pion[0][1]) + (P_3210_pion[1][0] + P_3210_pion[1][1]) +
+	  			                (P_3210_pion[2][0] + P_3210_pion[2][1]) ) * (N_3pi[h] / N_allpi);
+
+		} // End of 4pi loop
+
+		//---------------------------4pi->2pi->0pi----------------------------------------------
+	    
+		const int N2pi = 2;
+		TVector3 V3_2pi[N2pi];
+		int q_2pi[N2pi];
+		double P_0pi=0, P_1pi[N2pi]={0};
+
+		for (int h = 0; h < 6; h++) {
+
+			if(h == 0) {
+
+				V3_2pi[0] = V3_pi[0]; V3_2pi[1] = V3_pi[1];
+				q_2pi[0] = q_pi[0]; q_2pi[1] = q_pi[1];
+
+			}
+
+			if (h == 1) {
+
+				V3_2pi[0] = V3_pi[0]; V3_2pi[1] = V3_pi[2];
+				q_2pi[0] = q_pi[0]; q_2pi[1] = q_pi[2];
+
+			}
+
+			if (h == 2) {
+
+				V3_2pi[0] = V3_pi[0]; V3_2pi[1] = V3_pi[3];
+				q_2pi[0] = q_pi[0]; q_2pi[1] = q_pi[3];
+
+			}
+
+			if (h == 3) {
+
+				V3_2pi[0] = V3_pi[1]; V3_2pi[1] = V3_pi[2];
+				q_2pi[0] = q_pi[1]; q_2pi[1] = q_pi[2];
+		 
+			}
+
+			if (h == 4) {
+
+				V3_2pi[0] = V3_pi[1]; V3_2pi[1] = V3_pi[3];
+				q_2pi[0] = q_pi[1]; q_2pi[1] = q_pi[3];
+
+			}
+
+			if (h == 5) {
+
+				V3_2pi[0] = V3_pi[2]; V3_2pi[1] = V3_pi[3];
+				q_2pi[0] = q_pi[2]; q_2pi[1] = q_pi[3];
+
+			}
+
+			pi2_rot_func( V3_2pi,q_2pi,&P_0pi, P_1pi);
+
+			*P_420 = *P_420 + P_0pi * (N_2pi[h] / N_allpi);
+
+			//---------------------------4pi->2pi->1pi->0pi----------------------------------------------
+
+			*P_4210 = *P_4210 + (P_1pi[0] + P_1pi[0]) * (N_2pi[h] / N_allpi);
+
+		}
+
+	} // End of N_allpi != 0 statement
+
+	else {
+
+		*P_0pi = 0;
+		*P_410 = 0;
+		*P_430 = 0;
+		*P_4310 = 0;
+		*P_4320 = 0;
+		*P_43210 = 0;
+		*P_420 = 0;
+		*P_4210 = 0;
+
+	}
 
 }
 

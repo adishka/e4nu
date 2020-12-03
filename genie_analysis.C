@@ -382,7 +382,7 @@ void genie_analysis::Loop(Int_t choice) {
 	TH1F *h1_xbjk = new TH1F("h1_xbjk","",400,0,3);
 	TH1F *h1_Q2 = new TH1F("h1_Q2","",400,0,6);
 	TH1F *h1_el_theta = new TH1F("h1_el_theta","",200,0,180);
-	TH1F *h1_Nprot=new TH1F("h1_Nprot","",18,-0.5,8.5);
+	TH1F *h1_Nprot=new TH1F("h1_Nprot","",9,-0.5,4.5);
 	TH1F *h1_Nprot_NonZeroProt=new TH1F("h1_Nprot_NonZeroProt","",8,0.5,4.5);
 	TH1F *h1_Nphot=new TH1F("h1_Nphot","",10,-0.5,4.5);
 	TH1F *h1_Npiphot=new TH1F("h1_Npiphot","",10,-0.5,4.5);
@@ -1747,8 +1747,11 @@ void genie_analysis::Loop(Int_t choice) {
 		// ----------------------------------------------------------------------------------------------------------------------------
 
 		//Skip event if there is at least one radiation photon
+
 		if (num_phot_rad > 0) {
-		  continue;
+
+			continue;
+
 		}
 
 		//Skip event if there is at least one charged pion
@@ -1878,7 +1881,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 				double histoweight = weight_protons*e_acc_ratio*wght/Mott_cross_sec; //total weight from 2p acceptance , 1e acceptance, Mott, and GENIE weight
 
-				for (int f = 0; f < num_p; f++){    //looping through two protons
+				for (int f = 0; f < num_p; f++) { // Looping through two protons
 
 					h1_E_tot_p_bkgd->Fill(E_tot_2p[f],P_N_2p[f]*histoweight);
 					h1_E_rec_p_bkgd->Fill(E_rec,P_N_2p[f]*histoweight);
@@ -3116,7 +3119,8 @@ void genie_analysis::Loop(Int_t choice) {
 
 				for(int j = 0; j < N_3p; j++)    {
 
-					P_3pto1p[j]= N_p1[j]/N_p_three;
+					P_3pto1p[j]= N_p1[j] / N_p_three;
+
 					h1_E_tot_3pto1p->Fill(E_cal[j], P_3pto1p[j]*histoweight);
 					h1_E_rec_3pto1p->Fill(E_rec,P_3pto1p[j]*histoweight);
 					h2_Erec_pperp_31p->Fill(p_miss_perp[j],E_rec,P_3pto1p[j]*histoweight);
@@ -3573,7 +3577,8 @@ void genie_analysis::Loop(Int_t choice) {
 	
 			} //end loop over N_p4
 
-			//acceptance weight for all four protons. It is 1 for CLAS data
+			// acceptance weight for all four protons. It is 1 for CLAS data
+
 			double weight_protons =  p_acc_ratio[0] * p_acc_ratio[1] * p_acc_ratio[2] * p_acc_ratio[3];
 
 			if ( num_pi_phot == 0 ) { // No pion or photon
