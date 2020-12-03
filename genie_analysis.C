@@ -3520,7 +3520,7 @@ void genie_analysis::Loop(Int_t choice) {
 		// -------------------------------------------------------------------------------------------------------------------------------------
 
 		//Events with exactly 4 protons
-
+/*
 	 	if (num_p == 4) {
 
 			const int N_p4=4;
@@ -4405,7 +4405,7 @@ void genie_analysis::Loop(Int_t choice) {
 			}//no pion statement ends
 
 		} // End of 4-proton case
-
+*/
 		// We are not looking for 4 Proton and 1 Pion events!
 
 		// ---------------------------------------------------------------------------------------------------------------------------------------
