@@ -576,6 +576,9 @@ void MikhailCook_FilterData::Loop()
 	Double_t        genie_pzl;
 	Double_t        genie_pl;
 	Double_t        genie_cthl;
+	Double_t        genie_thetal;
+	Double_t        genie_phil;
+
 	Int_t           genie_nfp;
 	Int_t           genie_nfn;
 	Int_t           genie_nfpip;
@@ -613,6 +616,9 @@ void MikhailCook_FilterData::Loop()
 	Double_t        genie_pzf[FinalStateParticles];   //[nf]
 	Double_t        genie_pf[FinalStateParticles];   //[nf]
 	Double_t        genie_cthf[FinalStateParticles];   //[nf]
+	Double_t        genie_thetaf[FinalStateParticles];   //[nf]
+	Double_t        genie_phif[FinalStateParticles];   //[nf]
+
 	Double_t        genie_vtxx;
 	Double_t        genie_vtxy;
 	Double_t        genie_vtxz;
@@ -675,6 +681,9 @@ void MikhailCook_FilterData::Loop()
 	mytree->Branch("pzl", &genie_pzl, "pzl/D");
 	mytree->Branch("pl", &genie_pl, "pl/D");
 	mytree->Branch("cthl", &genie_cthl, "cthl/D");
+	mytree->Branch("thetal", &genie_thetal, "thetal/D");
+	mytree->Branch("phil", &genie_phil, "phil/D");
+
 	mytree->Branch("nfp", &genie_nfp, "nfp/I");
 	mytree->Branch("nfn", &genie_nfn, "nfn/I");
 	mytree->Branch("nfpip", &genie_nfpip, "nfpip/I");
@@ -711,6 +720,9 @@ void MikhailCook_FilterData::Loop()
 	mytree->Branch("pzf", &genie_pzf, "pzf[120]/D");
 	mytree->Branch("pf", &genie_pf, "pf[120]/D");
 	mytree->Branch("cthf", &genie_cthf, "cthf[120]/D");
+	mytree->Branch("thetaf", &genie_thetaf, "thetaf[120]/D");
+	mytree->Branch("phif", &genie_phif, "phif[120]/D");
+
 	mytree->Branch("vtxx", &genie_vtxx, "vtxx/D");
 	mytree->Branch("vtxy", &genie_vtxy, "vtxy/D");
 	mytree->Branch("vtxz", &genie_vtxz, "vtxz/D");
@@ -786,6 +798,11 @@ void MikhailCook_FilterData::Loop()
 
 	TH2D* h2_Electron_UncorrectedVertex_Phi = new TH2D("h2_Electron_UncorrectedVertex_Phi",";Uncorrected Vertex [cm];#phi_{e'} [deg]",2000,-10,10,360,0,360);
 	TH2D* h2_Electron_CorrectedVertex_Phi = new TH2D("h2_Electron_CorrectedVertex_Phi",";Corrected Vertex [cm];#phi_{e'} [deg]",2000,-10,10,360,0,360);
+
+	TH1D* h1_el_timediff = new TH1D("h1_el_timediff",";el_timediff",100,-50,50);
+	TH1D* h1_cc_c2 = new TH1D("h1_cc_c2",";cc_c2",2000,0,20);
+	TH1D* h1_ece = new TH1D("h1_ece",";ece",2000,0,20);
+	TH1D* h1_ec_ei = new TH1D("h1_ec_ei",";ec_ei",700,0,0.7);
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -941,6 +958,8 @@ void MikhailCook_FilterData::Loop()
 			genie_pzf[WhichFinalStateParticle] = -99.;
 			genie_pf[WhichFinalStateParticle] = -99.;
 			genie_cthf[WhichFinalStateParticle] = -99.;
+			genie_thetaf[WhichFinalStateParticle] = -99.;
+			genie_phif[WhichFinalStateParticle] = -99.;
 
 		}
 
@@ -990,10 +1009,18 @@ void MikhailCook_FilterData::Loop()
 		  continue;
 		}
 
+		h1_el_timediff->Fill(el_sccc_timediff);
+		h1_cc_c2->Fill(cc_c2[cc[ind_em]-1]);
+		h1_ec_ei->Fill(ec_ei[ec[ind_em] - 1]);
+		h1_ece->Fill(ece);
+
+		// apapadop: Dec 4, 2020: cc_c2[cc[ind_em]-1] used to be 0.1
+		// Osipenko: scaling factor of 10 from photoelectron calibration
+
 		//Cut on 1.1 GeV events (E/p, energy deposit, TOF and cherenkov)
 		if(en_beam[fbeam_en] > 1. && en_beam[fbeam_en] <2. &&
 		  ( ec_ei[ec[ind_em] - 1] < 0.03 || ece/p[ind_em] < fsub_e->Eval(p[ind_em]) || ece/p[ind_em] > fsum_e->Eval(p[ind_em]) ||
-				p[ind_em] < min_good_mom || el_sccc_timediff < sc_cc_delt_cut_sect[el_cc_sector-1] ||   cc_c2[cc[ind_em]-1] > 0.1 ) )
+				p[ind_em] < min_good_mom || el_sccc_timediff < sc_cc_delt_cut_sect[el_cc_sector-1] ||   cc_c2[cc[ind_em]-1] >= 1. ) )
 		{
 				continue;
 		}
@@ -1001,7 +1028,7 @@ void MikhailCook_FilterData::Loop()
 		//Cut on 2.2 GeV events (E/p, energy deposit, TOF and cherenkov)
 		if(en_beam[fbeam_en] < 3.  && en_beam[fbeam_en] > 2 &&
 		  ( ec_ei[ec[ind_em] - 1] < 0.06 || ece/p[ind_em] < fsub_e->Eval(p[ind_em]) || ece/p[ind_em] > fsum_e->Eval(p[ind_em]) ||
-				p[ind_em] < min_good_mom || cc_c2[cc[ind_em]-1] >= 0.1 || el_sccc_timediff < sc_cc_delt_cut_sect[el_cc_sector-1] ||
+				p[ind_em] < min_good_mom || cc_c2[cc[ind_em]-1] >= 1. || el_sccc_timediff < sc_cc_delt_cut_sect[el_cc_sector-1] ||
 				TMath::Sqrt(p[ind_em]*p[ind_em]+e_mass*e_mass)>en_beam[fbeam_en] ) ) 
 		//only here a cut on electron momentum to cut some very scarse events where p_e > beam energy (see Mariana's anaysis note)
 		{
@@ -1011,7 +1038,7 @@ void MikhailCook_FilterData::Loop()
 		//Cut on 4.4 GeV events (E/p, energy deposit, TOF and cherenkov)
 		if(en_beam[fbeam_en] > 4. && en_beam[fbeam_en] < 5. &&
 		  ( ec_ei[ec[ind_em] - 1] < 0.055 || ece < 0.33 || ece/p[ind_em] < fsub_e->Eval(p[ind_em]) || ece/p[ind_em] > fsum_e->Eval(p[ind_em]) ||
-				p[ind_em] < min_good_mom  || cc_c2[cc[ind_em]-1] >= 0.1 || el_sccc_timediff<sc_cc_delt_cut_sect[el_cc_sector-1] ) )
+				p[ind_em] < min_good_mom  || cc_c2[cc[ind_em]-1] >= 1. || el_sccc_timediff<sc_cc_delt_cut_sect[el_cc_sector-1] ) )
 		{
 				continue;
 		}
@@ -1056,6 +1083,13 @@ void MikhailCook_FilterData::Loop()
 		genie_pzl = V4_el.Pz();
 		genie_pl = V4_el.Rho();
 		genie_cthl = cos(V4_el.Theta());
+		genie_thetal = V4_el.Theta()*180./TMath::Pi();
+
+		double ElectronPhi = V4_el.Phi()*180./TMath::Pi()+30;
+		if (ElectronPhi < 0) { ElectronPhi += 360.; }
+		if (ElectronPhi >360) { ElectronPhi -= 360.; }
+		genie_phil = ElectronPhi;
+
 		genie_vtxx = 0;
 		genie_vtxy = 0;
 		genie_vtxz = el_vert_corr;
@@ -1162,6 +1196,12 @@ void MikhailCook_FilterData::Loop()
 							genie_pzf[IndexInFinalStateParticleArray] = V4_uncorrprot.Pz();
 							genie_pf[IndexInFinalStateParticleArray] = V4_uncorrprot.Rho();
 							genie_cthf[IndexInFinalStateParticleArray] = V4_uncorrprot.CosTheta();
+							genie_thetaf[IndexInFinalStateParticleArray] = V4_uncorrprot.Theta()*180./TMath::Pi();
+
+							double UncorrPhi = V4_uncorrprot.Phi()*180./TMath::Pi()+30;
+							if (UncorrPhi < 0) { UncorrPhi += 360.; }
+							if (UncorrPhi > 360) { UncorrPhi -= 360.; }
+							genie_phif[IndexInFinalStateParticleArray] = UncorrPhi;
 
 							double CorrectedProtonMomentum = ProtonMomCorrection_He3_4Cell(ftarget,V4_uncorrprot,p_vert_corr);
 							V4_uncorrprot.SetRho(CorrectedProtonMomentum);
@@ -1175,6 +1215,12 @@ void MikhailCook_FilterData::Loop()
 							genie_pzf[IndexInFinalStateParticleArray+shift] = V4_uncorrprot.Pz();
 							genie_pf[IndexInFinalStateParticleArray+shift] = V4_uncorrprot.Rho();
 							genie_cthf[IndexInFinalStateParticleArray+shift] = V4_uncorrprot.CosTheta();
+							genie_thetaf[IndexInFinalStateParticleArray+shift] = V4_uncorrprot.Theta()*180./TMath::Pi();
+
+							double ShiftUncorrPhi = V4_uncorrprot.Phi()*180./TMath::Pi()+30;
+							if (ShiftUncorrPhi < 0) { ShiftUncorrPhi += 360.; }
+							if (ShiftUncorrPhi > 360) { ShiftUncorrPhi -= 360.; }
+							genie_phif[IndexInFinalStateParticleArray+shift] = ShiftUncorrPhi;
 							IndexInFinalStateParticleArray++;
 
 							// ---------------------------------------------------------------------------------------------------------------------------------
@@ -1242,6 +1288,13 @@ void MikhailCook_FilterData::Loop()
 							genie_pzf[IndexInFinalStateParticleArray] = V3_pimi.Z();
 							genie_pf[IndexInFinalStateParticleArray] = PiMinusP;
 							genie_cthf[IndexInFinalStateParticleArray] = V3_pimi.CosTheta();
+							genie_thetaf[IndexInFinalStateParticleArray] = V3_pimi.Theta()*180./TMath::Pi();
+
+							double CorrPhi = V3_pimi.Phi()*180./TMath::Pi() + 30;
+							if (CorrPhi < 0) { CorrPhi += 360.; }
+							if (CorrPhi > 360) { CorrPhi -= 360.; }
+
+							genie_phif[IndexInFinalStateParticleArray] = CorrPhi;
 							IndexInFinalStateParticleArray++;
 
 							// ----------------------------------------------------------------------------------------------------------------------------------------
@@ -1306,6 +1359,14 @@ void MikhailCook_FilterData::Loop()
 							genie_pzf[IndexInFinalStateParticleArray] = V3_pipl.Z();
 							genie_pf[IndexInFinalStateParticleArray] = PiPlusP;
 							genie_cthf[IndexInFinalStateParticleArray] = V3_pipl.CosTheta();
+							genie_thetaf[IndexInFinalStateParticleArray] = V3_pipl.Theta()*180./TMath::Pi();
+
+							double CorrPhi = V3_pipl.Phi()*180./TMath::Pi()+30;
+							if (CorrPhi < 0) { CorrPhi += 360.; }
+							if (CorrPhi > 360) { CorrPhi -= 360.; }
+
+							genie_phif[IndexInFinalStateParticleArray] = CorrPhi;
+
 							IndexInFinalStateParticleArray++;
 
 							// -----------------------------------------------------------------------------------------------------------------------------------
@@ -1364,6 +1425,14 @@ void MikhailCook_FilterData::Loop()
 						genie_pzf[IndexInFinalStateParticleArray] = V3_phot_angles.Z();
 						genie_pf[IndexInFinalStateParticleArray] = V3_phot_angles.Mag();
 						genie_cthf[IndexInFinalStateParticleArray] = V3_phot_angles.CosTheta();
+						genie_thetaf[IndexInFinalStateParticleArray] = V3_phot_angles.Theta()*180./TMath::Pi();
+
+						double CorrPhi = V3_phot_angles.Phi()*180./TMath::Pi()+30;
+						if (CorrPhi < 0) { CorrPhi += 360.; }
+						if (CorrPhi > 180) { CorrPhi -= 360.; }
+
+						genie_phif[IndexInFinalStateParticleArray] = CorrPhi;
+
 						IndexInFinalStateParticleArray++;
 
 						// -----------------------------------------------------------------------------------------------------------------------------

@@ -382,13 +382,13 @@ void genie_analysis::Loop(Int_t choice) {
 	TH1F *h1_xbjk = new TH1F("h1_xbjk","",400,0,3);
 	TH1F *h1_Q2 = new TH1F("h1_Q2","",400,0,6);
 	TH1F *h1_el_theta = new TH1F("h1_el_theta","",200,0,180);
-	TH1F *h1_Nprot=new TH1F("h1_Nprot","",9,-0.5,4.5);
-	TH1F *h1_Nprot_NonZeroProt=new TH1F("h1_Nprot_NonZeroProt","",8,0.5,4.5);
+	TH1F *h1_Nprot=new TH1F("h1_Nprot","",5,-0.5,4.5);
+	TH1F *h1_Nprot_NonZeroProt=new TH1F("h1_Nprot_NonZeroProt","",4,0.5,4.5);
 	TH1F *h1_Nphot=new TH1F("h1_Nphot","",10,-0.5,4.5);
 	TH1F *h1_Npiphot=new TH1F("h1_Npiphot","",10,-0.5,4.5);
 	TH1F *h1_Npiphot_norad=new TH1F("h1_Npiphot_norad","",10,-0.5,4.5);
-	TH1F *h1_Npi=new TH1F("h1_Npi","",10,-0.5,4.5);
-	TH1F *h1_Npi_NonZeroProt=new TH1F("h1_Npi_NonZeroProt","",10,-0.5,4.5);
+	TH1F *h1_Npi=new TH1F("h1_Npi","",5,-0.5,4.5);
+	TH1F *h1_Npi_NonZeroProt=new TH1F("h1_Npi_NonZeroProt","",4,-0.5,4.5);
 	TH1F *h1_Npipl=new TH1F("h1_Npipl","",10,-0.5,4.5);
 	TH1F *h1_Npimi=new TH1F("h1_Npimi","",10,-0.5,4.5);
 	TH1F *h1_MissMomentum = new TH1F("MissMomentum","",80,0.,1.);
@@ -1745,6 +1745,12 @@ void genie_analysis::Loop(Int_t choice) {
 		}
 
 		// ----------------------------------------------------------------------------------------------------------------------------
+
+		// apapadop: executive decision Dec 3
+		// given that genie has much higher proton multiplicities than we observe in data
+		// we ignore the num_p > 4 cases 
+
+		//if (num_p > 4) { continue; }
 
 		//Skip event if there is at least one radiation photon
 

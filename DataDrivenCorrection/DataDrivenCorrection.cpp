@@ -29,7 +29,8 @@ void DataDrivenCorrection() {
 	const std::vector<int> LocalDataSetColors{1,410,kRed,kBlue,kOrange,kCyan,kGreen,kGray+1, kRed + 2, kBlue-2, kOrange+3, kGray+5};
 	double split = 0.1;
 
-	TString identifier = "_1p0pi_Np4pi";
+//	TString identifier = "_AllTopologies";
+//	TString identifier = "_1p0pi_Np4pi";
 //	TString identifier = "_1p0pi_4p0pi_5p0pi";
 //	TString identifier = "_1p0pi_5p0pi";
 //	TString identifier = "_1p0pi_4p0pi";
@@ -60,7 +61,7 @@ void DataDrivenCorrection() {
 //	TString identifier = "_1p0pi_1p1piminus";
 //	TString identifier = "_1p0pi_1p1piplus";
 //	TString identifier = "_1p0pi_1p1pi";
-//	TString identifier = "";
+	TString identifier = "";
 //	TString identifier = "_1p0pi";
 //	TString identifier = "_PhiThetaBand_NoThetaCut";
 //	TString identifier = "_PhiThetaBand_WithThetaCut";
@@ -100,7 +101,7 @@ void DataDrivenCorrection() {
 
 	// Subtraction Layers
 
-//	NameOfPlots.push_back("h1_E_tot_cut2");SampleLabel.push_back("1p0pi W/O Sub");
+	NameOfPlots.push_back("h1_E_tot_cut2");SampleLabel.push_back("1p0pi W/O Sub");
 
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_factor"); SampleLabel.push_back("1p1pi");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_prot"); SampleLabel.push_back("2p0pi");
@@ -130,15 +131,15 @@ void DataDrivenCorrection() {
 	// Final plot
 
 //	NameOfPlots.push_back("epRecoEnergy_slice_0"); SampleLabel.push_back("2p 1pi -> 1p 0pi");
-//	NameOfPlots.push_back("epRecoEnergy_slice_0"); SampleLabel.push_back("1p0pi W/ Sub");
+	NameOfPlots.push_back("epRecoEnergy_slice_0"); SampleLabel.push_back("1p0pi W/ Sub");
 
 	// -------------------------------------------------------------------------------------------
 
-	NameOfPlots.push_back("h1_E_rec_0pi");SampleLabel.push_back("0pi W/O Sub");
-	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot"); SampleLabel.push_back("1pi");
-	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_2pi"); SampleLabel.push_back("2pi");
-	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); SampleLabel.push_back("3pi");
-	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_4pi"); SampleLabel.push_back("4pi");
+//	NameOfPlots.push_back("h1_E_rec_0pi");SampleLabel.push_back("0pi W/O Sub");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot"); SampleLabel.push_back("1pi");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_2pi"); SampleLabel.push_back("2pi");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); SampleLabel.push_back("3pi");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_4pi"); SampleLabel.push_back("4pi");
 
 //	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); SampleLabel.push_back("0pi W/ Sub");
 
@@ -190,8 +191,8 @@ void DataDrivenCorrection() {
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-//						TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
-						TString PathToFiles = "./OlderSamples/";
+						TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
+//						TString PathToFiles = "./OlderSamples/";
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em"+identifier+".root";
 						TFile* FileSample = TFile::Open(FileName);
 
@@ -263,8 +264,8 @@ void DataDrivenCorrection() {
 
 				// --------------------------------------------------------------------------------------				
 
-//				TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/SuSav2_RadCorr_LFGM_Truth_WithFidAcc/"+xBCut[WhichxBCut]+"/";
-				TString PathToFiles = "./OlderSamples/";
+				TString PathToFiles = GlobalPathToFiles + E[WhichEnergy] + "/SuSav2_RadCorr_LFGM_Truth_WithFidAcc/"+xBCut[WhichxBCut]+"/";
+//				TString PathToFiles = "./OlderSamples/";
 				TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_SuSav2_RadCorr_LFGM_Truth_WithFidAcc_Plots_FSI_em"+identifier+".root";
 				TFile* FileSample = TFile::Open(FileName);
 

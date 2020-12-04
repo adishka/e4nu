@@ -96,7 +96,7 @@ void OverlayMultiplicities_FigExtData7() {
 	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");	
 
 	NameOfPlots.push_back("h1_Npi"); LabelOfPlots.push_back("Multiplicities"); OutputPlotNames.push_back("PionMultiPlot");
-	NameOfPlots.push_back("h1_Nprot"); LabelOfPlots.push_back("Multiplicities"); OutputPlotNames.push_back("Nproton");
+//	NameOfPlots.push_back("h1_Nprot_NonZeroProt"); LabelOfPlots.push_back("Multiplicities"); OutputPlotNames.push_back("Nproton");
 
 	std::vector<TH1D*> Plots;
 
@@ -185,7 +185,7 @@ void OverlayMultiplicities_FigExtData7() {
 						// Y-axis label
 
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(TextSize);
-						Plots[WhichFSIModel]->GetYaxis()->SetTitle("Weighted Events");
+						Plots[WhichFSIModel]->GetYaxis()->SetTitle("# Events");
 
 						// --------------------------------------------------------------------------------------
 
@@ -237,32 +237,38 @@ void OverlayMultiplicities_FigExtData7() {
 
 						// Multiplicity plots
 
-						if (NameOfPlots[WhichPlot] == "h1_Nphot" || NameOfPlots[WhichPlot] == "h1_Nprot" || NameOfPlots[WhichPlot] == "h1_Npi") {
+						if (NameOfPlots[WhichPlot] == "h1_Nphot" || NameOfPlots[WhichPlot] == "h1_Nprot" 
+						 || NameOfPlots[WhichPlot] == "h1_Nprot_NonZeroProt" || NameOfPlots[WhichPlot] == "h1_Npi") {
 
 							Plots[WhichFSIModel]->GetYaxis()->SetLabelOffset(-0.004);
 							//Plots[WhichFSIModel]->Rebin();
 							Plots[0]->GetYaxis()->SetRangeUser(0.5*min,2.*max); PlotCanvas->SetLogy();
-							if (FSILabel[WhichFSIModel] == "Data") { 
+							/*if (FSILabel[WhichFSIModel] == "Data") { 
 						 
 								Plots[WhichFSIModel]->SetMarkerSize(3.); 
-								if (NameOfPlots[WhichPlot] == "h1_Nprot") { 
+								if (NameOfPlots[WhichPlot] == "h1_Nprot" || NameOfPlots[WhichPlot] == "h1_Nprot_NonZeroProt" ) { 
 									Plots[WhichFSIModel]->SetMarkerColor(kBlack); Plots[WhichFSIModel]->SetMarkerStyle(20); }
 								else { 
 									Plots[WhichFSIModel]->SetLineColor(kBlue); 
 									Plots[WhichFSIModel]->SetMarkerColor(kBlue); 
 									Plots[WhichFSIModel]->SetMarkerStyle(24);
 								}
-								gStyle->SetErrorX(0); 
+								//gStyle->SetErrorX(0); 
 								Plots[WhichFSIModel]->GetYaxis()->SetRangeUser(1E1,1E8);
 								Plots[WhichFSIModel]->Draw("e same"); 
 							}
-							else { 
-								if (NameOfPlots[WhichPlot] == "h1_Nprot") { Plots[WhichFSIModel]->SetLineColor(kBlack); }
-								else { Plots[WhichFSIModel]->SetLineColor(kBlue); Plots[WhichFSIModel]->SetLineStyle(7); }
-								Plots[WhichFSIModel]->Draw("hist same"); 
-								gStyle->SetErrorX(0); 
-								Plots[0]->Draw("e same"); 
-							}
+							else {*/ 
+								//if (NameOfPlots[WhichPlot] == "h1_Nprot" || NameOfPlots[WhichPlot] == "h1_Nprot_NonZeroProt") 
+								if (FSILabel[WhichFSIModel] == "Data")
+									{ Plots[WhichFSIModel]->SetLineColor(kBlack); Plots[WhichFSIModel]->SetMarkerColor(kBlack); Plots[WhichFSIModel]->SetMarkerColor(kBlack); }
+								else { Plots[WhichFSIModel]->SetLineColor(kBlue); Plots[WhichFSIModel]->SetMarkerColor(kBlue); Plots[WhichFSIModel]->SetLineStyle(7); }
+								
+								Plots[WhichFSIModel]->SetMarkerStyle(20);
+								Plots[WhichFSIModel]->SetMarkerSize(3.);
+								Plots[WhichFSIModel]->Draw("e same"); 
+								//gStyle->SetErrorX(0); 
+								//Plots[0]->Draw("e same"); 
+							/*}*/
 						} 
 
 						// ----------------------------------------------------------------------------------------------------
@@ -290,21 +296,21 @@ void OverlayMultiplicities_FigExtData7() {
 				TLatex latexData;
 				latexData.SetTextFont(FontStyle);
 				latexData.SetTextSize(TextSize);
-				latexData.DrawLatexNDC(0.65,0.8,"Protons");
+				if (NameOfPlots[0] == "h1_Nprot" || NameOfPlots[0] == "h1_Nprot_NonZeroProt") { latexData.DrawLatexNDC(0.65,0.8,"Protons"); }
 
 				TLatex latexGenie;
 				latexGenie.SetTextFont(FontStyle);
 				latexGenie.SetTextColor(kBlue);
 				latexGenie.SetTextSize(TextSize);
-				latexGenie.DrawLatexNDC(0.5,0.6,"#pi^{#pm}");
+				if (NameOfPlots[0] == "h1_Npi") { latexGenie.DrawLatexNDC(0.65,0.8,"#pi^{#pm}"); }
 
 				// -----------------------------------------------------------------------------------------------------------------------------------------
 
 				TString ext = "";
 				if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
-				PlotCanvas->SaveAs("../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"+ext+nucleus[WhichNucleus]+"_" 
-					+E[WhichEnergy]+"_" +"Multiplicities"+WhatModelsAreIncluded+".pdf");
+				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"+ext+nucleus[WhichNucleus]+"_" 
+					+E[WhichEnergy]+"_" +"Multiplicities"+WhatModelsAreIncluded+"_AbsNorm.pdf");
 
 				//delete PlotCanvas;
 
