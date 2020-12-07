@@ -49,8 +49,8 @@ void AcceptanceCorrections() {
 	// ------------------------------------------------------------------------
 
 //	nucleus.push_back("4He"); JustNucleus.push_back("He");
-//	nucleus.push_back("12C"); JustNucleus.push_back("C");
-	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
+	nucleus.push_back("12C"); JustNucleus.push_back("C");
+//	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.157 GeV"); DoubleE.push_back(1.161);	
 //	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	

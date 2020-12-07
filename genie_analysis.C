@@ -124,6 +124,8 @@ void genie_analysis::Loop(Int_t choice) {
 	bool TruthLevel0piSignalStudy = false;
 	bool ApplyPhiOpeningAngle = false;
 	bool UsePhiThetaBand = false;
+	bool ApplyThetaSlice = false;
+	bool ApplyGoodSectorPhiSlice = false;
 
 	// ---------------------------------------------------------------------------------------------------------------
 
@@ -1120,11 +1122,6 @@ void genie_analysis::Loop(Int_t choice) {
 		double el_momentum = V3_el.Mag();
 		double el_theta = V3_el.Theta();
 
-		// ----------------------------------------------------------------------------------------------------------------------
-
-		double theta_min = myElectronFit->Eval(el_momentum);
-		if (el_theta*180./TMath::Pi() < theta_min) { continue; }	
-
 		// ----------------------------------------------------------------------------------------------------------------------	
 
 		if (choice > 0) { //smearing, fiducials and acceptance ratio for GENIE simulation data
@@ -1166,7 +1163,22 @@ void genie_analysis::Loop(Int_t choice) {
 
 		}
 
+		// ----------------------------------------------------------------------------------------------------------------------
+
+		double theta_min = myElectronFit->Eval(el_momentum);
+		if (el_theta*180./TMath::Pi() < theta_min) { continue; }
+
+		if (ApplyThetaSlice) {  // hard coded range for now
+
+			if ( el_theta*180./TMath::Pi() < 23) { continue; }
+			if ( el_theta*180./TMath::Pi() > 27) { continue; }
+
+		}
+
+		// ----------------------------------------------------------------------------------------------------------------------
+
 		// Explicit cuts on electron momentum
+
 		if (fbeam_en=="1161" && el_momentum < 0.4) { continue; }
 		if (fbeam_en=="2261" && el_momentum < 0.55) { continue; }
 		if (fbeam_en=="4461" && el_momentum < 1.1) { continue; }
@@ -1176,6 +1188,9 @@ void genie_analysis::Loop(Int_t choice) {
 		if(el_phi_mod<0)  el_phi_mod  = el_phi_mod+360; //Add 360 so that electron phi is between 0 and 360 degree
 
 		if (ApplyPhiOpeningAngle) { if ( !(TMath::Abs(el_phi_mod - 30)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 90)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 150)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 210)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 270)  < PhiOpeningAngle || TMath::Abs(el_phi_mod - 330)  < PhiOpeningAngle ) ) { continue; } }
+
+
+		if (ApplyGoodSectorPhiSlice) { if ( !( TMath::Abs(el_phi_mod - CenterFirstSector)  < PhiOpeningAngle ) ) { continue; } }
 
 
 		//Calculated Mott Cross Section and Weights for Inclusive Histograms

@@ -48,14 +48,22 @@ void AbsXSec_OverlayEQE_Fig2() {
 //	JustNucleus.push_back("Fe");
 //	E.push_back("2_261");
 
+//	nucleus.push_back("12C"); 
+//	JustNucleus.push_back("C");
+//	E.push_back("2_261");
+
 	xBCut.push_back("NoxBCut");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");	
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
 
-	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
-//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");	
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
+
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2");	
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("G2018");
+
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
+	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 
 	// ------------------------------------------------------------------------
 
@@ -173,8 +181,11 @@ void AbsXSec_OverlayEQE_Fig2() {
 
 							for (int j = 1; j < 5; j++) {
 
-								BreakDownPlots.push_back( (TH1D*)( FileSample->Get("InclusiveEQE_Int_"+ToStringInt(j)) ) ); 
-//								BreakDownPlots.push_back( (TH1D*)( FileSample->Get("ECal_Int_"+ToStringInt(j)) ) ); 
+								if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") 
+									{ BreakDownPlots.push_back( (TH1D*)( FileSample->Get("InclusiveEQE_Int_"+ToStringInt(j)) ) ); }
+ 
+								if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") 
+									{ BreakDownPlots.push_back( (TH1D*)( FileSample->Get("ECal_Int_"+ToStringInt(j)) ) ); }
 
 								UniversalE4vFunction(BreakDownPlots[j-1],FSIModelsToLabels[FSIModel[WhichFSIModel]],\
 										     nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
@@ -266,13 +277,13 @@ void AbsXSec_OverlayEQE_Fig2() {
 					myEbeam->SetTextFont(FontStyle);
 					myEbeam->SetTextColor(kAzure+4);
 					myEbeam->SetTextSize(TextSize-0.02);
-					if (E[WhichEnergy] == "1_161") { myEbeam->DrawLatexNDC(0.72,0.35,"E_{beam}"); }
+					if (E[WhichEnergy] == "1_161" && NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myEbeam->DrawLatexNDC(0.72,0.35,"E_{beam}"); }
 
 					TLatex* myArrow = new TLatex();
 					myArrow->SetTextFont(FontStyle);
 					myArrow->SetTextColor(kAzure+4);
 					myArrow->SetTextSize(1.2*TextSize);
-					if (E[WhichEnergy] == "1_161") { myArrow->DrawLatex(1.141,0.1,"#Downarrow"); }
+					if (E[WhichEnergy] == "1_161" && NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myArrow->DrawLatex(1.141,0.1,"#Downarrow"); }
 
 					// Monitor where 1.161 GeV is
 					//TLine* line = new TLine(1.161,0.,1.161,2.);

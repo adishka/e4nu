@@ -122,12 +122,12 @@ void OverlayPlots() {
 
 	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(kCyan); BreakDownColors.push_back(kGreen); BreakDownColors.push_back(kMagenta);
 
-	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data (Stuart)"); DirNames.push_back("Data");
-//	FSIModel.push_back("MikhailCook_Data"); FSILabel.push_back("Data (Mikhail)"); DirNames.push_back("Data");
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
+	FSIModel.push_back("MikhailCook_Data"); FSILabel.push_back("Data (Mikhail)"); DirNames.push_back("Data");
 
 //	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data (failure)"); DirNames.push_back("Data");
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Data (Florian's rethrow)"); DirNames.push_back("Data");
-	FSIModel.push_back("Pinned_Data_NewFiducials_SixSectors"); FSILabel.push_back("Data"); DirNames.push_back("Data_New_Fiducials");
+//	FSIModel.push_back("Pinned_Data_NewFiducials_SixSectors"); FSILabel.push_back("Data (New)"); DirNames.push_back("Data_New_Fiducials");
 
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
