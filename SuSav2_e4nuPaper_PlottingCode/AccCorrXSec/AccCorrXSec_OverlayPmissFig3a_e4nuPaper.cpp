@@ -82,7 +82,8 @@ void AccCorrXSec_OverlayPmissFig3a_e4nuPaper() {
 
 				double max = -99.;
 				double min = 1E12;
-				double height = 1.05;
+//				double height = 1.05;
+				double height = 2.7;
 
 				for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
@@ -223,13 +224,24 @@ void AccCorrXSec_OverlayPmissFig3a_e4nuPaper() {
 							gStyle->SetErrorX(0); // Removing the horizontal errors
 							//Plots[WhichFSIModel]->Draw("e same"); 
 
-							TH1D* DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+							TH1D* DataPlot = Plots[WhichFSIModel];
+
+							DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
 							DataPlot->SetMarkerStyle(20); 
 							DataPlot->SetMarkerSize(2.); 
 							DataPlot->SetLineColor(kBlack);	
-							DataPlot->SetMarkerColor(kBlack);	
-							DataPlot->Draw("e same");
+							DataPlot->SetMarkerColor(kBlack);
+							DataPlot->GetYaxis()->SetRangeUser(0.,height*DataPlot->GetMaximum());	
+							DataPlot->Draw("e same"); 
+
+//							TH1D* DataPlotG2018 = AcceptanceCorrection(Plots[WhichFSIModel],"hA2018_Final", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+
+//							DataPlotG2018->SetMarkerStyle(20); 
+//							DataPlotG2018->SetMarkerSize(2.); 
+//							DataPlotG2018->SetLineColor(kRed);	
+//							DataPlotG2018->SetMarkerColor(kRed);	
+//							DataPlotG2018->Draw("e same"); 
 
 						} else { 
 						

@@ -320,7 +320,7 @@ GetCharge_FilterData::GetCharge_FilterData(std::string a_target,std::string a_be
       chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
 
 /*
-	12C @ 1.1 GeV & 1500 high torus current
+      //12C @ 1.1 GeV & 1500 high torus current
       chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*18294*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
       chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*18297*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
       chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*18298*.root/h10", fbeam_en.c_str(), ftarget.c_str()));

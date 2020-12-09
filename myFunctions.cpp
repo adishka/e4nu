@@ -668,9 +668,12 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 
 	std::vector<TString> FSIModel; FSIModel.clear();
 
-	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM");
-//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc");
+//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM");
+	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc");
 	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithoutFidAcc");
+
+//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_XSec");
+//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithoutFidAcc_XSec");
 	int NFSIModels = FSIModel.size();
 
 	for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {

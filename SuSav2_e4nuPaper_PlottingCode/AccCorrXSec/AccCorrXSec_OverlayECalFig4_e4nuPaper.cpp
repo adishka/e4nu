@@ -26,6 +26,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
+	double height = 1.05;
 
 	// ------------------------------------------------------------------------
 
@@ -95,13 +96,13 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 			for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
 				// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
-				double MaxHeight = 92.;
+				double MaxHeight = 1.2;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 302.; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 4.; }
 
 					// ----------------------------------------------------------------------------
 
@@ -114,6 +115,8 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 					// No data on 56Fe @ 1.161 GeV
 
 					if ( nucleus[WhichNucleus] == "56Fe" && DoubleE[WhichEnergy] == 1.161 ) { delete pad; continue; }
+//					if ( nucleus[WhichNucleus] == "56Fe" && DoubleE[WhichEnergy] == 4.461 ) { delete pad; continue; }
+//					if ( nucleus[WhichNucleus] == "12C" && DoubleE[WhichEnergy] == 4.461 ) { delete pad; continue; }
 
 					// ---------------------------------------------------------------------------------------------
 
@@ -167,6 +170,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
 						Plots[WhichFSIModel]->SetLineWidth(1);
 						Plots[WhichFSIModel]->GetYaxis()->SetTitle(DoubleAccCorrXSecTitle);
+						Plots[WhichFSIModel]->Scale(0.01);
 
 						//-----------------------------------------------------------------------------------------------
 
@@ -200,6 +204,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 
 						if (DoubleE[WhichEnergy] == 1.161) { Plots[WhichFSIModel]->Scale(1./2.); }
 						if (DoubleE[WhichEnergy] == 4.461) { Plots[WhichFSIModel]->Scale(5.); }
+
 						Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(5);
 
 						// ----------------------------------------------------------------------------------
@@ -232,6 +237,8 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 
 								if (DoubleE[WhichEnergy] == 1.161) { BreakDownPlots[j-1]->Scale(1./2.); }
 								if (DoubleE[WhichEnergy] == 4.461) { BreakDownPlots[j-1]->Scale(5.); }
+
+								BreakDownPlots[j-1]->Scale(0.01);
 
 								//-----------------------------------------------------------------------------------------------
 
@@ -301,13 +308,24 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 							gStyle->SetErrorX(0); // Removing the horizontal errors
 							//Plots[WhichFSIModel]->Draw("e same"); 
 
-							TH1D* DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+							TH1D* DataPlot = Plots[WhichFSIModel];
+
+							DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
 							DataPlot->SetMarkerStyle(20); 
 							DataPlot->SetMarkerSize(2.); 
 							DataPlot->SetLineColor(kBlack);	
-							DataPlot->SetMarkerColor(kBlack);	
-							DataPlot->Draw("e same");
+							DataPlot->SetMarkerColor(kBlack);
+							DataPlot->GetYaxis()->SetRangeUser(0.,height*DataPlot->GetMaximum());	
+							DataPlot->Draw("e same"); 
+
+//							TH1D* DataPlotG2018 = AcceptanceCorrection(Plots[WhichFSIModel],"hA2018_Final", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+
+//							DataPlotG2018->SetMarkerStyle(20); 
+//							DataPlotG2018->SetMarkerSize(2.); 
+//							DataPlotG2018->SetLineColor(kRed);	
+//							DataPlotG2018->SetMarkerColor(kRed);	
+//							DataPlotG2018->Draw("e same"); 
 
 						} else { 
 
@@ -501,7 +519,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 		// Extra pad for the Y-axis units carbon
 
 		PlotCanvas->cd();
-		TPad* padTitle = new TPad("padTitle","padTitle",0.057,0.58,0.107,1., 21); 
+		TPad* padTitle = new TPad("padTitle","padTitle",0.053,0.58,0.103,1., 21); 
 		padTitle->SetFillColor(kWhite); 
 		padTitle->Draw();
 		padTitle->cd();

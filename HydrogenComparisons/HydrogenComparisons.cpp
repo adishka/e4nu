@@ -157,7 +157,8 @@ void HydrogenComparisons() {
 
 	// This analysis is cutting on phi +/- 15 deg
 
-double LocaldOmega = 0.017;
+double LocaldOmega = dOmega;
+//double LocaldOmega = 0.017;
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -187,7 +188,7 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 
 				// ---------------------------------------------------------------------------------------
 
-				TLegend* leg = leg = new TLegend(0.7,0.73,0.8,0.87);
+				TLegend* leg = leg = new TLegend(0.5,0.73,0.6,0.87);
 
 				leg->SetNColumns(1);
 
@@ -221,7 +222,7 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 						// Make the plot pretty
 
 						Plots[WhichNucleus]->SetLineColor(Colors[WhichNucleus]);
-						Plots[WhichNucleus]->SetTitle(FSILabel[WhichFSIModel] + ", " + LabelsOfSamples[WhichNucleus]);
+						//Plots[WhichNucleus]->SetTitle(FSILabel[WhichFSIModel] + ", " + LabelsOfSamples[WhichNucleus]);
 						Plots[WhichNucleus]->GetXaxis()->SetTitle(LabelOfPlots[WhichPlot]);
 						PrettyDoubleXSecPlot(Plots[WhichNucleus]);
 						Plots[WhichNucleus]->GetYaxis()->SetTitle("# Counts");
@@ -294,7 +295,7 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 						}
 
 						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) 
-							{ leg->AddEntry(Plots[WhichNucleus],LabelsOfSamples[WhichNucleus], "lep");}
+							{ leg->AddEntry(Plots[WhichNucleus],LabelsOfSamples[WhichNucleus]+", " + ToStringInt(Plots[WhichNucleus]->Integral()) + " events", "lep");}
 						else { leg->AddEntry(Plots[WhichNucleus],LabelsOfSamples[WhichNucleus], "l"); }
 				
 
@@ -364,12 +365,19 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 
 			// Getting to the cross section
 
-			double CloneSF = 7. * ConversionFactorChargeToElectrons / (LocaldOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])] * AvogadroNumber *\
+//			double CloneSF = 7. * ConversionFactorChargeToElectrons / (LocaldOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])] * AvogadroNumber *\
+//			       TargetLength[std::make_pair("CH2",E[WhichEnergy])] * TargetDensity[std::make_pair("CH2",E[WhichEnergy])]);
+
+
+			double CloneSF = 7.  / (LocaldOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])]* ConversionFactorChargeToElectrons * AvogadroNumber *\
 			       TargetLength[std::make_pair("CH2",E[WhichEnergy])] * TargetDensity[std::make_pair("CH2",E[WhichEnergy])]);
+
+
 			Clone->Scale(CloneSF);
 
 			Clone->GetXaxis()->SetRangeUser(0.87,1);
-			Clone->GetYaxis()->SetTitle("Normalized Yield");
+//			Clone->GetYaxis()->SetTitle("Normalized Yield");
+			Clone->GetYaxis()->SetTitle("Cross Section [cm^{2}]");
 			DiffCanvas->cd();
 			Clone->Draw();
 
@@ -431,6 +439,7 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 			TLegend* leg = new TLegend(0.65,0.6,0.75,0.7);
 
 			leg->AddEntry(Clone,"Data","lep");
+//			leg->AddEntry(Clone,"Data, " + ToStringInt(Clone->Integral()),"lep");
 			//leg->AddEntry(G2018histo,"GENIE","l");
 
 			leg->SetTextFont(FontStyle);

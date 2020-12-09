@@ -27,6 +27,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
+	TGaxis::SetMaxDigits(3);
 
 	// ------------------------------------------------------------------------
 
@@ -44,22 +45,48 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 	JustNucleus.push_back("C");
 	E.push_back("1_161");
 
+//	nucleus.push_back("12C"); 
+//	JustNucleus.push_back("C");
+//	E.push_back("2_261");
+
+//	nucleus.push_back("56Fe"); 
+//	JustNucleus.push_back("Fe");
+//	E.push_back("2_261");
+
+//	nucleus.push_back("56Fe"); 
+//	JustNucleus.push_back("Fe");
+//	E.push_back("4_461");
+
 	xBCut.push_back("NoxBCut");
 
-	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
-//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
+	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+
+//	FSIModel.push_back("Pinned_Data_Final_XSec"); FSILabel.push_back("Pinned Data");
+
+//	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
+
+//		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth0pi_WithoutFidAcc_XSec"); FSILabel.push_back("SuSav2");	
+//		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth0pi_WithoutFidAcc_XSec"); FSILabel.push_back("G2018");
+
+//	} else {
+
+//		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_XSec"); FSILabel.push_back("SuSav2");	
+//		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc_XSec"); FSILabel.push_back("G2018");
+
+//	}
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
 
 	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
-		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
-		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
+		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
+		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("G2018");
 
 	} else {
 
-		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
-		FSIModel.push_back("hA2018_Final_RadCorr_LFGM0pi_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
+		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
+		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
 
 	}
 
@@ -92,9 +119,8 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 				for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
-					TCanvas* PlotCanvas = new TCanvas(nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut],
-									 nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut],
-									 205,34,1024,768);
+					TString CanvasName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
+					TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768);
 
 					// ---------------------------------------------------------------------------
 
@@ -180,8 +206,11 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 							for (int j = 1; j < 5; j++) {
 
-								BreakDownPlots.push_back( (TH1D*)( FileSample->Get("InclusiveEQE_Int_"+ToStringInt(j)) ) ); 
-								//BreakDownPlots.push_back( (TH1D*)( FileSample->Get("ECal_Int_"+ToStringInt(j)) ) ); 
+								if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") 
+									{ BreakDownPlots.push_back( (TH1D*)( FileSample->Get("InclusiveEQE_Int_"+ToStringInt(j)) ) ); }
+ 
+								if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") 
+									{ BreakDownPlots.push_back( (TH1D*)( FileSample->Get("ECal_Int_"+ToStringInt(j)) ) ); }
 
 								UniversalE4vFunction(BreakDownPlots[j-1],FSIModelsToLabels[FSIModel[WhichFSIModel]],\
 										     nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
@@ -209,7 +238,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 						double localmax = Plots[WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }
-						double height = 1.05;
+						double height = 4.;
 						if ( xBCut[WhichxBCut] == "xBCut" ) { height = 1.1; }
 						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 
@@ -225,24 +254,27 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 							Plots[WhichFSIModel]->SetMarkerColor(kBlack); 
 
 							gStyle->SetErrorX(0); // Removing the horizontal errors
-							Plots[WhichFSIModel]->Draw("e same"); 
-/*
-							TH1D* DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+//							Plots[WhichFSIModel]->Draw("e same"); 
+
+							TH1D* DataPlot = Plots[WhichFSIModel];
+
+							DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
 							DataPlot->SetMarkerStyle(20); 
 							DataPlot->SetMarkerSize(2.); 
 							DataPlot->SetLineColor(kBlack);	
-							DataPlot->SetMarkerColor(kBlack);	
+							DataPlot->SetMarkerColor(kBlack);
+							DataPlot->GetYaxis()->SetRangeUser(0.,height*DataPlot->GetMaximum());	
 							DataPlot->Draw("e same"); 
 
-							TH1D* DataPlotG2018 = AcceptanceCorrection(Plots[WhichFSIModel],"hA2018_Final", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+//							TH1D* DataPlotG2018 = AcceptanceCorrection(Plots[WhichFSIModel],"hA2018_Final", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
-							DataPlotG2018->SetMarkerStyle(20); 
-							DataPlotG2018->SetMarkerSize(2.); 
-							DataPlotG2018->SetLineColor(kRed);	
-							DataPlotG2018->SetMarkerColor(kRed);	
-							DataPlotG2018->Draw("e same"); 							
-*/
+//							DataPlotG2018->SetMarkerStyle(20); 
+//							DataPlotG2018->SetMarkerSize(2.); 
+//							DataPlotG2018->SetLineColor(kRed);	
+//							DataPlotG2018->SetMarkerColor(kRed);	
+//							DataPlotG2018->Draw("e same"); 							
+
 						} else { 
 
 							if (FSILabel[WhichFSIModel] == "G2018") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }
@@ -288,13 +320,13 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 					myEbeam->SetTextFont(FontStyle);
 					myEbeam->SetTextColor(kAzure+4);
 					myEbeam->SetTextSize(TextSize-0.02);
-					myEbeam->DrawLatexNDC(0.72,0.35,"E_{beam}");
+					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myEbeam->DrawLatexNDC(0.72,0.35,"E_{beam}"); }
 
 					TLatex* myArrow = new TLatex();
 					myArrow->SetTextFont(FontStyle);
 					myArrow->SetTextColor(kAzure+4);
 					myArrow->SetTextSize(1.2*TextSize);
-					myArrow->DrawLatex(1.141,0.1,"#Downarrow");
+					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myArrow->DrawLatex(1.141,0.1,"#Downarrow"); }
 
 					// Monitor where 1.161 GeV is
 					//TLine* line = new TLine(1.161,0.,1.161,2.);

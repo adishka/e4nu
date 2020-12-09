@@ -50,8 +50,12 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 	xBCut.push_back("NoxBCut");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");
+
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2");
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("Genie");
+
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");
 
 	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
 
@@ -82,7 +86,7 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 
 				double max = -99.;
 				double min = 1E12;
-				double height = 1.05;
+				double height = 1.1;
 
 				for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 

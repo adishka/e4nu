@@ -60,9 +60,16 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("Reco_eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("TrueWithFid_eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("True_eRecoEnergy_slice_0");
+
 //	NameOfPlots.push_back("BkgCorrection_eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("FidCorrection_eRecoEnergy_slice_0");
-	NameOfPlots.push_back("AccCorrection_eRecoEnergy_slice_0");
+//	NameOfPlots.push_back("AccCorrection_eRecoEnergy_slice_0");
+
+//	NameOfPlots.push_back("Reco_epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("TrueWithFid_epRecoEnergy_slice_0");
+	NameOfPlots.push_back("True_epRecoEnergy_slice_0");
+
+//	NameOfPlots.push_back("AccCorrection_epRecoEnergy_slice_0");
 
 	// ------------------------------------------------------------------------
 
@@ -138,6 +145,9 @@ void OverlayPlots() {
 
 						Plots[WhichFSIModel]->Draw("C hist same");
 						Plots[0]->Draw("C hist same");
+
+//						Plots[WhichFSIModel]->Draw("e  same");
+//						Plots[0]->Draw("e  same");
 
 		                                // --------------------------------------------------------------------------------------------------
 

@@ -49,8 +49,8 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 	// ------------------------------------------------------------------------
 
 	FSIModel.push_back("Pinned_Data_Final");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc");
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc");
 
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors");
@@ -107,7 +107,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 
 	 			// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
 			
-				double MaxHeight = 35;
+				double MaxHeight = 43;
 
 				// Loop over the nuclei
 
@@ -152,6 +152,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 
 						PrettyDoubleXSecPlot(Plots[WhichFSIModel]);
 						Plots[WhichFSIModel]->SetLineColor(DataSetColors[WhichFSIModel]);
+						Plots[WhichFSIModel]->SetLineWidth(1);
 
 						Plots[WhichFSIModel]->GetXaxis()->SetLabelSize(1.2*TextSize);
 						Plots[WhichFSIModel]->GetXaxis()->SetTitleSize(0.);
@@ -175,6 +176,8 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 						//                 apply acceptance systematics using sector-by -sector uncertainties
 
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E,NameOfPlots[WhichPlot]);
+
+						if ( Energy[WhichEnergy] == 4.461 ) { Plots[WhichFSIModel]->Scale(2.); }
 
 						// ----------------------------------------------------------------------------------
 
@@ -209,6 +212,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 									l1Break->SetTextColor(BreakDownColors[j-1]);
 								}
 
+								if ( Energy[WhichEnergy] == 4.461 ) { BreakDownPlots[j-1]->Scale(2.); }
 								BreakDownPlots[j-1]->Draw("C hist same");
 
 							} // end of the look over the GENIE break down
@@ -315,7 +319,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 		TLatex latex4GeV;
 		latex4GeV.SetTextFont(FontStyle);
 		latex4GeV.SetTextSize(6*TextSize);
-		latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV");
+		latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV (x2)");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 

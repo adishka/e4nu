@@ -26,13 +26,11 @@ void AcceptanceCorrections() {
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
-	TGaxis::SetMaxDigits(3);
-
 	const std::vector<int> LocalDataSetColors{1,610,410,kRed+2,kBlue};
 	double split = 0.1;
 
-	//TString Label = "SuSav2";
-	TString Label = "hA2018_Final";
+	TString Label = "SuSav2";
+	//TString Label = "hA2018_Final";
 
 	// ------------------------------------------------------------------------
 
@@ -55,8 +53,8 @@ void AcceptanceCorrections() {
 //	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.157 GeV"); DoubleE.push_back(1.161);	
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
-	E.push_back("4_461"); LabelE.push_back(" @ E = 4.457 GeV"); DoubleE.push_back(4.461);	
+	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
+//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.457 GeV"); DoubleE.push_back(4.461);	
 
 	xBCut.push_back("NoxBCut");
 
@@ -69,20 +67,6 @@ void AcceptanceCorrections() {
 	// 0th plot is CV
 	// 1st plot is true 1p0pi with smearing (S) / fiducials (F) / acceptance maps (A) / resolution (R) / thresholds (T)
 	// 2nd plot is true 1p0pi without smearing (S) / fiducials (F) / acceptance maps (A) / resolution (R) but with thresholds (T)
-
-//	FSIModel.push_back(Label+"_RadCorr_LFGM_XSec"); FSILabel.push_back("Reco");
-
-//	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi"){
-
-//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc_XSec"); FSILabel.push_back("TrueWithFid");
-//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithoutFidAcc_XSec"); FSILabel.push_back("True");
-
-//	} else {
-
-//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_XSec"); FSILabel.push_back("TrueWithFid");
-//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithoutFidAcc_XSec"); FSILabel.push_back("True");
-
-//	}
 
 	FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
 
@@ -185,8 +169,6 @@ void AcceptanceCorrections() {
 
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
 
-//if ( E[WhichEnergy] == "1_161") { Plots[WhichFSIModel]->GetXaxis()->SetRangeUser(0.8,1.22); }
-
 						// ---------------------------------------------------------------------------------------------------
 
 						// Max, min, title & # divisions
@@ -219,8 +201,8 @@ void AcceptanceCorrections() {
 						} else { 
 						
 							if (FSILabel[WhichFSIModel] =="G2018") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }
-							Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
-//							Plots[WhichFSIModel]->Draw("e hist same");  // draw them as lines
+//							Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
+							Plots[WhichFSIModel]->Draw("e hist same");  // draw them as lines
 
 							if (string(FSILabel[0]).find("Data") != std::string::npos) { Plots[0]->Draw("e same"); } 
 

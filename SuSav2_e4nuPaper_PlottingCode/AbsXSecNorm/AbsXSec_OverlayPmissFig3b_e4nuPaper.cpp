@@ -26,7 +26,7 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
-	TGaxis::SetMaxDigits(2);
+	TGaxis::SetMaxDigits(3);
 
 	// ------------------------------------------------------------------------
 
@@ -57,8 +57,11 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 	xBCut.push_back("NoxBCut");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2");
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("G2018");
+
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
 
 	NameOfPlots.push_back("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_3"); LabelOfPlots.push_back("P_{T} > 400 [MeV/c]");  OutputPlotNames.push_back("epRecoEnergy_slice_3");
 	NameOfPlots.push_back("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_2"); LabelOfPlots.push_back("200 < P_{T} < 400 [MeV/c]");  OutputPlotNames.push_back("epRecoEnergy_slice_2");
@@ -173,6 +176,7 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelFont(FontStyle);
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(TextSize);
+						if (NameOfPlots[WhichPlot] == "h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_3") { Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(TextSize-0.02); }
 						Plots[WhichFSIModel]->GetYaxis()->SetTickSize(0.02);
 						Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(Ndivisions);
 						Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(0.35);

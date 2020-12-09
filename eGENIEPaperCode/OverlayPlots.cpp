@@ -57,18 +57,22 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("nu");
 //      NameOfPlots.push_back("Q2");
 
-//        NameOfPlots.push_back("ElectronCosTheta");
-//        NameOfPlots.push_back("ElectronEnergy");
-
-	NameOfPlots.push_back("MissMomentum");
-	NameOfPlots.push_back("DeltaAlphaT"); 
-	NameOfPlots.push_back("DeltaPhiT"); 
+//       NameOfPlots.push_back("ElectronCosTheta");
+//       NameOfPlots.push_back("ElectronEnergy");
 
         //NameOfPlots.push_back("ProtonCosTheta");
         //NameOfPlots.push_back("ProtonEnergy");
 
         //NameOfPlots.push_back("epRecoEnergy_slice_0");
         //NameOfPlots.push_back("eRecoEnergy_slice_0");
+
+//	NameOfPlots.push_back("MissMomentum");
+//	NameOfPlots.push_back("DeltaAlphaT"); 
+//	NameOfPlots.push_back("DeltaPhiT"); 
+
+	NameOfPlots.push_back("MissMomentum_VectorSum");
+	NameOfPlots.push_back("DeltaAlphaT_VectorSum"); 
+	NameOfPlots.push_back("DeltaPhiT_VectorSum");
 
 	// -------------------------------------------------------------------------------------------
 
@@ -112,7 +116,6 @@ void OverlayPlots() {
 				for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
 				  TString PathToFiles = "myFiles/";
-
 				  TFile* FileSample = TFile::Open(PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+".root");
 
 				  Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]+"Plot") ) );

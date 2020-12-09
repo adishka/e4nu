@@ -26,7 +26,7 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
-	TGaxis::SetMaxDigits(2);
+	TGaxis::SetMaxDigits(3);
 
 	// ------------------------------------------------------------------------
 
@@ -179,6 +179,7 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 						Plots[WhichFSIModel]->GetYaxis()->SetTitleSize(0.);
 
 					        if (WhichPlot == 0) { Plots[WhichFSIModel]->GetXaxis()->SetLabelSize(0.13); }
+					        if (WhichPlot == 0) { Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(0.12); }
 
 						//-----------------------------------------------------------------------------------------------
 
@@ -268,7 +269,10 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 
 						double localmax = Plots[WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }
-						double height = 1.2;
+//						double height = 1.2;
+						double height = 4.;
+						if (WhichPlot == 2) { height = 5.; }
+
 						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 
 						double localmin = Plots[WhichFSIModel]->GetBinContent(Plots[WhichFSIModel]->FindBin(4)); // multiplicity 4 is the highest one in data
@@ -284,13 +288,24 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 							gStyle->SetErrorX(0); // Removing the horizontal errors
 							//Plots[WhichFSIModel]->Draw("e same"); 
 
-							TH1D* DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+							TH1D* DataPlot = Plots[WhichFSIModel];
+
+							DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
 							DataPlot->SetMarkerStyle(20); 
 							DataPlot->SetMarkerSize(2.); 
 							DataPlot->SetLineColor(kBlack);	
-							DataPlot->SetMarkerColor(kBlack);	
-							DataPlot->Draw("e same");
+							DataPlot->SetMarkerColor(kBlack);
+							DataPlot->GetYaxis()->SetRangeUser(0.,height*DataPlot->GetMaximum());	
+							DataPlot->Draw("e same"); 
+
+//							TH1D* DataPlotG2018 = AcceptanceCorrection(Plots[WhichFSIModel],"hA2018_Final", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+
+//							DataPlotG2018->SetMarkerStyle(20); 
+//							DataPlotG2018->SetMarkerSize(2.); 
+//							DataPlotG2018->SetLineColor(kRed);	
+//							DataPlotG2018->SetMarkerColor(kRed);	
+//							DataPlotG2018->Draw("e same");
 
 
 						} else { 

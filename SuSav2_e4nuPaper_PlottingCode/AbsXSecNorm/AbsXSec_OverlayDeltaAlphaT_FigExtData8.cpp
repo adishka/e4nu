@@ -49,8 +49,8 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData8() {
 	// ------------------------------------------------------------------------
 
 	FSIModel.push_back("Pinned_Data_Final");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc");
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc");
 
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors");
@@ -107,13 +107,13 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData8() {
 
 	 			// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
 			
-				double MaxHeight = 0.05;
+				double MaxHeight = 0.055;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 0.35; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 0.24; }
 
 					// ---------------------------------------------------------------------------------------------------------------
 
@@ -152,6 +152,7 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData8() {
 
 						PrettyDoubleXSecPlot(Plots[WhichFSIModel]);
 						Plots[WhichFSIModel]->SetLineColor(DataSetColors[WhichFSIModel]);
+						Plots[WhichFSIModel]->SetLineWidth(1);
 
 						Plots[WhichFSIModel]->GetXaxis()->SetLabelSize(1.2*TextSize);
 						Plots[WhichFSIModel]->GetXaxis()->SetTitleSize(0.);

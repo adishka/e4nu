@@ -27,6 +27,7 @@ void AbsXSec_OverlayEQE_Fig2() {
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
+	TGaxis::SetMaxDigits(3);
 
 	// ------------------------------------------------------------------------
 
@@ -44,26 +45,39 @@ void AbsXSec_OverlayEQE_Fig2() {
 	JustNucleus.push_back("C");
 	E.push_back("1_161");
 
+//	nucleus.push_back("12C"); 
+//	JustNucleus.push_back("C");
+//	E.push_back("2_261");
+
 //	nucleus.push_back("56Fe"); 
 //	JustNucleus.push_back("Fe");
 //	E.push_back("2_261");
 
-//	nucleus.push_back("12C"); 
-//	JustNucleus.push_back("C");
-//	E.push_back("2_261");
+//	nucleus.push_back("56Fe"); 
+//	JustNucleus.push_back("Fe");
+//	E.push_back("4_461");
 
 	xBCut.push_back("NoxBCut");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
 
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");	
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
-
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2");	
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("G2018");
-
 //	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
 	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+
+	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
+
+		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("SuSav2");	
+		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("G2018");
+
+	} else {
+
+		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2");	
+		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("G2018");
+
+	}
+
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");	
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
 
 	// ------------------------------------------------------------------------
 

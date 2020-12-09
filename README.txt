@@ -24,3 +24,8 @@ When Mikhail's cook is gonna be ready
 
 export nucleus="56Fe"; export energy="2261"; 
 hadd /w/hallb-scifs17exp/clas/claseg2/apapadop/MikhailCook_genie_filtered_data_e2a_ep_${nucleus}_${energy}_neutrino6_united4_radphot_test_100M.root /lustre19/expphy/volatile/clas/clase2/apapadop/MikhailCook_RunNumber_*_genie_filtered_data_e2a_ep_${nucleus}_${energy}_neutrino6_united4_radphot_test_100M.root
+
+
+# Don't forget to pin the files or they will be deleted from cache 
+
+jcache pin /cache/clas/e2a/production/pass3/v1/4461/C12/HROOT/*.root -D 60

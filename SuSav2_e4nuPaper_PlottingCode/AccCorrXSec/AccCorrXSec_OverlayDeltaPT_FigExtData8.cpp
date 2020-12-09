@@ -21,11 +21,12 @@ using namespace std;
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void AbsXSec_OverlayDeltaPT_FigExtData8() {
+void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
+	double height = 1.05;
 
 	// ------------------------------------------------------------------------
 
@@ -49,8 +50,8 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 	// ------------------------------------------------------------------------
 
 	FSIModel.push_back("Pinned_Data_Final");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc");
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc");
 
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors");
@@ -107,13 +108,13 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 
 	 			// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
 			
-				double MaxHeight = 35;
+				double MaxHeight = 250;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 65; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 350; }
 
 					// ---------------------------------------------------------------------------------------------------------------
 
@@ -152,6 +153,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 
 						PrettyDoubleXSecPlot(Plots[WhichFSIModel]);
 						Plots[WhichFSIModel]->SetLineColor(DataSetColors[WhichFSIModel]);
+						Plots[WhichFSIModel]->SetLineWidth(1);
 
 						Plots[WhichFSIModel]->GetXaxis()->SetLabelSize(1.2*TextSize);
 						Plots[WhichFSIModel]->GetXaxis()->SetTitleSize(0.);
@@ -175,6 +177,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 						//                 apply acceptance systematics using sector-by -sector uncertainties
 
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E,NameOfPlots[WhichPlot]);
+						if (Energy[WhichEnergy] == 4.461 ) { Plots[WhichFSIModel]->Scale(4.); }
 
 						// ----------------------------------------------------------------------------------
 
@@ -200,6 +203,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 								//BreakDownPlots[j-1]->SetLineWidth(LineWidth);
 
 								UniversalE4vFunction(BreakDownPlots[j-1],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E,NameOfPlots[WhichPlot]);
+								if (Energy[WhichEnergy] == 4.461 ) { BreakDownPlots[j-1]->Scale(4.); }
 
 								//-----------------------------------------------------------------------------------------------
 
@@ -242,13 +246,24 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 							Plots[WhichFSIModel]->SetMarkerColor(kBlack); 
 
 							gStyle->SetErrorX(0); // Removing the horizontal errors
-							Plots[WhichFSIModel]->Draw("e same"); 
+							//Plots[WhichFSIModel]->Draw("e same"); 
+
+							TH1D* DataPlot = Plots[WhichFSIModel];
+
+							DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E,NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+
+							DataPlot->SetMarkerStyle(20); 
+							DataPlot->SetMarkerSize(2.); 
+							DataPlot->SetLineColor(kBlack);	
+							DataPlot->SetMarkerColor(kBlack);
+							DataPlot->GetYaxis()->SetRangeUser(0.,height*DataPlot->GetMaximum());	
+							DataPlot->Draw("e same");
 
 						} else { 
 
 							Plots[WhichFSIModel]->SetLineStyle(Style[WhichFSIModel]);
 							Plots[WhichFSIModel]->Draw("C hist same");  // "C hist same" draw them as lines // "hist same" draw them as histos
-							Plots[0]->Draw("e same"); 
+							//Plots[0]->Draw("e same"); 
 
 						}
 
@@ -315,7 +330,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 		TLatex latex4GeV;
 		latex4GeV.SetTextFont(FontStyle);
 		latex4GeV.SetTextSize(6*TextSize);
-		latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV");
+		latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV (x4)");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -364,7 +379,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 		latexYTitle.SetTextSize(15*TextSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
-		latexYTitle.DrawLatexNDC(0.8,0.1,DoubleXSecTitle);
+		latexYTitle.DrawLatexNDC(0.8,0.1,DoubleAccCorrXSecTitle);
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -381,14 +396,14 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 		latexYTitleFe.SetTextSize(15*TextSize);
 		latexYTitleFe.SetTextColor(kBlack);
 		latexYTitleFe.SetTextAngle(90);
-		latexYTitleFe.DrawLatexNDC(0.8,0.05,DoubleXSecTitle);
+		latexYTitleFe.DrawLatexNDC(0.8,0.05,DoubleAccCorrXSecTitle);
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
 		// Extra pad for the lower X-axis to cover half zeros
 
 		PlotCanvas->cd();
-		TPad* padWhitePadTwo = new TPad("padWhitePadTwo","padWhitePadTwo",0.71,0.15,0.72,0.185,21); 
+		TPad* padWhitePadTwo = new TPad("padWhitePadTwo","padWhitePadTwo",0.713,0.15,0.72,0.185,21); 
 		padWhitePadTwo->SetFillColor(kWhite);
 		padWhitePadTwo->Draw();
 

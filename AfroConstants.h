@@ -65,7 +65,8 @@
 
 	// Clas dOmega 
 
-	const double dOmega = 0.02; // sr
+//	const double dOmega = 0.02; // sr
+	const double dOmega = 0.015; // sr
 
 	// 1e -> 1.6x10^-19 C
 	// 1C -> 6.25x10^18 e
@@ -151,8 +152,8 @@
 		{ std::make_pair("4He", "2_261"), 0. },
 		{ std::make_pair("4He", "4_461"), 0. },
 		{ std::make_pair("12C", "1_161"), 0. },
-		{ std::make_pair("12C", "2_261"), 0. },
-		{ std::make_pair("12C", "4_461"), 0. },
+		{ std::make_pair("12C", "2_261"), 2.47238 },
+		{ std::make_pair("12C", "4_461"), 2.06258 },
 		{ std::make_pair("CH2", "1_161"), 0. },
 		{ std::make_pair("CH2", "2_261"), 0.31532 },
 		{ std::make_pair("CH2", "4_461"), 0.17789 },
@@ -167,7 +168,8 @@
 		{ std::make_pair("4He", "2_261"), 1.16584 },
 		{ std::make_pair("4He", "4_461"), 0.97884 },
 		{ std::make_pair("12C", "1_161"), 0.079 },
-		{ std::make_pair("CH2", "1_161"), 0.070707652 },
+//		{ std::make_pair("CH2", "1_161"), 0.070707652 },
+		{ std::make_pair("CH2", "1_161"), 0.0794 },
 		{ std::make_pair("12C", "2_261"), 2.83649 },
 //		{ std::make_pair("12C", "2_261"), 0.007609864 },
 		{ std::make_pair("12C", "4_461"), 2.31146 },
@@ -299,6 +301,7 @@
 	static std::map<std::pair<TString,TString>,double> G2018GenieXSec =
 	{
 		{ std::make_pair("1H", "1_161"),  1.4515324e+08 }, // Q2 > 0.1
+		//(double) 1.1038574e+09 // Q2 > 0.02
 		{ std::make_pair("1H", "2_261"),  20943873. }, // Q2 > 0.4
 		{ std::make_pair("1H", "4_461"),  8521094.7 }, // Q2 > 0.8
 		{ std::make_pair("4He", "2_261"), 6.55943e+07 }, // Q2 > 0.4

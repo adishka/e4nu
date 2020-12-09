@@ -21,11 +21,12 @@ using namespace std;
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
+void AccCorrXSec_OverlayDeltaAlphaT_FigExtData8() {
 
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
+	double height = 1.05;
 
 	// ------------------------------------------------------------------------
 
@@ -49,14 +50,14 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 	// ------------------------------------------------------------------------
 
 	FSIModel.push_back("Pinned_Data_Final");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc");
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc");
 
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors");
 
-	NameOfPlots.push_back("DeltaPhiT_Int_0");
+	NameOfPlots.push_back("DeltaAlphaT_Int_0");
 
 	// ------------------------------------------------------------------------
 
@@ -107,13 +108,13 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 
 	 			// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
 			
-				double MaxHeight = 0.19;
+				double MaxHeight = 0.35;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 0.84; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 1.4; }
 
 					// ---------------------------------------------------------------------------------------------------------------
 
@@ -152,6 +153,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 
 						PrettyDoubleXSecPlot(Plots[WhichFSIModel]);
 						Plots[WhichFSIModel]->SetLineColor(DataSetColors[WhichFSIModel]);
+						Plots[WhichFSIModel]->SetLineWidth(1);
 
 						Plots[WhichFSIModel]->GetXaxis()->SetLabelSize(1.2*TextSize);
 						Plots[WhichFSIModel]->GetXaxis()->SetTitleSize(0.);
@@ -175,6 +177,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 						//                 apply acceptance systematics using sector-by -sector uncertainties
 
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E,NameOfPlots[WhichPlot]);
+						if (Energy[WhichEnergy] == 4.461 ) { Plots[WhichFSIModel]->Scale(2.); }
 
 						// ----------------------------------------------------------------------------------
 
@@ -194,12 +197,13 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 
 							for (int j = 1; j < 5; j++) {
 
-								BreakDownPlots.push_back( (TH1D*)( FileSample->Get("DeltaPhiT_Int_"+ToStringInt(j)) ) );
+								BreakDownPlots.push_back( (TH1D*)( FileSample->Get("DeltaAlphaT_Int_"+ToStringInt(j)) ) );
 
 								BreakDownPlots[j-1]->SetLineColor(BreakDownColors[j-1]);
 								//BreakDownPlots[j-1]->SetLineWidth(LineWidth);
 
 								UniversalE4vFunction(BreakDownPlots[j-1],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E,NameOfPlots[WhichPlot]);
+								if (Energy[WhichEnergy] == 4.461 ) { BreakDownPlots[j-1]->Scale(2.); }
 
 								//-----------------------------------------------------------------------------------------------
 
@@ -242,13 +246,24 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 							Plots[WhichFSIModel]->SetMarkerColor(kBlack); 
 
 							gStyle->SetErrorX(0); // Removing the horizontal errors
-							Plots[WhichFSIModel]->Draw("e same"); 
+							//Plots[WhichFSIModel]->Draw("e same"); 
+
+							TH1D* DataPlot = Plots[WhichFSIModel];
+
+							DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E,NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+
+							DataPlot->SetMarkerStyle(20); 
+							DataPlot->SetMarkerSize(2.); 
+							DataPlot->SetLineColor(kBlack);	
+							DataPlot->SetMarkerColor(kBlack);
+							DataPlot->GetYaxis()->SetRangeUser(0.,height*DataPlot->GetMaximum());	
+							DataPlot->Draw("e same");
 
 						} else { 
 
 							Plots[WhichFSIModel]->SetLineStyle(Style[WhichFSIModel]);
 							Plots[WhichFSIModel]->Draw("C hist same");  // "C hist same" draw them as lines // "hist same" draw them as histos
-							Plots[0]->Draw("e same"); 
+							//Plots[0]->Draw("e same"); 
 
 						}
 
@@ -315,7 +330,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 		TLatex latex4GeV;
 		latex4GeV.SetTextFont(FontStyle);
 		latex4GeV.SetTextSize(6*TextSize);
-		latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV");
+		latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV (x2)");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -328,7 +343,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 		TLatex latexPmiss;
 		latexPmiss.SetTextFont(FontStyle);
 		latexPmiss.SetTextSize(5*TextSize);
-		latexPmiss.DrawLatexNDC(0.2,0.5,"(e,e'p)_{1p0#pi} #delta#phi_{T} [deg]");
+		latexPmiss.DrawLatexNDC(0.2,0.5,"(e,e'p)_{1p0#pi} #delta#alpha_{T} [deg]");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -364,7 +379,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 		latexYTitle.SetTextSize(15*TextSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
-		latexYTitle.DrawLatexNDC(0.8,0.1,DoubleXSecTitle);
+		latexYTitle.DrawLatexNDC(0.8,0.1,DoubleAccCorrXSecTitle);
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -381,7 +396,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 		latexYTitleFe.SetTextSize(15*TextSize);
 		latexYTitleFe.SetTextColor(kBlack);
 		latexYTitleFe.SetTextAngle(90);
-		latexYTitleFe.DrawLatexNDC(0.8,0.05,DoubleXSecTitle);
+		latexYTitleFe.DrawLatexNDC(0.8,0.05,DoubleAccCorrXSecTitle);
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -397,7 +412,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 		TString ext = "";
 		if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
-		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"DeltaPhiT_FigExtData8_SuSav2_AbsXSec.pdf");
+		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"DeltaAlphaT_FigExtData8_SuSav2_AbsXSec.pdf");
 
 		//delete PlotCanvas;
 

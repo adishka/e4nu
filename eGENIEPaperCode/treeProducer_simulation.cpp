@@ -126,13 +126,15 @@ void treeProducer_simulation::Loop() {
 	TH1D* DeltaAlphaTPlot = new TH1D("DeltaAlphaTPlot",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
 	TH1D* MissMomentumPlot = new TH1D("MissMomentumPlot",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
 
-	TH1D* DeltaPhiTPlot_OneProton = new TH1D("DeltaPhiTPlot_OneProton",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
-	TH1D* DeltaAlphaTPlot_OneProton = new TH1D("DeltaAlphaTPlot_OneProton",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
-	TH1D* MissMomentumPlot_OneProton = new TH1D("MissMomentumPlot_OneProton",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
+	TH1D* DeltaPhiTPlot_OneProton = new TH1D("DeltaPhiT_OneProtonPlot",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
+	TH1D* DeltaAlphaTPlot_OneProton = new TH1D("DeltaAlphaT_OneProtonPlot",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
+	TH1D* MissMomentumPlot_OneProton = new TH1D("MissMomentum_OneProtonPlot",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
 
-	TH1D* DeltaPhiTPlot_VectorSum = new TH1D("DeltaPhiTPlot_VectorSum",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
-	TH1D* DeltaAlphaTPlot_VectorSum = new TH1D("DeltaAlphaTPlot_VectorSum",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
-	TH1D* MissMomentumPlot_VectorSum = new TH1D("MissMomentumPlot_VectorSum",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
+	TH1D* DeltaPhiTPlot_VectorSum = new TH1D("DeltaPhiT_VectorSumPlot",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
+	TH1D* DeltaAlphaTPlot_VectorSum = new TH1D("DeltaAlphaT_VectorSumPlot",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
+	TH1D* MissMomentumPlot_VectorSum = new TH1D("MissMomentum_VectorSumPlot",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
+
+	// -------------------------------------------------------------------------------------
 
 	int NBreakDown = 5;
 
@@ -154,13 +156,13 @@ void treeProducer_simulation::Loop() {
 		DeltaAlphaTPlot_BreakDown[i] = new TH1D("DeltaAlphaTPlot_BreakDown_"+ToString(i),TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
 		MissMomentumPlot_BreakDown[i] = new TH1D("MissMomentumPlot_BreakDown_"+ToString(i),TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
 
-		DeltaPhiTPlot_OneProton_BreakDown[i] = new TH1D("DeltaPhiTPlot_OneProton_BreakDown_"+ToString(i),TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
-		DeltaAlphaTPlot_OneProton_BreakDown[i] = new TH1D("DeltaAlphaTPlot_OneProton_BreakDown_"+ToString(i),TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
-		MissMomentumPlot_OneProton_BreakDown[i] = new TH1D("MissMomentumPlot_OneProton_BreakDown_"+ToString(i),TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
+		DeltaPhiTPlot_OneProton_BreakDown[i] = new TH1D("DeltaPhiT_OneProtonPlot_BreakDown_"+ToString(i),TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
+		DeltaAlphaTPlot_OneProton_BreakDown[i] = new TH1D("DeltaAlphaT_OneProtonPlot_BreakDown_"+ToString(i),TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
+		MissMomentumPlot_OneProton_BreakDown[i] = new TH1D("MissMomentum_OneProtonPlot_BreakDown_"+ToString(i),TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
 
-		DeltaPhiTPlot_VectorSum_BreakDown[i] = new TH1D("DeltaPhiTPlot_VectorSum_BreakDown_"+ToString(i),TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
-		DeltaAlphaTPlot_VectorSum_BreakDown[i] = new TH1D("DeltaAlphaTPlot_VectorSum_BreakDown_"+ToString(i),TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
-		MissMomentumPlot_VectorSum_BreakDown[i] = new TH1D("MissMomentumPlot_VectorSum_BreakDown_"+ToString(i),TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
+		DeltaPhiTPlot_VectorSum_BreakDown[i] = new TH1D("DeltaPhiT_VectorSumPlot_BreakDown_"+ToString(i),TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
+		DeltaAlphaTPlot_VectorSum_BreakDown[i] = new TH1D("DeltaAlphaT_VectorSumPlot_BreakDown_"+ToString(i),TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
+		MissMomentumPlot_VectorSum_BreakDown[i] = new TH1D("MissMomentum_VectorSumPlot_BreakDown_"+ToString(i),TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
 
 	}
 
@@ -185,6 +187,20 @@ void treeProducer_simulation::Loop() {
 
 	TH2D* QE_Q0_Q3_Plot = new TH2D("QE_Q0_Q3_Plot",";q_{3} [GeV/c];q_{0} [GeV]",200,0,2.,200,0.,2.);
 	TH2D* MEC_Q0_Q3_Plot = new TH2D("MEC_Q0_Q3_Plot",";q_{3} [GeV/c];q_{0} [GeV]",200,0,2.,200,0.,2.);
+
+	// -------------------------------------------------------------------------------------------------------------
+
+	int NBinsEv = 100; double MinEv = 0., MaxEv = 10.; TString EvTitle = ";E_{#nu} [GeV]"; 
+
+	TH1D* EvPlot = new TH1D("EvPlot",EvTitle,NBinsEv,MinEv,MaxEv);
+
+	TH1D* EvPlot_Interaction[NBreakDown];
+
+	for (int WhichInteraction = 0; WhichInteraction < NBreakDown; WhichInteraction++) {
+
+		EvPlot_Interaction[WhichInteraction] = new TH1D("EvPlot_Interaction_"+ToString(WhichInteraction),EvTitle,NBinsEv,MinEv,MaxEv);
+
+	}
 
 	// -------------------------------------------------------------------------------------------------------------
 
@@ -292,6 +308,11 @@ void treeProducer_simulation::Loop() {
 
 		// -----------------------------------------------------------------------------------------------
 
+		EvPlot->Fill(Ev,Weight);
+		EvPlot_Interaction[Interaction]->Fill(Ev,Weight);
+
+		// -----------------------------------------------------------------------------------------------
+
 		countEvents ++;	// Increase the number of the events that pass the cuts by one   
 
 		// ------------------------------------------------------------------------------------------------
@@ -376,7 +397,6 @@ void treeProducer_simulation::Loop() {
 
 		TVector3 VectorSumProtonT(VectorSumProtonV4.X(),VectorSumProtonV4.Y(),0);
 		double VectorSumProtonTMag = VectorSumProtonT.Mag();
-		TVector3 ElectronT(ElectronV4.X(),ElectronV4.Y(),0);
 		TVector3 VectorSumMissMomentumT = VectorSumProtonT + ElectronT;
 		double VectorSumMissMomentumTMag = VectorSumMissMomentumT.Mag();
 

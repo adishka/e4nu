@@ -98,13 +98,13 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 			for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
 				// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
-				double MaxHeight = 12.;
+				double MaxHeight = 14.;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 34.; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 39.; }
 
 					// ----------------------------------------------------------------------------
 

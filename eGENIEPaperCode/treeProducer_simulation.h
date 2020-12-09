@@ -251,7 +251,7 @@ treeProducer_simulation::treeProducer_simulation(TString Nucleus, TString Energy
 // used to generate this class and read the Tree.
    if (tree == 0) {
 
-     TString FileIn = "/pnfs/genie/persistent/users/apapadop/NonRadiative/"+TuneLabel+"/"+particle+"/"+fNucleus+"_"+fEnergy+"GeV/"+fNucleus+"_"+fEnergy+"GeV_"+fInteraction+"_"+fTune+"_Q2_0_1.root";
+     TString FileIn = "/pnfs/genie/persistent/users/apapadop/NonRadiative/"+TuneLabel+"/"+particle+"/"+fNucleus+"_"+fEnergy+"GeV/"+fNucleus+"_"+fEnergy+"GeV_"+fInteraction+"_"+fTune+"_Q2_0_02.root";
 
      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(FileIn);
 	if (!f || !f->IsOpen()) f = new TFile(FileIn);

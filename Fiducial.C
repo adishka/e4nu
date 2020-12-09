@@ -651,6 +651,8 @@ Bool_t Fiducial::GetEPhiLimits(std::string beam_en, Float_t momentum, Float_t th
     return kTRUE;
   }
 
+// --------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Bool_t Fiducial::EFiducialCut(std::string beam_en, TVector3 momentum)
 {
 

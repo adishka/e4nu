@@ -49,8 +49,8 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 	// ------------------------------------------------------------------------
 
 	FSIModel.push_back("Pinned_Data_Final");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc");
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc");
 
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors");
@@ -113,7 +113,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 0.84; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 0.69; }
 
 					// ---------------------------------------------------------------------------------------------------------------
 
@@ -152,6 +152,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 
 						PrettyDoubleXSecPlot(Plots[WhichFSIModel]);
 						Plots[WhichFSIModel]->SetLineColor(DataSetColors[WhichFSIModel]);
+						Plots[WhichFSIModel]->SetLineWidth(1);
 
 						Plots[WhichFSIModel]->GetXaxis()->SetLabelSize(1.2*TextSize);
 						Plots[WhichFSIModel]->GetXaxis()->SetTitleSize(0.);

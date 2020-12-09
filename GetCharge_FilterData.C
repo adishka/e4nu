@@ -56,8 +56,6 @@ extern Double_t FSub_pipl(Double_t *x,Double_t *par);
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-int GetCharge_CounterEvents = 0;
-
 void GetCharge_FilterData::Loop()
 {
 
@@ -102,6 +100,15 @@ void GetCharge_FilterData::Loop()
 	en_beam_Eqe["4461"]=4.461;
 
 	if (fChain == 0) return;
+
+	int GetCharge_CounterEvents = 0;
+	int EC_CounterEvents = 0;
+	int SC_CounterEvents = 0;
+	int ElectronFid_Counter = 0;
+	int CutUVW_Counter = 0;
+	int EC_SC_CC_Q_Counter = 0;
+	int EnergyDep_Counter = 0;
+	int Vertex_Counter = 0;
 
 	Long64_t nentries = fChain->GetEntriesFast();
 	//	nentries = 8000000;
@@ -800,7 +807,12 @@ void GetCharge_FilterData::Loop()
 	TH1D* h1_el_timediff = new TH1D("h1_el_timediff",";el_timediff",100,-50,50);
 	TH1D* h1_cc_c2 = new TH1D("h1_cc_c2",";cc_c2",2000,0,20);
 	TH1D* h1_ece = new TH1D("h1_ece",";ece",2000,0,20);
+	TH1D* h1_eceOverP = new TH1D("h1_eceOverP",";ece/p",200,0,2);
 	TH1D* h1_ec_ei = new TH1D("h1_ec_ei",";ec_ei",700,0,0.7);
+
+	// ------------------------------------------------------------------------------------------------------------------------------------------------
+
+	std::cout << "Initial number of events = " << fChain->GetEntries() << std::endl;
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -811,6 +823,8 @@ void GetCharge_FilterData::Loop()
 		Long64_t ientry = LoadTree(jentry);
 		int nb = GetEntry(jentry);
 		if (ientry < 0) break;
+
+		if (jentry%1000 == 0) {std::cout << jentry/1000 << " k " << std::setprecision(3) << double(jentry)/fChain->GetEntries()*100. << " %"<< std::endl;}
 
 		if( jentry%200000 == 0 )
 		{
@@ -847,6 +861,8 @@ void GetCharge_FilterData::Loop()
 		// apapadop, CH2 only run @ 1.1 GeV with 1500 torus current, but we don't have fiducials there, thus using the 750 torus current
 		if (runnb == 18334) { fTorusCurrent = 750; } 
 
+		// apapadop, we want only the 750 results for the main e4v paper
+		// 1500 to be used only for the hydrogen study
 		if (fbeam_en == "1161" && fTorusCurrent > 760) { continue; }  
 	
 		// For the 1500 (high torus current runs) on 12C @ 1.1 GeV, comment in the lines below                                                            
@@ -865,10 +881,15 @@ void GetCharge_FilterData::Loop()
 //			std::cout << "Possible problem with making electron ec vector. EC index below/equal Zero: ec[ind_em] =  " << ec[ind_em] << std::endl;
 			continue;
 		}
+
+		EC_CounterEvents++;
+
 		if (sc[ind_em] <=0) {
 //			std::cout << "Possible problem with making electron ec vector. SC index below/equal zero: sc[ind_em] =  " << sc[ind_em] << std::endl;
 			continue;
 		}
+
+		SC_CounterEvents++;
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -984,7 +1005,8 @@ void GetCharge_FilterData::Loop()
 		h2_Electron_UncorrectedVertex_Phi->Fill(el_vert,el_phi_mod);
 		h2_Electron_CorrectedVertex_Phi->Fill(el_vert_corr,el_phi_mod);
 
-		//Variables for electron cuts
+		// Variables for electron cuts
+
 		double ece = TMath::Max( ec_ei[ec[ind_em] - 1] + ec_eo[ec[ind_em] - 1],   etot[ec[ind_em] - 1]);
 		el_segment = int((cc_segm[cc[ind_em]-1]-int(cc_segm[cc[ind_em]-1]/1000)*1000)/10); //does this work in all cases?? F.H. 08/07/19
 		el_cc_sector = cc_sect[cc[ind_em]-1];
@@ -992,26 +1014,39 @@ void GetCharge_FilterData::Loop()
 		el_cc_nphe = nphe[cc[ind_em]-1]/10.;
 		double ec_SC_timediff_uncorr = ec_t[ec[ind_em]-1]-sc_t[sc[ind_em]-1]-(ec_r[ec[ind_em]-1]-sc_r[sc[ind_em]-1])/(c*ns_to_s);
 
-		//fsum_e and fsub_p are TF1 Functions for electron E/p cuts
+		// fsum_e and fsub_p are TF1 Functions for electron E/p cuts
+
 		fsum_e->SetParameters(epratio_sig_cutrange, max_mom);
 		fsub_e->SetParameters(epratio_sig_cutrange, max_mom);
 
-		//Main Fiducial Cut for Electron
+		// Main Fiducial Cut for Electron
+
 		if( !EFiducialCut(fbeam_en, el_mom1) ) continue;//theta, phi cuts
+
+		ElectronFid_Counter++;
+
 		if( !CutUVW(e_ec_xyz1) ) continue; //u>60, v<360, w<400
 
-		//General cut on EC, SC, CC hit and q (charge) for all events
-		if( ec[ind_em] < 0.5 ||  sc[ind_em] < 0.5 ||  cc[ind_em] < 0.5 || q[ind_em] >=0)
-		{
-		  continue;
+		CutUVW_Counter++;
+
+		// General cut on EC, SC, CC hit and q (charge) for all events
+
+		if( ec[ind_em] < 0.5 ||  sc[ind_em] < 0.5 ||  cc[ind_em] < 0.5 || q[ind_em] >= 0) {
+		  
+			continue;
+
 		}
+
+		EC_SC_CC_Q_Counter++;
 
 		h1_el_timediff->Fill(el_sccc_timediff);
 		h1_cc_c2->Fill(cc_c2[cc[ind_em]-1]);
 		h1_ec_ei->Fill(ec_ei[ec[ind_em] - 1]);
 		h1_ece->Fill(ece);
+		h1_eceOverP->Fill(ece/p[ind_em]);
 
-		//Cut on 1.1 GeV events (E/p, energy deposit, TOF and cherenkov)
+		// Cut on 1.1 GeV events (E/p, energy deposit, TOF and cherenkov)
+
 		if(en_beam[fbeam_en] > 1. && en_beam[fbeam_en] <2. &&
 		  ( ec_ei[ec[ind_em] - 1] < 0.03 || ece/p[ind_em] < fsub_e->Eval(p[ind_em]) || ece/p[ind_em] > fsum_e->Eval(p[ind_em]) ||
 				p[ind_em] < min_good_mom || el_sccc_timediff < sc_cc_delt_cut_sect[el_cc_sector-1] ||   cc_c2[cc[ind_em]-1] > 0.1 ) )
@@ -1019,7 +1054,8 @@ void GetCharge_FilterData::Loop()
 				continue;
 		}
 
-		//Cut on 2.2 GeV events (E/p, energy deposit, TOF and cherenkov)
+		// Cut on 2.2 GeV events (E/p, energy deposit, TOF and cherenkov)
+
 		if(en_beam[fbeam_en] < 3.  && en_beam[fbeam_en] > 2 &&
 		  ( ec_ei[ec[ind_em] - 1] < 0.06 || ece/p[ind_em] < fsub_e->Eval(p[ind_em]) || ece/p[ind_em] > fsum_e->Eval(p[ind_em]) ||
 				p[ind_em] < min_good_mom || cc_c2[cc[ind_em]-1] >= 0.1 || el_sccc_timediff < sc_cc_delt_cut_sect[el_cc_sector-1] ||
@@ -1037,12 +1073,16 @@ void GetCharge_FilterData::Loop()
 				continue;
 		}
 
+		EnergyDep_Counter++;
+
 		// --------------------------------------------------------------------------------------------
 
 		// apapadop
 
 		//Electron vertex cut
 		if( !(el_vert_corr < vert_max[ftarget] && el_vert_corr > vert_min[ftarget]) ) continue;
+
+		Vertex_Counter++;
 
 		// --------------------------------------------------------------------------------------------
 
@@ -1477,7 +1517,18 @@ void GetCharge_FilterData::Loop()
 
 	} //end of event loop (jentry)
 
-	std::cout << "File " << FileName << " has been created" << std::endl;
+	std::cout << std::endl << "File " << FileName << " has been created" << std::endl << std::endl;
+
+	std::cout << "Initial number of events = " << fChain->GetEntries() << std::endl;
+
+	std::cout << "EC_CounterEvents = " << EC_CounterEvents << std::endl;
+	std::cout << "SC_CounterEvents = " << SC_CounterEvents << std::endl;
+	std::cout << "ElectronFid_Counter = " << ElectronFid_Counter << std::endl;
+	std::cout << "CutUVW_Counter = " << CutUVW_Counter << std::endl;
+	std::cout << "EC_SC_CC_Q_Counter = " << EC_SC_CC_Q_Counter << std::endl;
+	std::cout << "EnergyDep_Counter = " << EnergyDep_Counter << std::endl;
+	std::cout << "Vertex_Counter = " << Vertex_Counter << std::endl;
+
 	std::cout << "GetCharge_CounterEvents = " << GetCharge_CounterEvents << std::endl;
 
 	gStyle->SetOptFit(1);

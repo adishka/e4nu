@@ -1812,15 +1812,17 @@ void genie_analysis::Loop(Int_t choice) {
 
 		// -----------------------------------------------------------------------------------------------------------------------------
 
-		//Filling Histograms with multiplicities
+		// Filling Histograms with multiplicities
 
 		h1_Npi->Fill(num_pi);
 		h1_Nprot->Fill(num_p);
 
 		if (num_p > 0) {
+
 			h1_Nprot_NonZeroProt->Fill(num_p);
 			h1_Npi_NonZeroProt->Fill(num_pi);
 			h2_QVector_theta_phi->Fill(V3_q_phi_deg,V3_q_theta_deg,WeightIncl);
+
 		}
 
 		h1_Nphot->Fill(ec_num_n);
