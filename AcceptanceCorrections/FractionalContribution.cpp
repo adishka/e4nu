@@ -22,7 +22,7 @@ using namespace std;
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void OverlayPlots() {
+void FractionalContribution() {
 
 	// ------------------------------------------------------------------------
 
@@ -45,9 +45,9 @@ void OverlayPlots() {
 	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
 //	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
 
-//	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV");
+	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV");
 //	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");	
-	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
+//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
@@ -65,11 +65,11 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("FidCorrection_eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("AccCorrection_eRecoEnergy_slice_0");
 
-	NameOfPlots.push_back("Reco_epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("Reco_epRecoEnergy_slice_0");
 //	NameOfPlots.push_back("TrueWithFid_epRecoEnergy_slice_0");
 //	NameOfPlots.push_back("True_epRecoEnergy_slice_0");
 
-//	NameOfPlots.push_back("AccCorrection_epRecoEnergy_slice_0");
+	NameOfPlots.push_back("AccCorrection_epRecoEnergy_slice_0");
 
 	// ------------------------------------------------------------------------
 
@@ -125,38 +125,49 @@ void OverlayPlots() {
 
 						Plots.push_back( (TH1D*)( FileSample->Get(FSIModel[WhichFSIModel]+"_"+NameOfPlots[WhichPlot]) ) );
 
-						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
+//						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
 
-						// ---------------------------------------------------------------------------------------------------
+//						// ---------------------------------------------------------------------------------------------------
 
-						TLegendEntry* l1 = leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel], "l");
-						l1->SetTextColor(Colors[WhichFSIModel]);
+//						TLegendEntry* l1 = leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel], "l");
+//						l1->SetTextColor(Colors[WhichFSIModel]);
 
-						// ---------------------------------------------------------------------------------------------------
+//						// ---------------------------------------------------------------------------------------------------
 
-						// Max, min, title & # divisions
+//						// Max, min, title & # divisions
 
-						double localmax = Plots[WhichFSIModel]->GetMaximum();
-						if (localmax > max) { max = localmax; }
-						double height = 1.1;
-						Plots[0]->SetMaximum(height*max);
+//						double localmax = Plots[WhichFSIModel]->GetMaximum();
+//						if (localmax > max) { max = localmax; }
+//						double height = 1.1;
+//						Plots[0]->SetMaximum(height*max);
 
-		                                // --------------------------------------------------------------------------------------------------
+//		                                // --------------------------------------------------------------------------------------------------
 
-//						Plots[WhichFSIModel]->Draw("C hist same");
-//						Plots[0]->Draw("C hist same");
+////						Plots[WhichFSIModel]->Draw("C hist same");
+////						Plots[0]->Draw("C hist same");
 
-						Plots[WhichFSIModel]->Draw("e same");
-//						Plots[0]->Draw("e  same");
+//						Plots[WhichFSIModel]->Draw("e  same");
+////						Plots[0]->Draw("e  same");
 
 		                                // --------------------------------------------------------------------------------------------------
 
 					} // End of the loop over the FSI Models 
 
-					leg->SetBorderSize(0);
-					leg->SetTextFont(FontStyle);
-					leg->SetTextSize(TextSize);
-					leg->Draw();
+//					leg->SetBorderSize(0);
+//					leg->SetTextFont(FontStyle);
+//					leg->SetTextSize(TextSize);
+//					leg->Draw();
+
+					TH1D* clone = (TH1D*)(Plots[0]->Clone());
+					clone->Add(Plots[1],-1);
+					clone->Divide(Plots[0]);
+					clone->Scale(100.);
+
+					clone->GetYaxis()->SetTitle("Fractional Contribution (%)");
+					clone->GetYaxis()->SetRangeUser(-20,20);
+					clone->GetYaxis()->SetNdivisions(8);
+
+					clone->Draw("e same");
 
 					// -----------------------------------------------------------------------------------------------------------------------------------------
 

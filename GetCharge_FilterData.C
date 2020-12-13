@@ -15,12 +15,26 @@
 #include <TRandom3.h>
 #include <TF1.h>
 #include <TGraph.h>
+#include <TString.h>
 
 #include <fstream>
 #include <exception>
 #include <iostream>
 #include <map>
 #include <string>
+#include <iomanip>
+#include <sstream>
+#include <vector>
+#include <utility>
+
+TString ToString(int num) {
+
+	std::ostringstream start;
+	start << num;
+	std::string start1 = start.str();
+	return start1;
+
+}
 
 // Also used by e2a_ep_neutrino6_united4_radphot.{C,h}
 
@@ -810,6 +824,14 @@ void GetCharge_FilterData::Loop()
 	TH1D* h1_eceOverP = new TH1D("h1_eceOverP",";ece/p",200,0,2);
 	TH1D* h1_ec_ei = new TH1D("h1_ec_ei",";ec_ei",700,0,0.7);
 
+	TH1D* h1_el_timediff_Sector[6]; 
+
+	for (int i = 0; i < 6; i++) {
+
+		h1_el_timediff_Sector[i] = new TH1D("h1_el_timediff_Sector_"+ToString(i),";el_timediff",100,-50,50);
+
+	}
+
 	// ------------------------------------------------------------------------------------------------------------------------------------------------
 
 	std::cout << "Initial number of events = " << fChain->GetEntries() << std::endl;
@@ -1044,6 +1066,7 @@ void GetCharge_FilterData::Loop()
 		h1_ec_ei->Fill(ec_ei[ec[ind_em] - 1]);
 		h1_ece->Fill(ece);
 		h1_eceOverP->Fill(ece/p[ind_em]);
+		h1_el_timediff_Sector[(int)(el_phi_mod/60.)]->Fill(el_sccc_timediff);
 
 		// Cut on 1.1 GeV events (E/p, energy deposit, TOF and cherenkov)
 

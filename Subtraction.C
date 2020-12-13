@@ -75,7 +75,7 @@ void  Subtraction::prot3_rot_func(TVector3  V3prot[3],TVector3  V3prot_uncorr[3]
 	for (int j = 0; j < N_3p; j++) { //looping through 1p combinations out of 3protons
 
 		V3_prot_el_3pto1p[j] = V4el.Vect() + V3prot[j];
-		Ecal_3pto1p[j] = V4el.E() + TMath::Sqrt(m_prot*m_prot + V3prot[j].Mag()*V3prot[j].Mag()) - m_prot+bind_en[target_name];
+		Ecal_3pto1p[j] = V4el.E() + TMath::Sqrt(m_prot*m_prot + V3prot[j].Mag()*V3prot[j].Mag()) - m_prot + bind_en[target_name];
 		pmiss_perp_3pto1p[j] = TMath::Sqrt(V3_prot_el_3pto1p[j].Px()*V3_prot_el_3pto1p[j].Px() + V3_prot_el_3pto1p[j].Py()*V3_prot_el_3pto1p[j].Py());
      
 	}

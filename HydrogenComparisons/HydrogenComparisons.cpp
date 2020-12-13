@@ -131,12 +131,12 @@ void HydrogenComparisons() {
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
-	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_1"); LabelOfPlots.push_back("2nd (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_2"); LabelOfPlots.push_back("3rd (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_3"); LabelOfPlots.push_back("4th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_4"); LabelOfPlots.push_back("5th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
-//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_5"); LabelOfPlots.push_back("6th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_5"); LabelOfPlots.push_back("6th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
 //	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_1"); LabelOfPlots.push_back("2nd sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
@@ -157,8 +157,10 @@ void HydrogenComparisons() {
 
 	// This analysis is cutting on phi +/- 15 deg
 
-double LocaldOmega = dOmega;
+//double LocaldOmega = dOmega;
 //double LocaldOmega = 0.017;
+//double LocaldOmega = 0.01;
+double LocaldOmega = 0.0062;
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -368,16 +370,18 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 //			double CloneSF = 7. * ConversionFactorChargeToElectrons / (LocaldOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])] * AvogadroNumber *\
 //			       TargetLength[std::make_pair("CH2",E[WhichEnergy])] * TargetDensity[std::make_pair("CH2",E[WhichEnergy])]);
 
+			double HydrogenEvents = Clone->Integral();	
 
 			double CloneSF = 7.  / (LocaldOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])]* ConversionFactorChargeToElectrons * AvogadroNumber *\
 			       TargetLength[std::make_pair("CH2",E[WhichEnergy])] * TargetDensity[std::make_pair("CH2",E[WhichEnergy])]);
 
 
-			Clone->Scale(CloneSF);
+			//Clone->Scale(CloneSF);
 
 			Clone->GetXaxis()->SetRangeUser(0.87,1);
 //			Clone->GetYaxis()->SetTitle("Normalized Yield");
-			Clone->GetYaxis()->SetTitle("Cross Section [cm^{2}]");
+//			Clone->GetYaxis()->SetTitle("Cross Section [cm^{2}]");
+			Clone->GetYaxis()->SetTitle("# Counts");
 			DiffCanvas->cd();
 			Clone->Draw();
 
@@ -385,7 +389,7 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 
 			double dsigmadOmega = Integrate(Clone);
 
-			cout << "Data dsigmadOmega = " << dsigmadOmega << endl;
+			cout << "Data dsigmadOmega = " << dsigmadOmega * ConversionFactorCm2ToMicroBarn << " ub" << endl;
 
 			//cout << "Data Sigma = " << dsigmadOmega*dOmega << endl;
 
@@ -423,7 +427,7 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 								ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair("1H", "1_161")] *\
 								LocaldOmega) ;
 
-			cout << "Genie dsigmadOmega = " << GeniedsigmadOmega << endl;
+			cout << "Genie dsigmadOmega = " << GeniedsigmadOmega << " ub" << endl;
 
 			//cout << "Genie Sigma = " << GeniedsigmadOmega*dOmega << endl;
 
@@ -438,8 +442,8 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 
 			TLegend* leg = new TLegend(0.65,0.6,0.75,0.7);
 
-			leg->AddEntry(Clone,"Data","lep");
-//			leg->AddEntry(Clone,"Data, " + ToStringInt(Clone->Integral()),"lep");
+//			leg->AddEntry(Clone,"Data","lep");
+			leg->AddEntry(Clone,"Data, " + ToStringInt(HydrogenEvents),"lep");
 			//leg->AddEntry(G2018histo,"GENIE","l");
 
 			leg->SetTextFont(FontStyle);

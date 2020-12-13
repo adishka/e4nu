@@ -49,12 +49,24 @@ void AbsXSec_OverlayEQE_Fig2() {
 //	JustNucleus.push_back("C");
 //	E.push_back("2_261");
 
+//	nucleus.push_back("12C"); 
+//	JustNucleus.push_back("C");
+//	E.push_back("4_461");
+
 //	nucleus.push_back("56Fe"); 
 //	JustNucleus.push_back("Fe");
 //	E.push_back("2_261");
 
 //	nucleus.push_back("56Fe"); 
 //	JustNucleus.push_back("Fe");
+//	E.push_back("4_461");
+
+//	nucleus.push_back("4He"); 
+//	JustNucleus.push_back("He");
+//	E.push_back("2_261");
+
+//	nucleus.push_back("4He"); 
+//	JustNucleus.push_back("He");
 //	E.push_back("4_461");
 
 	xBCut.push_back("NoxBCut");

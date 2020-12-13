@@ -135,10 +135,10 @@ void genie_analysis::Loop(Int_t choice) {
 		std::exit(0);
 	}
 
-	std::map<std::string,double>bind_en;
-	std::map<std::string,double>target_mass;
-	std::map<std::string,double>residual_target_mass;
-	std::map<std::string, double> Ecal_offset; //that might not be necessary for simulation data
+	std::map<std::string,double> bind_en;
+	std::map<std::string,double> target_mass;
+	std::map<std::string,double> residual_target_mass;
+	std::map<std::string, double> Ecal_offset; // that might not be necessary for simulation data
 
 	target_name = ftarget; //std string for target name
 	en_beam["1161"]=1.161;
@@ -210,17 +210,27 @@ void genie_analysis::Loop(Int_t choice) {
 		Q2cut = 0.8;
 	}
 
-	//Further constants for binding energies and target masses
-	Ecal_offset["3He"]=0.004;
-	Ecal_offset["4He"]=0.005;
-	Ecal_offset["C12"]=0.005;
-	Ecal_offset["56Fe"]=0.011;
+	// Further constants for binding energies and target masses
 
-	bind_en["3He"] = He3_bind_en-D2_bind_en + Ecal_offset["3He"]; //the offset is used to shift the peak to be at 0
-	bind_en["4He"] = He4_bind_en-H3_bind_en + Ecal_offset["4He"];
-	bind_en["C12"] = C12_bind_en-B_bind_en	+ Ecal_offset["C12"];
-	bind_en["56Fe"]= Fe_bind_en-Mn_bind_en	+ Ecal_offset["56Fe"];
-	bind_en["CH2"] = C12_bind_en-B_bind_en;
+	Ecal_offset["3He"]  = 0.004;
+	Ecal_offset["4He"]  = 0.005;
+	Ecal_offset["C12"]  = 0.005;
+	Ecal_offset["56Fe"] = 0.011;
+
+//	if (choice == 2) {
+
+//		if (ftarget == "3He") { Ecal_offset["3He"] += 0.01; }
+//		if (ftarget == "4He") { Ecal_offset["4He"] += 0.01; }
+//		if (ftarget == "C12") { Ecal_offset["C12"] += 0.025; }
+//		if (ftarget == "56Fe") { Ecal_offset["C12"] += 0.036; }
+
+//	}
+
+	bind_en["3He"]  = He3_bind_en-D2_bind_en + Ecal_offset["3He"]; // the offset is used to shift the peak to be at 0
+	bind_en["4He"]  = He4_bind_en-H3_bind_en + Ecal_offset["4He"];
+	bind_en["C12"]  = C12_bind_en-B_bind_en	+ Ecal_offset["C12"];
+	bind_en["56Fe"] = Fe_bind_en-Mn_bind_en	+ Ecal_offset["56Fe"];
+	bind_en["CH2"]  = C12_bind_en-B_bind_en;
 
 	target_mass["3He"] = 2*m_prot+m_neut-He3_bind_en;
 	target_mass["4He"] = 2*m_prot+2*m_neut-He4_bind_en;
@@ -1142,7 +1152,8 @@ void genie_analysis::Loop(Int_t choice) {
 			el_momentum = V3_el.Mag(); //Momentum after smearing
 			el_theta = V3_el.Theta(); //Angle after smearing
 
-			//acceptance_c takes phi in radians and here unmodified by 30 degree.
+			// acceptance_c takes phi in radians and here unmodified by 30 degree.
+
 			e_acc_ratio = acceptance_c(el_momentum, cos(el_theta), phi_ElectronOut, 11,file_acceptance,ApplyAccWeights);
 			if ( fabs(e_acc_ratio) != e_acc_ratio ) { continue; }
 
@@ -1268,6 +1279,15 @@ void genie_analysis::Loop(Int_t choice) {
 
 		int ElectronSector = el_phi_mod / 60.;
 
+		h2_el_theta_phi->Fill(el_phi_mod,el_theta,WeightIncl);
+
+		if (el_phi_mod > 0 && el_phi_mod < 60) { h2_Electron_Theta_Momentum_FirstSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
+		if (el_phi_mod > 60 && el_phi_mod < 120) { h2_Electron_Theta_Momentum_SecondSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
+		if (el_phi_mod > 120 && el_phi_mod < 180) { h2_Electron_Theta_Momentum_ThirdSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
+		if (el_phi_mod > 180 && el_phi_mod < 240) { h2_Electron_Theta_Momentum_FourthSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
+		if (el_phi_mod > 240 && el_phi_mod < 300) { h2_Electron_Theta_Momentum_FifthSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
+		if (el_phi_mod > 300 && el_phi_mod < 360) { h2_Electron_Theta_Momentum_SixthSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); }
+
 		// ---------------------------------------------------------------------------------------------------------------------
 
 		// apapadop: Oct 8 2020: ditching bad sectors
@@ -1289,13 +1309,6 @@ void genie_analysis::Loop(Int_t choice) {
 
 		h1_EQE_FullyInclusive->Fill(E_rec,WeightIncl);
 		h1_EQE_FullyInclusive_IrregBins->Fill(E_rec,WeightIncl);
-
-		if (el_phi_mod > 0 && el_phi_mod < 60) { h2_Electron_Theta_Momentum_FirstSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
-		if (el_phi_mod > 60 && el_phi_mod < 120) { h2_Electron_Theta_Momentum_SecondSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
-		if (el_phi_mod > 120 && el_phi_mod < 180) { h2_Electron_Theta_Momentum_ThirdSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
-		if (el_phi_mod > 180 && el_phi_mod < 240) { h2_Electron_Theta_Momentum_FourthSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
-		if (el_phi_mod > 240 && el_phi_mod < 300) { h2_Electron_Theta_Momentum_FifthSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
-		if (el_phi_mod > 300 && el_phi_mod < 360) { h2_Electron_Theta_Momentum_SixthSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
 
 		if (el_theta > 23 && el_theta < 27) {
 
@@ -1328,7 +1341,6 @@ void genie_analysis::Loop(Int_t choice) {
 		h1_Q2->Fill(reco_Q2);
 		h1_Wvar->Fill(W_var);
 		h1_el_Mott_crosssec->Fill(Mott_cross_sec);
-		h2_el_theta_phi->Fill(el_phi_mod,el_theta,WeightIncl);
 		//h3_Electron_Mom_Theta_Phi->Fill(V4_el.Rho(),el_theta,el_phi_mod,wght*e_acc_ratio);
 
 		h1_el_theta->Fill(el_theta);
@@ -1621,7 +1633,7 @@ void genie_analysis::Loop(Int_t choice) {
 					PiPlusCosTheta = V3_pi_corr.CosTheta(); 
 					PiPlusMag = V3_pi_corr.Mag(); 
 
-					//acceptance_c takes phi in radians and here unmodified by 30 degree.
+					// acceptance_c takes phi in radians and here unmodified by 30 degree.
 					PiPlusWeight = wght * acceptance_c(PiPlusMag,PiPlusCosTheta, phi_pion, 211,file_acceptance_pip,ApplyAccWeights);
 					if ( fabs(PiPlusWeight) != PiPlusWeight ) { continue; }
 

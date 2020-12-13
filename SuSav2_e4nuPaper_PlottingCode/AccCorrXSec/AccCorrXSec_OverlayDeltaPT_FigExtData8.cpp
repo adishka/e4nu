@@ -108,13 +108,13 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 
 	 			// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
 			
-				double MaxHeight = 250;
+				double MaxHeight = 0.85;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 350; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 1.4; }
 
 					// ---------------------------------------------------------------------------------------------------------------
 
@@ -295,7 +295,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
-		TPad* pad1GeV = new TPad("pad1GeV","pad1GeV",0.18,0.89,0.34,0.99,21);
+		TPad* pad1GeV = new TPad("pad1GeV","pad1GeV",0.185,0.89,0.345,0.99,21);
 		pad1GeV->SetFillColor(kWhite); 
 		PlotCanvas->cd();
 		pad1GeV->Draw();
@@ -369,34 +369,34 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 		// Extra pad for the Y-axis units carbon
 
 		PlotCanvas->cd();
-		TPad* padTitle = new TPad("padTitle","padTitle",0.052,0.58,0.077,1., 21); 
+		TPad* padTitle = new TPad("padTitle","padTitle",0.052,0.68,0.107,1., 21); 
 		padTitle->SetFillColor(kWhite); 
 		padTitle->Draw();
 		padTitle->cd();
 
 		TLatex latexYTitle;
 		latexYTitle.SetTextFont(FontStyle);
-		latexYTitle.SetTextSize(15*TextSize);
+		latexYTitle.SetTextSize(6*TextSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
-		latexYTitle.DrawLatexNDC(0.8,0.1,DoubleAccCorrXSecTitle);
+		latexYTitle.DrawLatexNDC(0.6,0.1,"#frac{d#sigma}{dP_{T}} [#frac{#mub}{GeV/c}]");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
 		// Extra pad for the Y-axis units iron
 
 		PlotCanvas->cd();
-		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.34,0.18,0.365,0.55,21); 
+		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.34,0.28,0.395,0.55,21); 
 		padTitleFe->SetFillColor(kWhite); 
 		padTitleFe->Draw();
 		padTitleFe->cd();
 
 		TLatex latexYTitleFe;
 		latexYTitleFe.SetTextFont(FontStyle);
-		latexYTitleFe.SetTextSize(15*TextSize);
+		latexYTitleFe.SetTextSize(6*TextSize);
 		latexYTitleFe.SetTextColor(kBlack);
 		latexYTitleFe.SetTextAngle(90);
-		latexYTitleFe.DrawLatexNDC(0.8,0.05,DoubleAccCorrXSecTitle);
+		latexYTitleFe.DrawLatexNDC(0.6,0.05,"#frac{d#sigma}{dP_{T}} [#frac{#mub}{GeV/c}]");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 

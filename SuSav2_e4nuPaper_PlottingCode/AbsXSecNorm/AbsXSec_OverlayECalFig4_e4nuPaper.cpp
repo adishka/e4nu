@@ -98,13 +98,13 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 			for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
 				// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
-				double MaxHeight = 14.;
+				double MaxHeight = 0.22;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 39.; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 0.65; }
 
 					// ----------------------------------------------------------------------------
 
@@ -495,7 +495,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		// Extra pad for the Y-axis units carbon
 
 		PlotCanvas->cd();
-		TPad* padTitle = new TPad("padTitle","padTitle",0.057,0.58,0.107,1., 21); 
+		TPad* padTitle = new TPad("padTitle","padTitle",0.04,0.58,0.09,1., 21); 
 		padTitle->SetFillColor(kWhite); 
 		padTitle->Draw();
 		padTitle->cd();
@@ -512,7 +512,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		// Extra pad for the Y-axis units iron
 
 		PlotCanvas->cd();
-		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.353,0.18,0.403,0.55,21); 
+		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.345,0.18,0.395,0.55,21); 
 		padTitleFe->SetFillColor(kWhite); 
 		padTitleFe->Draw();
 		padTitleFe->cd();

@@ -27,7 +27,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
-	TGaxis::SetMaxDigits(3);
+	//TGaxis::SetMaxDigits(3);
 
 	// ------------------------------------------------------------------------
 
@@ -49,12 +49,24 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 //	JustNucleus.push_back("C");
 //	E.push_back("2_261");
 
+//	nucleus.push_back("12C"); 
+//	JustNucleus.push_back("C");
+//	E.push_back("4_461");
+
 //	nucleus.push_back("56Fe"); 
 //	JustNucleus.push_back("Fe");
 //	E.push_back("2_261");
 
 //	nucleus.push_back("56Fe"); 
 //	JustNucleus.push_back("Fe");
+//	E.push_back("4_461");
+
+//	nucleus.push_back("4He"); 
+//	JustNucleus.push_back("4He");
+//	E.push_back("2_261");
+
+//	nucleus.push_back("4He"); 
+//	JustNucleus.push_back("4He");
 //	E.push_back("4_461");
 
 	xBCut.push_back("NoxBCut");
@@ -156,6 +168,8 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 					// Loop over the FSI Models
 
+					TH1D* DataPlot = nullptr;
+
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
 						TString PathToFiles = "../../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
@@ -174,6 +188,11 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 						Plots[WhichFSIModel]->GetXaxis()->SetTitle(JustNucleus[WhichNucleus]+LabelOfPlots[WhichPlot]);
 						Plots[WhichFSIModel]->GetXaxis()->CenterTitle(0);
 
+						if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") 
+							{ Plots[WhichFSIModel]->GetYaxis()->SetTitle("#frac{d#sigma}{dE^{QE}} [#frac{#mub}{GeV}]"); }
+						if (NameOfPlots[0] == "epRecoEnergy_slice_0") 
+							{ Plots[WhichFSIModel]->GetYaxis()->SetTitle("#frac{d#sigma}{dE^{cal}} [#frac{#mub}{GeV}]"); }
+
 						// -----------------------------------------------------------------------------------
 
 						// Use the universal e4v function that 
@@ -186,7 +205,6 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 						//                 apply acceptance systematics using sector-by -sector uncertainties
 
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
-						Plots[WhichFSIModel]->GetYaxis()->SetTitle(DoubleAccCorrXSecTitle);
 
 						// ----------------------------------------------------------------------------------
 
@@ -238,7 +256,10 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 						double localmax = Plots[WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }
-						double height = 4.;
+
+						double height = 1.1;
+						//if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { height = 2.3; }
+
 						if ( xBCut[WhichxBCut] == "xBCut" ) { height = 1.1; }
 						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 
@@ -256,7 +277,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 							gStyle->SetErrorX(0); // Removing the horizontal errors
 //							Plots[WhichFSIModel]->Draw("e same"); 
 
-							TH1D* DataPlot = Plots[WhichFSIModel];
+							DataPlot = Plots[WhichFSIModel];
 
 							DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
@@ -264,7 +285,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 							DataPlot->SetMarkerSize(2.); 
 							DataPlot->SetLineColor(kBlack);	
 							DataPlot->SetMarkerColor(kBlack);
-							DataPlot->GetYaxis()->SetRangeUser(0.,height*DataPlot->GetMaximum());	
+							DataPlot->GetYaxis()->SetRangeUser(0.,height*max);	
 							DataPlot->Draw("e same"); 
 
 //							TH1D* DataPlotG2018 = AcceptanceCorrection(Plots[WhichFSIModel],"hA2018_Final", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
@@ -282,6 +303,9 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 							
 							if (FSILabel[WhichFSIModel] == "SuSav2") 
 								{ legGenieBlackLine->AddEntry(Plots[WhichFSIModel],"SuSav2 (Total)", "l"); }
+
+							DataPlot->GetYaxis()->SetRangeUser(0.,height*max);	
+							DataPlot->Draw("e same"); 
 
 							//Plots[0]->Draw("e same"); 
 
@@ -320,13 +344,13 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 					myEbeam->SetTextFont(FontStyle);
 					myEbeam->SetTextColor(kAzure+4);
 					myEbeam->SetTextSize(TextSize-0.02);
-					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myEbeam->DrawLatexNDC(0.72,0.35,"E_{beam}"); }
+					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myEbeam->DrawLatexNDC(0.72,0.3,"E_{beam}"); }
 
 					TLatex* myArrow = new TLatex();
 					myArrow->SetTextFont(FontStyle);
 					myArrow->SetTextColor(kAzure+4);
 					myArrow->SetTextSize(1.2*TextSize);
-					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myArrow->DrawLatex(1.141,0.1,"#Downarrow"); }
+					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myArrow->DrawLatex(1.141,0.03,"#Downarrow"); }
 
 					// Monitor where 1.161 GeV is
 					//TLine* line = new TLine(1.161,0.,1.161,2.);

@@ -26,6 +26,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
+	TGaxis::SetMaxDigits(3);
 
 	// ------------------------------------------------------------------------
 
@@ -107,13 +108,13 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 
 	 			// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
 			
-				double MaxHeight = 43;
+				double MaxHeight = 0.17;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 65; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 0.27; }
 
 					// ---------------------------------------------------------------------------------------------------------------
 

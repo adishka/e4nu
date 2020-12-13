@@ -108,13 +108,13 @@ void AccCorrXSec_OverlayDeltaAlphaT_FigExtData8() {
 
 	 			// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
 			
-				double MaxHeight = 0.35;
+				double MaxHeight = 2.6;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 1.4; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 11; }
 
 					// ---------------------------------------------------------------------------------------------------------------
 
@@ -179,6 +179,8 @@ void AccCorrXSec_OverlayDeltaAlphaT_FigExtData8() {
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E,NameOfPlots[WhichPlot]);
 						if (Energy[WhichEnergy] == 4.461 ) { Plots[WhichFSIModel]->Scale(2.); }
 
+						Plots[WhichFSIModel]->Scale(1000.);
+
 						// ----------------------------------------------------------------------------------
 
 						// Genie Break Down
@@ -213,6 +215,7 @@ void AccCorrXSec_OverlayDeltaAlphaT_FigExtData8() {
 									l1Break->SetTextColor(BreakDownColors[j-1]);
 								}
 
+								BreakDownPlots[j-1]->Scale(1000.);
 								BreakDownPlots[j-1]->Draw("C hist same");
 
 							} // end of the look over the GENIE break down
@@ -369,34 +372,34 @@ void AccCorrXSec_OverlayDeltaAlphaT_FigExtData8() {
 		// Extra pad for the Y-axis units carbon
 
 		PlotCanvas->cd();
-		TPad* padTitle = new TPad("padTitle","padTitle",0.052,0.58,0.077,1., 21); 
+		TPad* padTitle = new TPad("padTitle","padTitle",0.052,0.68,0.107,1., 21); 
 		padTitle->SetFillColor(kWhite); 
 		padTitle->Draw();
 		padTitle->cd();
 
 		TLatex latexYTitle;
 		latexYTitle.SetTextFont(FontStyle);
-		latexYTitle.SetTextSize(15*TextSize);
+		latexYTitle.SetTextSize(6*TextSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
-		latexYTitle.DrawLatexNDC(0.8,0.1,DoubleAccCorrXSecTitle);
+		latexYTitle.DrawLatexNDC(0.6,0.1,"#frac{d#sigma}{d#alpha_{T}} [#frac{nb}{deg}]");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
 		// Extra pad for the Y-axis units iron
 
 		PlotCanvas->cd();
-		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.34,0.18,0.365,0.55,21); 
+		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.34,0.28,0.395,0.55,21); 
 		padTitleFe->SetFillColor(kWhite); 
 		padTitleFe->Draw();
 		padTitleFe->cd();
 
 		TLatex latexYTitleFe;
 		latexYTitleFe.SetTextFont(FontStyle);
-		latexYTitleFe.SetTextSize(15*TextSize);
+		latexYTitleFe.SetTextSize(6*TextSize);
 		latexYTitleFe.SetTextColor(kBlack);
 		latexYTitleFe.SetTextAngle(90);
-		latexYTitleFe.DrawLatexNDC(0.8,0.05,DoubleAccCorrXSecTitle);
+		latexYTitleFe.DrawLatexNDC(0.6,0.05,"#frac{d#sigma}{d#alpha_{T}} [#frac{nb}{deg}]");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 

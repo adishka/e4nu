@@ -96,13 +96,13 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 			for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
 				// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
-				double MaxHeight = 1.2;
+				double MaxHeight = 2.6;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 4.; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 5.1; }
 
 					// ----------------------------------------------------------------------------
 
@@ -170,7 +170,6 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
 						Plots[WhichFSIModel]->SetLineWidth(1);
 						Plots[WhichFSIModel]->GetYaxis()->SetTitle(DoubleAccCorrXSecTitle);
-						Plots[WhichFSIModel]->Scale(0.01);
 
 						//-----------------------------------------------------------------------------------------------
 
@@ -237,8 +236,6 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 
 								if (DoubleE[WhichEnergy] == 1.161) { BreakDownPlots[j-1]->Scale(1./2.); }
 								if (DoubleE[WhichEnergy] == 4.461) { BreakDownPlots[j-1]->Scale(5.); }
-
-								BreakDownPlots[j-1]->Scale(0.01);
 
 								//-----------------------------------------------------------------------------------------------
 
@@ -512,7 +509,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 
 		// Size for y axis label
 
-		double YaxisSize = 8*TextSize; 
+		double YaxisSize = 7*TextSize; 
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -529,7 +526,12 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 		latexYTitle.SetTextSize(YaxisSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
-		latexYTitle.DrawLatexNDC(0.8,0.08,DoubleAccCorrXSecTitle);
+		//latexYTitle.DrawLatexNDC(0.8,0.08,DoubleAccCorrXSecTitle);
+
+		if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") 
+			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE^{QE}} [#frac{#mub}{GeV}]"); }
+		if (NameOfPlots[0] == "epRecoEnergy_slice_0") 
+			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE^{cal}} [#frac{#mub}{GeV}]"); }
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -546,7 +548,12 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 		latexYTitleFe.SetTextSize(YaxisSize);
 		latexYTitleFe.SetTextColor(kBlack);
 		latexYTitleFe.SetTextAngle(90);
-		latexYTitleFe.DrawLatexNDC(0.8,0.,DoubleAccCorrXSecTitle);
+		//latexYTitleFe.DrawLatexNDC(0.8,0.,DoubleAccCorrXSecTitle);
+
+		if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") 
+			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE^{QE}} [#frac{#mub}{GeV}]"); }
+		if (NameOfPlots[0] == "epRecoEnergy_slice_0") 
+			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE^{cal}} [#frac{#mub}{GeV}]"); }
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 

@@ -26,13 +26,13 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
-	TGaxis::SetMaxDigits(3);
+	TGaxis::SetMaxDigits(4);
 
 	// ------------------------------------------------------------------------
 
 	double YPadStart = 0.04;
 	double YRange[4] = {0.04,0.4,0.7,0.99};
-	double LeftMargin = 0.15;
+	double LeftMargin = 0.18;
 	double TextSize = 0.15;
 	int Ndivisions = 2;
 
@@ -358,17 +358,17 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 				// Extra pad for the common title over the 3 pads
 
 				PlotCanvas->cd();
-				TPad* padTitle = new TPad("padTitle","padTitle",0.,0.,LeftMargin/2.,1., 21); 
+				TPad* padTitle = new TPad("padTitle","padTitle",0.,0.05,LeftMargin/2.,1., 21); 
 				padTitle->SetFillColor(kWhite); 
 				padTitle->Draw();
 				padTitle->cd();
 
 				TLatex latexYTitle;
 				latexYTitle.SetTextFont(FontStyle);
-				latexYTitle.SetTextSize(8*TextSize);
+				latexYTitle.SetTextSize(6*TextSize);
 				latexYTitle.SetTextColor(kBlack);
 				latexYTitle.SetTextAngle(90);
-				latexYTitle.DrawLatexNDC(0.8,0.27,"Normalized Yield");
+				latexYTitle.DrawLatexNDC(0.8,0.27,DoubleXSecTitle);
 
 				// --------------------------------------------------------------------------------------------
 

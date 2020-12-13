@@ -279,7 +279,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 		SF = 1. / ( IntegratedCharge[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
 						    TargetDensity[std::make_pair(Nucleus, E)] *\
-						    OverallUnitConversionFactor / MassNumber[Nucleus] ) * ConversionFactorCm2ToMicroBarn / dOmega;
+						    OverallUnitConversionFactor / MassNumber[Nucleus] ) * ConversionFactorCm2ToMicroBarn;
 
 	}
 
@@ -288,7 +288,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 		SF = 1. / (IntegratedCharge_FilterRuns[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
 						    TargetDensity[std::make_pair(Nucleus, E)] *\
-						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn;
 
 	}
 
@@ -297,7 +297,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 		SF = 1. / (IntegratedCharge_NewFilterRuns[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
 						    TargetDensity[std::make_pair(Nucleus, E)] *\
-						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn;
 
 	}
 
@@ -306,7 +306,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 		SF = 1. / (IntegratedCharge_GoodRunList_AllRuns[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
 						    TargetDensity[std::make_pair(Nucleus, E)] *\
-						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn;
 
 	}
 
@@ -315,7 +315,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 		SF = 1. / (IntegratedCharge_GoodRunList_LowCurrentRuns[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
 						    TargetDensity[std::make_pair(Nucleus, E)] *\
-						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn;
 
 
 	}
@@ -325,7 +325,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 		SF = 1. / (IntegratedCharge_GoodRunList_HighCurrentRuns[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
 						    TargetDensity[std::make_pair(Nucleus, E)] *\
-						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn;
 
 	}
 
@@ -334,7 +334,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 		SF = 1. / (IntegratedCharge_PinnedFiles[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
 						    TargetDensity[std::make_pair(Nucleus, E)] *\
-						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn;
 
 	}
 
@@ -343,7 +343,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 		SF = 1. / (IntegratedCharge_MikhailFiles[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
 						    TargetDensity[std::make_pair(Nucleus, E)] *\
-						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn / dOmega;
+						    OverallUnitConversionFactor / MassNumber[Nucleus]) * ConversionFactorCm2ToMicroBarn;
 
 	}
 
@@ -351,19 +351,18 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	// Simulation sets
 
-	if (Sample == "SuSav2" || Sample == "SuSav2_NoAccMaps" ) { 
+	if (Sample == "SuSav2" || Sample == "SuSav2_NoAccMaps" 
+		/*|| Sample == "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut" || Sample == "hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut"*/) { 
 
 				SF = (SuSav2GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
-					ConversionFactorCm2ToMicroBarn / (SuSav2NumberEvents[std::make_pair(Nucleus, E)] *\
-					dOmega) ) ;
+					ConversionFactorCm2ToMicroBarn / (SuSav2NumberEvents[std::make_pair(Nucleus, E)] ) ) ;
 
 	}
 
 	if (Sample == "G2018") { 
 
 		SF = ( G2018GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
-					ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair(Nucleus, E)] *\
-					dOmega) );
+					ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair(Nucleus, E)] ) );
 
 	}	
 
@@ -636,13 +635,13 @@ void UniversalE4vFunction(TH1D* h, TString DataSetLabel, TString nucleus, TStrin
 
 	AbsoluteXSecScaling(h,DataSetLabel,nucleus,E);
 
-	// Division by the bin width
-
-	ReweightPlots(h);
-
 	// Rebin if necessary
 
 	ApplyRebinning(h,E,name);
+
+	// Division by the bin width
+
+	ReweightPlots(h);
 
 	// Use relevant ranges
 			
@@ -914,7 +913,7 @@ TPad* CreateTPad(int WhichEnergy, int WhichNucleus, double Energy, TString nucle
 	if (Energy == 4.461 ) { pad->SetRightMargin(0.01); }
 
 	pad->SetLeftMargin(0.);
-	if (Energy == 1.161 ) { pad->SetLeftMargin(0.13); }
+	if (Energy == 1.161 ) { pad->SetLeftMargin(0.135); }
 	if (Energy == 2.261 && nucleus == "56Fe") { pad->SetLeftMargin(0.1); }	
 
 	return pad;

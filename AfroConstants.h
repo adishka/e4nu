@@ -108,11 +108,13 @@
 		{ "SuSav2_RadCorr_LFGM", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithFidAcc", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc", "SuSav2" },
+		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth0pi_WithoutFidAcc", "SuSav2" },
 		{ "hA2018_Final_RadCorr_LFGM", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc", "G2018" },
+		{ "hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth0pi_WithoutFidAcc", "G2018" },
 		{ "Pinned_Data_Final_SixSectors", "Pinned Data" },
@@ -296,7 +298,7 @@
 		{ std::make_pair("56Fe", "4_461"), 130800000 } // Q2 > 0.8
 	};
 
-	// G2018 GENIE spline xsec // cm^2
+	// G2018 GENIE spline xsec // 10^{-38} cm^2
 
 	static std::map<std::pair<TString,TString>,double> G2018GenieXSec =
 	{

@@ -26,13 +26,13 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
-	TGaxis::SetMaxDigits(3);
+	TGaxis::SetMaxDigits(4);
 
 	// ------------------------------------------------------------------------
 
 	double YPadStart = 0.04;
 	double YRange[4] = {0.04,0.4,0.7,0.99};
-	double LeftMargin = 0.15;
+	double LeftMargin = 0.23;
 	double TextSize = 0.15;
 	int Ndivisions = 2;
 
@@ -270,8 +270,8 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 						double localmax = Plots[WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }
 //						double height = 1.2;
-						double height = 4.;
-						if (WhichPlot == 2) { height = 5.; }
+						double height = 3.7;
+						if (WhichPlot == 2) { height = 4.6; }
 
 						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 
@@ -325,9 +325,9 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 						pad->cd();
 						if (OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_3") { 
 							myPmissSlice->SetTextSize(TextSize-0.02);
-							myPmissSlice->DrawLatexNDC(0.2,0.85,LabelOfPlots[WhichPlot]); 
+							myPmissSlice->DrawLatexNDC(0.24,0.85,LabelOfPlots[WhichPlot]); 
 						}
-						else { myPmissSlice->DrawLatexNDC(0.2,0.8,LabelOfPlots[WhichPlot]); }
+						else { myPmissSlice->DrawLatexNDC(0.24,0.8,LabelOfPlots[WhichPlot]); }
 
 						// -----------------------------------------------------------------------------------
 
@@ -378,17 +378,17 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 				// Extra pad for the common title over the 3 pads
 
 				PlotCanvas->cd();
-				TPad* padTitle = new TPad("padTitle","padTitle",0.,0.,LeftMargin/2.,1., 21); 
+				TPad* padTitle = new TPad("padTitle","padTitle",0.,0.2,LeftMargin*0.6,1., 21); 
 				padTitle->SetFillColor(kWhite); 
 				padTitle->Draw();
 				padTitle->cd();
 
 				TLatex latexYTitle;
 				latexYTitle.SetTextFont(FontStyle);
-				latexYTitle.SetTextSize(8*TextSize);
+				latexYTitle.SetTextSize(3*TextSize);
 				latexYTitle.SetTextColor(kBlack);
 				latexYTitle.SetTextAngle(90);
-				latexYTitle.DrawLatexNDC(0.8,0.27,DoubleAccCorrXSecTitle);
+				latexYTitle.DrawLatexNDC(0.59,0.27,"#frac{d#sigma}{dE^{cal}} [#frac{#mub}{GeV}]");
 
 				// --------------------------------------------------------------------------------------------
 

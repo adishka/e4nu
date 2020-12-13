@@ -243,6 +243,7 @@ treeProducer_simulation::treeProducer_simulation(TString Nucleus, TString Energy
 
   TString TuneLabel = "SuSav2";
   if (fTune == "G18_10a_02_11a") { TuneLabel = "G2018"; }
+  if (fTune == "G18_02a_00_000") { TuneLabel = "G18_02a"; }  
 
   TString particle = "Neutrinos";
   if (fInteraction == "EM+MEC") { particle = "Electrons"; }

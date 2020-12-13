@@ -138,6 +138,7 @@ void AccCorrXSec_OverlayPmissFig3a_e4nuPaper() {
 						Plots[WhichFSIModel]->SetLineColor(DataSetColors[WhichFSIModel]);
 						PrettyDoubleXSecPlot(Plots[WhichFSIModel]);
 						Plots[WhichFSIModel]->GetXaxis()->SetTitle(LabelOfPlots[WhichPlot]);
+						Plots[WhichFSIModel]->GetYaxis()->SetTitle("#frac{d#sigma}{dP_{T}} [#frac{#mub}{GeV/c}]");
 
 						// ----------------------------------------------------------------------------------
 
@@ -151,7 +152,6 @@ void AccCorrXSec_OverlayPmissFig3a_e4nuPaper() {
 						//                 apply acceptance systematics using sector-by -sector uncertainties
 
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
-						Plots[WhichFSIModel]->GetYaxis()->SetTitle(DoubleAccCorrXSecTitle);
 
 						// ----------------------------------------------------------------------------------
 
