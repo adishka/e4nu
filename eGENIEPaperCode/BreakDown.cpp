@@ -16,12 +16,7 @@
 #include <string>
 #include <sstream>
 
-//#include "/home/afroditi/Dropbox/PhD/Secondary_Code/myFunctions.cpp"
-
-//#include "../../myClasses/Constants.h"
-
 using namespace std;
-//using namespace Constants;
 
 void PrettyPlot(TH1D* h, int color) {
 
@@ -71,7 +66,8 @@ void BreakDown(TString Nucleus, TString Energy, TString Tune, TString Interactio
 
 	TString TuneLabel = "SuSav2";
 	if (Tune == "G18_10a_02_11a") { TuneLabel = "G2018"; }
-	
+	if (Tune == "G00_00a_00_000") { TuneLabel = "G2000"; }
+	if (Tune == "G00_00a_00_000") { TuneLabel = "G18_02a"; }
 
 	// ------------------------------------------------------------------------
 

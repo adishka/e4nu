@@ -103,16 +103,42 @@ void OverlayXSec() {
 
 	// ---------------------------------------------------------------------------------------------
 
-	// SuSav2 GENIE Out-Of-The-Box
+	// SuSav2 GENIE Out-Of-The-Box @ E = 1.161 GEV & theta = 37.5 deg
 
 	TFile* GenieBoxFile = TFile::Open("GenieOutOfTheBox_12C_DoubleDiff_E_1_161GeV_theta_37_5.root");
 
 	TH1D* GenieBoxPlot = (TH1D*)GenieBoxFile->Get("v_distribution");
 
-	GenieBoxPlot->SetLineColor(610);
+	GenieBoxPlot->SetLineColor(kGreen+2);
 	GenieBoxPlot->SetLineWidth(2);
 
 	GenieBoxPlot->Draw("c hist same");
+
+	// ---------------------------------------------------------------------------------------------
+
+	// SuSav2 GENIE Out-Of-The-Box @ E = 1.299 GEV & theta = 37.5 deg
+
+	TFile* GenieBoxFile1299 = TFile::Open("C12_E_1_299_theta_37_5.root");
+
+	TGraph* GenieBoxPlot1299 = (TGraph*)GenieBoxFile1299->Get("Simulation");
+
+	GenieBoxPlot1299->SetLineColor(kBlack);
+	GenieBoxPlot1299->SetLineWidth(2);
+
+	GenieBoxPlot1299->Draw("c same");
+
+	// ---------------------------------------------------------------------------------------------
+
+	// SuSav2 GENIE Out-Of-The-Box @ E = 0.961 GEV & theta = 37.5 deg
+
+	TFile* GenieBoxFile0961 = TFile::Open("C12_E_0_961_theta_37_5.root");
+
+	TGraph* GenieBoxPlot0961 = (TGraph*)GenieBoxFile0961->Get("Simulation");
+
+	GenieBoxPlot0961->SetLineColor(kRed+2);
+	GenieBoxPlot0961->SetLineWidth(2);
+
+	GenieBoxPlot0961->Draw("c same");
 
 	// ---------------------------------------------------------------------------------------------
 
@@ -153,29 +179,78 @@ void OverlayXSec() {
 
 
 	// ---------------------------------------------------------------------------------------------
+//	// ---------------------------------------------------------------------------------------------
+
+//	TLegend* leg = new TLegend(0.35,0.65,0.4,0.89);
+//	leg->SetNColumns(1);
+
+//	leg->AddEntry(DataGraph,"SLAC/Sealock Data E_{e} = 1.299 GeV","lep");
+
+//	TLegendEntry* lDataLow = leg->AddEntry(DataGraphLow,"SLAC/Sealock Data E_{e} = 0.961 GeV", "lep");
+//	lDataLow->SetTextColor(kRed+1);
+
+////	TLegendEntry* lGenie = leg->AddEntry(GeniePlot,"e4v GENIE E_{e} = 1.161 GeV, 24^{o} < #phi_{e'} < 36^{o}", "l");
+////	lGenie->SetTextColor(kBlue);
+
+//	TLegendEntry* lGenieBox = leg->AddEntry(GenieBoxPlot,"GENIE E_{e} = 1.161 GeV", "l");
+//	lGenieBox->SetTextColor(kGreen+2);
+
+//	TLegendEntry* lDatae4v = leg->AddEntry(Datae4vPlot,"e4v CLAS Data E_{e} = 1.161 GeV, 24^{o} < #phi_{e'} < 36^{o}", "lep");
+//	lDatae4v->SetTextColor(kGreen+2);
+
+//	leg->SetBorderSize(0);
+//	leg->SetTextFont(FontStyle);
+//	leg->SetTextSize(TextSize-0.03);
+//	leg->Draw();
+
 	// ---------------------------------------------------------------------------------------------
 
-	TLegend* leg = new TLegend(0.35,0.65,0.4,0.89);
-	leg->SetNColumns(1);
+	TLegend* leg = new TLegend(0.3,0.75,0.85,0.89);
+	leg->SetNColumns(3);
 
-	leg->AddEntry(DataGraph,"SLAC/Sealock Data E_{e} = 1.299 GeV","lep");
+	leg->AddEntry(DataGraph,"1.299 GeV","");
 
-	TLegendEntry* lDataLow = leg->AddEntry(DataGraphLow,"SLAC/Sealock Data E_{e} = 0.961 GeV", "lep");
+	TLegendEntry* lDataLow = leg->AddEntry(DataGraphLow,"0.961 GeV", "");
 	lDataLow->SetTextColor(kRed+1);
 
 //	TLegendEntry* lGenie = leg->AddEntry(GeniePlot,"e4v GENIE E_{e} = 1.161 GeV, 24^{o} < #phi_{e'} < 36^{o}", "l");
 //	lGenie->SetTextColor(kBlue);
 
-	TLegendEntry* lGenieBox = leg->AddEntry(GenieBoxPlot,"GENIE E_{e} = 1.161 GeV", "l");
-	lGenieBox->SetTextColor(610);
+//	TLegendEntry* lGenieBox = leg->AddEntry(GenieBoxPlot,"GENIE E_{e} = 1.161 GeV", "l");
+//	lGenieBox->SetTextColor(kGreen+2);
 
-	TLegendEntry* lDatae4v = leg->AddEntry(Datae4vPlot,"e4v CLAS Data E_{e} = 1.161 GeV, 24^{o} < #phi_{e'} < 36^{o}", "lep");
+	TLegendEntry* lDatae4v = leg->AddEntry(Datae4vPlot,"1.161 GeV", "");
 	lDatae4v->SetTextColor(kGreen+2);
 
 	leg->SetBorderSize(0);
 	leg->SetTextFont(FontStyle);
-	leg->SetTextSize(TextSize-0.03);
-	leg->Draw();
+	leg->SetTextSize(TextSize-0.01);
+//	leg->Draw();
+
+	// ---------------------------------------------------------------------------------------------
+
+	TLatex* Latex1299 = new TLatex();
+	Latex1299->SetTextFont(FontStyle);
+	Latex1299->SetTextSize(TextSize-0.01);
+	Latex1299->SetTextColor(kBlack);
+	Latex1299->DrawLatexNDC(0.5,0.22,"SLAC 37.5^{o} 1.299 GeV");
+
+	// ---------------------------------------------------------------------------------------------
+
+	TLatex* Latex0961 = new TLatex();
+	Latex0961->SetTextFont(FontStyle);
+	Latex0961->SetTextSize(TextSize-0.01);
+	Latex0961->SetTextColor(kRed+2);
+	Latex0961->DrawLatexNDC(0.32,0.80,"SLAC 37.5^{o} 0.961 GeV");
+
+	// ---------------------------------------------------------------------------------------------
+
+	TLatex* Latex1161 = new TLatex();
+	Latex1161->SetTextFont(FontStyle);
+	Latex1161->SetTextSize(TextSize-0.01);
+	Latex1161->SetTextColor(kGreen+2);
+	Latex1161->SetTextAlign(12);  //centered
+	Latex1161->DrawLatexNDC(0.7,0.57,"#splitline{e4#nu 36^{o}-39^{o}}{1.161 GeV}");
 
 	// ---------------------------------------------------------------------------------------------
 

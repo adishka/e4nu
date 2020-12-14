@@ -32,6 +32,26 @@ TString ToStringInt(int num) {
 
 }
 
+void Reweight(TH1D* h, double SF) {
+
+	int NBins = h->GetXaxis()->GetNbins();
+
+	for (int i = 0; i < NBins; i++) {
+
+		double CurrentEntry = h->GetBinContent(i+1);
+		double NewEntry = CurrentEntry * SF / h->GetBinWidth(i+1);
+
+		double CurrentError = h->GetBinError(i+1);
+		double NewError = CurrentError * SF / h->GetBinWidth(i+1);
+
+		h->SetBinContent(i+1,NewEntry); 
+//		h->SetBinError(i+1,NewError); 
+		h->SetBinError(i+1,0.000001); 
+
+	}
+
+}
+
 void THStackFluxes() {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------
@@ -43,11 +63,16 @@ void THStackFluxes() {
 	int Ndivisions = 4;
 	int FontStyle = 132;
 	double TextSize = 0.07;
-	int NBreakDown = 5;
+//	int NBreakDown = 5;
+	int NBreakDown = 4; // leaving COH out for now
 
 	gStyle->SetPalette(55); const Int_t NCont = 999; gStyle->SetNumberContours(NCont); gStyle->SetTitleSize(TextSize,"t"); gStyle->SetTitleFont(FontStyle,"t");
 
-	const std::vector<int> Colors{610,410,kRed+1,kGreen+3,kBlue};
+//	const std::vector<int> Colors{610,410,kRed+1,kGreen+3,kBlue};
+//	const std::vector<int> Colors{kBlue-4,kOrange+1,kRed+1,kGreen+3,610};
+//	const std::vector<int> Colors{kBlue-5,kYellow+1,kOrange+7,kGray,kBlue};
+//	const std::vector<int> Colors{kBlue-5,410,kOrange+7,kRed+1,kBlue}; // not happy
+	const std::vector<int> Colors{kBlue-5,kYellow+1,kOrange+7,kRed+1,kBlue};
 
 	// -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -85,12 +110,48 @@ void THStackFluxes() {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
-	NameOfPlots.push_back("EvPlot"); XLabelOfPlots.push_back("E_{#nu} [GeV]"); YLabelOfPlots.push_back("# Events"); OutputPlotNames.push_back("EvPlot");
+	NameOfPlots.push_back("EvPlot"); XLabelOfPlots.push_back("E_{#nu} [GeV]"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} [10^{-39} #frac{cm^{2}}{GeV nucleus}]"); OutputPlotNames.push_back("EvPlot");
 
 	// --------------------------------------------------------------------------------------------------------------------------------
 	
 	std::vector<TString> ProcessLabel = {"QE","MEC","RES","DIS","COH"}; 
 	
+	// --------------------------------------------------------------------------------------------------------------------------------	
+
+	// 10^{-38} cm^2 / nucleus
+
+	static std::map<TString,double> GENIEXSec =
+	{
+		{ "uB_GTEST19_10b_00_000", 0.321417},
+		{ "uB_G18_10a_02_11a", 0.273469},
+		{ "uB_G18_02a_00_000", 0.},
+		{ "DUNE_GTEST19_10b_00_000", 0.860894},
+		{ "DUNE_G18_10a_02_11a", 0.778348},
+		{ "DUNE_G18_02a_00_000", 0.},
+		{ "Nova_GTEST19_10b_00_000", 0.},
+		{ "Nova_G18_10a_02_11a", 0.},
+		{ "Nova_G18_02a_00_000", 0.},
+		{ "T2K_GTEST19_10b_00_000", 0.},
+		{ "T2K_G18_10a_02_11a", 0.},
+		{ "T2K_G18_02a_00_000", 0.},
+	};
+
+	static std::map<TString,double> GENIEEvents =
+	{
+		{ "uB_GTEST19_10b_00_000", 3800000},
+		{ "uB_G18_10a_02_11a", 2400000},
+		{ "uB_G18_02a_00_000", 4000000},
+		{ "DUNE_GTEST19_10b_00_000", 3400000},
+		{ "DUNE_G18_10a_02_11a", 4000000},
+		{ "DUNE_G18_02a_00_000", 4000000},
+		{ "Nova_GTEST19_10b_00_000", 4000000},
+		{ "Nova_G18_10a_02_11a", 4000000},
+		{ "Nova_G18_02a_00_000", 3800000},
+		{ "T2K_GTEST19_10b_00_000", 3800000},
+		{ "T2K_G18_10a_02_11a", 4000000},
+		{ "T2K_G18_02a_00_000", 4000000},
+	};
+
 	// --------------------------------------------------------------------------------------------------------------------------------	
 
 	int NNuclei = nucleus.size();
@@ -134,9 +195,9 @@ void THStackFluxes() {
 
 					pad1 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0,0,0.36,1., 21); 
 					pad1->SetFillColor(kWhite); pad1->Draw();
-					pad2 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.36,0,0.67,1,22); 
+					pad2 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.36,0,0.69,1,22); 
 					pad2->SetFillColor(kWhite); pad2->Draw(); 
-					pad3 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.67,0,1.,1,22); 
+					pad3 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.69,0,1.,1,22); 
 					pad3->SetFillColor(kWhite); pad3->Draw(); 					
 					pad1->SetBottomMargin(0.18);
 					pad2->SetBottomMargin(0.18);
@@ -149,7 +210,7 @@ void THStackFluxes() {
 				for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
 					if (WhichFSIModel == 0) 
-						{ pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.15); pad1->SetTitle("");}
+						{ pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.2); pad1->SetTitle("");}
 					if (WhichFSIModel == 1)  { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.0); }
 					
 					if (WhichFSIModel == 2)  { pad3->cd(); pad3->SetLeftMargin(0.0); pad3->SetRightMargin(0.04); }
@@ -161,12 +222,46 @@ void THStackFluxes() {
 
 					TH1D* Plots[NBreakDown];
 					
-					TLegend* leg = new TLegend(0.6,0.5,0.9,0.8);
+					TLegend* leg = new TLegend(0.6,0.67,0.9,0.8);
 					leg->SetNColumns(2);
 
 					for (int WhichInteraction = 0; WhichInteraction < NBreakDown; WhichInteraction++) {
 
 						Plots[WhichInteraction] =  (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]+"_Interaction_"+ToStringInt(WhichInteraction) ) ) ;
+
+						double Weight = 1.;
+
+						if ( E[WhichEnergy] == "uBFlux" && FSIModel[WhichFSIModel] == "GTEST19_10b_00_000_CCinclMEC" ) 
+							{ Weight = GENIEXSec["uB_GTEST19_10b_00_000"] / GENIEEvents["uB_GTEST19_10b_00_000"]; }
+						if ( E[WhichEnergy] == "uBFlux" && FSIModel[WhichFSIModel] == "G18_10a_02_11a_CCinclMEC" ) 
+							{ Weight = GENIEXSec["uB_G18_10a_02_11a"] / GENIEEvents["uB_G18_10a_02_11a"]; }
+						//if ( E[WhichEnergy] == "uBFlux" && FSIModel[WhichFSIModel] == "G18_02a_00_000_CCinclMEC" ) 
+						//	{ Weight = GENIEXSec["G18_10a_02_11a"] / GENIEEvents["uB_G18_02a_00_000"]; }
+
+						if ( E[WhichEnergy] == "DUNEFlux" && FSIModel[WhichFSIModel] == "GTEST19_10b_00_000_CCinclMEC" ) 
+							{ Weight = GENIEXSec["DUNE_GTEST19_10b_00_000"] / GENIEEvents["DUNE_GTEST19_10b_00_000"]; }
+						if ( E[WhichEnergy] == "DUNEFlux" && FSIModel[WhichFSIModel] == "G18_10a_02_11a_CCinclMEC" ) 
+							{ Weight = GENIEXSec["G18_10a_02_11a"] / GENIEEvents["DUNE_G18_10a_02_11a"]; }
+						//if ( E[WhichEnergy] == "DUNEFlux" && FSIModel[WhichFSIModel] == "G18_02a_00_000_CCinclMEC" ) 
+						//	{ Weight = GENIEXSec["G18_10a_02_11a"] / GENIEEvents["DUNE_G18_02a_00_000"]; }
+
+						//if ( E[WhichEnergy] == "NovaFlux" && FSIModel[WhichFSIModel] == "GTEST19_10b_00_000_CCinclMEC" ) 
+						//	{ Weight = GENIEXSec["Nova_GTEST19_10b_00_000"] / GENIEEvents["Nova_GTEST19_10b_00_000"]; }
+						//if ( E[WhichEnergy] == "NovaFlux" && FSIModel[WhichFSIModel] == "G18_10a_02_11a_CCinclMEC" ) 
+						//	{ Weight = GENIEXSec["G18_10a_02_11a"] / GENIEEvents["Nova_G18_10a_02_11a"]; }
+						//if ( E[WhichEnergy] == "NovaFlux" && FSIModel[WhichFSIModel] == "G18_02a_00_000_CCinclMEC" ) 
+						//	{ Weight = GENIEXSec["G18_10a_02_11a"] / GENIEEvents["Nova_G18_02a_00_000"]; }
+
+						//if ( E[WhichEnergy] == "T2KFlux" && FSIModel[WhichFSIModel] == "GTEST19_10b_00_000_CCinclMEC" ) 
+						//	{ Weight = GENIEXSec["T2K_GTEST19_10b_00_000"] / GENIEEvents["T2K_GTEST19_10b_00_000"]; }
+						//if ( E[WhichEnergy] == "T2KFlux" && FSIModel[WhichFSIModel] == "G18_10a_02_11a_CCinclMEC" ) 
+						//	{ Weight = GENIEXSec["G18_10a_02_11a"] / GENIEEvents["T2K_G18_10a_02_11a"]; }
+						//if ( E[WhichEnergy] == "T2KFlux" && FSIModel[WhichFSIModel] == "G18_02a_00_000_CCinclMEC" ) 
+						//	{ Weight = GENIEXSec["G18_10a_02_11a"] / GENIEEvents["T2K_G18_02a_00_000"]; }
+
+						//std::cout << "XSec = " << GENIEXSec["ub_G18_10a_02_11a"] << ",  Events = " << GENIEEvents["uB_G18_10a_02_11a"] << std::endl;
+						//std::cout << "XSec Weight = " << Weight << std::endl;
+						Reweight(Plots[WhichInteraction],10*Weight); // that explains the 10^-39 cm^2 units
 
 						Plots[WhichInteraction]->GetXaxis()->CenterTitle();
 						Plots[WhichInteraction]->GetXaxis()->SetLabelFont(FontStyle);
@@ -182,7 +277,7 @@ void THStackFluxes() {
 						Plots[WhichInteraction]->GetYaxis()->SetTitleFont(FontStyle);
 						Plots[WhichInteraction]->GetYaxis()->SetLabelSize(TextSize);
 						Plots[WhichInteraction]->GetYaxis()->SetTitleSize(TextSize);
-						Plots[WhichInteraction]->GetYaxis()->SetTitleOffset(1.);
+						Plots[WhichInteraction]->GetYaxis()->SetTitleOffset(1.1);
 						Plots[WhichInteraction]->GetYaxis()->SetTitle(YLabelOfPlots[WhichPlot]);
 						Plots[WhichInteraction]->GetYaxis()->SetNdivisions(5);
 
@@ -191,13 +286,14 @@ void THStackFluxes() {
 						//Plots[WhichInteraction]->SetFillStyle(3004);
 						Plots[WhichInteraction]->SetLineWidth(1);
 
-						Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.1,9.7);
-						Plots[WhichInteraction]->GetYaxis()->SetRangeUser(0.,5*TMath::Power(10.,5.));
+						Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.15,9.);
+						//Plots[WhichInteraction]->GetYaxis()->SetRangeUser(0.,9*TMath::Power(10.,5.));
+						Plots[WhichInteraction]->GetYaxis()->SetRangeUser(0.,3.5);
 						
-						if (E[WhichEnergy] == "uBFlux") { Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.1,2.7); }
+						if (E[WhichEnergy] == "uBFlux") { Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.2,2.7); }
 						if (E[WhichEnergy] == "DUNEFlux") { Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.3,5.3); }
 						if (E[WhichEnergy] == "T2KFlux") { Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.1,5.3); }
-						if (E[WhichEnergy] == "NovaFlux") { Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.1,5.3); }
+						if (E[WhichEnergy] == "NovaFlux") { Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.6,4.9); }
 
 						Plots[WhichInteraction]->Draw("hist same");
 						THStacks->Add(Plots[WhichInteraction],"hist");

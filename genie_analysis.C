@@ -222,7 +222,7 @@ void genie_analysis::Loop(Int_t choice) {
 //		if (ftarget == "3He") { Ecal_offset["3He"] += 0.01; }
 //		if (ftarget == "4He") { Ecal_offset["4He"] += 0.01; }
 //		if (ftarget == "C12") { Ecal_offset["C12"] += 0.025; }
-//		if (ftarget == "56Fe") { Ecal_offset["C12"] += 0.036; }
+//		if (ftarget == "56Fe") { Ecal_offset["56Fe"] += 0.036; }
 
 //	}
 

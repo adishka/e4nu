@@ -367,7 +367,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 		latexYTitle.SetTextSize(14*TextSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
-		latexYTitle.DrawLatexNDC(0.8,0.1,DoubleXSecTitle+ " x10^{3}");
+		latexYTitle.DrawLatexNDC(0.8,0.1,DoubleXSecTitle+ " x10 ^{3}");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -384,7 +384,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 		latexYTitleFe.SetTextSize(14*TextSize);
 		latexYTitleFe.SetTextColor(kBlack);
 		latexYTitleFe.SetTextAngle(90);
-		latexYTitleFe.DrawLatexNDC(0.8,0.0,DoubleXSecTitle+ " x10^{3}");
+		latexYTitleFe.DrawLatexNDC(0.85,0.0,DoubleXSecTitle+ " x10 ^{3}");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 

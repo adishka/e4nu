@@ -190,7 +190,7 @@ void treeProducer_simulation::Loop() {
 
 	// -------------------------------------------------------------------------------------------------------------
 
-	int NBinsEv = 100; double MinEv = 0., MaxEv = 10.; TString EvTitle = ";E_{#nu} [GeV]"; 
+	int NBinsEv = 60; double MinEv = 0., MaxEv = 9.; TString EvTitle = ";E_{#nu} [GeV]"; 
 
 	TH1D* EvPlot = new TH1D("EvPlot",EvTitle,NBinsEv,MinEv,MaxEv);
 
@@ -341,7 +341,13 @@ void treeProducer_simulation::Loop() {
 
 		// -------------------------------------------------------------------------------------
 
-		//if (ProtonTagging != 1) { continue; }
+		// From this point & below
+		// Requiring the existence of at least one proton above threshold 
+		// To performs STV study
+
+		// -------------------------------------------------------------------------------------
+
+		if (ProtonTagging == 0) { continue; }
 		if (ChargedPionPlusTagging != 0) { continue; }
 		if (ChargedPionMinusTagging != 0) { continue; }
 		if (GammaTagging != 0) { continue; }

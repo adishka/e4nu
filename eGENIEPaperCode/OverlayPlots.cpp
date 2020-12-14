@@ -41,16 +41,20 @@ void OverlayPlots() {
 	std::vector<TString> E; E.push_back("1161");
 	std::vector<TString> LabelE; LabelE.push_back(" @ E = 1.161 GeV");
 
-	//	std::vector<int> Colors; Colors.push_back(kBlack); Colors.push_back(610);
-	std::vector<int> Colors; Colors.push_back(kBlue-7); Colors.push_back(kOrange+1);
+	//std::vector<int> Colors; Colors.push_back(kBlack); Colors.push_back(610);
+	std::vector<int> Colors; Colors.push_back(kBlue-7); Colors.push_back(kOrange+1); Colors.push_back(kGreen+3); Colors.push_back(kRed+1);
 
 	std::vector<TString> FSIModel;std::vector<TString> FSILabel; 
 
 	FSIModel.push_back("GTEST19_10b_00_000_CCinclMEC");FSILabel.push_back("#nu SuSav2");
 	FSIModel.push_back("GTEST19_10b_00_000_EM+MEC");FSILabel.push_back("e SuSav2");
+//	FSIModel.push_back("GTEST19_10b_00_000_NoFSI_CCinclMEC");FSILabel.push_back("#nu SuSav2 NoFSI");
+//	FSIModel.push_back("GTEST19_10b_00_000_NoFSI_EM+MEC");FSILabel.push_back("e SuSav2 NoFSI");
 	
 	//FSIModel.push_back("G18_10a_02_11a_CCinclMEC");FSILabel.push_back("#nu G2018");
 	//FSIModel.push_back("G18_10a_02_11a_EM+MEC");FSILabel.push_back("e G2018");
+	//FSIModel.push_back("G18_10a_02_11a_NoFSI_CCinclMEC");FSILabel.push_back("#nu G2018 NoFSI");
+	//FSIModel.push_back("G18_10a_02_11a_NoFSI_EM+MEC");FSILabel.push_back("e G2018 NoFSI");
 	
 	std::vector<TString> NameOfPlots;
 
@@ -73,6 +77,10 @@ void OverlayPlots() {
 	NameOfPlots.push_back("MissMomentum_VectorSum");
 	NameOfPlots.push_back("DeltaAlphaT_VectorSum"); 
 	NameOfPlots.push_back("DeltaPhiT_VectorSum");
+
+//	NameOfPlots.push_back("MissMomentum_OneProton");                                                                                                                                            
+//      NameOfPlots.push_back("DeltaAlphaT_OneProton");                                                                                                                                               
+//      NameOfPlots.push_back("DeltaPhiT_OneProton");
 
 	// -------------------------------------------------------------------------------------------
 

@@ -244,6 +244,7 @@ treeProducer_simulation::treeProducer_simulation(TString Nucleus, TString Energy
   TString TuneLabel = "SuSav2";
   if (fTune == "G18_10a_02_11a") { TuneLabel = "G2018"; }
   if (fTune == "G18_02a_00_000") { TuneLabel = "G18_02a"; }  
+  if (fTune == "G00_00a_00_000") { TuneLabel = "G2000"; }
 
   TString particle = "Neutrinos";
   if (fInteraction == "EM+MEC") { particle = "Electrons"; }
@@ -252,7 +253,7 @@ treeProducer_simulation::treeProducer_simulation(TString Nucleus, TString Energy
 // used to generate this class and read the Tree.
    if (tree == 0) {
 
-     TString FileIn = "/pnfs/genie/persistent/users/apapadop/NonRadiative/"+TuneLabel+"/"+particle+"/"+fNucleus+"_"+fEnergy+"GeV/"+fNucleus+"_"+fEnergy+"GeV_"+fInteraction+"_"+fTune+"_Q2_0_02.root";
+     TString FileIn = "/pnfs/genie/persistent/users/apapadop/NonRadiative/"+TuneLabel+"/"+particle+"/"+fNucleus+"_"+fEnergy+"GeV/"+fNucleus+"_"+fEnergy+"GeV_"+fInteraction+"_"+fTune+"_Q2_0_1.root";
 
      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(FileIn);
 	if (!f || !f->IsOpen()) f = new TFile(FileIn);

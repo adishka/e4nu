@@ -412,7 +412,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 		TString ext = "";
 		if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
-		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"DeltaPT_FigExtData8_SuSav2_AbsXSec.pdf");
+		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"DeltaPT_FigExtData8_SuSav2_AccCorrXSec.pdf");
 
 		//delete PlotCanvas;
 

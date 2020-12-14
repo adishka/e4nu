@@ -44,7 +44,7 @@ void PrettyGraph(TGraph* g, int color,TString Interaction) {
 
 	g->GetXaxis()->SetTitle("E_{#nu} [GeV]");
 	g->GetXaxis()->CenterTitle();
-	g->GetXaxis()->SetRangeUser(0,3);
+	g->GetXaxis()->SetRangeUser(0,3.);
 	g->GetXaxis()->SetNdivisions(7);
 	g->GetXaxis()->SetLabelSize(TextSize);
 	g->GetXaxis()->SetTitleSize(TextSize);
@@ -66,6 +66,9 @@ void PrettyGraph(TGraph* g, int color,TString Interaction) {
 	g->SetLineWidth(3);
 
 //	g->Draw("ap same");
+//	if (color == kBlack) { g->Draw("al same"); }
+//	else { g->Draw("l same"); }
+
 	if (color == kBlack) { g->Draw("ac same"); }
 	else { g->Draw("c same"); }
 
@@ -91,7 +94,7 @@ void XSecOverlay() {
 	CCQEPlotCanvas->SetBottomMargin(0.11);
 	CCQEPlotCanvas->SetLeftMargin(0.14);
 
-	TLegend* legCCQE = new TLegend(0.5,0.5,0.7,0.8);
+	TLegend* legCCQE = new TLegend(0.5,0.4,0.7,0.7);
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -115,15 +118,15 @@ void XSecOverlay() {
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	// Placeholder G2000
+	// G2000 = G00_00a_00_000
 
-//	TFile* CCQEG2000File = TFile::Open("myXSec/xsec_carbon12_spline_CCQE_G18_02a_00_000_Q2_"+Q2Thres+".root");
-//	TDirectory* CCQEG2000Dir = (TDirectory*)(CCQEG2000File->Get("nu_mu_C12"));
-//	TGraph* CCQEG2000 = (TGraph*)(CCQEG2000Dir->Get("tot_cc"));
-//	PrettyGraph(CCQEG2000,410,"CCQE");
+	TFile* CCQEG2000File = TFile::Open("myXSec/xsec_carbon12_spline_CCQE_G00_00a_00_000_Q2_"+Q2Thres+".root");
+	TDirectory* CCQEG2000Dir = (TDirectory*)(CCQEG2000File->Get("nu_mu_C12"));
+	TGraph* CCQEG2000 = (TGraph*)(CCQEG2000Dir->Get("tot_cc"));
+	PrettyGraph(CCQEG2000,410,"CCQE");
 
-//	TLegendEntry* legCCQEG2000 = legCCQE->AddEntry(CCQEG2000,"G2000","");
-//	legCCQEG2000->SetTextColor(410);
+	TLegendEntry* legCCQEG2000 = legCCQE->AddEntry(CCQEG2000,"LS","");
+	legCCQEG2000->SetTextColor(410);
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -168,15 +171,15 @@ void XSecOverlay() {
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	// Placeholder G2000
+//	// G2000 = G00_00a_00_000
 
-//	TFile* CCMECG2000File = TFile::Open("myXSec/xsec_carbon12_spline_CCMEC_G18_02a_00_000_Q2_"+Q2Thres+".root");
+//	TFile* CCMECG2000File = TFile::Open("myXSec/xsec_carbon12_spline_CCMEC_G00_00a_00_000_Q2_"+Q2Thres+".root");
 //	TDirectory* CCMECG2000Dir = (TDirectory*)(CCMECG2000File->Get("nu_mu_C12"));
 //	TGraph* CCMECG2000 = (TGraph*)(CCMECG2000Dir->Get("tot_cc"));
 //	CCMECG2000->GetYaxis()->SetRangeUser(0,2.3);
 //	PrettyGraph(CCMECG2000,kBlack,"CCMEC");
 
-//	TLegendEntry* legCCMECG2000 = legCCMEC->AddEntry(CCMECG2000,"Nieves","");
+//	TLegendEntry* legCCMECG2000 = legCCMEC->AddEntry(CCMECG2000,"Empirical","");
 //	legCCMECG2000->SetTextColor(kBlack);
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -244,7 +247,7 @@ void XSecOverlay() {
 	TFile* EMMECG2018File = TFile::Open("myXSec/xsec_carbon12_spline_EMMEC_G18_10a_02_11a_Q2_"+Q2Thres+".root");
 	TDirectory* EMMECG2018Dir = (TDirectory*)(EMMECG2018File->Get("e-_C12"));
 	TGraph* EMMECG2018 = (TGraph*)(EMMECG2018Dir->Get("tot_em"));
-	EMMECG2018->GetYaxis()->SetRangeUser(0,170000000);
+	EMMECG2018->GetYaxis()->SetRangeUser(0,190000000);
 	PrettyGraph(EMMECG2018,kBlack,"EMMEC");
 
 	TLegendEntry* legEMMECG2018 = legEMMEC->AddEntry(EMMECG2018,"Empirical","");

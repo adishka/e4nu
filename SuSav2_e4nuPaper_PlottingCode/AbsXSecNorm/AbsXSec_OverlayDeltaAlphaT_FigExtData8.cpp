@@ -358,7 +358,7 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData8() {
 		// Extra pad for the Y-axis units carbon
 
 		PlotCanvas->cd();
-		TPad* padTitle = new TPad("padTitle","padTitle",0.052,0.54,0.077,1., 21); 
+		TPad* padTitle = new TPad("padTitle","padTitle",0.052,0.53,0.077,1., 21); 
 		padTitle->SetFillColor(kWhite); 
 		padTitle->Draw();
 		padTitle->cd();
@@ -368,14 +368,14 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData8() {
 		latexYTitle.SetTextSize(14*TextSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
-		latexYTitle.DrawLatexNDC(0.8,0.1,DoubleXSecTitle+" x10^{3}");
+		latexYTitle.DrawLatexNDC(0.82,0.1,DoubleXSecTitle+" x10 ^{3}");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
 		// Extra pad for the Y-axis units iron
 
 		PlotCanvas->cd();
-		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.34,0.16,0.365,0.565,21); 
+		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.34,0.15,0.365,0.565,21); 
 		padTitleFe->SetFillColor(kWhite); 
 		padTitleFe->Draw();
 		padTitleFe->cd();
@@ -385,7 +385,7 @@ void AbsXSec_OverlayDeltaAlphaT_FigExtData8() {
 		latexYTitleFe.SetTextSize(14*TextSize);
 		latexYTitleFe.SetTextColor(kBlack);
 		latexYTitleFe.SetTextAngle(90);
-		latexYTitleFe.DrawLatexNDC(0.8,0.05,DoubleXSecTitle+" x10^{3}");
+		latexYTitleFe.DrawLatexNDC(0.82,0.05,DoubleXSecTitle+" x10 ^{3}");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
