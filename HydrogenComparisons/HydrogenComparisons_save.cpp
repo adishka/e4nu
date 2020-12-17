@@ -33,7 +33,7 @@ double Integrate(TH1D* h) {
 
 	for (int i = 0; i < NBins; i++) {
 
-		if (h->GetBinCenter(i+1) >= 0.9 && h->GetBinCenter(i+1) <= 1.) {
+		if (h->GetBinCenter(i+1) >= 0.915 && h->GetBinCenter(i+1) <= 0.96) {
 		//if (h->GetBinContent(i+1) > 0) {
 
 		SumEntries += h->GetBinContent(i+1) /** h->GetBinWidth(i+1)*/;
@@ -71,17 +71,12 @@ void HydrogenComparisons() {
 
 	// ------------------------------------------------------------------------
 
-//	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He"); JustNucleus.push_back("He");
 	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
 	nucleus.push_back("CH2"); LabelsOfSamples.push_back("CH2"); JustNucleus.push_back("CH2");
-//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
 
 	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
-//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");  DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
-//	xBCut.push_back("xBCut");
  
 //	Colors.push_back(kBlack); Colors.push_back(kRed); Colors.push_back(kBlue); Colors.push_back(kMagenta); Colors.push_back(kGreen); Colors.push_back(kOrange + 7);
 	Colors.push_back(kBlack); Colors.push_back(610); Colors.push_back(410); Colors.push_back(kMagenta); Colors.push_back(kGreen+3); Colors.push_back(kBlue);  Colors.push_back(610);
@@ -91,36 +86,6 @@ void HydrogenComparisons() {
 	Style.push_back(1); Style.push_back(kDashed); Style.push_back(1); Style.push_back(1);
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
-//	FSIModel.push_back("Pinned_Data_NoRotations"); FSILabel.push_back("Pinned Data No Rotations"); DirNames.push_back("Pinned Data No Rotations");
-
-//	FSIModel.push_back("Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
-//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");  DirNames.push_back("G2018");
-//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 NoRad");  DirNames.push_back("hA2018_Truth_RadCorr");
-
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_NoAccMaps"); FSILabel.push_back("SuSav2_NoAccMaps");  DirNames.push_back("SuSav2_NoAccMaps");
-
-//	FSIModel.push_back("SuSav2_02_11a_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("hA2018_Truth_RadCorr");
-
-//	FSIModel.push_back("Data_Final_FilterRuns"); FSILabel.push_back("Data_FilterRuns"); DirNames.push_back("Data_FilterRuns");
-//	FSIModel.push_back("Data_Final_NewFilterRuns"); FSILabel.push_back("Data_NewFilterRuns"); DirNames.push_back("Data_NewFilterRuns");
-
-//	FSIModel.push_back("GoodRunList_Data_Final"); FSILabel.push_back("GoodRunList_Data"); DirNames.push_back("GRL Data");
-//	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
-//	FSIModel.push_back("LowCurrent_GoodRunList_Data_Final"); FSILabel.push_back("LowCurrent_GoodRunList_Data"); DirNames.push_back("LC GRL Data");
-//	FSIModel.push_back("HighCurrent_GoodRunList_Data_Final"); FSILabel.push_back("HighCurrent_GoodRunList_Data"); DirNames.push_back("HC GRL Data");
-
-//	FSIModel.push_back("Data_Final_NoChargedPions"); FSILabel.push_back("Data"); DirNames.push_back("Data");
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_NoChargedPions"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_NoChargedPions"); FSILabel.push_back("SuSav2");  DirNames.push_back("hA2018_Truth_RadCorr");
-
-//	FSIModel.push_back("hA2018_Final_NoRadCorr"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-//	FSIModel.push_back("hA2018_Truth_NoRadCorr"); FSILabel.push_back("Genie (Truth)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-//	FSIModel.push_back("hN2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie hN2018");  DirNames.push_back("hN2018_Truth_NoRadCorr");
-//	FSIModel.push_back("hN2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie hN2018");  DirNames.push_back("hN2018_Truth_NoRadCorr");
-
-
 
 //	NameOfPlots.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0"); LabelOfPlots.push_back("1st Sector Energy Transfer [GeV]"); OutputPlotNames.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0");
 
@@ -130,8 +95,22 @@ void HydrogenComparisons() {
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InAllSectors"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
-	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
+	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_1"); LabelOfPlots.push_back("2nd (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_2"); LabelOfPlots.push_back("3rd (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_3"); LabelOfPlots.push_back("4th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_4"); LabelOfPlots.push_back("5th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_5"); LabelOfPlots.push_back("6th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+
+//	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_1"); LabelOfPlots.push_back("2nd sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_2"); LabelOfPlots.push_back("3rd sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_3"); LabelOfPlots.push_back("4th sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_4"); LabelOfPlots.push_back("5th sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_5"); LabelOfPlots.push_back("6th sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	std::vector<TH1D*> Plots;
 
@@ -143,6 +122,16 @@ void HydrogenComparisons() {
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	// This analysis is cutting on phi +/- 6 deg
+
+//double LocaldOmega = dOmega;
+//double LocaldOmega = 0.017;
+//double LocaldOmega = 0.01;
+double LocaldOmega = 0.0062;
+//double LocaldOmega = 0.0045;
+
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 	// Loop over the xB kinematics
 
 	for (int WhichxBCut = 0; WhichxBCut < NxBCuts; WhichxBCut ++) {
@@ -150,6 +139,11 @@ void HydrogenComparisons() {
 		// Loop over the energies
 
 		for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
+
+// 1 C12 , 1500 run -> 18306
+//IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.004843377;
+// full 1500 sample
+IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 
 			// Loop over the plots
 
@@ -164,7 +158,7 @@ void HydrogenComparisons() {
 
 				// ---------------------------------------------------------------------------------------
 
-				TLegend* leg = leg = new TLegend(0.7,0.73,0.8,0.87);
+				TLegend* leg = leg = new TLegend(0.5,0.73,0.6,0.87);
 
 				leg->SetNColumns(1);
 
@@ -185,7 +179,7 @@ void HydrogenComparisons() {
 
 					for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-						TString PathToFiles = "../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
+						TString PathToFiles = "mySamples/";
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
 						TFile* FileSample = TFile::Open(FileName);
 
@@ -198,7 +192,7 @@ void HydrogenComparisons() {
 						// Make the plot pretty
 
 						Plots[WhichNucleus]->SetLineColor(Colors[WhichNucleus]);
-						Plots[WhichNucleus]->SetTitle(FSILabel[WhichFSIModel] + ", " + LabelsOfSamples[WhichNucleus]);
+						//Plots[WhichNucleus]->SetTitle(FSILabel[WhichFSIModel] + ", " + LabelsOfSamples[WhichNucleus]);
 						Plots[WhichNucleus]->GetXaxis()->SetTitle(LabelOfPlots[WhichPlot]);
 						PrettyDoubleXSecPlot(Plots[WhichNucleus]);
 						Plots[WhichNucleus]->GetYaxis()->SetTitle("# Counts");
@@ -230,7 +224,8 @@ void HydrogenComparisons() {
 
 						if (nucleus[WhichNucleus] == "12C") {
 
-							double SF = IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")] * (6./7.) * TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")] / (IntegratedCharge_PinnedFiles[std::make_pair("12C", "1_161")] * TargetLength[std::make_pair("12C","1_161")] * TargetDensity[std::make_pair("12C","1_161")]);
+							double SF = IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])] * (6./7.) * TargetLength[std::make_pair("CH2",E[WhichEnergy])] * TargetDensity[std::make_pair("CH2",E[WhichEnergy])] / (IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] * TargetLength[std::make_pair("12C",E[WhichEnergy])] * TargetDensity[std::make_pair("12C",E[WhichEnergy])]);
+
 
 							Plots[WhichNucleus]->Scale(SF);
 
@@ -243,8 +238,8 @@ void HydrogenComparisons() {
 						double localmax = Plots[WhichNucleus]->GetMaximum();
 
 						if (localmax > max) { max = localmax; }
-						double height = 1.05;
-						if ( xBCut[WhichxBCut] == "xBCut" ) { height = 1.1; }
+						double height = 1.1;
+						if ( xBCut[WhichxBCut] == "xBCut" ) { height = 1.15; }
 						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 
 //						TString XLabel = Plots[WhichNucleus]->GetXaxis()->GetTitle();
@@ -270,7 +265,7 @@ void HydrogenComparisons() {
 						}
 
 						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) 
-							{ leg->AddEntry(Plots[WhichNucleus],LabelsOfSamples[WhichNucleus], "lep");}
+							{ leg->AddEntry(Plots[WhichNucleus],LabelsOfSamples[WhichNucleus]+", " + ToStringInt(Plots[WhichNucleus]->Integral()) + " events", "lep");}
 						else { leg->AddEntry(Plots[WhichNucleus],LabelsOfSamples[WhichNucleus], "l"); }
 				
 
@@ -310,14 +305,14 @@ void HydrogenComparisons() {
 
 			// Scaling the CH2 integral to the 12C one in the region 0.6 to 0.9
 
-			double LowRange = 0.6;
-			double HighRange = 0.9;
+//			double LowRange = 0.6;
+//			double HighRange = 0.9;
 
 //			double LowRange = 1.1;
 //			double HighRange = 1.4;
 
-//			double LowRange = 0.9;
-//			double HighRange = 1.1;
+			double LowRange = 0.83;
+			double HighRange = 0.9;
 
 			int LowBin = Plots[1]->FindBin(LowRange);
 			int HighBin = Plots[1]->FindBin(HighRange);
@@ -340,19 +335,29 @@ void HydrogenComparisons() {
 
 			// Getting to the cross section
 
-			double CloneSF = 7. * ConversionFactorChargeToElectrons / (dOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", "1_161")] * AvogadroNumber *\
-			       TargetLength[std::make_pair("CH2","1_161")] * TargetDensity[std::make_pair("CH2","1_161")]);
+//			double CloneSF = 7. * ConversionFactorChargeToElectrons / (LocaldOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])] * AvogadroNumber *\
+//			       TargetLength[std::make_pair("CH2",E[WhichEnergy])] * TargetDensity[std::make_pair("CH2",E[WhichEnergy])]);
+
+			double HydrogenEvents = Clone->Integral();	
+
+			double CloneSF = 7.  / (LocaldOmega * IntegratedCharge_PinnedFiles[std::make_pair("CH2", E[WhichEnergy])]* ConversionFactorChargeToElectrons * AvogadroNumber *\
+			       TargetLength[std::make_pair("CH2",E[WhichEnergy])] * TargetDensity[std::make_pair("CH2",E[WhichEnergy])]);
+
+
 			Clone->Scale(CloneSF);
 
-			Clone->GetYaxis()->SetTitle("Normalized Yield");
+			Clone->GetXaxis()->SetRangeUser(0.87,1);
+//			Clone->GetYaxis()->SetTitle("Normalized Yield");
+			Clone->GetYaxis()->SetTitle("Cross Section [cm^{2}]");
+//			Clone->GetYaxis()->SetTitle("# Counts");
 			DiffCanvas->cd();
 			Clone->Draw();
 
-			Clone->Fit("gaus","","",0.8,1.06);
+			Clone->Fit("gaus","","",0.91,0.98);
 
 			double dsigmadOmega = Integrate(Clone);
 
-			cout << "Data dsigmadOmega = " << dsigmadOmega << endl;
+			cout << "Data dsigmadOmega = " << dsigmadOmega * ConversionFactorCm2ToMicroBarn << " ub / sr" << endl;
 
 			//cout << "Data Sigma = " << dsigmadOmega*dOmega << endl;
 
@@ -360,12 +365,14 @@ void HydrogenComparisons() {
 
 			// Hydrogen GENIE File
 
-			TString HydrogenPathToFiles = "../../myFiles/1_161/hA2018_Final_RadCorr_LFGM/NoxBCut/";
+			TString HydrogenPathToFiles = "mySamples/";
 			TString HydrogenFileName = HydrogenPathToFiles+"1H_1_161_hA2018_Final_RadCorr_LFGM_Plots_FSI_em.root";
+//			TString HydrogenFileName = HydrogenPathToFiles+"1H_1_161_hA2018_Final_RadCorr_LFGM_Plots_FSI_em_ExtRad.root";
+//			TString HydrogenFileName = HydrogenPathToFiles+"1H_1_161_hA2018_Final_RadCorr_LFGM_Plots_FSI_em_Schwinger_ExtRad.root";
 
 			if (FSILabel[0] == "Pinned Data No Rotations") { 
 
-				HydrogenPathToFiles = "../../myFiles/1_161/hA2018_NoRotations/NoxBCut/"; 
+				HydrogenPathToFiles = "mySamples/"; 
 				HydrogenFileName = HydrogenPathToFiles+"1H_1_161_hA2018_NoRotations_Plots_FSI_em.root";
 
 			}
@@ -382,13 +389,13 @@ void HydrogenComparisons() {
 
 			double GeniedsigmadOmega = G2018histo->GetEntries() * G2018GenieXSec[std::make_pair("1H", "1_161")] * TMath::Power(10.,-38.) *\
 								ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair("1H", "1_161")] *\
-								dOmega) ;
+								LocaldOmega) ;
 
 			double GenieSF = G2018GenieXSec[std::make_pair("1H", "1_161")] * TMath::Power(10.,-38.) *\
 								ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair("1H", "1_161")] *\
-								dOmega) ;
+								LocaldOmega) ;
 
-			cout << "Genie dsigmadOmega = " << GeniedsigmadOmega << endl;
+			cout << "Genie dsigmadOmega = " << GeniedsigmadOmega << " ub / sr" << endl;
 
 			//cout << "Genie Sigma = " << GeniedsigmadOmega*dOmega << endl;
 
@@ -399,12 +406,13 @@ void HydrogenComparisons() {
 
 			G2018histo->SetLineColor(kBlue);
 			G2018histo->SetLineWidth(3);
-			G2018histo->Draw("C hist same");
+			//G2018histo->Draw("C hist same");
 
-			TLegend* leg = new TLegend(0.6,0.6,0.7,0.7);
+			TLegend* leg = new TLegend(0.65,0.6,0.75,0.7);
 
-			leg->AddEntry(Clone,"Data","lep");
-			leg->AddEntry(G2018histo,"GENIE","l");
+//			leg->AddEntry(Clone,"Data","lep");
+			leg->AddEntry(Clone,"Data, " + ToStringInt(HydrogenEvents),"lep");
+			//leg->AddEntry(G2018histo,"GENIE","l");
 
 			leg->SetTextFont(FontStyle);
 			leg->SetTextSize(TextSize);

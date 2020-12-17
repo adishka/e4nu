@@ -177,6 +177,28 @@ void OverlayXSec() {
 	Datae4vPlot->Scale(1000); // Conversion from ub to nb
 	Datae4vPlot->Draw("e1x0 same");
 
+	// ---------------------------------------------------------------------------------------------
+
+	// Data e4v High Torus 1500
+
+	TFile* HighDatae4vFile = TFile::Open("HighTorus_12C_1_161_Pinned_Data_Final_XSec_Plots_FSI_em.root");
+
+	TH1D* HighDatae4vPlot = (TH1D*)HighDatae4vFile->Get(PlotName);
+	UniversalE4vFunction(HighDatae4vPlot,"Pinned Data","12C","1_161",PlotName);
+
+	HighDatae4vPlot->SetLineColor(kMagenta);
+	HighDatae4vPlot->SetMarkerColor(kMagenta);
+	HighDatae4vPlot->SetMarkerStyle(20);
+
+	double HighTorusC12IntCharge = 0.105; // mC
+
+	// using the correct 1500 integrated charge instead of the 750 one for the normalization
+	HighDatae4vPlot->Scale(IntegratedCharge_PinnedFiles[std::make_pair("12C","1_161")] / HighTorusC12IntCharge);
+
+	HighDatae4vPlot->Scale(1./0.0067); // sr: solid angle for 24 < phi < 36 && 36 < theta < 39 
+	HighDatae4vPlot->Scale(1000); // Conversion from ub to nb
+	HighDatae4vPlot->Draw("e1x0 same");
+
 
 	// ---------------------------------------------------------------------------------------------
 //	// ---------------------------------------------------------------------------------------------
@@ -221,6 +243,9 @@ void OverlayXSec() {
 
 	TLegendEntry* lDatae4v = leg->AddEntry(Datae4vPlot,"1.161 GeV", "");
 	lDatae4v->SetTextColor(kGreen+2);
+
+	TLegendEntry* lHighTorusDatae4v = leg->AddEntry(HighDatae4vPlot,"1.161 GeV", "");
+	lHighTorusDatae4v->SetTextColor(kMagenta);
 
 	leg->SetBorderSize(0);
 	leg->SetTextFont(FontStyle);

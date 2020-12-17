@@ -126,7 +126,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 	bool ApplyPhiOpeningAngle = false;
 	bool UsePhiThetaBand = false;
-	bool ApplyThetaSlice = false;
+	bool ApplyThetaSlice = false; double MinThetaSlice = 23, MaxThetaSlice = 27;
 	bool ApplyGoodSectorPhiSlice = false;
 
 	// ---------------------------------------------------------------------------------------------------------------
@@ -1198,8 +1198,8 @@ void genie_analysis::Loop(Int_t choice) {
 
 		if (ApplyThetaSlice) {  // hard coded range for now
 
-			if ( el_theta*180./TMath::Pi() < 23) { continue; }
-			if ( el_theta*180./TMath::Pi() > 27) { continue; }
+			if ( el_theta*180./TMath::Pi() < MinThetaSlice) { continue; }
+			if ( el_theta*180./TMath::Pi() > MaxThetaSlice) { continue; }
 
 		}
 
@@ -1327,7 +1327,7 @@ void genie_analysis::Loop(Int_t choice) {
 		h1_EQE_FullyInclusive->Fill(E_rec,WeightIncl);
 		h1_EQE_FullyInclusive_IrregBins->Fill(E_rec,WeightIncl);
 
-		if (el_theta > 23 && el_theta < 27) {
+		if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 			h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors->Fill(W_var,WeightIncl/Q4);
 			h1_W_weight_FullyInclusive_ThetaSlice_InSector[ElectronSector]->Fill(W_var,WeightIncl/Q4);
@@ -1830,7 +1830,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 		if (num_p == 1) {
 
-			if (el_theta > 23 && el_theta < 27) {
+			if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 				h1_W_weight_SingleProton_ThetaSlice_InAllSectors->Fill(W_var,WeightIncl/Q4);
 				h1_W_weight_SingleProton_ThetaSlice_InSector[ElectronSector]->Fill(W_var,WeightIncl/Q4);
@@ -1970,7 +1970,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_Q2_weight->Fill(reco_Q2,-P_N_2p[f]*histoweight);
 					h1_Wvar_weight->Fill(W_var,-P_N_2p[f]*histoweight);
 
-					if (el_theta > 23 && el_theta < 27) {
+					if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 						h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,-P_N_2p[f]*histoweight/Q4);
 						h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,-P_N_2p[f]*histoweight/Q4);
@@ -2205,7 +2205,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_Q2_weight->Fill(reco_Q2,P_2p1pito2p0pi[z]*histoweight);
 					h1_Wvar_weight->Fill(W_var,P_2p1pito2p0pi[z]*histoweight);
 
-					if (el_theta > 23 && el_theta < 27) {
+					if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 						h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,P_2p1pito2p0pi[z]*histoweight/Q4);
 						h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,P_2p1pito2p0pi[z]*histoweight/Q4);
@@ -2369,7 +2369,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_Q2_weight->Fill(reco_Q2,P_2p1pito1p1pi[z]*histoweight);
 					h1_Wvar_weight->Fill(W_var,P_2p1pito1p1pi[z]*histoweight);
 
-					if (el_theta > 23 && el_theta < 27) {
+					if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 						h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,P_2p1pito1p1pi[z]*histoweight/Q4);
 						h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,P_2p1pito1p1pi[z]*histoweight/Q4);
@@ -2541,7 +2541,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_Q2_weight->Fill(reco_Q2,-P_2p1pito1p0pi[z]*histoweight);
 					h1_Wvar_weight->Fill(W_var,-P_2p1pito1p0pi[z]*histoweight);
 
-					if (el_theta > 23 && el_theta < 27) {
+					if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 						h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,-P_2p1pito1p0pi[z]*histoweight/Q4);
 						h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,-P_2p1pito1p0pi[z]*histoweight/Q4);
@@ -2786,7 +2786,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_Q2_weight->Fill(reco_Q2,Ptot_2p[z]*histoweight);
 					h1_Wvar_weight->Fill(W_var,Ptot_2p[z]*histoweight);
 
-					if (el_theta > 23 && el_theta < 27) {
+					if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 						h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,Ptot_2p[z]*histoweight/Q4);
 						h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,Ptot_2p[z]*histoweight/Q4);
@@ -3062,7 +3062,7 @@ void genie_analysis::Loop(Int_t choice) {
 						h1_Q2_weight->Fill(reco_Q2,P_3pto2p[count][j]*histoweight);
 						h1_Wvar_weight->Fill(W_var,P_3pto2p[count][j]*histoweight);
 
-						if (el_theta > 23 && el_theta < 27) {
+						if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 							h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,P_3pto2p[count][j]*histoweight/Q4);
 							h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,P_3pto2p[count][j]*histoweight/Q4);
@@ -3240,7 +3240,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_Q2_weight->Fill(reco_Q2,-P_3pto1p[j]*histoweight);
 					h1_Wvar_weight->Fill(W_var,-P_3pto1p[j]*histoweight);
 
-					if (el_theta > 23 && el_theta < 27) {
+					if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 						h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,-P_3pto1p[j]*histoweight/Q4);
 						h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,-P_3pto1p[j]*histoweight/Q4);
@@ -3466,7 +3466,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_Q2_weight->Fill(reco_Q2,P_tot_3p[j]*histoweight);
 					h1_Wvar_weight->Fill(W_var,P_tot_3p[j]*histoweight);
 
-					if (el_theta > 23 && el_theta < 27) {
+					if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 						h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,P_tot_3p[j]*histoweight/Q4);
 						h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,P_tot_3p[j]*histoweight/Q4);
@@ -3822,7 +3822,7 @@ void genie_analysis::Loop(Int_t choice) {
 								h1_Q2_weight->Fill(reco_Q2,-Weight4pTo3pTo2pTo1p);
 								h1_Wvar_weight->Fill(W_var,-Weight4pTo3pTo2pTo1p);
 
-								if (el_theta > 23 && el_theta < 27) {
+								if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 									h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,-Weight4pTo3pTo2pTo1p/Q4);
 									h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,-Weight4pTo3pTo2pTo1p/Q4);
@@ -4001,7 +4001,7 @@ void genie_analysis::Loop(Int_t choice) {
 							h1_Q2_weight->Fill(reco_Q2,P_43pto1p[j]*histoweight);
 							h1_Wvar_weight->Fill(W_var,P_43pto1p[j]*histoweight);
 
-							if (el_theta > 23 && el_theta < 27) {
+							if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 								h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,P_43pto1p[j]*histoweight/Q4);
 								h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,P_43pto1p[j]*histoweight/Q4);
@@ -4204,7 +4204,7 @@ void genie_analysis::Loop(Int_t choice) {
 									h1_Q2_weight->Fill(reco_Q2,Weight4pTo2pTo1p);
 									h1_Wvar_weight->Fill(W_var,Weight4pTo2pTo1p);
 
-									if (el_theta > 23 && el_theta < 27) {
+									if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 										h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,Weight4pTo2pTo1p/Q4);
 										h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,Weight4pTo2pTo1p/Q4);
@@ -4396,7 +4396,7 @@ void genie_analysis::Loop(Int_t choice) {
 						h1_Q2_weight->Fill(reco_Q2,-P_4pto1p[j]*histoweight);
 						h1_Wvar_weight->Fill(W_var,-P_4pto1p[j]*histoweight);
 
-						if (el_theta > 23 && el_theta < 27) {
+						if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 							h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,-P_4pto1p[j]*histoweight/Q4);
 							h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,-P_4pto1p[j]*histoweight/Q4);
@@ -5066,7 +5066,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_Q2_weight->Fill(reco_Q2,histoweight);
 				h1_Wvar_weight->Fill(W_var,histoweight);
 
-				if (el_theta > 23 && el_theta < 27) {
+				if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 					h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,histoweight/Q4);
 					h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,histoweight/Q4);
@@ -5313,7 +5313,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_Q2_weight->Fill(reco_Q2,-(N_piphot_undet/N_piphot_det)*histoweight);
 					h1_Wvar_weight->Fill(W_var,-(N_piphot_undet/N_piphot_det)*histoweight);
 
-					if (el_theta > 23 && el_theta < 27) {
+					if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 						h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,-(N_piphot_undet/N_piphot_det)*histoweight/Q4);
 						h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,-(N_piphot_undet/N_piphot_det)*histoweight/Q4);
@@ -5564,7 +5564,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_Q2_weight->Fill(reco_Q2,P_1p1pi[z]*histoweight);
 					h1_Wvar_weight->Fill(W_var,P_1p1pi[z]*histoweight);
 
-					if (el_theta > 23 && el_theta < 27) {
+					if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 						h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,P_1p1pi[z]*histoweight/Q4);
 						h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,P_1p1pi[z]*histoweight/Q4);
@@ -5752,7 +5752,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_Q2_weight->Fill(reco_Q2,-P_1p0pi*histoweight);
 				h1_Wvar_weight->Fill(W_var,-P_1p0pi*histoweight);
 
-				if (el_theta > 23 && el_theta < 27) {
+				if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 					h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,-P_1p0pi*histoweight/Q4);
 					h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,-P_1p0pi*histoweight/Q4);
@@ -5995,7 +5995,7 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_Q2_weight->Fill(reco_Q2,P_1p3pi*histoweight);
 				h1_Wvar_weight->Fill(W_var,P_1p3pi*histoweight);
 
-				if (el_theta > 23 && el_theta < 27) {
+				if (el_theta > MinThetaSlice && el_theta < MaxThetaSlice) {
 
 					h1_W_weight_ThetaSlice_InAllSectors->Fill(W_var,P_1p3pi*histoweight/Q4);
 					h1_W_weight_ThetaSlice_InSector[ElectronSector]->Fill(W_var,P_1p3pi*histoweight/Q4);
