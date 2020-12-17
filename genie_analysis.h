@@ -339,28 +339,23 @@ genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int n
       // of trees.
       TChain * chain = new TChain("gst","genie_analysis");
       if (fchoice == 1) { 
-      
-      		// Radiative G2018
-		//chain->Add(Form("/pnfs/genie/persistent/users/apapadop/Rad-R-3_0_6/%s_%sGeV/apapadop_G18_10a_02_11a_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
-		
+      		
       		// Non radiative SuSav2
-		//chain->Add(Form("/pnfs/genie/persistent/users/apapadop/SuSav2/Exclusive/electrons/%s_%sGeV/apapadop_SuSav2_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
 
-      		// New round of Non Radiative SuSav2
-		//chain->Add(Form("/pnfs/genie/persistent/users/apapadop/NonRadiative/SuSav2/%s_%sGeV/apapadop_G2018_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
+		//chain->Add(Form("/pnfs/genie/persistent/users/apapadop/SuSav2/Exclusive/electrons/%s_%sGeV/apapadop_SuSav2_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
 		
       		// Radiative SuSav2
-		chain->Add(Form("/pnfs/genie/persistent/users/apapadop/SuSav2/Exclusive/electrons/%s_%sGeV/apapadop_Rad_SuSav2_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));  
+
+		chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_SuSav2/Exclusive/electrons/%s_%sGeV/apapadop_Rad_SuSav2_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));  
 		    
 		//chain->Add(Form("/pnfs/uboone/persistent/users/apapadop/GenieProduction/R-3_0_6/Rad-R-3_0_6_Clas_%sGeV/G18_10a_02_11a/%s/eresmaid_%s_%s_R-3_0_6-G18_10a_02_11a_RadCorr_*M.root", fbeam_en.c_str(), ftarget.c_str(), ftarget.c_str(), fbeam_en.c_str())); 
 		
-		//chain->Add(Form("/w/hallb-scifs17exp/clas/claseg2/apapadop/numaid_%s_%s_hA2018_LFG_FSI_NoRadCorr_3M.root", ftarget.c_str(), fbeam_en.c_str()));
 	}
 
       if (fchoice == 2) { 
       
       		// Radiative G2018
-		chain->Add(Form("/pnfs/genie/persistent/users/apapadop/Rad-R-3_0_6/%s_%sGeV/apapadop_G18_10a_02_11a_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
+		chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_G2018/Exclusive/electrons/%s_%sGeV/apapadop_Rad_G2018_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
 
       		// Non Radiative G2018
 		//chain->Add(Form("/pnfs/genie/persistent/users/apapadop/NonRadiative/G2018/%s_%sGeV/apapadop_G2018_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));

@@ -24,10 +24,10 @@ echo "$LocalPath/1_161/${GENIELocalExtension}/$xB/12C_1_161_${GENIELocalExtensio
 
 ##scp $GENIEAccount:$GENIEPath/genie_e2a_ep_C12_1161_neutrino6_united4_radphot_test_${GENIEOnlineExtension}.root $LocalPath/1_161/${GENIELocalExtension}/$xB/12C_1_161_${GENIELocalExtension}_Plots_FSI_em.root
 ##scp $GENIEAccount:$GENIEPath/genie_e2a_ep_4He_2261_neutrino6_united4_radphot_test_${GENIEOnlineExtension}.root $LocalPath/2_261/${GENIELocalExtension}/$xB/4He_2_261_${GENIELocalExtension}_Plots_FSI_em.root
-#scp $GENIEAccount:$GENIEPath/genie_e2a_ep_C12_2261_neutrino6_united4_radphot_test_${GENIEOnlineExtension}.root $LocalPath/2_261/${GENIELocalExtension}/$xB/12C_2_261_${GENIELocalExtension}_Plots_FSI_em.root
-#scp $GENIEAccount:$GENIEPath/genie_e2a_ep_56Fe_2261_neutrino6_united4_radphot_test_${GENIEOnlineExtension}.root $LocalPath/2_261/${GENIELocalExtension}/$xB/56Fe_2_261_${GENIELocalExtension}_Plots_FSI_em.root
+scp $GENIEAccount:$GENIEPath/genie_e2a_ep_C12_2261_neutrino6_united4_radphot_test_${GENIEOnlineExtension}.root $LocalPath/2_261/${GENIELocalExtension}/$xB/12C_2_261_${GENIELocalExtension}_Plots_FSI_em.root
+##scp $GENIEAccount:$GENIEPath/genie_e2a_ep_56Fe_2261_neutrino6_united4_radphot_test_${GENIEOnlineExtension}.root $LocalPath/2_261/${GENIELocalExtension}/$xB/56Fe_2_261_${GENIELocalExtension}_Plots_FSI_em.root
 ##scp $GENIEAccount:$GENIEPath/genie_e2a_ep_4He_4461_neutrino6_united4_radphot_test_${GENIEOnlineExtension}.root $LocalPath/4_461/${GENIELocalExtension}/$xB/4He_4_461_${GENIELocalExtension}_Plots_FSI_em.root
-#scp $GENIEAccount:$GENIEPath/genie_e2a_ep_C12_4461_neutrino6_united4_radphot_test_${GENIEOnlineExtension}.root $LocalPath/4_461/${GENIELocalExtension}/$xB/12C_4_461_${GENIELocalExtension}_Plots_FSI_em.root
+##scp $GENIEAccount:$GENIEPath/genie_e2a_ep_C12_4461_neutrino6_united4_radphot_test_${GENIEOnlineExtension}.root $LocalPath/4_461/${GENIELocalExtension}/$xB/12C_4_461_${GENIELocalExtension}_Plots_FSI_em.root
 ##scp $GENIEAccount:$GENIEPath/genie_e2a_ep_56Fe_4461_neutrino6_united4_radphot_test_${GENIEOnlineExtension}.root $LocalPath/4_461/${GENIELocalExtension}/$xB/56Fe_4_461_${GENIELocalExtension}_Plots_FSI_em.root
 
 ##### Data Samples

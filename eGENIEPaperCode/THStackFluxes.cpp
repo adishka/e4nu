@@ -241,7 +241,7 @@ void THStackFluxes() {
 						if ( E[WhichEnergy] == "DUNEFlux" && FSIModel[WhichFSIModel] == "GTEST19_10b_00_000_CCinclMEC" ) 
 							{ Weight = GENIEXSec["DUNE_GTEST19_10b_00_000"] / GENIEEvents["DUNE_GTEST19_10b_00_000"]; }
 						if ( E[WhichEnergy] == "DUNEFlux" && FSIModel[WhichFSIModel] == "G18_10a_02_11a_CCinclMEC" ) 
-							{ Weight = GENIEXSec["G18_10a_02_11a"] / GENIEEvents["DUNE_G18_10a_02_11a"]; }
+							{ Weight = GENIEXSec["DUNE_G18_10a_02_11a"] / GENIEEvents["DUNE_G18_10a_02_11a"]; }
 						//if ( E[WhichEnergy] == "DUNEFlux" && FSIModel[WhichFSIModel] == "G18_02a_00_000_CCinclMEC" ) 
 						//	{ Weight = GENIEXSec["G18_10a_02_11a"] / GENIEEvents["DUNE_G18_02a_00_000"]; }
 
@@ -291,7 +291,10 @@ void THStackFluxes() {
 						Plots[WhichInteraction]->GetYaxis()->SetRangeUser(0.,3.5);
 						
 						if (E[WhichEnergy] == "uBFlux") { Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.2,2.7); }
-						if (E[WhichEnergy] == "DUNEFlux") { Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.3,5.3); }
+						if (E[WhichEnergy] == "DUNEFlux") { 
+							Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.3,5.3); 
+							Plots[WhichInteraction]->GetYaxis()->SetRangeUser(0.,4.8); 
+						}
 						if (E[WhichEnergy] == "T2KFlux") { Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.1,5.3); }
 						if (E[WhichEnergy] == "NovaFlux") { Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.6,4.9); }
 
