@@ -106,14 +106,17 @@
 		{ "Pinned_Data_Final", "Pinned Data" },
 		{ "Pinned_Data_NewFiducials_SixSectors", "Pinned Data" },
 		{ "SuSav2_RadCorr_LFGM", "SuSav2" },
+		{ "SuSav2_NoRadCorr_LFGM", "SuSav2 NoRad" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithFidAcc", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc", "SuSav2" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc", "SuSav2 NoRad" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth0pi_WithoutFidAcc", "SuSav2" },
 		{ "hA2018_Final_RadCorr_LFGM", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Offset", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc", "G2018" },
+		{ "hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_Offset", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc_Offset", "G2018" },
@@ -260,7 +263,7 @@
 		{ std::make_pair("56Fe", "4_461"), 0.015 }
 	};
 
-	// g/cm^2
+	// g/cm^3
 
 	static std::map<std::pair<TString,TString>,double> TargetDensity =
 	{
@@ -287,7 +290,20 @@
 		{ std::make_pair("56Fe", "4_461"), 3.84607e+08 } // Q2 > 0.8
 	};
 
-	// SuSav2 GENIE number events 
+	// No Rad SuSav2 GENIE number events 
+
+	static std::map<std::pair<TString,TString>,double> NoRadSuSav2NumberEvents =
+	{
+		{ std::make_pair("4He", "2_261"), 20000000 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"), 17700000 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"), 19800000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"), 174600000 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"), 164300000 }, // Q2 > 0.8
+		{ std::make_pair("56Fe", "2_261"), 167000000 }, // Q2 > 0.4
+		{ std::make_pair("56Fe", "4_461"), 141000000 } // Q2 > 0.8
+	};
+
+	// Rad SuSav2 GENIE number events 
 
 	static std::map<std::pair<TString,TString>,double> SuSav2NumberEvents =
 	{

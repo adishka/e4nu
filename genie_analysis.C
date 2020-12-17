@@ -120,8 +120,10 @@ void genie_analysis::Loop(Int_t choice) {
 	bool ApplyFiducials = true;
 	bool ApplyAccWeights = true;
 	bool ApplyReso = true;
+
 	bool TruthLevel1p0piSignalStudy = false;
 	bool TruthLevel0piSignalStudy = false;
+
 	bool ApplyPhiOpeningAngle = false;
 	bool UsePhiThetaBand = false;
 	bool ApplyThetaSlice = false;
@@ -895,6 +897,21 @@ void genie_analysis::Loop(Int_t choice) {
 		//h1_EePrime_InCosThetaEPrimeSlices[WhichCosThetaEPrimeSlice] = new TH1F(Form("h1_EePrime_InCosThetaE_%d_To_%d_Slices",WhichCosThetaEPrimeSlice,WhichCosThetaEPrimeSlice+1),"",500,0,5);
 
 	//}
+
+	// ---------------------------------------------------------------------------------------------------
+
+	double MinECal = 0., MaxECal = 6.; int ECalSlices = 12;
+	double ECalStep = (MaxECal - MinECal) / ECalSlices;
+
+	TH2D *h2_Electron_Theta_Phi_InECalSlices[ECalSlices];
+	TH2D *h2_Proton_Theta_Phi_InECalSlices[ECalSlices];
+
+	for (int WhichECalSlice = 0 ; WhichECalSlice < ECalSlices; WhichECalSlice++ ) {
+
+		h2_Electron_Theta_Phi_InECalSlices[WhichECalSlice] = new TH2D(Form("h2_Electron_Theta_Phi_InECal_Slice_%d",WhichECalSlice),";#phi_{e'} [deg];#theta_{e'} [deg]",360,0,360,180,0,180);
+		h2_Proton_Theta_Phi_InECalSlices[WhichECalSlice] = new TH2D(Form("h2_Proton_Theta_Phi_InECal_Slice_%d",WhichECalSlice),";#phi_{p} [deg];#theta_{p} [deg]",360,0,360,180,0,180);
+
+	}
 	
 	// ---------------------------------------------------------------------------------------------------
 
@@ -1934,6 +1951,14 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_EQE_SuperFine->Fill(E_rec,-P_N_2p[f]*histoweight);
 					h1_Ecal_SuperFine->Fill(E_tot_2p[f],-P_N_2p[f]*histoweight);
 
+					double ProtonPhi_Deg = V3_2prot_corr[f].Phi() *180. / TMath::Pi() + 180.;
+					double ProtonTheta_Deg = V3_2prot_corr[f].Theta() *180. / TMath::Pi();
+					double ProtonMag = V3_2prot_corr[f].Mag();
+
+					int ECalBin = (E_tot_2p[f] - MinECal) / ECalStep;
+					h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),-P_N_2p[f]*histoweight);
+					h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,-P_N_2p[f]*histoweight);
+
 					h1_Ecal_Reso->Fill((E_tot_2p[f]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],P_N_2p[f]*histoweight);
 					h2_Ecal_Etrue->Fill(E_tot_2p[f],Ev,-P_N_2p[f]*histoweight);
 					h2_Etrue_Ecal->Fill(Ev,E_tot_2p[f],-P_N_2p[f]*histoweight);
@@ -1961,10 +1986,6 @@ void genie_analysis::Loop(Int_t choice) {
 					h2_Proton_Theta_Momentum->Fill(V3_2prot_corr[f].Mag(),V3_2prot_corr[f].Theta()*180./TMath::Pi(),-P_N_2p[f]*histoweight);
 
 					double LocalWeight = -P_N_2p[f]*histoweight;
-
-					double ProtonPhi_Deg = V3_2prot_corr[f].Phi() *180. / TMath::Pi() + 180.;
-					double ProtonTheta_Deg = V3_2prot_corr[f].Theta() *180. / TMath::Pi();
-					double ProtonMag = V3_2prot_corr[f].Mag();
 
 					// -----------------------------------------------------------------------------------------------
 					// Reconstruct xB, W, Q2 using Ecal instead of Etrue
@@ -2165,6 +2186,14 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_EQE_SuperFine->Fill(E_rec,P_2p1pito2p0pi[z]*histoweight);
 					h1_Ecal_SuperFine->Fill(Ecal_2p1pi_to2p0pi[z],P_2p1pito2p0pi[z]*histoweight);
 
+					double ProtonPhi_Deg = V3_2prot_corr[z].Phi() *180. / TMath::Pi() + 180.;
+					double ProtonTheta_Deg = V3_2prot_corr[z].Theta() *180. / TMath::Pi();
+					double ProtonMag = V3_2prot_corr[z].Mag();
+
+					int ECalBin = (Ecal_2p1pi_to2p0pi[z] - MinECal) / ECalStep;
+					h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),P_2p1pito2p0pi[z]*histoweight);
+					h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,P_2p1pito2p0pi[z]*histoweight);
+
 					h1_Ecal_Reso->Fill((Ecal_2p1pi_to2p0pi[z]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],P_2p1pito2p0pi[z]*histoweight);
 					h2_Ecal_Etrue->Fill(Ecal_2p1pi_to2p0pi[z],Ev,P_2p1pito2p0pi[z]*histoweight);
 					h2_Etrue_Ecal->Fill(Ev,Ecal_2p1pi_to2p0pi[z],P_2p1pito2p0pi[z]*histoweight);
@@ -2192,10 +2221,6 @@ void genie_analysis::Loop(Int_t choice) {
 
 					h2_Electron_Theta_Momentum->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),P_2p1pito2p0pi[z]*histoweight);
 					h2_Proton_Theta_Momentum->Fill(V3_2prot_corr[z].Mag(),V3_2prot_corr[z].Theta()*180./TMath::Pi(),P_2p1pito2p0pi[z]*histoweight);
-
-					double ProtonPhi_Deg = V3_2prot_corr[z].Phi() *180. / TMath::Pi() + 180.;
-					double ProtonTheta_Deg = V3_2prot_corr[z].Theta() *180. / TMath::Pi();
-					double ProtonMag = V3_2prot_corr[z].Mag();
 
 					// -----------------------------------------------------------------------------------------------
 					// Reconstruct xB, W, Q2 using Ecal instead of Etrue
@@ -2328,6 +2353,10 @@ void genie_analysis::Loop(Int_t choice) {
 
 					h1_EQE_SuperFine->Fill(E_rec,P_2p1pito1p1pi[z]*histoweight);
 					h1_Ecal_SuperFine->Fill(E_tot_2p[z],P_2p1pito1p1pi[z]*histoweight);
+
+					ECalBin = (E_tot_2p[z] - MinECal) / ECalStep;
+					h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),P_2p1pito1p1pi[z]*histoweight);
+					h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,P_2p1pito1p1pi[z]*histoweight);
 
 					h1_Ecal_Reso->Fill((E_tot_2p[z]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],P_2p1pito1p1pi[z]*histoweight);
 					h2_Ecal_Etrue->Fill(E_tot_2p[z],Ev,P_2p1pito1p1pi[z]*histoweight);
@@ -2496,6 +2525,10 @@ void genie_analysis::Loop(Int_t choice) {
 
 					h1_EQE_SuperFine->Fill(E_rec,-P_2p1pito1p0pi[z]*histoweight);
 					h1_Ecal_SuperFine->Fill(E_tot_2p[z],-P_2p1pito1p0pi[z]*histoweight);
+
+					ECalBin = (E_tot_2p[z] - MinECal) / ECalStep;
+					h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),-P_2p1pito1p0pi[z]*histoweight);
+					h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,-P_2p1pito1p0pi[z]*histoweight);
 
 					h1_Ecal_Reso->Fill((E_tot_2p[z]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],-P_2p1pito1p0pi[z]*histoweight);
 					h2_Ecal_Etrue->Fill(E_tot_2p[z],Ev,-P_2p1pito1p0pi[z]*histoweight);
@@ -2733,6 +2766,14 @@ void genie_analysis::Loop(Int_t choice) {
 
 					h1_EQE_SuperFine->Fill(E_rec,Ptot_2p[z]*histoweight);
 					h1_Ecal_SuperFine->Fill(E_tot_2p[z],Ptot_2p[z]*histoweight);
+
+					double ProtonPhi_Deg = V3_2prot_corr[z].Phi() *180. / TMath::Pi() + 180.;
+					double ProtonTheta_Deg = V3_2prot_corr[z].Theta() *180. / TMath::Pi();
+					double ProtonMag = V3_2prot_corr[z].Mag();
+
+					int ECalBin = (E_tot_2p[z] - MinECal) / ECalStep;
+					h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),Ptot_2p[z]*histoweight);
+					h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,Ptot_2p[z]*histoweight);
 
 					h1_Ecal_Reso->Fill((E_tot_2p[z]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],Ptot_2p[z]*histoweight);
 					h2_Ecal_Etrue->Fill(E_tot_2p[z],Ev,Ptot_2p[z]*histoweight);
@@ -3002,6 +3043,14 @@ void genie_analysis::Loop(Int_t choice) {
 						h1_EQE_SuperFine->Fill(E_rec,P_3pto2p[count][j]*histoweight);
 						h1_Ecal_SuperFine->Fill(E_cal_3pto2p[count][j],P_3pto2p[count][j]*histoweight);
 
+						double ProtonPhi_Deg = V3_prot_corr[j].Phi() *180. / TMath::Pi() + 180.;
+						double ProtonTheta_Deg = V3_prot_corr[j].Theta() *180. / TMath::Pi();
+						double ProtonMag = V3_prot_corr[j].Mag();
+
+						int ECalBin = (E_cal_3pto2p[count][j] - MinECal) / ECalStep;
+						h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),P_3pto2p[count][j]*histoweight);
+						h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,P_3pto2p[count][j]*histoweight);
+
 						h1_Ecal_Reso->Fill((E_cal_3pto2p[count][j]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],P_3pto2p[count][j]*histoweight);
 						h2_Ecal_Etrue->Fill(E_cal_3pto2p[count][j],Ev,P_3pto2p[count][j]*histoweight);
 						h2_Etrue_Ecal->Fill(Ev,E_cal_3pto2p[count][j],P_3pto2p[count][j]*histoweight);
@@ -3171,6 +3220,14 @@ void genie_analysis::Loop(Int_t choice) {
 
 					h1_EQE_SuperFine->Fill(E_rec,-P_3pto1p[j]*histoweight);
 					h1_Ecal_SuperFine->Fill(E_cal[j],-P_3pto1p[j]*histoweight);
+
+					double ProtonPhi_Deg = V3_prot_corr[j].Phi() *180. / TMath::Pi() + 180.;
+					double ProtonTheta_Deg = V3_prot_corr[j].Theta() *180. / TMath::Pi();
+					double ProtonMag = V3_prot_corr[j].Mag();
+
+					int ECalBin = (E_cal[j] - MinECal) / ECalStep;
+					h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),-P_3pto1p[j]*histoweight);
+					h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,-P_3pto1p[j]*histoweight);
 
 					h1_Ecal_Reso->Fill((E_cal[j]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],-P_3pto1p[j]*histoweight);
 					h2_Ecal_Etrue->Fill(E_cal[j],Ev,-P_3pto1p[j]*histoweight);
@@ -3389,6 +3446,14 @@ void genie_analysis::Loop(Int_t choice) {
 
 					h1_EQE_SuperFine->Fill(E_rec,P_tot_3p[j]*histoweight);
 					h1_Ecal_SuperFine->Fill(E_cal[j],P_tot_3p[j]*histoweight);
+
+					double ProtonPhi_Deg = V3_prot_corr[j].Phi() *180. / TMath::Pi() + 180.;
+					double ProtonTheta_Deg = V3_prot_corr[j].Theta() *180. / TMath::Pi();
+					double ProtonMag = V3_prot_corr[j].Mag();
+
+					int ECalBin = (E_cal[j] - MinECal) / ECalStep;
+					h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),P_tot_3p[j]*histoweight);
+					h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,P_tot_3p[j]*histoweight);
 
 					h1_Ecal_Reso->Fill((E_cal[j]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],P_tot_3p[j]*histoweight);
 					h2_Ecal_Etrue->Fill(E_cal[j],Ev,P_tot_3p[j]*histoweight);
@@ -3738,6 +3803,14 @@ void genie_analysis::Loop(Int_t choice) {
 								h1_EQE_SuperFine->Fill(E_rec,-Weight4pTo3pTo2pTo1p);
 								h1_Ecal_SuperFine->Fill(E_cal_4pto3p[count][j],-Weight4pTo3pTo2pTo1p);
 
+								double ProtonPhi_Deg = V3_prot_corr[j].Phi() *180. / TMath::Pi() + 180.;
+								double ProtonTheta_Deg = V3_prot_corr[j].Theta() *180. / TMath::Pi();
+								double ProtonMag = V3_prot_corr[j].Mag();
+
+								int ECalBin = (E_cal_4pto3p[count][j] - MinECal) / ECalStep;
+								h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),-Weight4pTo3pTo2pTo1p);
+								h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,-Weight4pTo3pTo2pTo1p);
+
 								h1_Ecal_Reso->Fill((E_cal_4pto3p[count][j]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],-Weight4pTo3pTo2pTo1p);
 								h2_Ecal_Etrue->Fill(E_cal_4pto3p[count][j],Ev,-Weight4pTo3pTo2pTo1p);
 								h2_Etrue_Ecal->Fill(Ev,E_cal_4pto3p[count][j],-Weight4pTo3pTo2pTo1p);
@@ -3908,6 +3981,14 @@ void genie_analysis::Loop(Int_t choice) {
 
 							h1_EQE_SuperFine->Fill(E_rec,P_43pto1p[j]*histoweight);
 							h1_Ecal_SuperFine->Fill(E_cal_43pto1p[j],P_43pto1p[j]*histoweight);
+
+							double ProtonPhi_Deg = V3_prot_corr[j].Phi() *180. / TMath::Pi() + 180.;
+							double ProtonTheta_Deg = V3_prot_corr[j].Theta() *180. / TMath::Pi();
+							double ProtonMag = V3_prot_corr[j].Mag();
+
+							int ECalBin = (E_cal_43pto1p[j] - MinECal) / ECalStep;
+							h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),P_43pto1p[j]*histoweight);
+							h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,P_43pto1p[j]*histoweight);
 
 							h1_Ecal_Reso->Fill((E_cal_43pto1p[j]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],P_43pto1p[j]*histoweight);
 							h2_Ecal_Etrue->Fill(E_cal_43pto1p[j],Ev,P_43pto1p[j]*histoweight);
@@ -4104,6 +4185,14 @@ void genie_analysis::Loop(Int_t choice) {
 									h1_EQE_SuperFine->Fill(E_rec,Weight4pTo2pTo1p);
 									h1_Ecal_SuperFine->Fill(E_cal_4pto2p[j],Weight4pTo2pTo1p);
 
+									double ProtonPhi_Deg = V3p2[j].Phi() *180. / TMath::Pi() + 180.;
+									double ProtonTheta_Deg = V3p2[j].Theta() *180. / TMath::Pi();
+									double ProtonMag = V3p2[j].Mag();
+
+									int ECalBin = (E_cal_4pto2p[j] - MinECal) / ECalStep;
+									h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),Weight4pTo2pTo1p);
+									h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,Weight4pTo2pTo1p);
+
 									h1_Ecal_Reso->Fill((E_cal_4pto2p[j]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],Weight4pTo2pTo1p);
 									h2_Ecal_Etrue->Fill(E_cal_4pto2p[j],Ev,Weight4pTo2pTo1p);
 									h2_Etrue_Ecal->Fill(Ev,E_cal_4pto2p[j],Weight4pTo2pTo1p);
@@ -4287,6 +4376,14 @@ void genie_analysis::Loop(Int_t choice) {
 
 						h1_EQE_SuperFine->Fill(E_rec,-P_4pto1p[j]*histoweight);
 						h1_Ecal_SuperFine->Fill(E_cal_p4[j],-P_4pto1p[j]*histoweight);
+
+						double ProtonPhi_Deg = V3p2[j].Phi() *180. / TMath::Pi() + 180.;
+						double ProtonTheta_Deg = V3p2[j].Theta() *180. / TMath::Pi();
+						double ProtonMag = V3p2[j].Mag();
+
+						int ECalBin = (E_cal_p4[j] - MinECal) / ECalStep;
+						h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),-P_4pto1p[j]*histoweight);
+						h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,-P_4pto1p[j]*histoweight);
 
 						h1_Ecal_Reso->Fill((E_cal_p4[j]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],-P_4pto1p[j]*histoweight);
 						h2_Ecal_Etrue->Fill(E_cal_p4[j],Ev,-P_4pto1p[j]*histoweight);
@@ -4950,6 +5047,14 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_EQE_SuperFine->Fill(E_rec,histoweight);
 				h1_Ecal_SuperFine->Fill(E_tot,histoweight);
 
+				double ProtonPhi_Deg = V3_prot_corr.Phi() *180. / TMath::Pi() + 180.;
+				double ProtonTheta_Deg = V3_prot_corr.Theta() *180. / TMath::Pi();
+				double ProtonMag = V3_prot_corr.Mag();
+
+				int ECalBin = (E_tot - MinECal) / ECalStep;
+				h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),histoweight);
+				h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,histoweight);
+
 				h1_Ecal_Reso->Fill((E_tot-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],histoweight);
 				h2_Ecal_Etrue->Fill(E_tot,Ev,histoweight);
 				h2_Etrue_Ecal->Fill(Ev,E_tot,histoweight);
@@ -5188,6 +5293,14 @@ void genie_analysis::Loop(Int_t choice) {
 
 					h1_EQE_SuperFine->Fill(E_rec,-(N_piphot_undet/N_piphot_det)*histoweight);
 					h1_Ecal_SuperFine->Fill(E_tot,-(N_piphot_undet/N_piphot_det)*histoweight);
+
+					double ProtonPhi_Deg = V3_prot_corr.Phi() *180. / TMath::Pi() + 180.;
+					double ProtonTheta_Deg = V3_prot_corr.Theta() *180. / TMath::Pi();
+					double ProtonMag = V3_prot_corr.Mag();
+
+					int ECalBin = (E_tot - MinECal) / ECalStep;
+					h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),-(N_piphot_undet/N_piphot_det)*histoweight);
+					h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,-(N_piphot_undet/N_piphot_det)*histoweight);
 
 					h1_Ecal_Reso->Fill((E_tot-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],-(N_piphot_undet/N_piphot_det)*histoweight);
 					h2_Ecal_Etrue->Fill(E_tot,Ev,-(N_piphot_undet/N_piphot_det)*histoweight);
@@ -5432,6 +5545,14 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_EQE_SuperFine->Fill(E_rec,P_1p1pi[z]*histoweight);
 					h1_Ecal_SuperFine->Fill(E_tot,P_1p1pi[z]*histoweight);
 
+					double ProtonPhi_Deg = V3_prot_corr.Phi() *180. / TMath::Pi() + 180.;
+					double ProtonTheta_Deg = V3_prot_corr.Theta() *180. / TMath::Pi();
+					double ProtonMag = V3_prot_corr.Mag();
+
+					int ECalBin = (E_tot - MinECal) / ECalStep;
+					h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),P_1p1pi[z]*histoweight);
+					h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,P_1p1pi[z]*histoweight);
+
 					h1_Ecal_Reso->Fill((E_tot-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],P_1p1pi[z]*histoweight);
 					h2_Ecal_Etrue->Fill(E_tot,Ev,P_1p1pi[z]*histoweight);
 					h2_Etrue_Ecal->Fill(Ev,E_tot,P_1p1pi[z]*histoweight);
@@ -5611,6 +5732,14 @@ void genie_analysis::Loop(Int_t choice) {
 
 				h1_EQE_SuperFine->Fill(E_rec,-P_1p0pi*histoweight);
 				h1_Ecal_SuperFine->Fill(E_tot,-P_1p0pi*histoweight);
+
+				double ProtonPhi_Deg = V3_prot_corr.Phi() *180. / TMath::Pi() + 180.;
+				double ProtonTheta_Deg = V3_prot_corr.Theta() *180. / TMath::Pi();
+				double ProtonMag = V3_prot_corr.Mag();
+
+				int ECalBin = (E_tot - MinECal) / ECalStep;
+				h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),-P_1p0pi*histoweight);
+				h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,-P_1p0pi*histoweight);
 
 				h1_Ecal_Reso->Fill((E_tot-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],-P_1p0pi*histoweight);
 				h2_Ecal_Etrue->Fill(E_tot,Ev,-P_1p0pi*histoweight);
@@ -5846,6 +5975,14 @@ void genie_analysis::Loop(Int_t choice) {
 
 				h1_EQE_SuperFine->Fill(E_rec,P_1p3pi*histoweight);
 				h1_Ecal_SuperFine->Fill(E_tot,P_1p3pi*histoweight);
+
+				double ProtonPhi_Deg = V3_prot_corr.Phi() *180. / TMath::Pi() + 180.;
+				double ProtonTheta_Deg = V3_prot_corr.Theta() *180. / TMath::Pi();
+				double ProtonMag = V3_prot_corr.Mag();
+
+				int ECalBin = (E_tot - MinECal) / ECalStep;
+				h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),P_1p3pi*histoweight);
+				h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,P_1p3pi*histoweight);
 
 				h1_Ecal_Reso->Fill((E_tot-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],P_1p3pi*histoweight);
 				h2_Ecal_Etrue->Fill(E_tot,Ev,P_1p3pi*histoweight);

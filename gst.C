@@ -109,9 +109,26 @@ void gst::Loop() {
 
 		// --------------------------------------------------------------
 
-		// 1p0pi + 1p1pi		
-		if ( !( (ProtonCounter == 1 && ChargedPionCounter == 0) || (ProtonCounter == 1 && ChargedPionCounter == 1) ) ) { continue; }
-		if (GammaCounter != 0) { continue; }
+                // Chosen topology                                                                                                          
+
+                if (
+                    !(
+
+                        (ProtonCounter == 1 && ChargedPionCounter == 0)
+                     || (ProtonCounter == 1 && ChargedPionCounter == 1)
+                     || (ProtonCounter == 1 && ChargedPionCounter == 2) 
+                     || (ProtonCounter == 1 && ChargedPionCounter == 3) 
+                     || (ProtonCounter == 2 && ChargedPionCounter == 0) 
+                     || (ProtonCounter == 2 && ChargedPionCounter == 1)
+                     || (ProtonCounter == 1 && ChargedPionCounter == 2) 
+                     || (ProtonCounter == 3 && ChargedPionCounter == 0)
+                     || (ProtonCounter == 3 && ChargedPionCounter == 1)
+
+                    )
+
+                ) { continue; }
+
+
 
 		// --------------------------------------------------------------
 

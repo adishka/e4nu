@@ -71,17 +71,12 @@ void HydrogenComparisons() {
 
 	// ------------------------------------------------------------------------
 
-//	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He"); JustNucleus.push_back("He");
 	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
 	nucleus.push_back("CH2"); LabelsOfSamples.push_back("CH2"); JustNucleus.push_back("CH2");
-//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
 
 	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
-//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");  DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
-//	xBCut.push_back("xBCut");
  
 //	Colors.push_back(kBlack); Colors.push_back(kRed); Colors.push_back(kBlue); Colors.push_back(kMagenta); Colors.push_back(kGreen); Colors.push_back(kOrange + 7);
 	Colors.push_back(kBlack); Colors.push_back(610); Colors.push_back(410); Colors.push_back(kMagenta); Colors.push_back(kGreen+3); Colors.push_back(kBlue);  Colors.push_back(610);
@@ -91,36 +86,6 @@ void HydrogenComparisons() {
 	Style.push_back(1); Style.push_back(kDashed); Style.push_back(1); Style.push_back(1);
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
-//	FSIModel.push_back("Pinned_Data_NoRotations"); FSILabel.push_back("Pinned Data No Rotations"); DirNames.push_back("Pinned Data No Rotations");
-
-//	FSIModel.push_back("Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
-//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");  DirNames.push_back("G2018");
-//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 NoRad");  DirNames.push_back("hA2018_Truth_RadCorr");
-
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_NoAccMaps"); FSILabel.push_back("SuSav2_NoAccMaps");  DirNames.push_back("SuSav2_NoAccMaps");
-
-//	FSIModel.push_back("SuSav2_02_11a_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("hA2018_Truth_RadCorr");
-
-//	FSIModel.push_back("Data_Final_FilterRuns"); FSILabel.push_back("Data_FilterRuns"); DirNames.push_back("Data_FilterRuns");
-//	FSIModel.push_back("Data_Final_NewFilterRuns"); FSILabel.push_back("Data_NewFilterRuns"); DirNames.push_back("Data_NewFilterRuns");
-
-//	FSIModel.push_back("GoodRunList_Data_Final"); FSILabel.push_back("GoodRunList_Data"); DirNames.push_back("GRL Data");
-//	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
-//	FSIModel.push_back("LowCurrent_GoodRunList_Data_Final"); FSILabel.push_back("LowCurrent_GoodRunList_Data"); DirNames.push_back("LC GRL Data");
-//	FSIModel.push_back("HighCurrent_GoodRunList_Data_Final"); FSILabel.push_back("HighCurrent_GoodRunList_Data"); DirNames.push_back("HC GRL Data");
-
-//	FSIModel.push_back("Data_Final_NoChargedPions"); FSILabel.push_back("Data"); DirNames.push_back("Data");
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_NoChargedPions"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_NoChargedPions"); FSILabel.push_back("SuSav2");  DirNames.push_back("hA2018_Truth_RadCorr");
-
-//	FSIModel.push_back("hA2018_Final_NoRadCorr"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-//	FSIModel.push_back("hA2018_Truth_NoRadCorr"); FSILabel.push_back("Genie (Truth)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-//	FSIModel.push_back("hN2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie hN2018");  DirNames.push_back("hN2018_Truth_NoRadCorr");
-//	FSIModel.push_back("hN2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie hN2018");  DirNames.push_back("hN2018_Truth_NoRadCorr");
-
-
 
 //	NameOfPlots.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0"); LabelOfPlots.push_back("1st Sector Energy Transfer [GeV]"); OutputPlotNames.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0");
 
@@ -131,12 +96,12 @@ void HydrogenComparisons() {
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InAllSectors"); LabelOfPlots.push_back("(e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
-//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_1"); LabelOfPlots.push_back("2nd (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_2"); LabelOfPlots.push_back("3rd (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_3"); LabelOfPlots.push_back("4th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_4"); LabelOfPlots.push_back("5th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
-	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_5"); LabelOfPlots.push_back("6th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+//	NameOfPlots.push_back("h1_W_weight_FullyInclusive_ThetaSlice_InSector_5"); LabelOfPlots.push_back("6th (e,e') W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 
 //	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_0"); LabelOfPlots.push_back("1st sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_1"); LabelOfPlots.push_back("2nd sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
@@ -144,6 +109,8 @@ void HydrogenComparisons() {
 //	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_3"); LabelOfPlots.push_back("4th sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_4"); LabelOfPlots.push_back("5th sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_W_weight_SingleProton_ThetaSlice_InSector_5"); LabelOfPlots.push_back("6th sector (e,e'p)_{X} W [GeV]"); OutputPlotNames.push_back("h1_Wvar_weight");
+
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	std::vector<TH1D*> Plots;
 
@@ -155,12 +122,13 @@ void HydrogenComparisons() {
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	// This analysis is cutting on phi +/- 15 deg
+	// This analysis is cutting on phi +/- 6 deg
 
 //double LocaldOmega = dOmega;
 //double LocaldOmega = 0.017;
 //double LocaldOmega = 0.01;
 double LocaldOmega = 0.0062;
+//double LocaldOmega = 0.0045;
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -175,7 +143,7 @@ double LocaldOmega = 0.0062;
 // 1 C12 , 1500 run -> 18306
 //IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.004843377;
 // full 1500 sample
-IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
+//IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 
 			// Loop over the plots
 
@@ -376,12 +344,12 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 			       TargetLength[std::make_pair("CH2",E[WhichEnergy])] * TargetDensity[std::make_pair("CH2",E[WhichEnergy])]);
 
 
-			//Clone->Scale(CloneSF);
+			Clone->Scale(CloneSF);
 
 			Clone->GetXaxis()->SetRangeUser(0.87,1);
 //			Clone->GetYaxis()->SetTitle("Normalized Yield");
-//			Clone->GetYaxis()->SetTitle("Cross Section [cm^{2}]");
-			Clone->GetYaxis()->SetTitle("# Counts");
+			Clone->GetYaxis()->SetTitle("Cross Section [cm^{2}]");
+//			Clone->GetYaxis()->SetTitle("# Counts");
 			DiffCanvas->cd();
 			Clone->Draw();
 
@@ -389,7 +357,7 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 
 			double dsigmadOmega = Integrate(Clone);
 
-			cout << "Data dsigmadOmega = " << dsigmadOmega * ConversionFactorCm2ToMicroBarn << " ub" << endl;
+			cout << "Data dsigmadOmega = " << dsigmadOmega * ConversionFactorCm2ToMicroBarn << " ub / sr" << endl;
 
 			//cout << "Data Sigma = " << dsigmadOmega*dOmega << endl;
 
@@ -427,7 +395,7 @@ IntegratedCharge_PinnedFiles[std::make_pair("12C", E[WhichEnergy])] = 0.105;
 								ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair("1H", "1_161")] *\
 								LocaldOmega) ;
 
-			cout << "Genie dsigmadOmega = " << GeniedsigmadOmega << " ub" << endl;
+			cout << "Genie dsigmadOmega = " << GeniedsigmadOmega << " ub / sr" << endl;
 
 			//cout << "Genie Sigma = " << GeniedsigmadOmega*dOmega << endl;
 

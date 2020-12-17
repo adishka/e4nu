@@ -135,7 +135,7 @@ void XSecOverlay() {
 	legCCQE->SetTextFont(FontStyle);
 	legCCQE->Draw();
 
-	//delete CCQEPlotCanvas;
+	delete CCQEPlotCanvas;
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 	//                                    CCMEC (Nieves, SuSav2, Empirical)
@@ -171,16 +171,16 @@ void XSecOverlay() {
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//	// G2000 = G00_00a_00_000
+	// G2000 = G00_00a_00_000
 
-//	TFile* CCMECG2000File = TFile::Open("myXSec/xsec_carbon12_spline_CCMEC_G00_00a_00_000_Q2_"+Q2Thres+".root");
-//	TDirectory* CCMECG2000Dir = (TDirectory*)(CCMECG2000File->Get("nu_mu_C12"));
-//	TGraph* CCMECG2000 = (TGraph*)(CCMECG2000Dir->Get("tot_cc"));
-//	CCMECG2000->GetYaxis()->SetRangeUser(0,2.3);
-//	PrettyGraph(CCMECG2000,kBlack,"CCMEC");
+	TFile* CCMECG2000File = TFile::Open("myXSec/xsec_carbon12_spline_CCMEC_G00_00a_00_000_Q2_"+Q2Thres+".root");
+	TDirectory* CCMECG2000Dir = (TDirectory*)(CCMECG2000File->Get("nu_mu_C12"));
+	TGraph* CCMECG2000 = (TGraph*)(CCMECG2000Dir->Get("tot_cc"));
+	CCMECG2000->GetYaxis()->SetRangeUser(0,2.3);
+	PrettyGraph(CCMECG2000,410,"CCMEC");
 
-//	TLegendEntry* legCCMECG2000 = legCCMEC->AddEntry(CCMECG2000,"Empirical","");
-//	legCCMECG2000->SetTextColor(kBlack);
+	TLegendEntry* legCCMECG2000 = legCCMEC->AddEntry(CCMECG2000,"Empirical","");
+	legCCMECG2000->SetTextColor(410);
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -229,7 +229,7 @@ void XSecOverlay() {
 	legEMQE->SetTextFont(FontStyle);
 	legEMQE->Draw();
 
-	//delete EMQEPlotCanvas;
+	delete EMQEPlotCanvas;
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 	//                                    EMMEC (SuSav2, Empirical)
@@ -270,7 +270,7 @@ void XSecOverlay() {
 	legEMMEC->SetTextFont(FontStyle);
 	legEMMEC->Draw();
 
-	//delete EMMECPlotCanvas;
+	delete EMMECPlotCanvas;
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 

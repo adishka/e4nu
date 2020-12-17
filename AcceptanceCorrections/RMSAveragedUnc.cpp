@@ -20,13 +20,40 @@ using namespace std;
 #include "../myFunctions.cpp"
 #include "../AfroConstants.h"
 
+TH1D* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec) {
+
+	int NBins = h->GetXaxis()->GetNbins();
+	int NPlots = hVec.size();
+
+	TH1D* RMSClone = (TH1D*)(h->Clone("RMSClone"));
+
+	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
+
+		double sum = 0;
+
+		for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot++) {
+
+			sum += TMath::Power(hVec[WhichPlot]->GetBinContent(WhichBin) - h->GetBinContent(WhichBin),2.);		
+
+		}
+
+		double NewEntry = TMath::Sqrt( sum / (double)(NPlots) )  / h->GetBinContent(WhichBin) * 100.;
+		RMSClone->SetBinContent(WhichBin,NewEntry);
+
+	}
+
+	return RMSClone;
+
+}
+
 // ----------------------------------------------------------------------------------------------------------------
 
-void OverlayPlots() {
+void RMSAveragedUnc() {
 
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
+	TH1D::SetDefaultSumw2();
 
 	// ------------------------------------------------------------------------
 
@@ -105,6 +132,8 @@ void OverlayPlots() {
 				
 					PlotCanvas->SetLeftMargin(0.15);
 					PlotCanvas->SetBottomMargin(0.17);	
+					PlotCanvas->SetGridx();	
+					PlotCanvas->SetGridy();	
 
 					// ---------------------------------------------------------------------------------------
 
@@ -125,47 +154,62 @@ void OverlayPlots() {
 
 						Plots.push_back( (TH1D*)( FileSample->Get(FSIModel[WhichFSIModel]+"_"+NameOfPlots[WhichPlot]) ) );
 
-						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
+//						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
 
-						// ---------------------------------------------------------------------------------------------------
+//						// ---------------------------------------------------------------------------------------------------
 
-						TLegendEntry* l1 = leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel], "");
-						l1->SetTextColor(Colors[WhichFSIModel]);
+//						TLegendEntry* l1 = leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel], "l");
+//						l1->SetTextColor(Colors[WhichFSIModel]);
 
-						// ---------------------------------------------------------------------------------------------------
+//						// ---------------------------------------------------------------------------------------------------
 
-						// Max, min, title & # divisions
+//						// Max, min, title & # divisions
 
-						double localmax = Plots[WhichFSIModel]->GetMaximum();
-						if (localmax > max) { max = localmax; }
-						double height = 1.1;
-						Plots[0]->SetMaximum(height*max);
+//						double localmax = Plots[WhichFSIModel]->GetMaximum();
+//						if (localmax > max) { max = localmax; }
+//						double height = 1.1;
+//						Plots[0]->SetMaximum(height*max);
 
-		                                // --------------------------------------------------------------------------------------------------
+//		                                // --------------------------------------------------------------------------------------------------
 
-//						Plots[WhichFSIModel]->Draw("C hist same");
-//						Plots[0]->Draw("C hist same");
+////						Plots[WhichFSIModel]->Draw("C hist same");
+////						Plots[0]->Draw("C hist same");
 
-						Plots[WhichFSIModel]->GetXaxis()->SetNdivisions(8);
-						Plots[WhichFSIModel]->Draw("e same");
-//						Plots[0]->Draw("e  same");
+//						Plots[WhichFSIModel]->Draw("e  same");
+////						Plots[0]->Draw("e  same");
 
 		                                // --------------------------------------------------------------------------------------------------
 
 					} // End of the loop over the FSI Models 
 
+//					leg->SetBorderSize(0);
+//					leg->SetTextFont(FontStyle);
+//					leg->SetTextSize(TextSize);
+//					leg->Draw();
+
 					TH1D* average = (TH1D*)(Plots[0]->Clone());
 					average->Add(Plots[1]);
-					average->Scale(1./2.);
-					average->SetLineColor(kBlue);
-					average->Draw("e same");
-					TLegendEntry* l2 = leg->AddEntry(average,"Average", "");
-					l2->SetTextColor(kBlue);
+					average->Scale(0.5);
 
-					leg->SetBorderSize(0);
-					leg->SetTextFont(FontStyle);
-					leg->SetTextSize(TextSize);
-					leg->Draw();
+					std::vector<TH1D*> VectorPlots;
+
+					for (int i = 0; i < NFSIModels; i++) {
+
+						VectorPlots.push_back(Plots[i]);
+
+					}
+
+					TH1D* clone = RMSAveragedFunc(average,VectorPlots);
+					//clone->Scale(100.);
+
+					clone->GetYaxis()->SetTitle("Fractional Contribution (%)");
+//					clone->GetYaxis()->SetRangeUser(-20,20);
+					clone->GetYaxis()->SetRangeUser(0,40);
+
+					clone->GetXaxis()->SetNdivisions(8);
+					clone->GetYaxis()->SetNdivisions(10);
+
+					clone->Draw("e same");
 
 					// -----------------------------------------------------------------------------------------------------------------------------------------
 

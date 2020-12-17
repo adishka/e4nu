@@ -31,8 +31,8 @@ void AcceptanceCorrections() {
 	const std::vector<int> LocalDataSetColors{1,610,410,kRed+2,kBlue};
 	double split = 0.1;
 
-	//TString Label = "SuSav2";
-	TString Label = "hA2018_Final";
+	TString Label = "SuSav2";
+	//TString Label = "hA2018_Final";
 
 	// ------------------------------------------------------------------------
 
@@ -55,8 +55,8 @@ void AcceptanceCorrections() {
 	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.157 GeV"); DoubleE.push_back(1.161);	
-	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
-//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.457 GeV"); DoubleE.push_back(4.461);	
+//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
+	E.push_back("4_461"); LabelE.push_back(" @ E = 4.457 GeV"); DoubleE.push_back(4.461);	
 
 	xBCut.push_back("NoxBCut");
 
@@ -84,15 +84,31 @@ void AcceptanceCorrections() {
 
 //	}
 
-	FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
-
+/*
 	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi"){
 
+		FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
 		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("TrueWithFid");
 		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("True");
 
 	} else {
 
+		FSIModel.push_back(Label+"_RadCorr_LFGM_Offset"); FSILabel.push_back("Reco");
+		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_Offset"); FSILabel.push_back("TrueWithFid");
+		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
+
+	}
+*/
+
+	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi"){
+
+		FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
+		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("TrueWithFid");
+		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("True");
+
+	} else {
+
+		FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
 		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("TrueWithFid");
 		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True");
 
@@ -207,6 +223,8 @@ void AcceptanceCorrections() {
 
 						// Drawing The Plots
 
+//if (WhichFSIModel == 1) { continue; }
+
 						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 
 							Plots[WhichFSIModel]->SetMarkerStyle(20); 
@@ -229,6 +247,8 @@ void AcceptanceCorrections() {
 						legGenie->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel]);
 
 					} // End of the loop over the FSI Models 
+
+					//delete PlotCanvas;
 
 					// -----------------------------------------------------------------------------------
 
@@ -267,6 +287,7 @@ void AcceptanceCorrections() {
 					RecoClone->GetYaxis()->SetTitle("Reco / True 1p0pi W/" );
 
 					RecoClone->Draw();
+					//delete BkgCorrPlotCanvas;
 
 					// ---------------------------------------------------------------------------------------------------
 
@@ -288,6 +309,7 @@ void AcceptanceCorrections() {
 					TrueClone->GetYaxis()->SetTitle("True 1p0pi W/ / True 1p0pi W/O" );
 
 					TrueClone->Draw();
+					//delete ThresCorrPlotCanvas;
 
 					// ---------------------------------------------------------------------------------------------------
 
@@ -309,6 +331,7 @@ void AcceptanceCorrections() {
 					OverallClone->GetYaxis()->SetTitle("Reco / True 1p0pi W/O" );
 
 					OverallClone->Draw();
+					//delete OverallCorrPlotCanvas;
 
 					// ------------------------------------------------------------------------------
 
@@ -316,7 +339,6 @@ void AcceptanceCorrections() {
 					RecoClone->Write(Label+"_"+"BkgCorrection_"+NameOfPlots[WhichPlot]);
 					TrueClone->Write(Label+"_"+"FidCorrection_"+NameOfPlots[WhichPlot]);
 					OverallClone->Write(Label+"_"+"AccCorrection_"+NameOfPlots[WhichPlot]);
-
 
 					// ------------------------------------------------------------------------------
 

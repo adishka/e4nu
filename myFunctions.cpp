@@ -283,7 +283,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
-	if (Sample == "Data_FilterRuns") { 
+	else if (Sample == "Data_FilterRuns") { 
 
 		SF = 1. / (IntegratedCharge_FilterRuns[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
@@ -292,7 +292,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
-	if (Sample == "Data_NewFilterRuns") { 
+	else if (Sample == "Data_NewFilterRuns") { 
 
 		SF = 1. / (IntegratedCharge_NewFilterRuns[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
@@ -301,7 +301,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
-	if (Sample == "GoodRunList_Data") { 
+	else if (Sample == "GoodRunList_Data") { 
 
 		SF = 1. / (IntegratedCharge_GoodRunList_AllRuns[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
@@ -310,7 +310,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
-	if (Sample == "LowCurrent_GoodRunList_Data") { 
+	else if (Sample == "LowCurrent_GoodRunList_Data") { 
 
 		SF = 1. / (IntegratedCharge_GoodRunList_LowCurrentRuns[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
@@ -320,7 +320,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
-	if (Sample == "HighCurrent_GoodRunList_Data") { 
+	else if (Sample == "HighCurrent_GoodRunList_Data") { 
 
 		SF = 1. / (IntegratedCharge_GoodRunList_HighCurrentRuns[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
@@ -329,7 +329,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
-	if (Sample == "Pinned Data" || Sample == "Pinned Data No Rotations") { 
+	else if (Sample == "Pinned Data" || Sample == "Pinned Data No Rotations") { 
 
 		SF = 1. / (IntegratedCharge_PinnedFiles[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
@@ -338,7 +338,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
-	if (Sample == "Mikhail Data") { 
+	else if (Sample == "Mikhail Data") { 
 
 		SF = 1. / (IntegratedCharge_MikhailFiles[std::make_pair(Nucleus, E)] *\
 						    TargetLength[std::make_pair(Nucleus, E)] *\
@@ -351,7 +351,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	// Simulation sets
 
-	if (Sample == "SuSav2" || Sample == "SuSav2_NoAccMaps" 
+	else if (Sample == "SuSav2" || Sample == "SuSav2_NoAccMaps" 
 		/*|| Sample == "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut" || Sample == "hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut"*/) { 
 
 				SF = (SuSav2GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
@@ -359,12 +359,25 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
-	if (Sample == "G2018") { 
+	else if (Sample == "SuSav2 NoRad") { 
+
+				SF = (SuSav2GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+					ConversionFactorCm2ToMicroBarn / (NoRadSuSav2NumberEvents[std::make_pair(Nucleus, E)] ) ) ;
+
+	}
+
+	else if (Sample == "G2018") { 
 
 		SF = ( G2018GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
 					ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair(Nucleus, E)] ) );
 
-	}	
+	}
+
+	else {
+
+		std::cout << "Craaaaaaaaaaaaaaap !!!!!!!!! What is the SF in AbsoluteXSecScaling ???????????????" << std::endl;
+
+	}		
 
 	h->Scale(SF);
 

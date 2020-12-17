@@ -459,7 +459,7 @@ void treeProducer_simulation::Loop() {
 
 		// Reconstructed Energy Plots
 
-//		epRecoEnergy_slice_0Plot->Fill(Ecal,Weight); eRecoEnergy_slice_0Plot->Fill(EQE,Weight);
+		epRecoEnergy_slice_0Plot->Fill(Ecal,Weight); eRecoEnergy_slice_0Plot->Fill(EQE,Weight);
 //		if (MissMomentumBin == 1) { epRecoEnergy_slice_1Plot->Fill(Ecal,Weight); eRecoEnergy_slice_1Plot->Fill(EQE,Weight);}
 //		if (MissMomentumBin == 2) { epRecoEnergy_slice_2Plot->Fill(Ecal,Weight); eRecoEnergy_slice_2Plot->Fill(EQE,Weight);}
 //		if (MissMomentumBin == 3) { epRecoEnergy_slice_3Plot->Fill(Ecal,Weight); eRecoEnergy_slice_3Plot->Fill(EQE,Weight);}
