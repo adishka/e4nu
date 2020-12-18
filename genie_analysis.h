@@ -355,14 +355,14 @@ genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int n
       if (fchoice == 2) { 
       
       		// Radiative G2018
+
 		chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_G2018/Exclusive/electrons/%s_%sGeV/apapadop_Rad_G2018_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
 
       		// Non Radiative G2018
-		//chain->Add(Form("/pnfs/genie/persistent/users/apapadop/NonRadiative/G2018/%s_%sGeV/apapadop_G2018_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
+
+		//chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_G2018/Exclusive/electrons/%s_%sGeV/apapadop_G2018_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
 
 	}
-
-/*      if (fchoice == 0) { chain->Add(Form("/w/hallb-scifs17exp/clas/claseg2/apapadop/genie_filtered_data_e2a_ep_%s_%s_neutrino6_united4_radphot_test_100M.root",ftarget.c_str(), fbeam_en.c_str())); }*/
 
       if (fchoice == 0) { chain->Add(Form("/w/hallb-scifs17exp/clas/claseg2/apapadop/GetCharge_genie_filtered_data_e2a_ep_%s_%s_neutrino6_united4_radphot_test_100M.root",ftarget.c_str(), fbeam_en.c_str())); }
 
