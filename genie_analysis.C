@@ -126,7 +126,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 	bool ApplyPhiOpeningAngle = false;
 	bool UsePhiThetaBand = false;
-	bool ApplyThetaSlice = false; double MinThetaSlice = 23, MaxThetaSlice = 27;
+	bool ApplyThetaSlice = false; double MinThetaSlice = 36, MaxThetaSlice = 39;
 	bool ApplyGoodSectorPhiSlice = false;
 
 	// ---------------------------------------------------------------------------------------------------------------

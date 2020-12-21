@@ -684,6 +684,10 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc");
 	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithoutFidAcc");
 
+////	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM");
+//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc");
+//	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM_Truth_WithoutFidAcc");
+
 //	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_XSec");
 //	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithoutFidAcc_XSec");
 	int NFSIModels = FSIModel.size();

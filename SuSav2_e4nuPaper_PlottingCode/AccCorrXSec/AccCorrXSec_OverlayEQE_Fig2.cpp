@@ -92,12 +92,12 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
-		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
-		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("G2018");
+		FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
+		FSIModel.push_back("hA2018_NoFinal_RadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("G2018");
 
 	} else {
 
-		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
+		FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
 		//FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
 		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
 

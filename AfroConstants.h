@@ -105,14 +105,20 @@
 		{ "MikhailCook_Data", "Mikhail Data" },
 		{ "Pinned_Data_Final", "Pinned Data" },
 		{ "Pinned_Data_NewFiducials_SixSectors", "Pinned Data" },
+		{ "Pinned_Data_Final_SixSectors", "Pinned Data" },
+
 		{ "SuSav2_RadCorr_LFGM", "SuSav2" },
-		{ "SuSav2_NoRadCorr_LFGM", "SuSav2 NoRad" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithFidAcc", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc", "SuSav2" },
-		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc", "SuSav2 NoRad" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth0pi_WithoutFidAcc", "SuSav2" },
+		{ "SuSav2_RadCorr_LFGM_SixSectors", "SuSav2" },
+
+		{ "SuSav2_NoRadCorr_LFGM", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc", "SuSav2 NoRad" },
+
 		{ "hA2018_Final_RadCorr_LFGM", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Offset", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc", "G2018" },
@@ -122,9 +128,7 @@
 		{ "hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc_Offset", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth0pi_WithoutFidAcc", "G2018" },
-		{ "Pinned_Data_Final_SixSectors", "Pinned Data" },
-		{ "SuSav2_RadCorr_LFGM_SixSectors", "SuSav2" },
-		{ "hA2018_Final_RadCorr_LFGM_SixSectors", "G2018" },
+		{ "hA2018_Final_RadCorr_LFGM_SixSectors", "G2018" }
 	};
 
 	// Mass Numbers

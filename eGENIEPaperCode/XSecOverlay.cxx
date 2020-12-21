@@ -265,12 +265,32 @@ void XSecOverlay() {
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	TFile* EMMECG2018FileLowQ2 = TFile::Open("myXSec/xsec_carbon12_spline_EMMEC_G18_10a_02_11a_Q2_0_1_Frac.root");
+	TDirectory* EMMECG2018DirLowQ2 = (TDirectory*)(EMMECG2018FileLowQ2->Get("e-_C12"));
+	TGraph* EMMECG2018LowQ2 = (TGraph*)(EMMECG2018DirLowQ2->Get("tot_em"));
+	PrettyGraph(EMMECG2018LowQ2,kGreen+2,"EMMEC");
+
+	TLegendEntry* legEMMECG2018LowQ2 = legEMMEC->AddEntry(EMMECG2018LowQ2,"Empirical FracEMQE = 0.3","");
+	legEMMECG2018LowQ2->SetTextColor(kGreen+2);
+
+//	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//	TFile* EMMECSuSav2FileLowQ2 = TFile::Open("myXSec/xsec_carbon12_spline_EMMEC_GTEST19_10b_00_000_Q2_0_02.root");
+//	TDirectory* EMMECSuSav2DirLowQ2 = (TDirectory*)(EMMECSuSav2FileLowQ2->Get("e-_C12"));
+//	TGraph* EMMECSuSav2LowQ2 = (TGraph*)(EMMECSuSav2DirLowQ2->Get("tot_em"));
+//	PrettyGraph(EMMECSuSav2LowQ2,kOrange+7,"EMMEC");
+
+//	TLegendEntry* legEMMECSuSav2LowQ2 = legEMMEC->AddEntry(EMMECSuSav2LowQ2,"SuSav2 (Q2 > 0.02)","");
+//	legEMMECSuSav2LowQ2->SetTextColor(kOrange+7);
+
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
 	legEMMEC->SetBorderSize(0);
 	legEMMEC->SetTextSize(TextSize);
 	legEMMEC->SetTextFont(FontStyle);
 	legEMMEC->Draw();
 
-	delete EMMECPlotCanvas;
+	//delete EMMECPlotCanvas;
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
