@@ -27,6 +27,26 @@ TString ToString(int num) {
 
 }
 
+void ReweightPlots(TH1D* h, double SF = 1.) {
+
+	double NBins = h->GetNbinsX(); 
+				
+	for (int i = 1; i <= NBins; i++) { 
+					
+		double content = h->GetBinContent(i);
+		double error = h->GetBinError(i);
+		double width = h->GetBinWidth(i);
+
+		double newcontent = SF * content / width;
+		double newerror = SF * error / width;
+				
+		h->SetBinContent(i,newcontent);
+		h->SetBinError(i,newerror);
+
+	}
+
+}
+
 void treeProducer_simulation::Loop() {
 
 	if (fChain == 0) return;
@@ -36,14 +56,14 @@ void treeProducer_simulation::Loop() {
 
 	// -------------------------------------------------------------------------------
 
-	// Binding Energy
+	// Constants
 
-	double BE = 0.025; // GeV
-	double Ebeam = 1.161;
+//	double BE = 0.027; // GeV, GENIE 16O removal energy
+	double BE = 0.0; // GeV
 
 	// -------------------------------------------------------------------------------
 
-	TString FileName = fNucleus+"_"+fEnergy+"_"+fTune+"_"+fInteraction+".root";
+	TString FileName = "XSec_"+fNucleus+"_"+fEnergy+"_"+fTune+"_"+fInteraction+".root";
 	
 	TFile* file = new TFile(FileName,"recreate");
 
@@ -59,8 +79,8 @@ void treeProducer_simulation::Loop() {
 	int NBinsxB = 25; double MinxB = 0.7, MaxxB = 1.3; TString TitlexB = ";x_{B};";
 	int NBinsnu = 50; double Minnu = 0., Maxnu = 1.2; TString Titlenu = ";Energy Transfer [GeV];";
 	int NBinsW = 20; double MinW = 0.7, MaxW = 1.2; TString TitleW = ";W (GeV/c^{2});";
-	int NBinsPmiss = 40; double MinPmiss = 0., MaxPmiss = 1.; TString TitlePmiss = ";P_{T} [GeV/c];";
-	int NBinsEmiss = 40; double MinEmiss = 0., MaxEmiss = 0.12; TString TitleEmiss = ";E_{miss} [GeV];";
+	int NBinsPmiss = 40; double MinPmiss = 0., MaxPmiss = 1.; TString TitlePmiss = ";P_{miss} [GeV/c];";
+	int NBinsEmiss = 48; double MinEmiss = 0., MaxEmiss = 120; TString TitleEmiss = ";E_{miss} [MeV];";
 	int NBinsPionMulti = 4; double MinPionMulti = -0.5, MaxPionMulti = 3.5; TString TitlePionMulti = ";Pion Multiplicity;";
 	int NBinsReso = 30; double MinReso = -50., MaxReso = 10.; TString TitleReso = ";#frac{E^{cal} - E^{beam}}{E^{beam}} (%);";
 
@@ -73,7 +93,7 @@ void treeProducer_simulation::Loop() {
 
 	int NBinsElectronEnergy = 40; double MinElectronEnergy = 0., MaxElectronEnergy = 1.2; TString TitleElectronEnergy = ";E_{e'} (GeV);";
 	int NBinsElectronPhi = 45; double MinElectronPhi = 0., MaxElectronPhi = 360.; TString TitleElectronPhi = ";#phi_{e'} (degrees);";
-	int NBinsElectronTheta = 15; double MinElectronTheta = 15., MaxElectronTheta = 53.; TString TitleElectronTheta = ";#theta_{e'} (degrees);";
+	int NBinsElectronTheta = 30; double MinElectronTheta = 15., MaxElectronTheta = 53.; TString TitleElectronTheta = ";#theta_{e'} (degrees);";
 	int NBinsElectronCosTheta = 40; double MinElectronCosTheta = -1, MaxElectronCosTheta = 1.; TString TitleElectronCosTheta = ";cos(#theta_{e'});";
 	int NBinsElectronMom = 40; double MinElectronMom = 1.7, MaxElectronMom = 4.; TString TitleElectronMom = ";P_{e'} (GeV/c);";
 
@@ -85,7 +105,7 @@ void treeProducer_simulation::Loop() {
 
 	int NBinsEp = 40; double MinEp = 0.9, MaxEp = 2.2; TString TitleEp = ";E_{p} (GeV);";
 	int NBinsProtonPhi = 45; double MinProtonPhi = 0., MaxProtonPhi = 360.; TString TitleProtonPhi = ";#phi_{p} (degrees);";
-	int NBinsProtonTheta = 30; double MinProtonTheta = 10., MaxProtonTheta = 120.; TString TitleProtonTheta = ";#theta_{p} (degrees);";
+	int NBinsProtonTheta = 55; double MinProtonTheta = 10., MaxProtonTheta = 120.; TString TitleProtonTheta = ";#theta_{p} (degrees);";
 	int NBinsProtonCosTheta = 40; double MinProtonCosTheta = -0.2, MaxProtonCosTheta = 1.; TString TitleProtonCosTheta = ";cos(#theta_{p});";
 
 	TString TitleProtonEnergyVsMissMomentum = ";P_{T} (GeV/c);E_{p} (GeV);";
@@ -143,20 +163,6 @@ void treeProducer_simulation::Loop() {
 
 	TH2D* QE_Q0_Q3_Plot = new TH2D("QE_Q0_Q3_Plot",";q_{3} [GeV/c];q_{0} [GeV]",200,0,2.,200,0.,2.);
 	TH2D* MEC_Q0_Q3_Plot = new TH2D("MEC_Q0_Q3_Plot",";q_{3} [GeV/c];q_{0} [GeV]",200,0,2.,200,0.,2.);
-
-	// -------------------------------------------------------------------------------------------------------------
-
-	int NBinsEv = 60; double MinEv = 0., MaxEv = 9.; TString EvTitle = ";E_{#nu} [GeV]"; 
-
-	TH1D* EvPlot = new TH1D("EvPlot",EvTitle,NBinsEv,MinEv,MaxEv);
-
-	TH1D* EvPlot_Interaction[NBreakDown];
-
-	for (int WhichInteraction = 0; WhichInteraction < NBreakDown; WhichInteraction++) {
-
-		EvPlot_Interaction[WhichInteraction] = new TH1D("EvPlot_Interaction_"+ToString(WhichInteraction),EvTitle,NBinsEv,MinEv,MaxEv);
-
-	}
 
 	// -------------------------------------------------------------------------------------------------------------
 
@@ -220,7 +226,9 @@ void treeProducer_simulation::Loop() {
 				TLorentzVector ProtonV4(pxf[i],pyf[i],pzf[i],Ef[i]);
 				double theta_pq = (qV4.Vect()).Angle(ProtonV4.Vect()) * 180./TMath::Pi();
 
-				if (TMath::Abs(theta_pq) < 8) {
+				// Opening theta_pq angle @ 2.442 GeV -> {2.5, 8, 16, 20} deg
+
+				if ( TMath::Abs( TMath::Abs(theta_pq) - 8.) < 1. || TMath::Abs( TMath::Abs(theta_pq) + 8.) < 1. ) {
 
 					ProtonTagging ++;
 					ProtonID.push_back(i);
@@ -252,11 +260,6 @@ void treeProducer_simulation::Loop() {
 		double Weight = 1.;
 
 		if (ProtonTagging == 0) { continue; }
-
-		// -----------------------------------------------------------------------------------------------
-
-		EvPlot->Fill(Ev,Weight);
-		EvPlot_Interaction[Interaction]->Fill(Ev,Weight);
 
 		// -----------------------------------------------------------------------------------------------
 
@@ -298,24 +301,25 @@ void treeProducer_simulation::Loop() {
 			if (ProtonTheta < 0) { ProtonTheta += 180.; }
 			if (ProtonTheta > 180) { ProtonTheta -= 180.; }
 
+//if ( TMath::Abs(ProtonTheta - 55) > 1.5 ) { continue; }
+
 			double ProtonCosTheta = ProtonV4.CosTheta();
 
 			double ProtonPhi = ProtonV4.Phi()*180./TMath::Pi();
 			if (ProtonPhi < 0) { ProtonPhi += 360; }
 			if (ProtonPhi > 360) { ProtonPhi -= 360; }
 
-			// Calorimetric Energy Reconstruction && Emiss
+			// -----------------------------------------------------------------------------------------------------------
 
-			double Ecal = El + ProtonE - ProtonMass + BE;
+			// Pmiss & Emiss
 
-			double Emiss = Ebeam - Ecal;
+			double Pmiss = ( (qV4-ProtonV4).Vect() ).Mag(); // GeV/c
 
-			TVector3 ProtonT(ProtonV4.X(),ProtonV4.Y(),0);
-			double ProtonTMag = ProtonT.Mag();
-			TVector3 ElectronT(ElectronV4.X(),ElectronV4.Y(),0);
-			double ElectronTMag = ElectronT.Mag();
-			TVector3 MissMomentumT = ProtonT + ElectronT;
-			double MissMomentumTMag = MissMomentumT.Mag();
+			if ( TMath::Abs(Pmiss - 0.145) > 0.015 ) { continue; }
+
+			// Emiss
+
+			double Emiss = 1000 * (nu - (ProtonE - ProtonMass) - BE ); // MeV
 
 			// -----------------------------------------------------------------------------------------------------------
 
@@ -324,18 +328,40 @@ void treeProducer_simulation::Loop() {
 			ProtonPhiPlot->Fill(ProtonPhi,Weight);
 			ProtonEnergyPlot->Fill(ProtonE,Weight);
 
-			EpVsMissMomentumPlot->Fill(MissMomentumTMag,ProtonE,Weight);
-			Q2VsMissMomentumPlot->Fill(MissMomentumTMag,Q2,Weight);
+			// -----------------------------------------------------------------------------------------------------------
 
-			MissMomentumPlot->Fill(MissMomentumTMag,Weight);
-			MissMomentumPlot_BreakDown[Interaction]->Fill(MissMomentumTMag,Weight);
+			EpVsMissMomentumPlot->Fill(Pmiss,ProtonE,Weight);
+			Q2VsMissMomentumPlot->Fill(Pmiss,Q2,Weight);
+
+			MissMomentumPlot->Fill(Pmiss,Weight);
+			MissMomentumPlot_BreakDown[Interaction]->Fill(Pmiss,Weight);
 
 			MissEnergyPlot->Fill(Emiss,Weight);
 			MissEnergyPlot_BreakDown[Interaction]->Fill(Emiss,Weight);
 
+			// -----------------------------------------------------------------------------------------------------------
+
 		}
 
 	} // end of the loop over events
+
+	// ----------------------------------------------------------------------------------------------------------------
+
+	double NEvents = 194200000;
+	double xsec = 2.9783150; // GENIE xsec in ubarn
+	double xsec_nb = 2.9783150 * 1000; // GENIE xsec in nbarn
+
+	double BinWidthOmega = 1000. * 0.03; // Energy transfer bin width in MeV, SkimCode: if ( TMath::Abs( (Ev-El) - 0.445 ) > 0.015  ) { continue; } 
+
+	// dOmega = cos(theta_rad) * (delta_theta_deg * pi / 180) * (2 pi)
+	double dOmegaElectron = TMath::Cos(23.36 * TMath::Pi() / 180.) * (3. * TMath::Pi() / 180.) * ( 2*TMath::Pi() );
+	double dOmegaProton = TMath::Cos(52.5 * TMath::Pi() / 180.) * (10. * TMath::Pi() / 180.) * ( 2*TMath::Pi() );
+
+	double SF = xsec_nb / (NEvents * BinWidthOmega * dOmegaElectron * dOmegaProton); 
+
+	ReweightPlots(MissEnergyPlot,SF); // ReweightPlots accounts for the bin width division in Emiss/Ep
+
+	MissEnergyPlot->GetYaxis()->SetTitle("#frac{d^{6}#sigma}{d#omega dE_{p} d#Omega_{e} d#Omega_{p}}  #frac{nb}{MeV^{2} sr^{2}}");
 
 	// ----------------------------------------------------------------------------------------------------------------
 	

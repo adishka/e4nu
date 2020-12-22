@@ -52,6 +52,25 @@ void ReweightPlots(TH1D* h) {
 
 // ----------------------------------------------------------------------------------------------------------------
 
+void ApplyOverallNormUnc(TH1D* h) {
+
+	double SystUnc = OverallNormUnc;
+
+	double NBins = h->GetNbinsX(); 
+				
+	for (int i = 1; i <= NBins; i++) { 
+
+		double error = h->GetBinError(i);
+		double content = h->GetBinContent(i);
+		double newerror = TMath::Sqrt( TMath::Power(error,2.) + TMath::Power(SystUnc*content,2.));
+		h->SetBinError(i,newerror);
+
+	}
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
 void ApplySystUnc(TH1D* h, TString Energy) {
 
 	double SystUnc = 0;
@@ -366,6 +385,13 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
+	else if (Sample == "G2018 NoRad") { 
+
+				SF = (G2018GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+					ConversionFactorCm2ToMicroBarn / (NoRadG2018NumberEvents[std::make_pair(Nucleus, E)] ) ) ;
+
+	}
+
 	else if (Sample == "G2018") { 
 
 		SF = ( G2018GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
@@ -669,20 +695,24 @@ void UniversalE4vFunction(TH1D* h, TString DataSetLabel, TString nucleus, TStrin
 	// 	apply acceptance systematics using sector-by -sector uncertainties
 
 	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplySectorSystUnc(h, E); }
+
+	//	10% overall normalization uncertainty
+
+	//if (string(DataSetLabel).find("Data") != std::string::npos) { ApplyOverallNormUnc(h); }
 	
 }
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 
-TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TString E, TString name, TString xBCut) {
+TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TString E, TString name, TString xBCut, TString Extension = "") {
 
 	std::vector<TH1D*> Plots; Plots.clear();
 
 	std::vector<TString> FSIModel; FSIModel.clear();
 
 //	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM");
-	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc");
-	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithoutFidAcc");
+	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension);
+	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithoutFidAcc"+Extension);
 
 ////	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM");
 //	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc");
@@ -716,17 +746,14 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 
 	for (int WhichBin = 0; WhichBin < NBins; WhichBin++) {
 
-		double AccCorr = Plots[0]->GetBinContent(WhichBin + 1) / Plots[1]->GetBinContent(WhichBin + 1);
+		double AccCorr = 0.;
 
-		double NewBinContent = 1.;
+		double NewBinContent = 0.;
 		double NewBinError = 0.;		
 
-		if (Plots[1]->GetBinContent(WhichBin + 1) <= 0) { 
+		if (Plots[1]->GetBinContent(WhichBin + 1) > 0) { 
 
-			NewBinContent = 0.;
-			NewBinError = 0.;
-
-		} else {
+			AccCorr = Plots[0]->GetBinContent(WhichBin + 1) / Plots[1]->GetBinContent(WhichBin + 1);
 
 			NewBinContent = h->GetBinContent(WhichBin + 1) / AccCorr;
 			NewBinError = h->GetBinError(WhichBin + 1) / AccCorr;

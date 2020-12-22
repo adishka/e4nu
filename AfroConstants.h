@@ -59,6 +59,10 @@
 	const double SectorSystUnc2GeV = 0.06; // 6% syst uncertainty at 2.261 GeV
 	const double SectorSystUnc4GeV = 0.06; // 6% syst uncertainty at 4.461 GeV
 
+	// 10 % overall normalization uncertainty 
+
+	const double OverallNormUnc = 0.1;
+
 	// Larry/Axel's suggestion for scaling down the last 2 bins by EnhaceTail
 
 	const double EnhaceTail = 1./1.;
@@ -108,8 +112,11 @@
 		{ "Pinned_Data_Final_SixSectors", "Pinned Data" },
 
 		{ "SuSav2_RadCorr_LFGM", "SuSav2" },
+		{ "SuSav2_RadCorr_LFGM_XSec", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithFidAcc", "SuSav2" },
+		{ "SuSav2_RadCorr_LFGM_Truth_WithFidAcc_XSec", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc", "SuSav2" },
+		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_XSec", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth0pi_WithoutFidAcc", "SuSav2" },
@@ -128,7 +135,10 @@
 		{ "hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc_Offset", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth0pi_WithoutFidAcc", "G2018" },
-		{ "hA2018_Final_RadCorr_LFGM_SixSectors", "G2018" }
+		{ "hA2018_Final_RadCorr_LFGM_SixSectors", "G2018" },
+
+		{ "hA2018_Final_NoRadCorr_LFGM", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Playground", "G2018 NoRad" }
 	};
 
 	// Mass Numbers
@@ -340,7 +350,7 @@
 		{ std::make_pair("56Fe", "4_461"), 3.76765e+08 } // Q2 > 0.8
 	};
 
-	// G2018 GENIE number events 
+	// Rad G2018 GENIE number events 
 
 	static std::map<std::pair<TString,TString>,double> G2018NumberEvents =
 	{
@@ -352,6 +362,21 @@
 		{ std::make_pair("12C", "4_461"), 150100000 }, // Q2 > 0.8
 		{ std::make_pair("56Fe", "2_261"), 50000000 }, // Q2 > 0.4
 		{ std::make_pair("56Fe", "4_461"), 150100000 } // Q2 > 0.8
+
+	};
+
+	// No Rad G2018 GENIE number events 
+
+	static std::map<std::pair<TString,TString>,double> NoRadG2018NumberEvents =
+	{
+//		{ std::make_pair("1H", "1_161"), 0 }, // Q2 > 0.1
+		{ std::make_pair("4He", "2_261"), 69000000 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"), 70400000 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"), 43900000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"), 53200000 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"), 67900000 }, // Q2 > 0.8
+		{ std::make_pair("56Fe", "2_261"), 69600000 }, // Q2 > 0.4
+		{ std::make_pair("56Fe", "4_461"), 81100000 } // Q2 > 0.8
 
 	};
 

@@ -39,24 +39,28 @@ void SkimFile(){
 	int nevents = (int) oldtree->GetEntries();
 	int nbytes = 0;
 
+	int Counter = 0;
+
 	for(int ievent=0; ievent<nevents; ievent++) {
 
 		nbytes += oldtree->GetEntry(ievent);
 
 		if (ievent%1000 == 0) { std::cout << ievent/1000 << " k " << std::setprecision(3) << double(ievent)/nevents*100. << " %"<< std::endl; }
 
-//		if ( TMath::Abs( TMath::ACos(cthl)*180./TMath::Pi() - 37.17 ) > 1.5  ) { continue; }
-//		if ( Q2 > 0.85  || Q2 < 0.75 ) { continue; }
-//		if ( nfp == 0 ) { continue; }
-//		if ( nfpi0 != 0 ) { continue; }
-//		if ( nfpip != 0 ) { continue; }
-//		if ( nfpip != 0 ) { continue; }
+		if ( TMath::Abs( TMath::ACos(cthl)*180./TMath::Pi() - 23.36 ) > 1.5  ) { continue; }
+		if ( Q2 > 0.85  || Q2 < 0.75 ) { continue; }
+		if ( nfp == 0 ) { continue; }
+		if ( nfpi0 != 0 ) { continue; }
+		if ( nfpip != 0 ) { continue; }
+		if ( nfpip != 0 ) { continue; }
 		if ( TMath::Abs( (Ev-El) - 0.445 ) > 0.015  ) { continue; }
 
 		newtree->Fill();
+		Counter++;
 
 	}
 
+	std::cout << "Events passing the selection = " << Counter << std::endl;
 
 	newtree->Write();
 	newfile->Close();
