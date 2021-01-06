@@ -59,9 +59,15 @@
 	const double SectorSystUnc2GeV = 0.06; // 6% syst uncertainty at 2.261 GeV
 	const double SectorSystUnc4GeV = 0.06; // 6% syst uncertainty at 4.461 GeV
 
-	// 10 % overall normalization uncertainty 
+	// 20 % overall normalization uncertainty 
 
-	const double OverallNormUnc = 0.1;
+//	const double OverallNormUnc = 0.2;
+	const double OverallNormUnc = 0.;
+
+	// 20 % acceptance correction uncertainty 
+
+//	const double AcceptanceCorrUnc = 0.2;
+	const double AcceptanceCorrUnc = 0.;
 
 	// Larry/Axel's suggestion for scaling down the last 2 bins by EnhaceTail
 
@@ -116,15 +122,26 @@
 		{ "SuSav2_RadCorr_LFGM_Truth_WithFidAcc", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithFidAcc_XSec", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc", "SuSav2" },
+		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_Offset", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_XSec", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth0pi_WithoutFidAcc", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_SixSectors", "SuSav2" },
+		{ "SuSav2_RadCorr_LFGM_Filtered", "SuSav2" },
+		{ "SuSav2_RadCorr_LFGM_Truth_WithFidAcc_Filtered", "SuSav2" },
+		{ "SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_Filtered", "SuSav2" },
 
 		{ "SuSav2_NoRadCorr_LFGM", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_XSec", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_XSec", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc_XSec", "SuSav2 NoRad" },
 
 		{ "hA2018_Final_RadCorr_LFGM", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Offset", "G2018" },
@@ -138,7 +155,15 @@
 		{ "hA2018_Final_RadCorr_LFGM_SixSectors", "G2018" },
 
 		{ "hA2018_Final_NoRadCorr_LFGM", "G2018 NoRad" },
-		{ "hA2018_Final_NoRadCorr_LFGM_Playground", "G2018 NoRad" }
+		{ "hA2018_Final_NoRadCorr_LFGM_Playground", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_XSec", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc_XSec", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec", "G2018 NoRad" },
+
 	};
 
 	// Mass Numbers

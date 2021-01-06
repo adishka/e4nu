@@ -105,9 +105,13 @@ void OverlayXSec() {
 
 	// SuSav2 GENIE Out-Of-The-Box @ E = 1.161 GEV & theta = 37.5 deg
 
-	TFile* GenieBoxFile = TFile::Open("GenieOutOfTheBox_12C_DoubleDiff_E_1_161GeV_theta_37_5.root");
+//	TFile* GenieBoxFile = TFile::Open("GenieOutOfTheBox_12C_DoubleDiff_E_1_161GeV_theta_37_5.root");
+//	TH1D* GenieBoxPlot = (TH1D*)GenieBoxFile->Get("v_distribution");
 
-	TH1D* GenieBoxPlot = (TH1D*)GenieBoxFile->Get("v_distribution");
+	TFile* GenieBoxFile = TFile::Open("GenieOutOfTheBox_12C_DoubleDiff_E_1_161GeV_theta_37_5_FineBin.root");
+	TH1D* GenieBoxPlot = (TH1D*)GenieBoxFile->Get("h");
+	GenieBoxPlot->Rebin();
+	GenieBoxPlot->Scale(0.5);
 
 	GenieBoxPlot->SetLineColor(kGreen+2);
 	GenieBoxPlot->SetLineWidth(2);

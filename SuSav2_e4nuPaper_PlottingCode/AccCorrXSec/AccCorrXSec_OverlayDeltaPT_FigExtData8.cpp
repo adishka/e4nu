@@ -50,8 +50,8 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 	// ------------------------------------------------------------------------
 
 	FSIModel.push_back("Pinned_Data_Final");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc");
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc");
 
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors");
@@ -108,13 +108,13 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 
 	 			// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
 			
-				double MaxHeight = 0.85;
+				double MaxHeight = 0.95;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 1.4; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 2.3; }
 
 					// ---------------------------------------------------------------------------------------------------------------
 
@@ -163,7 +163,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelOffset(0.013);
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(1.2*TextSize);
 						Plots[WhichFSIModel]->GetYaxis()->SetTitle("");
-						Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(4);
+						Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(5);
 
 						// --------------------------------------------------------------------------------------
 
@@ -177,14 +177,14 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 						//                 apply acceptance systematics using sector-by -sector uncertainties
 
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E,NameOfPlots[WhichPlot]);
-						if (Energy[WhichEnergy] == 4.461 ) { Plots[WhichFSIModel]->Scale(4.); }
+						if (Energy[WhichEnergy] == 4.461 ) { Plots[WhichFSIModel]->Scale(5.); }
 
 						// ----------------------------------------------------------------------------------
 
 						// Genie Break Down
 
 						if (
-							FSIModelsToLabels[FSIModel[WhichFSIModel]] == "SuSav2"
+							FSIModelsToLabels[FSIModel[WhichFSIModel]] == "SuSav2" || FSIModelsToLabels[FSIModel[WhichFSIModel]] == "SuSav2 NoRad"
 						) {
 
 							if (Energy[WhichEnergy] == 1.161 && nucleus[WhichNucleus] == "12C") {
@@ -203,7 +203,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 								//BreakDownPlots[j-1]->SetLineWidth(LineWidth);
 
 								UniversalE4vFunction(BreakDownPlots[j-1],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E,NameOfPlots[WhichPlot]);
-								if (Energy[WhichEnergy] == 4.461 ) { BreakDownPlots[j-1]->Scale(4.); }
+								if (Energy[WhichEnergy] == 4.461 ) { BreakDownPlots[j-1]->Scale(5.); }
 
 								//-----------------------------------------------------------------------------------------------
 
@@ -330,7 +330,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 		TLatex latex4GeV;
 		latex4GeV.SetTextFont(FontStyle);
 		latex4GeV.SetTextSize(6*TextSize);
-		latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV (x4)");
+		latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV (x5)");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -369,7 +369,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 		// Extra pad for the Y-axis units carbon
 
 		PlotCanvas->cd();
-		TPad* padTitle = new TPad("padTitle","padTitle",0.052,0.68,0.107,1., 21); 
+		TPad* padTitle = new TPad("padTitle","padTitle",0.05,0.68,0.105,1., 21); 
 		padTitle->SetFillColor(kWhite); 
 		padTitle->Draw();
 		padTitle->cd();
@@ -379,7 +379,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 		latexYTitle.SetTextSize(6*TextSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
-		latexYTitle.DrawLatexNDC(0.6,0.1,"#frac{d#sigma}{dP_{T}} [#frac{#mub}{GeV/c}]");
+		latexYTitle.DrawLatexNDC(0.55,0.1,"#frac{d#sigma}{dP_{T}} [#frac{#mub}{GeV/c}]");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 

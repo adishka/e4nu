@@ -1,4 +1,5 @@
 #include "TMath.h"
+#include <TProfile.h>
 #include <TH1D.h>
 #include <TH2D.h>
 #include <TGaxis.h>
@@ -44,6 +45,25 @@ void ReweightPlots(TH1D* h) {
 		double newcontent = content / width;
 		double newerror = error / width;				
 		h->SetBinContent(i,newcontent);
+		h->SetBinError(i,newerror);
+
+	}
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
+void ApplyAcceptanceCorrUnc(TH1D* h) {
+
+	double SystUnc = AcceptanceCorrUnc;
+
+	double NBins = h->GetNbinsX(); 
+				
+	for (int i = 1; i <= NBins; i++) { 
+
+		double error = h->GetBinError(i);
+		double content = h->GetBinContent(i);
+		double newerror = TMath::Sqrt( TMath::Power(error,2.) + TMath::Power(SystUnc*content,2.));
 		h->SetBinError(i,newerror);
 
 	}
@@ -518,6 +538,50 @@ void AbsoluteXSec2DScaling(TH2D* h, TString Sample, TString Nucleus, TString E) 
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 
+void ApplyRebinningTProfile(TProfile* h, TString Energy, TString PlotVar) {
+
+	// -----------------------------------------------------------------------------------------------------------------------------
+
+	if (string(PlotVar).find("Omega") != std::string::npos) {
+
+		if (Energy == "1_161") { for (int i = 0; i < 5; i++) { h->Rebin(); } }
+		if (Energy == "2_261") { for (int i = 0; i < 5; i++) { h->Rebin(); } }
+		if (Energy == "4.461") { for (int i = 0; i < 6; i++) { h->Rebin(); } }
+
+	} else if (string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+
+	} else if (string(PlotVar).find("EQEReso") != std::string::npos || string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+
+	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos || string(PlotVar).find("Erec") != std::string::npos) {
+
+	} else if (string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("E_tot") != std::string::npos) {
+
+	} else if (string(PlotVar).find("PT") != std::string::npos || string(PlotVar).find("MissMomentum") != std::string::npos) {
+
+		for (int i = 0; i < 2; i++) { h->Rebin();} 
+
+	} else if (string(PlotVar).find("DeltaAlphaT") != std::string::npos ) {
+
+		for (int i = 0; i < 1; i++) { h->Rebin();} 
+
+	} else if (string(PlotVar).find("DeltaPhiT") != std::string::npos ) {
+
+		for (int i = 0; i < 1; i++) { h->Rebin();} 
+
+	} else if (string(PlotVar).find("Wvar") != std::string::npos || string(PlotVar).find("W_") != std::string::npos ) {
+
+		for (int i = 0; i < 1; i++) { h->Rebin();} 
+
+	}
+
+	else { cout << "Aaaaaaaaaaaah ! How do I rebin this plot in ApplyRebinningTProfile ?" << endl; }
+
+	return;	
+
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
 void ApplyRebinning(TH1D* h, TString Energy, TString PlotVar) {
 
 	// -----------------------------------------------------------------------------------------------------------------------------
@@ -696,9 +760,13 @@ void UniversalE4vFunction(TH1D* h, TString DataSetLabel, TString nucleus, TStrin
 
 	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplySectorSystUnc(h, E); }
 
-	//	10% overall normalization uncertainty
+	//	overall normalization uncertainty
 
-	//if (string(DataSetLabel).find("Data") != std::string::npos) { ApplyOverallNormUnc(h); }
+	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplyOverallNormUnc(h); }
+
+	//	acceptance correction uncertainty
+
+	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplyAcceptanceCorrUnc(h); }
 	
 }
 
@@ -706,20 +774,20 @@ void UniversalE4vFunction(TH1D* h, TString DataSetLabel, TString nucleus, TStrin
 
 TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TString E, TString name, TString xBCut, TString Extension = "") {
 
+	TH1D::SetDefaultSumw2();
+
 	std::vector<TH1D*> Plots; Plots.clear();
 
 	std::vector<TString> FSIModel; FSIModel.clear();
 
-//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM");
+//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM"+Extension);
+//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension);
+//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithoutFidAcc"+Extension);
+
+//	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM"+Extension);
 	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension);
-	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithoutFidAcc"+Extension);
+	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension);
 
-////	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM");
-//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc");
-//	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM_Truth_WithoutFidAcc");
-
-//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_XSec");
-//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithoutFidAcc_XSec");
 	int NFSIModels = FSIModel.size();
 
 	for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
@@ -741,6 +809,8 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 	// --------------------------------------------------------------------------------------	
 
 	TH1D* OverallClone = (TH1D*)h->Clone();	
+	TH1D* Correction = (TH1D*)Plots[1]->Clone();	
+	Correction->Divide(Plots[0]);
 
 	int NBins = OverallClone->GetXaxis()->GetNbins();
 
@@ -764,6 +834,12 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 		OverallClone->SetBinError(WhichBin + 1, NewBinError);
 
 	}
+
+	// --------------------------------------------------------------------------------------	
+
+//	TString CanvasName = "AccCorrCanvas";
+//	TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768);
+//	Correction->Draw("e hist");
 
 	// --------------------------------------------------------------------------------------	
 

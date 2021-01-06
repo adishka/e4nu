@@ -57,6 +57,11 @@ void OverlayPlots() {
 	FSIModel.push_back("SuSav2"); FSILabel.push_back("SuSav2");
 	FSIModel.push_back("hA2018_Final"); FSILabel.push_back("G2018");
 
+//	TString Var = "epRecoEnergy_slice_0";
+//	TString Var = "MissMomentum";
+//	TString Var = "DeltaAlphaT_Int_0";
+	TString Var = "DeltaPhiT_Int_0";
+
 //	NameOfPlots.push_back("Reco_eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("TrueWithFid_eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("True_eRecoEnergy_slice_0");
@@ -65,11 +70,12 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("FidCorrection_eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("AccCorrection_eRecoEnergy_slice_0");
 
-//	NameOfPlots.push_back("Reco_epRecoEnergy_slice_0");
-//	NameOfPlots.push_back("TrueWithFid_epRecoEnergy_slice_0");
-//	NameOfPlots.push_back("True_epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("Reco_"+Var);
+	NameOfPlots.push_back("TrueWithFid_"+Var);
+	NameOfPlots.push_back("True_"+Var);
 
-	NameOfPlots.push_back("AccCorrection_epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("AccCorrection_"+Var);
+	NameOfPlots.push_back("InverseAccCorrection_"+Var);
 
 	// ------------------------------------------------------------------------
 
@@ -99,9 +105,8 @@ void OverlayPlots() {
 
 				for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
-					TCanvas* PlotCanvas = new TCanvas(nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut],
-									 nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut],
-									 205,34,1024,768);
+					TString PlotName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
+					TCanvas* PlotCanvas = new TCanvas(PlotName,PlotName,205,34,1024,768);
 				
 					PlotCanvas->SetLeftMargin(0.15);
 					PlotCanvas->SetBottomMargin(0.17);	
@@ -158,9 +163,15 @@ void OverlayPlots() {
 					average->Add(Plots[1]);
 					average->Scale(1./2.);
 					average->SetLineColor(kBlue);
-					average->Draw("e same");
-					TLegendEntry* l2 = leg->AddEntry(average,"Average", "");
-					l2->SetTextColor(kBlue);
+
+					if (NameOfPlots[WhichPlot] == "AccCorrection_"+Var || NameOfPlots[WhichPlot] == "InverseAccCorrection_"+Var) { 
+
+						average->Draw("e same"); 
+
+						TLegendEntry* l2 = leg->AddEntry(average,"Average", "");
+						l2->SetTextColor(kBlue);
+
+					}
 
 					leg->SetBorderSize(0);
 					leg->SetTextFont(FontStyle);

@@ -75,6 +75,7 @@ void treeProducer_simulation::Loop() {
 
 	// Ranges & Binning
 
+	int NBinsThetaPQ = 60; double MinThetaPQ = 0., MaxThetaPQ = 60; TString TitleThetaPQ = ";#theta_{pq} [deg];";
 	int NBinsQ2 = 56; double MinQ2 = 0.1, MaxQ2 = 1.5; TString TitleQ2 = ";Q^{2} [GeV^{2}/c^{2}];";
 	int NBinsxB = 25; double MinxB = 0.7, MaxxB = 1.3; TString TitlexB = ";x_{B};";
 	int NBinsnu = 50; double Minnu = 0., Maxnu = 1.2; TString Titlenu = ";Energy Transfer [GeV];";
@@ -105,7 +106,7 @@ void treeProducer_simulation::Loop() {
 
 	int NBinsEp = 40; double MinEp = 0.9, MaxEp = 2.2; TString TitleEp = ";E_{p} (GeV);";
 	int NBinsProtonPhi = 45; double MinProtonPhi = 0., MaxProtonPhi = 360.; TString TitleProtonPhi = ";#phi_{p} (degrees);";
-	int NBinsProtonTheta = 55; double MinProtonTheta = 10., MaxProtonTheta = 120.; TString TitleProtonTheta = ";#theta_{p} (degrees);";
+	int NBinsProtonTheta = 110; double MinProtonTheta = 10., MaxProtonTheta = 120.; TString TitleProtonTheta = ";#theta_{p} (degrees);";
 	int NBinsProtonCosTheta = 40; double MinProtonCosTheta = -0.2, MaxProtonCosTheta = 1.; TString TitleProtonCosTheta = ";cos(#theta_{p});";
 
 	TString TitleProtonEnergyVsMissMomentum = ";P_{T} (GeV/c);E_{p} (GeV);";
@@ -113,6 +114,7 @@ void treeProducer_simulation::Loop() {
 
 	// -------------------------------------------------------------------------------
 
+	TH1D* ThetaPQPlot = new TH1D("ThetaPQPlot",TitleThetaPQ,NBinsThetaPQ,MinThetaPQ,MaxThetaPQ);
 	TH1D* Q2Plot = new TH1D("Q2Plot",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
 	TH1D* xBPlot = new TH1D("xBPlot",TitlexB,NBinsxB,MinxB,MaxxB);
 	TH1D* nuPlot = new TH1D("nuPlot",Titlenu,NBinsnu,Minnu,Maxnu);
@@ -225,10 +227,12 @@ void treeProducer_simulation::Loop() {
 
 				TLorentzVector ProtonV4(pxf[i],pyf[i],pzf[i],Ef[i]);
 				double theta_pq = (qV4.Vect()).Angle(ProtonV4.Vect()) * 180./TMath::Pi();
+				ThetaPQPlot->Fill(theta_pq);
 
-				// Opening theta_pq angle @ 2.442 GeV -> {2.5, 8, 16, 20} deg
+				// Opening theta_pq angle @ 2.442 GeV -> {0,2.5, 8, 16, 20} deg
+				double angle = 8;
 
-				if ( TMath::Abs( TMath::Abs(theta_pq) - 8.) < 1. || TMath::Abs( TMath::Abs(theta_pq) + 8.) < 1. ) {
+				if ( TMath::Abs( TMath::Abs(theta_pq) - angle) < 1. || TMath::Abs( TMath::Abs(theta_pq) + angle) < 1. ) {
 
 					ProtonTagging ++;
 					ProtonID.push_back(i);
@@ -349,13 +353,19 @@ void treeProducer_simulation::Loop() {
 
 	double NEvents = 194200000;
 	double xsec = 2.9783150; // GENIE xsec in ubarn
-	double xsec_nb = 2.9783150 * 1000; // GENIE xsec in nbarn
+	double xsec_nb = xsec * 1000; // GENIE xsec in nbarn
 
 	double BinWidthOmega = 1000. * 0.03; // Energy transfer bin width in MeV, SkimCode: if ( TMath::Abs( (Ev-El) - 0.445 ) > 0.015  ) { continue; } 
 
 	// dOmega = cos(theta_rad) * (delta_theta_deg * pi / 180) * (2 pi)
-	double dOmegaElectron = TMath::Cos(23.36 * TMath::Pi() / 180.) * (3. * TMath::Pi() / 180.) * ( 2*TMath::Pi() );
-	double dOmegaProton = TMath::Cos(52.5 * TMath::Pi() / 180.) * (10. * TMath::Pi() / 180.) * ( 2*TMath::Pi() );
+	// theta_e' = 23.36 deg
+	// central theta_p = 52.5 deg
+
+//	double dOmegaElectron = TMath::Cos(23.36 * TMath::Pi() / 180.) * (3. * TMath::Pi() / 180.) * ( 2*TMath::Pi() );
+//	double dOmegaProton = TMath::Cos(52.5 * TMath::Pi() / 180.) * (10. * TMath::Pi() / 180.) * ( 2*TMath::Pi() );
+
+	double dOmegaElectron = (TMath::Cos(21.86 * TMath::Pi() / 180.) - TMath::Cos(24.86 * TMath::Pi() / 180.)) * ( 2*TMath::Pi() );
+	double dOmegaProton = ( TMath::Cos(47.5 * TMath::Pi() / 180.) - TMath::Cos(57.5 * TMath::Pi() / 180.) ) * ( 2*TMath::Pi() );
 
 	double SF = xsec_nb / (NEvents * BinWidthOmega * dOmegaElectron * dOmegaProton); 
 

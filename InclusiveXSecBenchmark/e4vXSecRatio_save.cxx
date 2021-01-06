@@ -94,19 +94,16 @@ void e4vXSecRatio() {
 	Datae4vPlot->GetYaxis()->SetTitleSize(TextSize);
 	Datae4vPlot->GetYaxis()->SetTitleOffset(1.1);
 
-	Datae4vPlot->GetXaxis()->SetRangeUser(0.07,0.73);
+	Datae4vPlot->GetXaxis()->SetRangeUser(0.0,0.85);
 	Datae4vPlot->GetYaxis()->SetRangeUser(0,4500); // Y axis in nb / sr / GeV
 
-	Datae4vPlot->SetLineColor(kBlue-5);
-	Datae4vPlot->SetMarkerColor(kBlue-5);
-//	Datae4vPlot->SetMarkerStyle(20);
-	Datae4vPlot->SetMarkerStyle(4);
-	Datae4vPlot->SetMarkerSize(2.);
-	Datae4vPlot->SetLineWidth(2);
+	Datae4vPlot->SetLineColor(kGreen+2);
+	Datae4vPlot->SetMarkerColor(kGreen+2);
+	Datae4vPlot->SetMarkerStyle(20);
 
 	Datae4vPlot->Scale(1./0.0067); // sr: solid angle for 24 < phi < 36 && 36 < theta < 39 
 	Datae4vPlot->Scale(1000); // Conversion from ub to nb
-	Datae4vPlot->Draw("e1x0 same"); // Include
+	Datae4vPlot->Draw("e1x0 same");
 
 //	// ---------------------------------------------------------------------------------------------
 
@@ -132,35 +129,28 @@ void e4vXSecRatio() {
 	TFile* GenieBoxFileFineBin = TFile::Open("GenieOutOfTheBox_12C_DoubleDiff_E_1_161GeV_theta_37_5_FineBin.root");
 
 	TH1D* GenieBoxPlotFineBin = (TH1D*)GenieBoxFileFineBin->Get("h");
+//	GenieBoxPlotFineBin->Rebin();
+//	GenieBoxPlotFineBin->Scale(0.5);
 
-	GenieBoxPlotFineBin->SetLineColor(kBlue-5);
+	GenieBoxPlotFineBin->SetLineColor(kGreen+2);
 	GenieBoxPlotFineBin->SetLineWidth(2);
 
-//	GenieBoxPlotFineBin->Rebin(); // Include
-//	GenieBoxPlotFineBin->Scale(0.5); // Include
-//	GenieBoxPlotFineBin->Draw("c hist same"); // Include
-
-	GenieBoxPlotFineBin->Draw("e hist same"); // Include
+//	GenieBoxPlotFineBin->Draw("c hist same");
+	GenieBoxPlotFineBin->Draw("e hist same");
 
 	TF1 *myfunc = new TF1("myfunc","pol10",0.05,0.75);
-// 10th order polynomial using the finely binned plot // Include
-	GenieBoxPlotFineBin->Fit(myfunc); // Include
-	myfunc->Draw("same"); // Include
+	GenieBoxPlotFineBin->Fit(myfunc);
+	myfunc->Draw("same");
 
 	// ---------------------------------------------------------------------------------------------
 
-	// Corrected e4v data to truth (corrected for radiation effects)
+	// Corrected e4v data to truth (no radiation or acceptance effects)
 
 	TH1D* AccCorrDatae4vPlot = AcceptanceCorrection(Datae4vPlot,"SuSav2","12C","1_161",PlotName,"NoxBCut","_XSec");
-	PlotCanvas->cd();
-	AccCorrDatae4vPlot->SetLineColor(kYellow+1);
+	AccCorrDatae4vPlot->SetLineColor(kMagenta);
 	AccCorrDatae4vPlot->SetLineWidth(2);
-	AccCorrDatae4vPlot->SetMarkerColor(kYellow+1);
-	AccCorrDatae4vPlot->SetMarkerStyle(20);
-
-// Cross section corrected for radiation effects
-	AccCorrDatae4vPlot->Draw("e1x0 same"); // Include
-//	AccCorrDatae4vPlot->Draw("hist p same"); // Include
+	AccCorrDatae4vPlot->SetMarkerColor(kMagenta);
+	AccCorrDatae4vPlot->Draw("e1x0 same");
 
 	// ---------------------------------------------------------------------------------------------
 
@@ -182,66 +172,18 @@ void e4vXSecRatio() {
 //	GENIEFineBin->Draw("c hist same");
 
 	// ---------------------------------------------------------------------------------------------
-	// ---------------------------------------------------------------------------------------------
 
-	// Data Average vs bin center
+	// Average vs bin center
 
-	TFile* TProfileFileData = TFile::Open("/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/1_161/Pinned_Data_Final_XSec/NoxBCut/12C_1_161_Pinned_Data_Final_XSec_Plots_FSI_em.root");
-	TProfile* profData = (TProfile*)(TProfileFileData->Get("TProf_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0")); 
+	TFile* TProfileFile = TFile::Open("/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/1_161/SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec/NoxBCut/12C_1_161_SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec_Plots_FSI_em.root");
+	TProfile* prof = (TProfile*)(TProfileFile->Get("TProf_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0")); 
 
-	ApplyRebinningTProfile(profData,"1_161",PlotName); // make sure that we have the same binning as in data // Include
+	ApplyRebinningTProfile(prof,"1_161",PlotName); // make sure that we have th same binning as in data
+	prof->Draw();
+	TF1* f = new TF1("f","x",0,0.75);
+	f->SetLineColor(kRed);
+	f->Draw("same");
 
-	// ---------------------------------------------------------------------------------------------
-
-	TString CanvasNameProfData = "ProfCanvasData";
-	TCanvas* PlotCanvasProfData = new TCanvas(CanvasNameProfData,CanvasNameProfData,205,34,1024,768);
-
-	profData->GetXaxis()->SetRangeUser(0.05,0.75);
-	profData->GetXaxis()->SetTitle("Energy Transfer [GeV] Bin Center");
-	profData->GetYaxis()->SetRangeUser(0.05,0.75);
-	profData->GetYaxis()->SetTitle("Energy Transfer [GeV] Average");
-
-	profData->SetMarkerStyle(20);
-	profData->SetMarkerSize(2.);
-	profData->SetMarkerColor(kBlack);
-	profData->Draw("hist p");
-	TF1* fData = new TF1("fData","x",0,0.75);
-	fData->SetLineColor(kRed);
-	fData->Draw("same");
-
-	PlotCanvas->cd();
-
-	// ---------------------------------------------------------------------------------------------
-	// ---------------------------------------------------------------------------------------------
-
-	// SuSav2 NoRad Average vs bin center
-
-	TFile* TProfileFileSuSav2NoRad = TFile::Open("/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/1_161/SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec/NoxBCut/12C_1_161_SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec_Plots_FSI_em.root");
-	TProfile* profSuSav2NoRad = (TProfile*)(TProfileFileSuSav2NoRad->Get("TProf_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0")); 
-
-	ApplyRebinningTProfile(profSuSav2NoRad,"1_161",PlotName); // make sure that we have the same binning as in data // Include
-
-	// ---------------------------------------------------------------------------------------------
-
-	TString CanvasNameProfSuSav2NoRad = "ProfCanvasSuSav2NoRad";
-	TCanvas* PlotCanvasProfSuSav2NoRad = new TCanvas(CanvasNameProfSuSav2NoRad,CanvasNameProfSuSav2NoRad,205,34,1024,768);
-
-	profSuSav2NoRad->GetXaxis()->SetRangeUser(0.05,0.75);
-	profSuSav2NoRad->GetXaxis()->SetTitle("Energy Transfer [GeV] Bin Center");
-	profSuSav2NoRad->GetYaxis()->SetRangeUser(0.05,0.75);
-	profSuSav2NoRad->GetYaxis()->SetTitle("Energy Transfer [GeV] Average");
-
-	profSuSav2NoRad->SetMarkerStyle(20);
-	profSuSav2NoRad->SetMarkerSize(2.);
-	profSuSav2NoRad->SetMarkerColor(kBlack);
-	profSuSav2NoRad->Draw("hist p");
-	TF1* fSuSav2NoRad = new TF1("fSuSav2NoRad","x",0,0.75);
-	fSuSav2NoRad->SetLineColor(kRed);
-	fSuSav2NoRad->Draw("same");
-
-	PlotCanvas->cd();
-
-	// ---------------------------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------------------------
 
 	// Bin center corrected xsec
@@ -255,8 +197,8 @@ void e4vXSecRatio() {
 //		double BinCenter = prof->GetBinCenter(WhichBin + 1);
 //		double BinAverage = prof->GetBinContent(WhichBin + 1);
 
-		double BinCenter = myfunc->Eval(profSuSav2NoRad->GetBinCenter(WhichBin + 1));
-		double BinAverage = myfunc->Eval(profSuSav2NoRad->GetBinContent(WhichBin + 1));
+		double BinCenter = myfunc->Eval(prof->GetBinCenter(WhichBin + 1));
+		double BinAverage = myfunc->Eval(prof->GetBinContent(WhichBin + 1));
 
 		double CorrFactor = BinCenter / BinAverage;
 
@@ -273,25 +215,12 @@ void e4vXSecRatio() {
 
 	}
 
-	BinCentCorrDatae4vPlot->SetLineColor(kOrange+7);
+	BinCentCorrDatae4vPlot->SetLineColor(kBlue);
 	BinCentCorrDatae4vPlot->SetLineWidth(2);
-	BinCentCorrDatae4vPlot->SetMarkerColor(kOrange+7);
+	BinCentCorrDatae4vPlot->SetMarkerColor(kBlue);
+	BinCentCorrDatae4vPlot->Draw("e1x0 same");
 
-// Final cross section, corrected for radiation & bin centering effects // Include
-//	BinCentCorrDatae4vPlot->Draw("e1x0 same");
-	BinCentCorrDatae4vPlot->Draw("hist p same");
-
-	// ---------------------------------------------------------------------------------------------
-
-	TString CanvasNameBinCenterCorrection = "BinCenterCorrectionCanvas";
-	TCanvas* PlotCanvasBinCenterCorrection = new TCanvas(CanvasNameBinCenterCorrection,CanvasNameBinCenterCorrection,205,34,1024,768);
-
-	// Correction due to bin centering
-
-	BinCenterCorrection->GetXaxis()->SetRangeUser(0.05,0.75);	
-	BinCenterCorrection->Draw("e1x0");
-
-	PlotCanvas->cd();	
+BinCenterCorrection->Draw("e1x0");
 
 	// ---------------------------------------------------------------------------------------------
 //	// ---------------------------------------------------------------------------------------------
@@ -303,10 +232,10 @@ void e4vXSecRatio() {
 ////	lGenie->SetTextColor(kBlue);
 
 //	TLegendEntry* lGenieBox = leg->AddEntry(GenieBoxPlot,"GENIE E_{e} = 1.161 GeV", "l");
-//	lGenieBox->SetTextColor(kBlue-5);
+//	lGenieBox->SetTextColor(kGreen+2);
 
 //	TLegendEntry* lDatae4v = leg->AddEntry(Datae4vPlot,"e4v CLAS Data E_{e} = 1.161 GeV, 24^{o} < #phi_{e'} < 36^{o}", "lep");
-//	lDatae4v->SetTextColor(kBlue-5);
+//	lDatae4v->SetTextColor(kGreen+2);
 
 //	leg->SetBorderSize(0);
 //	leg->SetTextFont(FontStyle);
@@ -319,7 +248,7 @@ void e4vXSecRatio() {
 	leg->SetNColumns(3);
 
 	TLegendEntry* lDatae4v = leg->AddEntry(Datae4vPlot,"1.161 GeV", "");
-	lDatae4v->SetTextColor(kBlue-5);
+	lDatae4v->SetTextColor(kGreen+2);
 
 	leg->SetBorderSize(0);
 	leg->SetTextFont(FontStyle);
@@ -331,7 +260,7 @@ void e4vXSecRatio() {
 	TLatex* Latex1161 = new TLatex();
 	Latex1161->SetTextFont(FontStyle);
 	Latex1161->SetTextSize(TextSize-0.01);
-	Latex1161->SetTextColor(kBlue-5);
+	Latex1161->SetTextColor(kGreen+2);
 	Latex1161->SetTextAlign(12);  // centered
 	Latex1161->DrawLatexNDC(0.7,0.35,"#splitline{e4#nu 36^{o}-39^{o}}{1.161 GeV}");
 
@@ -432,10 +361,7 @@ void e4vXSecRatio() {
 
 //	CorrDataClone->GetYaxis()->SetRangeUser(0.75,1.45);
 //	CorrDataClone->GetYaxis()->SetTitle("Data / GENIE");
-
-// Cross section Data / MC ratio, corrected for radiation // Include
 	CorrDataClone->Draw("e1x0 same");
-//	CorrDataClone->Draw("hist p same");
 
 	//delete CorrRatioPlotCanvas;
 
@@ -483,10 +409,7 @@ void e4vXSecRatio() {
 
 //	CorrDataClone->GetYaxis()->SetRangeUser(0.75,1.45);
 //	CorrDataClone->GetYaxis()->SetTitle("Data / GENIE");
-
-// Final cross section Data / MC ratio, corrected for radiation & bin centering effects // Include
-//	BinCentCorrDataClone->Draw("e1x0 same");
-	BinCentCorrDataClone->Draw("p hist same");
+	BinCentCorrDataClone->Draw("e1x0 same");
 
 	//delete CorrRatioPlotCanvas;
 

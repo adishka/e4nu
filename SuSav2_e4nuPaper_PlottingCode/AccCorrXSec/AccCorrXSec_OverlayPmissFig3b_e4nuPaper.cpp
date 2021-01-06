@@ -34,7 +34,7 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 	double YRange[4] = {0.04,0.4,0.7,0.99};
 	double LeftMargin = 0.23;
 	double TextSize = 0.15;
-	int Ndivisions = 2;
+	int Ndivisions = 3;
 
 	// ------------------------------------------------------------------------
 
@@ -57,8 +57,8 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 	xBCut.push_back("NoxBCut");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
 
 	NameOfPlots.push_back("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_3"); LabelOfPlots.push_back("P_{T} > 400 [MeV/c]");  OutputPlotNames.push_back("epRecoEnergy_slice_3");
 	NameOfPlots.push_back("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_2"); LabelOfPlots.push_back("200 < P_{T} < 400 [MeV/c]");  OutputPlotNames.push_back("epRecoEnergy_slice_2");
@@ -271,7 +271,8 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 						if (localmax > max) { max = localmax; }
 //						double height = 1.2;
 						double height = 3.7;
-						if (WhichPlot == 2) { height = 4.6; }
+						if (WhichPlot == 1) { height = 4.3; }
+						if (WhichPlot == 2) { height = 5.2; }
 
 						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 

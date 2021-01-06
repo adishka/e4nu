@@ -50,8 +50,8 @@ void AccCorrXSec_OverlayDeltaPhiT_FigExtData8() {
 	// ------------------------------------------------------------------------
 
 	FSIModel.push_back("Pinned_Data_Final");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc");
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc");
 
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors");
@@ -163,7 +163,7 @@ void AccCorrXSec_OverlayDeltaPhiT_FigExtData8() {
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelOffset(0.013);
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(1.2*TextSize);
 						Plots[WhichFSIModel]->GetYaxis()->SetTitle("");
-						Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(4);
+						Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(5);
 
 						// --------------------------------------------------------------------------------------
 
@@ -186,7 +186,7 @@ void AccCorrXSec_OverlayDeltaPhiT_FigExtData8() {
 						// Genie Break Down
 
 						if (
-							FSIModelsToLabels[FSIModel[WhichFSIModel]] == "SuSav2"
+							FSIModelsToLabels[FSIModel[WhichFSIModel]] == "SuSav2" || FSIModelsToLabels[FSIModel[WhichFSIModel]] == "SuSav2 NoRad"
 						) {
 
 							if (Energy[WhichEnergy] == 1.161 && nucleus[WhichNucleus] == "12C") {

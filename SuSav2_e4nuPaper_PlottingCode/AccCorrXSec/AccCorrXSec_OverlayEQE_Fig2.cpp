@@ -99,7 +99,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 		FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
 		//FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
-		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
+		FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
 
 	}
 
@@ -295,7 +295,27 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 //							DataPlotG2018->SetMarkerSize(2.); 
 //							DataPlotG2018->SetLineColor(kRed);	
 //							DataPlotG2018->SetMarkerColor(kRed);	
-//							DataPlotG2018->Draw("e same"); 							
+//							DataPlotG2018->Draw("e same"); 
+
+// --------------------------------------------------------
+
+//TH1D* CloneUp = (TH1D*)(DataPlot->Clone("CloneUp"));
+
+//CloneUp->SetLineColor(kRed);
+//CloneUp->SetMarkerColor(kRed);
+//CloneUp->Scale(1.2);
+//CloneUp->Draw("e same");
+
+//// --------------------------------------------------------
+
+//TH1D* CloneDown = (TH1D*)(DataPlot->Clone("CloneDown"));
+
+//CloneDown->SetLineColor(kMagenta);
+//CloneDown->SetMarkerColor(kMagenta);
+//CloneDown->Scale(0.8);
+//CloneDown->Draw("e same");
+
+// ---------------------------------------------------------							
 
 						} else { 
 
@@ -339,7 +359,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 					myNucleus->SetTextFont(FontStyle);
 					myNucleus->SetTextColor(kBlack);
 					myNucleus->SetTextSize(TextSize-0.02);
-					myNucleus->DrawLatexNDC(0.22,0.85,JustNucleus[WhichNucleus]+"(e,e')_{0#pi}");
+					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myNucleus->DrawLatexNDC(0.22,0.85,JustNucleus[WhichNucleus]+"(e,e')_{0#pi}"); }
 
 					TLatex* myEbeam = new TLatex();
 					myEbeam->SetTextFont(FontStyle);

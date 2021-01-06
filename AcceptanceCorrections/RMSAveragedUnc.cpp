@@ -37,8 +37,9 @@ TH1D* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec) {
 
 		}
 
-		double NewEntry = TMath::Sqrt( sum / (double)(NPlots) )  / h->GetBinContent(WhichBin) * 100.;
-		RMSClone->SetBinContent(WhichBin,NewEntry);
+		double NewEntry = TMath::Sqrt( sum / (double)(NPlots) )  / TMath::Abs(h->GetBinContent(WhichBin)) * 100.;
+
+		if (h->GetBinContent(WhichBin) > 0.) { RMSClone->SetBinContent(WhichBin,NewEntry); }
 
 	}
 
@@ -68,13 +69,13 @@ void RMSAveragedUnc() {
 	std::vector<TString> NameOfSubPlots;
 	std::vector<int> Colors;
 
-//	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
+	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
 //	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
-	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
+//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV");
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");	
-	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
+	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");	
+//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
@@ -83,6 +84,11 @@ void RMSAveragedUnc() {
 
 	FSIModel.push_back("SuSav2"); FSILabel.push_back("SuSav2");
 	FSIModel.push_back("hA2018_Final"); FSILabel.push_back("G2018");
+
+//	TString Var = "epRecoEnergy_slice_0";
+//	TString Var = "MissMomentum";
+//	TString Var = "DeltaAlphaT_Int_0";
+	TString Var = "DeltaPhiT_Int_0";
 
 //	NameOfPlots.push_back("Reco_eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("TrueWithFid_eRecoEnergy_slice_0");
@@ -96,7 +102,9 @@ void RMSAveragedUnc() {
 //	NameOfPlots.push_back("TrueWithFid_epRecoEnergy_slice_0");
 //	NameOfPlots.push_back("True_epRecoEnergy_slice_0");
 
-	NameOfPlots.push_back("AccCorrection_epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("AccCorrection_epRecoEnergy_slice_0");
+
+	NameOfPlots.push_back("InverseAccCorrection_"+Var);
 
 	// ------------------------------------------------------------------------
 

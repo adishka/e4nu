@@ -50,79 +50,43 @@ void AcceptanceCorrections() {
 
 	// ------------------------------------------------------------------------
 
-//	nucleus.push_back("4He"); JustNucleus.push_back("He");
+	nucleus.push_back("4He"); JustNucleus.push_back("He");
 //	nucleus.push_back("12C"); JustNucleus.push_back("C");
-	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
+//	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.157 GeV"); DoubleE.push_back(1.161);	
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
-	E.push_back("4_461"); LabelE.push_back(" @ E = 4.457 GeV"); DoubleE.push_back(4.461);	
+	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
+//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.457 GeV"); DoubleE.push_back(4.461);	
 
 	xBCut.push_back("NoxBCut");
 
-//	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
+	NameOfPlots.push_back("DeltaPhiT_Int_0"); LabelOfPlots.push_back("#delta#phi_{T} [deg]"); OutputPlotNames.push_back("DeltaPhiT");
+	NameOfPlots.push_back("DeltaAlphaT_Int_0"); LabelOfPlots.push_back("#delta#alpha_{T} [deg]"); OutputPlotNames.push_back("DeltaAlphaT");
+	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
 	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 //	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e')_{1p0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("eRecoEnergy_slice_0");
+	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h1_EQE_FullyInclusive"); LabelOfPlots.push_back("(e,e') E^{QE} [GeV]");  OutputPlotNames.push_back("FullyInclusiveeRecoEnergy_slice_0");
 
 	// 0th plot is CV
 	// 1st plot is true 1p0pi with smearing (S) / fiducials (F) / acceptance maps (A) / resolution (R) / thresholds (T)
-	// 2nd plot is true 1p0pi without smearing (S) / fiducials (F) / acceptance maps (A) / resolution (R) but with thresholds (T)
+	// 2nd plot is true 1p0pi without radiation, without smearing (S) / fiducials (F) / acceptance maps (A) / resolution (R) but with thresholds (T)
 
 //	FSIModel.push_back(Label+"_RadCorr_LFGM_XSec"); FSILabel.push_back("Reco");
 
 //	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi"){
 
-//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc_XSec"); FSILabel.push_back("TrueWithFid");
-//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithoutFidAcc_XSec"); FSILabel.push_back("True");
+//		FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
+//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("TrueWithFid");
+//		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("True");
 
 //	} else {
 
-//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_XSec"); FSILabel.push_back("TrueWithFid");
-//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithoutFidAcc_XSec"); FSILabel.push_back("True");
-
-//	}
-
-/*
-	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi"){
-
-		FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
-		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("TrueWithFid");
-		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("True");
-
-	} else {
-
-		FSIModel.push_back(Label+"_RadCorr_LFGM_Offset"); FSILabel.push_back("Reco");
-		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_Offset"); FSILabel.push_back("TrueWithFid");
-		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
-
-	}
-*/
-
-	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi"){
-
-		FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
-		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("TrueWithFid");
-		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("True");
-
-	} else {
-
 		FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
 		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("TrueWithFid");
-		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True");
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
 
-	}
-
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
-////	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");
-
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
-////	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");
+//	}
 
 	// ------------------------------------------------------------------------
 
@@ -157,6 +121,9 @@ void AcceptanceCorrections() {
 
 				for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
+					if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi" && !(nucleus[WhichNucleus] == "12C" && E[WhichEnergy] == "1_161") ) 
+						{ continue; }
+
 					TString PlotCanvasName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
 					TCanvas* PlotCanvas = new TCanvas(PlotCanvasName,PlotCanvasName,205,34,1024,768);
 
@@ -169,6 +136,17 @@ void AcceptanceCorrections() {
 
 					TLegend* legGenie = new TLegend(0.1,0.9,0.9,0.99);					
 					legGenie->SetNColumns(3);
+
+					// ---------------------------------------------------------------------------------------
+
+					// Special treatment for the QE energy reconstruction
+
+					if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
+
+						FSIModel[1] = Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc";
+						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc";
+
+					}
 
 					// Loop over the FSI Models
 
@@ -209,9 +187,11 @@ void AcceptanceCorrections() {
 
 						double localmax = Plots[WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }
+						Plots[WhichFSIModel]->GetYaxis()->SetRangeUser(0.,height*max);
 						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 
 						TString XLabel = Plots[WhichFSIModel]->GetXaxis()->GetTitle();
+						Plots[WhichFSIModel]->GetXaxis()->SetTitle(XLabel);
 						Plots[0]->GetXaxis()->SetTitle(XLabel);
 
 						// --------------------------------------------------------------------------------------------------
@@ -222,8 +202,6 @@ void AcceptanceCorrections() {
 						// --------------------------------------------------------------------------------------------------
 
 						// Drawing The Plots
-
-//if (WhichFSIModel == 1) { continue; }
 
 						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 
@@ -265,6 +243,7 @@ void AcceptanceCorrections() {
 					// 1st ratio: Correct for bkg subtraction
 					// 2nd ratio: Correct for proton & electron acceptance
 					// 3rd ratio: Overall correction factor
+					// 4th ratio: Inverse overall correction factor
 
 					// ---------------------------------------------------------------------------------------------------
 
@@ -287,7 +266,7 @@ void AcceptanceCorrections() {
 					RecoClone->GetYaxis()->SetTitle("Reco / True 1p0pi W/" );
 
 					RecoClone->Draw();
-					//delete BkgCorrPlotCanvas;
+					delete BkgCorrPlotCanvas;
 
 					// ---------------------------------------------------------------------------------------------------
 
@@ -309,7 +288,7 @@ void AcceptanceCorrections() {
 					TrueClone->GetYaxis()->SetTitle("True 1p0pi W/ / True 1p0pi W/O" );
 
 					TrueClone->Draw();
-					//delete ThresCorrPlotCanvas;
+					delete ThresCorrPlotCanvas;
 
 					// ---------------------------------------------------------------------------------------------------
 
@@ -321,8 +300,9 @@ void AcceptanceCorrections() {
 					OverallCorrPlotCanvas->SetLeftMargin(0.15);
 					OverallCorrPlotCanvas->SetBottomMargin(0.17);	
 
-					TH1D* OverallClone = (TH1D*)Plots[0]->Clone();	
-					OverallClone->Divide(Plots[2]);			
+//					TH1D* OverallClone = (TH1D*)Plots[0]->Clone(); // e4v reco machinery
+					TH1D* OverallClone = (TH1D*)Plots[1]->Clone(); // true 1p0pi, with fiducials & acceptance maps	
+					OverallClone->Divide(Plots[2]);
 
 					OverallCorrPlotCanvas->cd();
 
@@ -331,7 +311,30 @@ void AcceptanceCorrections() {
 					OverallClone->GetYaxis()->SetTitle("Reco / True 1p0pi W/O" );
 
 					OverallClone->Draw();
-					//delete OverallCorrPlotCanvas;
+					delete OverallCorrPlotCanvas;
+
+					// ---------------------------------------------------------------------------------------------------
+
+					// 4th ratio: Inverse InverseOverall correction factor
+
+					TString InverseOverallCorrPlotCanvasName = "InverseOverallCorr_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
+					TCanvas* InverseOverallCorrPlotCanvas = new TCanvas(InverseOverallCorrPlotCanvasName,InverseOverallCorrPlotCanvasName,205,34,1024,768);
+
+					InverseOverallCorrPlotCanvas->SetLeftMargin(0.15);
+					InverseOverallCorrPlotCanvas->SetBottomMargin(0.17);	
+
+					TH1D* InverseOverallClone = (TH1D*)Plots[2]->Clone();	
+					//InverseOverallClone->Divide(Plots[0]); // e4v reco machinery			
+					InverseOverallClone->Divide(Plots[1]); // true 1p0pi, with fiducials & acceptance maps				
+
+					InverseOverallCorrPlotCanvas->cd();
+
+					InverseOverallClone->SetTitle("Inverse Acceptance Correction");
+					InverseOverallClone->GetYaxis()->SetRangeUser( 0.,10. );
+					InverseOverallClone->GetYaxis()->SetTitle("True 1p0pi W/ / Reco" );
+
+					InverseOverallClone->Draw();
+					//delete InverseOverallCorrPlotCanvas;
 
 					// ------------------------------------------------------------------------------
 
@@ -339,6 +342,7 @@ void AcceptanceCorrections() {
 					RecoClone->Write(Label+"_"+"BkgCorrection_"+NameOfPlots[WhichPlot]);
 					TrueClone->Write(Label+"_"+"FidCorrection_"+NameOfPlots[WhichPlot]);
 					OverallClone->Write(Label+"_"+"AccCorrection_"+NameOfPlots[WhichPlot]);
+					InverseOverallClone->Write(Label+"_"+"InverseAccCorrection_"+NameOfPlots[WhichPlot]);
 
 					// ------------------------------------------------------------------------------
 
