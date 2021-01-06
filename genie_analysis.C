@@ -1345,6 +1345,7 @@ void genie_analysis::Loop(Int_t choice) {
 			h1_EePrime_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(V4_el.E(),WeightIncl/Q4);
 
 			TProf_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(nu,nu);
+			TProf_Theta_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(el_theta,el_theta);
 
 			if (fabs(x_bjk - 1.) < 0.2) {
 

@@ -357,7 +357,7 @@ void QuickInclusiveComparison() {
 					
 				}
 				
-				if (label[igr] == "MEC") { LatexProcess->DrawLatexNDC(0.27,0.23,label[igr]); }
+				if (label[igr] == "MEC") { LatexProcess->DrawLatexNDC(0.29,0.23,label[igr]); }
 				
 				if (label[igr] == "RES") { 
 				
@@ -368,8 +368,8 @@ void QuickInclusiveComparison() {
 				
 				if (label[igr] == "DIS") { 
 				
-					if (target != "Ar") { LatexProcess->DrawLatexNDC(0.7,0.22,label[igr]); }
-					else { LatexProcess->DrawLatexNDC(0.7,0.17,label[igr]); }
+					if (target != "Ar") { LatexProcess->DrawLatexNDC(0.7,0.23,label[igr]); }
+					else { LatexProcess->DrawLatexNDC(0.7,0.18,label[igr]); }
 					
 				}
 

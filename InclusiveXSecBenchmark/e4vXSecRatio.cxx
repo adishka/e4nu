@@ -223,21 +223,81 @@ void e4vXSecRatio() {
 
 	// ---------------------------------------------------------------------------------------------
 
-	TString CanvasNameProfSuSav2NoRad = "ProfCanvasSuSav2NoRad";
-	TCanvas* PlotCanvasProfSuSav2NoRad = new TCanvas(CanvasNameProfSuSav2NoRad,CanvasNameProfSuSav2NoRad,205,34,1024,768);
+//	TString CanvasNameProfSuSav2NoRad = "ProfCanvasSuSav2NoRad";
+//	TCanvas* PlotCanvasProfSuSav2NoRad = new TCanvas(CanvasNameProfSuSav2NoRad,CanvasNameProfSuSav2NoRad,205,34,1024,768);
 
-	profSuSav2NoRad->GetXaxis()->SetRangeUser(0.05,0.75);
-	profSuSav2NoRad->GetXaxis()->SetTitle("Energy Transfer [GeV] Bin Center");
-	profSuSav2NoRad->GetYaxis()->SetRangeUser(0.05,0.75);
-	profSuSav2NoRad->GetYaxis()->SetTitle("Energy Transfer [GeV] Average");
+//	profSuSav2NoRad->GetXaxis()->SetRangeUser(0.05,0.75);
+//	profSuSav2NoRad->GetXaxis()->SetTitle("Energy Transfer [GeV] Bin Center");
+//	profSuSav2NoRad->GetYaxis()->SetRangeUser(0.05,0.75);
+//	profSuSav2NoRad->GetYaxis()->SetTitle("Energy Transfer [GeV] Average");
 
 	profSuSav2NoRad->SetMarkerStyle(20);
 	profSuSav2NoRad->SetMarkerSize(2.);
-	profSuSav2NoRad->SetMarkerColor(kBlack);
-	profSuSav2NoRad->Draw("hist p");
-	TF1* fSuSav2NoRad = new TF1("fSuSav2NoRad","x",0,0.75);
-	fSuSav2NoRad->SetLineColor(kRed);
-	fSuSav2NoRad->Draw("same");
+//	profSuSav2NoRad->SetMarkerColor(kBlack);
+profSuSav2NoRad->SetMarkerColor(kBlue);
+PlotCanvasProfData->cd();
+	profSuSav2NoRad->Draw("hist p same");
+//	TF1* fSuSav2NoRad = new TF1("fSuSav2NoRad","x",0,0.75);
+//	fSuSav2NoRad->SetLineColor(kRed);
+//	fSuSav2NoRad->Draw("same");
+
+	PlotCanvas->cd();
+
+	// ---------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------
+
+	// Data Average vs bin center for electron theta angle
+
+	TProfile* profDataTheta = (TProfile*)(TProfileFileData->Get("TProf_Theta_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0")); 
+
+	for (int i = 0; i < 3; i++) { profDataTheta->Rebin(); }
+
+	// ---------------------------------------------------------------------------------------------
+
+	TString CanvasNameProfDataTheta = "ProfCanvasDataTheta";
+	TCanvas* PlotCanvasProfDataTheta = new TCanvas(CanvasNameProfDataTheta,CanvasNameProfDataTheta,205,34,1024,768);
+
+	profDataTheta->GetXaxis()->SetTitle("#theta [deg] Bin Center");
+	profDataTheta->GetYaxis()->SetTitle("#theta [deg] Average");
+
+	profDataTheta->SetMarkerStyle(20);
+	profDataTheta->SetMarkerSize(2.);
+	profDataTheta->SetMarkerColor(kBlack);
+	profDataTheta->Draw("hist p");
+	TF1* fDataTheta = new TF1("fDataTheta","x",36,39);
+	fDataTheta->SetLineColor(kRed);
+	fDataTheta->Draw("same");
+
+	PlotCanvas->cd();
+
+	// ---------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------
+
+	// SuSav2 NoRad Average vs bin center
+
+//	TProfile* profSuSav2NoRad = (TProfile*)(TProfileFileSuSav2NoRad->Get("TProf_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0")); 
+
+//	ApplyRebinningTProfile(profSuSav2NoRad,"1_161",PlotName); // make sure that we have the same binning as in data // Include
+
+//	// ---------------------------------------------------------------------------------------------
+
+////	TString CanvasNameProfSuSav2NoRad = "ProfCanvasSuSav2NoRad";
+////	TCanvas* PlotCanvasProfSuSav2NoRad = new TCanvas(CanvasNameProfSuSav2NoRad,CanvasNameProfSuSav2NoRad,205,34,1024,768);
+
+////	profSuSav2NoRad->GetXaxis()->SetRangeUser(0.05,0.75);
+////	profSuSav2NoRad->GetXaxis()->SetTitle("Energy Transfer [GeV] Bin Center");
+////	profSuSav2NoRad->GetYaxis()->SetRangeUser(0.05,0.75);
+////	profSuSav2NoRad->GetYaxis()->SetTitle("Energy Transfer [GeV] Average");
+
+//	profSuSav2NoRad->SetMarkerStyle(20);
+//	profSuSav2NoRad->SetMarkerSize(2.);
+////	profSuSav2NoRad->SetMarkerColor(kBlack);
+//profSuSav2NoRad->SetMarkerColor(kBlue);
+//PlotCanvasProfData->cd();
+//	profSuSav2NoRad->Draw("hist p same");
+////	TF1* fSuSav2NoRad = new TF1("fSuSav2NoRad","x",0,0.75);
+////	fSuSav2NoRad->SetLineColor(kRed);
+////	fSuSav2NoRad->Draw("same");
 
 	PlotCanvas->cd();
 
