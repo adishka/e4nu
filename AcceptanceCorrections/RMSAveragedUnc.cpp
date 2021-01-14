@@ -20,28 +20,79 @@ using namespace std;
 #include "../myFunctions.cpp"
 #include "../AfroConstants.h"
 
-TH1D* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec) {
+TH1D* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec, TString Energy) {
+
+	TH1D::SetDefaultSumw2();
+
+	double DoubleE = -99., reso = 0.;
+	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.05; }
+	if (Energy == "2_261") { DoubleE = 2.261; reso = 0.03; }
+	if (Energy == "4_461") { DoubleE = 4.461; reso = 0.02; }
 
 	int NBins = h->GetXaxis()->GetNbins();
-	int NPlots = hVec.size();
+//	int NPlots = hVec.size();
 
-	TH1D* RMSClone = (TH1D*)(h->Clone("RMSClone"));
+//	TH1D* RMSClone = (TH1D*)(h->Clone("RMSClone"));
+
+//	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
+
+//		double sum = 0;
+
+//		for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot++) {
+
+//			sum += TMath::Power(hVec[WhichPlot]->GetBinContent(WhichBin) - h->GetBinContent(WhichBin),2.);		
+
+//		}
+
+//		double NewEntry = TMath::Sqrt( sum / (double)(NPlots) )  / TMath::Abs(h->GetBinContent(WhichBin)) * 100.;
+
+//		if (h->GetBinContent(WhichBin) > 0.) { RMSClone->SetBinContent(WhichBin,NewEntry); }
+
+//	}
+
+	// ---------------------------------------------------------------------------------------------------------
+
+	TH1D* RMSClone = (TH1D*)(hVec[0]->Clone("RMSClone"));
+	RMSClone->Add(hVec[1],-1);
+	RMSClone->Divide(h);
+	RMSClone->Scale(1./TMath::Sqrt(12.));
+
+	double sum = 0; int nbins = 0;
 
 	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
 
-		double sum = 0;
+		double BinCenter = RMSClone->GetBinCenter(WhichBin);
+		double BinContent = TMath::Abs(RMSClone->GetBinContent(WhichBin)) * 100.;
 
-		for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot++) {
+		RMSClone->SetBinContent(WhichBin,BinContent);
 
-			sum += TMath::Power(hVec[WhichPlot]->GetBinContent(WhichBin) - h->GetBinContent(WhichBin),2.);		
+		if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
+
+			sum += BinContent; nbins++;
 
 		}
 
-		double NewEntry = TMath::Sqrt( sum / (double)(NPlots) )  / TMath::Abs(h->GetBinContent(WhichBin)) * 100.;
+	}
 
-		if (h->GetBinContent(WhichBin) > 0.) { RMSClone->SetBinContent(WhichBin,NewEntry); }
+	sum = sum / double(nbins);
+
+	// ---------------------------------------------------------------------------------------------------------
+
+	// Use the average around the Ecal peak in the bins (1 +/- reso) Ebeam
+
+	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
+
+		double BinCenter = RMSClone->GetBinCenter(WhichBin);
+
+		if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
+
+			RMSClone->SetBinContent(WhichBin,sum);
+
+		}
 
 	}
+
+	// ---------------------------------------------------------------------------------------------------------
 
 	return RMSClone;
 
@@ -69,13 +120,13 @@ void RMSAveragedUnc() {
 	std::vector<TString> NameOfSubPlots;
 	std::vector<int> Colors;
 
-	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
+//	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
 //	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
-//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
+	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV");
-	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");	
-//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
+//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");	
+	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
@@ -85,10 +136,10 @@ void RMSAveragedUnc() {
 	FSIModel.push_back("SuSav2"); FSILabel.push_back("SuSav2");
 	FSIModel.push_back("hA2018_Final"); FSILabel.push_back("G2018");
 
-//	TString Var = "epRecoEnergy_slice_0";
+	TString Var = "epRecoEnergy_slice_0";
 //	TString Var = "MissMomentum";
 //	TString Var = "DeltaAlphaT_Int_0";
-	TString Var = "DeltaPhiT_Int_0";
+//	TString Var = "DeltaPhiT_Int_0";
 
 //	NameOfPlots.push_back("Reco_eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("TrueWithFid_eRecoEnergy_slice_0");
@@ -207,7 +258,7 @@ void RMSAveragedUnc() {
 
 					}
 
-					TH1D* clone = RMSAveragedFunc(average,VectorPlots);
+					TH1D* clone = RMSAveragedFunc(average,VectorPlots,E[WhichEnergy]);
 					//clone->Scale(100.);
 
 					clone->GetYaxis()->SetTitle("Fractional Contribution (%)");

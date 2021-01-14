@@ -20,6 +20,70 @@ using namespace std;
 #include "../myFunctions.cpp"
 #include "../AfroConstants.h"
 
+TH1D* AveragedFunc(TH1D* h, TString Energy) {
+
+	TH1D::SetDefaultSumw2();
+
+	double DoubleE = -99., reso = 0.;
+	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.05; }
+	if (Energy == "2_261") { DoubleE = 2.261; reso = 0.03; }
+	if (Energy == "4_461") { DoubleE = 4.461; reso = 0.02; }
+
+	int NBins = h->GetXaxis()->GetNbins();
+	TString hName = h->GetName();
+
+	// ---------------------------------------------------------------------------------------------------------
+
+	TH1D* Clone = (TH1D*)(h->Clone("Clone_"+hName));
+
+	double sum = 0; 
+	double sumErr = 0; 
+	int nbins = 0;
+
+	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
+
+		double BinCenter = Clone->GetBinCenter(WhichBin);
+		double BinContent = Clone->GetBinContent(WhichBin);
+		double BinError = Clone->GetBinError(WhichBin);
+//cout << endl;
+		if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
+
+			sum += BinContent; 
+			sumErr += TMath::Power(BinError,2.);
+			nbins++;
+//cout << "BinContent = " << BinContent << endl;
+		}
+
+	}
+
+//	sumErr = TMath::Sqrt(sumErr) / double(nbins);
+	sumErr = 0;
+	sum = sum / double(nbins);
+//cout << "sum = " << sum << endl;
+cout << "nbins = " << nbins << endl;
+	// ---------------------------------------------------------------------------------------------------------
+
+	// Use the average around the Ecal peak in the bins (1 +/- reso) Ebeam
+
+	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
+
+		double BinCenter = Clone->GetBinCenter(WhichBin);
+
+		if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
+
+			Clone->SetBinContent(WhichBin,sum);
+			Clone->SetBinError(WhichBin,sumErr);
+
+		}
+
+	}
+
+	// ---------------------------------------------------------------------------------------------------------
+
+	return Clone;
+
+}
+
 // ----------------------------------------------------------------------------------------------------------------
 
 void OverlayPlots() {
@@ -57,10 +121,10 @@ void OverlayPlots() {
 	FSIModel.push_back("SuSav2"); FSILabel.push_back("SuSav2");
 	FSIModel.push_back("hA2018_Final"); FSILabel.push_back("G2018");
 
-//	TString Var = "epRecoEnergy_slice_0";
+	TString Var = "epRecoEnergy_slice_0";
 //	TString Var = "MissMomentum";
 //	TString Var = "DeltaAlphaT_Int_0";
-	TString Var = "DeltaPhiT_Int_0";
+//	TString Var = "DeltaPhiT_Int_0";
 
 //	NameOfPlots.push_back("Reco_eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("TrueWithFid_eRecoEnergy_slice_0");
@@ -80,6 +144,7 @@ void OverlayPlots() {
 	// ------------------------------------------------------------------------
 
 	std::vector<TH1D*> Plots;
+	std::vector<TH1D*> TempPlots;
 
 	int NxBCuts = xBCut.size();
 	int NNuclei = nucleus.size();
@@ -114,6 +179,7 @@ void OverlayPlots() {
 					// ---------------------------------------------------------------------------------------
 
 					Plots.clear();
+					TempPlots.clear();
 
 					TLegend* leg = new TLegend(0.2,0.7,0.5,0.89);
 					leg->SetNColumns(1);
@@ -128,9 +194,17 @@ void OverlayPlots() {
 						TString FileName = "myFiles/Efficiency_"+FSIModel[WhichFSIModel]+"_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+xBCut[WhichxBCut]+".root";
 						TFile* FileSample = TFile::Open(FileName);
 
-						Plots.push_back( (TH1D*)( FileSample->Get(FSIModel[WhichFSIModel]+"_"+NameOfPlots[WhichPlot]) ) );
+//TH1D* TempPlot = (TH1D*)FileSample->Get(FSIModel[WhichFSIModel]+"_"+NameOfPlots[WhichPlot]);
+//Plots.push_back( AveragedFunc(Plots[WhichFSIModel],E[WhichEnergy]) );	
+
+//						Plots.push_back( (TH1D*)( FileSample->Get(FSIModel[WhichFSIModel]+"_"+NameOfPlots[WhichPlot]) ) );
+
+						TempPlots.push_back( (TH1D*)( FileSample->Get(FSIModel[WhichFSIModel]+"_"+NameOfPlots[WhichPlot]) ) );
+						Plots.push_back( AveragedFunc(TempPlots[WhichFSIModel],E[WhichEnergy]) );	
+//						Plots.push_back( TempPlots[WhichFSIModel] );	
 
 						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
+						Plots[WhichFSIModel]->SetTitle("");
 
 						// ---------------------------------------------------------------------------------------------------
 
@@ -159,12 +233,12 @@ void OverlayPlots() {
 
 					} // End of the loop over the FSI Models 
 
-					TH1D* average = (TH1D*)(Plots[0]->Clone());
-					average->Add(Plots[1]);
-					average->Scale(1./2.);
-					average->SetLineColor(kBlue);
-
 					if (NameOfPlots[WhichPlot] == "AccCorrection_"+Var || NameOfPlots[WhichPlot] == "InverseAccCorrection_"+Var) { 
+
+						TH1D* average = (TH1D*)(Plots[0]->Clone());
+						average->Add(Plots[1]);
+						average->Scale(1./2.);
+						average->SetLineColor(kBlue);
 
 						average->Draw("e same"); 
 

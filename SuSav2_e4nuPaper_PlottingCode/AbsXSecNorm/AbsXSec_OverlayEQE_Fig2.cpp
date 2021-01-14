@@ -73,8 +73,8 @@ void AbsXSec_OverlayEQE_Fig2() {
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
 
-//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
-	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
+//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 
 	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
@@ -257,6 +257,10 @@ void AbsXSec_OverlayEQE_Fig2() {
 							gStyle->SetErrorX(0); // Removing the horizontal errors
 							Plots[WhichFSIModel]->Draw("e same"); 
 
+//TFile* f = TFile::Open("12C_1_161_GeV.root","recreate");
+//Plots[WhichFSIModel]->Write();
+//f->Close();
+
 						} else { 
 
 							if (FSILabel[WhichFSIModel] == "G2018") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }
@@ -303,13 +307,13 @@ void AbsXSec_OverlayEQE_Fig2() {
 					myEbeam->SetTextFont(FontStyle);
 					myEbeam->SetTextColor(kAzure+4);
 					myEbeam->SetTextSize(TextSize-0.02);
-					if (E[WhichEnergy] == "1_161" && NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myEbeam->DrawLatexNDC(0.72,0.35,"E_{beam}"); }
+					if (E[WhichEnergy] == "1_161" && NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myEbeam->DrawLatexNDC(0.72,0.3,"E_{beam}"); }
 
 					TLatex* myArrow = new TLatex();
 					myArrow->SetTextFont(FontStyle);
 					myArrow->SetTextColor(kAzure+4);
 					myArrow->SetTextSize(1.2*TextSize);
-					if (E[WhichEnergy] == "1_161" && NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myArrow->DrawLatex(1.141,0.1,"#Downarrow"); }
+					if (E[WhichEnergy] == "1_161" && NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myArrow->DrawLatex(1.141,0.005,"#Downarrow"); }
 
 					// Monitor where 1.161 GeV is
 					//TLine* line = new TLine(1.161,0.,1.161,2.);

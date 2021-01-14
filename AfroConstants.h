@@ -117,6 +117,9 @@
 		{ "Pinned_Data_NewFiducials_SixSectors", "Pinned Data" },
 		{ "Pinned_Data_Final_SixSectors", "Pinned Data" },
 
+		{ "SuSav2_RadCorr_LFGM_Schwinger", "SuSav2 Rad Schwinger" },
+		{ "SuSav2_RadCorr_LFGM_UpdatedSchwinger", "SuSav2 Rad Updated Schwinger" },
+
 		{ "SuSav2_RadCorr_LFGM", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_XSec", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_Truth_WithFidAcc", "SuSav2" },
@@ -332,6 +335,32 @@
 		{ std::make_pair("56Fe", "4_461"), 3.84607e+08 } // Q2 > 0.8
 	};
 
+	// Rad+Schwinger SuSav2 GENIE number events 
+
+	static std::map<std::pair<TString,TString>,double> RadSchwingerSuSav2NumberEvents =
+	{
+		{ std::make_pair("4He", "2_261"), 0 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"), 0 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"), 29300000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"), 27700000 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"), 26500000 }, // Q2 > 0.8
+		{ std::make_pair("56Fe", "2_261"), 0 }, // Q2 > 0.4
+		{ std::make_pair("56Fe", "4_461"), 0 } // Q2 > 0.8
+	};
+
+	// Rad+UpdatedSchwinger SuSav2 GENIE number events 
+
+	static std::map<std::pair<TString,TString>,double> RadUpdatedSchwingerSuSav2NumberEvents =
+	{
+		{ std::make_pair("4He", "2_261"), 81100000 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"), 92300000 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"), 99300000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"), 99800000 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"), 106400000 }, // Q2 > 0.8
+		{ std::make_pair("56Fe", "2_261"), 83700000 }, // Q2 > 0.4
+		{ std::make_pair("56Fe", "4_461"), 133000000 } // Q2 > 0.8
+	};
+
 	// No Rad SuSav2 GENIE number events 
 
 	static std::map<std::pair<TString,TString>,double> NoRadSuSav2NumberEvents =
@@ -388,6 +417,19 @@
 		{ std::make_pair("56Fe", "2_261"), 50000000 }, // Q2 > 0.4
 		{ std::make_pair("56Fe", "4_461"), 150100000 } // Q2 > 0.8
 
+	};
+
+	// Rad+UpdatedSchwinger G2018 GENIE number events 
+
+	static std::map<std::pair<TString,TString>,double> RadUpdatedSchwingerG2018NumberEvents =
+	{
+		{ std::make_pair("4He", "2_261"), 98700000 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"), 99400000 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"), 57300000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"), 65700000 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"), 99900000 }, // Q2 > 0.8
+		{ std::make_pair("56Fe", "2_261"), 99600000 }, // Q2 > 0.4
+		{ std::make_pair("56Fe", "4_461"), 99300000 } // Q2 > 0.8
 	};
 
 	// No Rad G2018 GENIE number events 

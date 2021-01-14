@@ -405,6 +405,27 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
+	else if (Sample == "SuSav2 Rad Schwinger") { 
+
+				SF = (SuSav2GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+					ConversionFactorCm2ToMicroBarn / (RadSchwingerSuSav2NumberEvents[std::make_pair(Nucleus, E)] ) ) ;
+
+	}
+
+	else if (Sample == "SuSav2 Rad Updated Schwinger") { 
+
+				SF = (SuSav2GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+					ConversionFactorCm2ToMicroBarn / (RadUpdatedSchwingerSuSav2NumberEvents[std::make_pair(Nucleus, E)] ) ) ;
+
+	}
+
+	else if (Sample == "G2018 Rad Updated Schwinger") { 
+
+				SF = (G2018GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+					ConversionFactorCm2ToMicroBarn / (RadUpdatedSchwingerG2018NumberEvents[std::make_pair(Nucleus, E)] ) ) ;
+
+	}
+
 	else if (Sample == "G2018 NoRad") { 
 
 				SF = (G2018GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\

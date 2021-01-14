@@ -50,8 +50,8 @@ void AcceptanceCorrections() {
 
 	// ------------------------------------------------------------------------
 
-	nucleus.push_back("4He"); JustNucleus.push_back("He");
-//	nucleus.push_back("12C"); JustNucleus.push_back("C");
+//	nucleus.push_back("4He"); JustNucleus.push_back("He");
+	nucleus.push_back("12C"); JustNucleus.push_back("C");
 //	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.157 GeV"); DoubleE.push_back(1.161);	
@@ -74,19 +74,19 @@ void AcceptanceCorrections() {
 
 //	FSIModel.push_back(Label+"_RadCorr_LFGM_XSec"); FSILabel.push_back("Reco");
 
-//	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi"){
-
-//		FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
-//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("TrueWithFid");
-//		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("True");
-
-//	} else {
+	if (Label == "SuSav2") {
 
 		FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
 		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("TrueWithFid");
 		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
 
-//	}
+	} else {
+
+		FSIModel.push_back(Label+"_RadCorr_LFGM_Offset"); FSILabel.push_back("Reco");
+		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_Offset"); FSILabel.push_back("TrueWithFid");
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
+
+	}
 
 	// ------------------------------------------------------------------------
 
@@ -331,7 +331,7 @@ void AcceptanceCorrections() {
 
 					InverseOverallClone->SetTitle("Inverse Acceptance Correction");
 					InverseOverallClone->GetYaxis()->SetRangeUser( 0.,10. );
-					InverseOverallClone->GetYaxis()->SetTitle("True 1p0pi W/ / Reco" );
+					InverseOverallClone->GetYaxis()->SetTitle("True 1p0pi W/O / Reco" );
 
 					InverseOverallClone->Draw();
 					//delete InverseOverallCorrPlotCanvas;
