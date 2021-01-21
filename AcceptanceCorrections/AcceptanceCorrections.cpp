@@ -31,8 +31,8 @@ void AcceptanceCorrections() {
 	const std::vector<int> LocalDataSetColors{1,610,410,kRed+2,kBlue};
 	double split = 0.1;
 
-	TString Label = "SuSav2";
-	//TString Label = "hA2018_Final";
+	//TString Label = "SuSav2";
+	TString Label = "hA2018_Final";
 
 	// ------------------------------------------------------------------------
 
@@ -54,19 +54,19 @@ void AcceptanceCorrections() {
 	nucleus.push_back("12C"); JustNucleus.push_back("C");
 //	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
 
-//	E.push_back("1_161"); LabelE.push_back(" @ E = 1.157 GeV"); DoubleE.push_back(1.161);	
-	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
+	E.push_back("1_161"); LabelE.push_back(" @ E = 1.157 GeV"); DoubleE.push_back(1.161);	
+//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
 //	E.push_back("4_461"); LabelE.push_back(" @ E = 4.457 GeV"); DoubleE.push_back(4.461);	
 
 	xBCut.push_back("NoxBCut");
 
-	NameOfPlots.push_back("DeltaPhiT_Int_0"); LabelOfPlots.push_back("#delta#phi_{T} [deg]"); OutputPlotNames.push_back("DeltaPhiT");
-	NameOfPlots.push_back("DeltaAlphaT_Int_0"); LabelOfPlots.push_back("#delta#alpha_{T} [deg]"); OutputPlotNames.push_back("DeltaAlphaT");
-	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
-	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-//	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e')_{1p0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("DeltaPhiT_Int_0"); LabelOfPlots.push_back("#delta#phi_{T} [deg]"); OutputPlotNames.push_back("DeltaPhiT");
+//	NameOfPlots.push_back("DeltaAlphaT_Int_0"); LabelOfPlots.push_back("#delta#alpha_{T} [deg]"); OutputPlotNames.push_back("DeltaAlphaT");
+//	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
+//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+////	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e')_{1p0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("eRecoEnergy_slice_0");
-//	NameOfPlots.push_back("h1_EQE_FullyInclusive"); LabelOfPlots.push_back("(e,e') E^{QE} [GeV]");  OutputPlotNames.push_back("FullyInclusiveeRecoEnergy_slice_0");
+////	NameOfPlots.push_back("h1_EQE_FullyInclusive"); LabelOfPlots.push_back("(e,e') E^{QE} [GeV]");  OutputPlotNames.push_back("FullyInclusiveeRecoEnergy_slice_0");
 
 	// 0th plot is CV
 	// 1st plot is true 1p0pi with smearing (S) / fiducials (F) / acceptance maps (A) / resolution (R) / thresholds (T)
@@ -121,8 +121,8 @@ void AcceptanceCorrections() {
 
 				for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
-					if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi" && !(nucleus[WhichNucleus] == "12C" && E[WhichEnergy] == "1_161") ) 
-						{ continue; }
+					//if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi" && !(nucleus[WhichNucleus] == "12C" && E[WhichEnergy] == "1_161") ) 
+					//	{ continue; }
 
 					TString PlotCanvasName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
 					TCanvas* PlotCanvas = new TCanvas(PlotCanvasName,PlotCanvasName,205,34,1024,768);
@@ -143,7 +143,7 @@ void AcceptanceCorrections() {
 
 					if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
-						FSIModel[1] = Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc";
+						FSIModel[1] = Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger";
 						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc";
 
 					}

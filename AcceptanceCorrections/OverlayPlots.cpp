@@ -25,9 +25,9 @@ TH1D* AveragedFunc(TH1D* h, TString Energy) {
 	TH1D::SetDefaultSumw2();
 
 	double DoubleE = -99., reso = 0.;
-	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.05; }
-	if (Energy == "2_261") { DoubleE = 2.261; reso = 0.03; }
-	if (Energy == "4_461") { DoubleE = 4.461; reso = 0.02; }
+	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.06; }
+	if (Energy == "2_261") { DoubleE = 2.261; reso = 0.08; }
+	if (Energy == "4_461") { DoubleE = 4.461; reso = 0.06; }
 
 	int NBins = h->GetXaxis()->GetNbins();
 	TString hName = h->GetName();
@@ -60,7 +60,7 @@ TH1D* AveragedFunc(TH1D* h, TString Energy) {
 	sumErr = 0;
 	sum = sum / double(nbins);
 //cout << "sum = " << sum << endl;
-cout << "nbins = " << nbins << endl;
+//cout << "nbins = " << nbins << endl;
 	// ---------------------------------------------------------------------------------------------------------
 
 	// Use the average around the Ecal peak in the bins (1 +/- reso) Ebeam
@@ -106,12 +106,12 @@ void OverlayPlots() {
 	std::vector<int> Colors;
 
 //	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
-//	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
-	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
+	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
+//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV");
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");	
-	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
+	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");	
+//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
@@ -200,7 +200,8 @@ void OverlayPlots() {
 //						Plots.push_back( (TH1D*)( FileSample->Get(FSIModel[WhichFSIModel]+"_"+NameOfPlots[WhichPlot]) ) );
 
 						TempPlots.push_back( (TH1D*)( FileSample->Get(FSIModel[WhichFSIModel]+"_"+NameOfPlots[WhichPlot]) ) );
-						Plots.push_back( AveragedFunc(TempPlots[WhichFSIModel],E[WhichEnergy]) );	
+						if (Var == "epRecoEnergy_slice_0") { Plots.push_back( AveragedFunc(TempPlots[WhichFSIModel],E[WhichEnergy]) ); }
+						else { Plots.push_back( TempPlots[WhichFSIModel] ); }
 //						Plots.push_back( TempPlots[WhichFSIModel] );	
 
 						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);

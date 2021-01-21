@@ -29,9 +29,10 @@ void MapsProjections() {
 
 //	TFile* file_acceptance = TFile::Open("/home/afroditi/Downloads/e2a_solid_2261_2250_e.root");
 
-	TFile* file_acceptance = TFile::Open("e2a_maps_12C_E_"+Energy+".root");
+//	TFile* file_acceptance = TFile::Open("e2a_maps_12C_E_"+Energy+".root");
 //	TFile* file_acceptance = TFile::Open("e2a_maps_12C_E_"+Energy+"_p.root");
 //	TFile* file_acceptance = TFile::Open("e2a_maps_12C_E_"+Energy+"_pip.root");
+	TFile* file_acceptance = TFile::Open("e2a_maps_12C_E_"+Energy+"_pim.root");
 
 	TH3D* reco = (TH3D*)file_acceptance->Get("Accepted Particles");
 	TH3D* gen = (TH3D*)file_acceptance->Get("Generated Particles");	

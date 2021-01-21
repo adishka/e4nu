@@ -93,7 +93,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
 		FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
-		FSIModel.push_back("hA2018_NoFinal_RadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("G2018");
+		FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("G2018");
 
 	} else {
 
@@ -288,6 +288,10 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 							DataPlot->SetMarkerColor(kBlack);
 							DataPlot->GetYaxis()->SetRangeUser(0.,height*max);	
 							DataPlot->Draw("e same"); 
+
+TFile* f = TFile::Open("AccCorr_12C_1_161_GeV.root","recreate");
+DataPlot->Write();
+f->Close();
 
 //							TH1D* DataPlotG2018 = AcceptanceCorrection(Plots[WhichFSIModel],"hA2018_Final", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 

@@ -118,7 +118,11 @@
 		{ "Pinned_Data_Final_SixSectors", "Pinned Data" },
 
 		{ "SuSav2_RadCorr_LFGM_Schwinger", "SuSav2 Rad Schwinger" },
+
 		{ "SuSav2_RadCorr_LFGM_UpdatedSchwinger", "SuSav2 Rad Updated Schwinger" },
+		{ "SuSav2_RadCorr_LFGM_UpdatedSchwinger_Test", "SuSav2 Rad Updated Schwinger" },
+		{ "SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger", "SuSav2 Rad Updated Schwinger" },
+		{ "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger", "SuSav2 Rad Updated Schwinger" },
 
 		{ "SuSav2_RadCorr_LFGM", "SuSav2" },
 		{ "SuSav2_RadCorr_LFGM_XSec", "SuSav2" },
@@ -156,6 +160,10 @@
 		{ "hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Truth0pi_WithoutFidAcc", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_SixSectors", "G2018" },
+
+		{ "hA2018_Final_RadCorr_LFGM_UpdatedSchwinger", "G2018 Rad Updated Schwinger" },
+		{ "hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger", "G2018 Rad Updated Schwinger" },
+		{ "hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger", "G2018 Rad Updated Schwinger" },
 
 		{ "hA2018_Final_NoRadCorr_LFGM", "G2018 NoRad" },
 		{ "hA2018_Final_NoRadCorr_LFGM_Playground", "G2018 NoRad" },
@@ -358,7 +366,7 @@
 		{ std::make_pair("12C", "2_261"), 99800000 }, // Q2 > 0.4
 		{ std::make_pair("12C", "4_461"), 106400000 }, // Q2 > 0.8
 		{ std::make_pair("56Fe", "2_261"), 83700000 }, // Q2 > 0.4
-		{ std::make_pair("56Fe", "4_461"), 133000000 } // Q2 > 0.8
+		{ std::make_pair("56Fe", "4_461"), 99800000 } // Q2 > 0.8
 	};
 
 	// No Rad SuSav2 GENIE number events 

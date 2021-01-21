@@ -781,13 +781,14 @@ void UniversalE4vFunction(TH1D* h, TString DataSetLabel, TString nucleus, TStrin
 
 	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplySectorSystUnc(h, E); }
 
-	//	overall normalization uncertainty
+	//	3% overall normalization uncertainty 
+	//	2% electron efficiency
+	// 	not included in plots, will be mentioned in text 
 
-	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplyOverallNormUnc(h); }
+	//if (string(DataSetLabel).find("Data") != std::string::npos) { ApplyOverallNormUnc(h); }
 
-	//	acceptance correction uncertainty
-
-	if (string(DataSetLabel).find("Data") != std::string::npos) { ApplyAcceptanceCorrUnc(h); }
+	//	acceptance constant correction uncertainty
+	//if (string(DataSetLabel).find("Data") != std::string::npos) { ApplyAcceptanceCorrUnc(h); }
 	
 }
 
@@ -798,16 +799,35 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 	TH1D::SetDefaultSumw2();
 
 	std::vector<TH1D*> Plots; Plots.clear();
-
 	std::vector<TString> FSIModel; FSIModel.clear();
+
+	TString AlternativeModel = "hA2018_Final";
+	if (ScaleToDataSet == "hA2018_Final") { AlternativeModel = "SuSav2"; }
 
 //	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM"+Extension);
 //	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension);
 //	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithoutFidAcc"+Extension);
 
 //	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM"+Extension);
-	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension);
-	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension);
+
+//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension);
+//	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension);
+
+	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"+Extension); // main plots for unfolding
+	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension); // main plots for unfolding
+	FSIModel.push_back(AlternativeModel+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"+Extension); // alternative model plots for acceptance correction uncertainty
+	FSIModel.push_back(AlternativeModel+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension); // alternative model plots for acceptance correction uncertainty
+
+	if (name == "h_Erec_subtruct_piplpimi_noprot_3pi") {
+
+		FSIModel[0] = ScaleToDataSet+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"+Extension;
+		FSIModel[1] = ScaleToDataSet+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"+Extension;
+		FSIModel[2] = AlternativeModel+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"+Extension;
+		FSIModel[3] = AlternativeModel+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"+Extension;
+
+	}
+
+	// --------------------------------------------------------------------------------------	
 
 	int NFSIModels = FSIModel.size();
 
@@ -855,6 +875,150 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 		OverallClone->SetBinError(WhichBin + 1, NewBinError);
 
 	}
+
+	// --------------------------------------------------------------------------------------
+
+
+// First, grab the files with smearing at truth level (_Truth_WithoutFidAcc_Offset), otherwise infinities at the edges 
+// Second, grab the G2018 true 1p0pi files with offset (_Truth_WithFidAcc_Offset), otherwise infinities at the double ratio
+
+std::vector<TH1D*> PlotsOffset; PlotsOffset.clear();
+std::vector<TString> FSIModelOffset; FSIModelOffset.clear();
+
+FSIModelOffset.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); // main reco plots for unfolding uncertainty with smearing
+FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // main plots for unfolding uncertainty with smearing
+FSIModelOffset.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset 
+FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset
+
+if (name == "h_Erec_subtruct_piplpimi_noprot_3pi") {
+
+	FSIModelOffset[0] = "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc";
+	FSIModelOffset[1] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc";
+	FSIModelOffset[2] = "hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc";
+	FSIModelOffset[3] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc";
+
+}
+
+// --------------------------------------------------------------------------------------	
+
+int NFSIModelsOffset = FSIModelOffset.size();
+
+for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
+
+	// --------------------------------------------------------------------------------------
+
+	TString PathToFilesOffset = GlobalPathToFiles + E + "/" + FSIModelOffset[WhichFSIModel] + "/" + xBCut + "/";
+	TString FileNameOffset = PathToFilesOffset + nucleus +"_" + E + "_" + FSIModelOffset[WhichFSIModel] + "_Plots_FSI_em.root";
+	TFile* FileSampleOffset = TFile::Open(FileNameOffset);
+
+	PlotsOffset.push_back( (TH1D*)( FileSampleOffset->Get(name) ) );
+
+	UniversalE4vFunction(PlotsOffset[WhichFSIModel],FSIModelsToLabels[FSIModelOffset[WhichFSIModel]],nucleus,E,name);
+
+	// --------------------------------------------------------------------------------------
+
+}
+
+// --------------------------------------------------------------------------------------
+	
+
+// Test mode for acceptance correction uncertainty
+
+TH1D* NominalModelRatio = (TH1D*)PlotsOffset[1]->Clone();
+NominalModelRatio->Divide(PlotsOffset[0]); // true / reco unfolding for nominal model
+
+TH1D* AlternativeModelRatio = (TH1D*)PlotsOffset[3]->Clone();
+AlternativeModelRatio->Divide(PlotsOffset[2]); // true / reco unfolding for alternative model
+
+TH1D* average = (TH1D*)(NominalModelRatio->Clone());
+average->Add(AlternativeModelRatio);
+average->Scale(0.5);
+
+TH1D* Spread = (TH1D*)(NominalModelRatio->Clone());
+Spread->Add(AlternativeModelRatio,-1);
+Spread->Divide(average);
+Spread->Scale(1./TMath::Sqrt(12.));
+
+int NBinsSpread = Spread->GetXaxis()->GetNbins();
+
+// make sure that the bin entries are positive
+
+for (int WhichBin = 0; WhichBin < NBinsSpread; WhichBin++) {
+
+	double BinContent = Spread->GetBinContent(WhichBin+1);
+	if (BinContent < 0) { Spread->SetBinContent(WhichBin+1,-BinContent); }
+
+}
+
+// --------------------------------------------------------------------------------------	
+
+// Special case for Ecal
+// To avoid the infinities around the peak
+// We merge the bins around the peak
+
+double DoubleE = -99., reso = 0.;
+if (E == "1_161") { DoubleE = 1.161; reso = 0.06; }
+if (E == "2_261") { DoubleE = 2.261; reso = 0.08; }
+if (E == "4_461") { DoubleE = 4.461; reso = 0.06; }
+
+double sum = 0; int nbins = 0;
+
+if (name == "epRecoEnergy_slice_0") {
+
+	// Loop over the bins and take the average of the bins around the peak
+
+	for (int WhichBin = 1; WhichBin <= NBinsSpread; WhichBin++) {
+
+		double BinCenter = Spread->GetBinCenter(WhichBin);
+		double BinContent = TMath::Abs(Spread->GetBinContent(WhichBin));
+
+		if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
+
+			sum += BinContent; nbins++;
+
+		}
+
+	}
+
+	sum = sum / double(nbins);
+
+	// -----------------------------------------------------------------------------
+
+	for (int WhichBin = 1; WhichBin <= NBinsSpread; WhichBin++) {
+
+		double BinCenter = Spread->GetBinCenter(WhichBin);
+		double BinContent = Spread->GetBinContent(WhichBin);
+
+		if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
+
+			Spread->SetBinContent(WhichBin,sum);
+
+		}
+
+	}
+
+}
+
+// now back to the main plot
+// add the acceptance correction errors in quadrature 
+// along with the other uncertainties (they have already been added)
+// Special case for Ecal, where we merge things around the peak to avoid infinities
+
+for (int WhichBin = 0; WhichBin < NBinsSpread; WhichBin++) {
+
+	double SpreadBinContent = Spread->GetBinContent(WhichBin+1); // 0.XY so literally percentage
+	double XSecBinError = OverallClone->GetBinError(WhichBin+1); // pre existing bin error
+	double XSecBinEntry = OverallClone->GetBinContent(WhichBin+1); // bin CV
+	double AccCorrError = SpreadBinContent * XSecBinEntry;
+
+	double NewXSecBinError = TMath::Sqrt( TMath::Power(XSecBinError,2.) + TMath::Power(AccCorrError,2.) );  
+	OverallClone->SetBinError(WhichBin+1,NewXSecBinError); // final bin error
+
+
+double BinCenter = OverallClone->GetBinCenter(WhichBin+1);
+cout << "Bin center = " << BinCenter << " XSecBinError = " << XSecBinError << "  SpreadBinContent = " << SpreadBinContent << "  AccCorrError = " << AccCorrError << endl;
+
+}
 
 	// --------------------------------------------------------------------------------------	
 

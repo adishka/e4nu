@@ -20,14 +20,14 @@ using namespace std;
 #include "../myFunctions.cpp"
 #include "../AfroConstants.h"
 
-TH1D* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec, TString Energy) {
+TH1D* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec, TString Energy, TString Var) {
 
 	TH1D::SetDefaultSumw2();
 
 	double DoubleE = -99., reso = 0.;
-	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.05; }
-	if (Energy == "2_261") { DoubleE = 2.261; reso = 0.03; }
-	if (Energy == "4_461") { DoubleE = 4.461; reso = 0.02; }
+	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.06; }
+	if (Energy == "2_261") { DoubleE = 2.261; reso = 0.08; }
+	if (Energy == "4_461") { DoubleE = 4.461; reso = 0.06; }
 
 	int NBins = h->GetXaxis()->GetNbins();
 //	int NPlots = hVec.size();
@@ -78,15 +78,20 @@ TH1D* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec, TString Energy) {
 
 	// ---------------------------------------------------------------------------------------------------------
 
+	// Foe Ecal only
 	// Use the average around the Ecal peak in the bins (1 +/- reso) Ebeam
 
-	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
+	if (Var == "epRecoEnergy_slice_0") {
 
-		double BinCenter = RMSClone->GetBinCenter(WhichBin);
+		for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
 
-		if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
+			double BinCenter = RMSClone->GetBinCenter(WhichBin);
 
-			RMSClone->SetBinContent(WhichBin,sum);
+			if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
+
+				RMSClone->SetBinContent(WhichBin,sum);
+
+			}
 
 		}
 
@@ -258,7 +263,7 @@ void RMSAveragedUnc() {
 
 					}
 
-					TH1D* clone = RMSAveragedFunc(average,VectorPlots,E[WhichEnergy]);
+					TH1D* clone = RMSAveragedFunc(average,VectorPlots,E[WhichEnergy],Var);
 					//clone->Scale(100.);
 
 					clone->GetYaxis()->SetTitle("Fractional Contribution (%)");
