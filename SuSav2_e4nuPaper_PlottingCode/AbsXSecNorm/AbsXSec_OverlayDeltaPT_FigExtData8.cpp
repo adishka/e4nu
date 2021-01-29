@@ -50,8 +50,8 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 	// ------------------------------------------------------------------------
 
 	FSIModel.push_back("Pinned_Data_Final");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger");
+	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger");
 
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors");
@@ -185,7 +185,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 						// Genie Break Down
 
 						if (
-							FSIModelsToLabels[FSIModel[WhichFSIModel]] == "SuSav2"
+							FSIModelsToLabels[FSIModel[WhichFSIModel]] == "SuSav2 Rad Updated Schwinger"
 						) {
 
 							if (Energy[WhichEnergy] == 1.161 && nucleus[WhichNucleus] == "12C") {

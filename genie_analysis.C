@@ -1255,6 +1255,9 @@ void genie_analysis::Loop(Int_t choice) {
 
 		// ---------------------------------------------------------------------------------------------------------------------
 
+		// Sanity check, especially for radiation
+		if (wght < 0 || wght > 10) { std::cout << "Something is really wrong with yur weights !!!" << std::endl; }
+
 		double WeightIncl = wght*e_acc_ratio / Mott_cross_sec;
 
 		// Securing ourselves against infinities

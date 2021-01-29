@@ -97,9 +97,9 @@ void THStackFluxes() {
 //	E.push_back("4461"); LabelE.push_back(" @ E = 4.461 GeV");
 
 	E.push_back("uBFlux"); LabelE.push_back(" BNB Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} [10^{-39} #frac{cm^{2}}{GeV Ar}]");
-//	E.push_back("DUNEFlux"); LabelE.push_back(" DUNE Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} [10^{-39} #frac{cm^{2}}{GeV Ar}]");
-//	E.push_back("NovaFlux"); LabelE.push_back(" Nova Flux");  YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} [10^{-39} #frac{cm^{2}}{GeV CH2}]");
-//	E.push_back("T2KFlux"); LabelE.push_back(" T2K Flux");  YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} [10^{-39} #frac{cm^{2}}{GeV CH}]");			
+	E.push_back("DUNEFlux"); LabelE.push_back(" DUNE Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} [10^{-39} #frac{cm^{2}}{GeV Ar}]");
+	E.push_back("NovaFlux"); LabelE.push_back(" Nova Flux");  YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} [10^{-39} #frac{cm^{2}}{GeV CH2}]");
+	E.push_back("T2KFlux"); LabelE.push_back(" T2K Flux");  YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} [10^{-39} #frac{cm^{2}}{GeV CH}]");			
 
 	FSIModel.push_back("GTEST19_10b_00_000_CCinclMEC");FSILabel.push_back("SuSav2");
 	FSIModel.push_back("G18_10a_02_11a_CCinclMEC");FSILabel.push_back("G2018");
@@ -167,6 +167,8 @@ void THStackFluxes() {
 
 		for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
+			if (E[WhichEnergy] == "NovaFlux" || E[WhichEnergy] == "T2KFlux") { nucleus[0] = "C12"; }
+
 			// Loop over the plots
 
 			for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
@@ -193,7 +195,7 @@ void THStackFluxes() {
 				
 				if (NFSIModels == 3) {
 
-					pad1 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.07,0,0.38,1.,21); 
+					pad1 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.06,0,0.38,1.,21); 
 					pad1->SetFillColor(kWhite); pad1->Draw();
 					pad2 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.38,0,0.69,1,22); 
 					pad2->SetFillColor(kWhite); pad2->Draw(); 
@@ -210,12 +212,15 @@ void THStackFluxes() {
 				for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
 					if (WhichFSIModel == 0) 
-						{ pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.07); pad1->SetTitle("");}
+						{ pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.1); pad1->SetTitle("");}
 					if (WhichFSIModel == 1)  { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.0); }
 					
 					if (WhichFSIModel == 2)  { pad3->cd(); pad3->SetLeftMargin(0.0); pad3->SetRightMargin(0.04); }
 
 					THStack* THStacks = new THStack(NameOfPlots[WhichPlot]+"_"+FSIModel[WhichFSIModel],"");
+
+					// The files are located under 
+					// scp apapadop@geniegpvm02.fnal.gov:/genie/app/users/apapadop/True1p0piElectronNeutrinoComparisons/myFiles/*Flux*.root ./myFiles/
 
 					TString PathToFiles = "myFiles/";
 					TFile* FileSample = TFile::Open(PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+".root");
@@ -367,8 +372,7 @@ void THStackFluxes() {
 
 				} // End of the loop over the FSI Models 
 
-//				PlotCanvas->SaveAs("../../myPlots/pdf/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"+nucleus[WhichNucleus]+"_" 
-//							+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+".pdf");
+				PlotCanvas->SaveAs(E[WhichEnergy]+".pdf");
 
 				//delete PlotCanvas;
 

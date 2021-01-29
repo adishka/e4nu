@@ -130,21 +130,24 @@ void OverlayPlots() {
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Data (Florian's rethrow)"); DirNames.push_back("Data");
 //	FSIModel.push_back("Pinned_Data_NewFiducials_SixSectors"); FSILabel.push_back("Data (New map)"); DirNames.push_back("Data_New_Fiducials");
 
-//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("G2018 NoRad");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Playground"); FSILabel.push_back("Genie Playground");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Offset"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut"); FSILabel.push_back("G2018 (default)");  DirNames.push_back("hA2018_Truth_RadCorr");
 
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2 (Truth NoRad)");  DirNames.push_back("hA2018_Truth_RadCorr");
-
-	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2 (Ext Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_Schwinger"); FSILabel.push_back("SuSav2 (Ext+Int Rad v1)");  DirNames.push_back("SuSav2_Truth_RadCorr");
+
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2 (Ext Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
 	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Ext+Int Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger_Test"); FSILabel.push_back("SuSav2 (New map)");  DirNames.push_back("SuSav2_Truth_RadCorr");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 Truth W/ Fid & Acc");  DirNames.push_back("SuSav2_Truth_RadCorr");
+
+//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("G2018 NoRad");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018 (Ext Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("G2018 (Ext+Int Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
+
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger_Test"); FSILabel.push_back("SuSav2 (Old map)");  DirNames.push_back("SuSav2_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2 Truth W/ Fid & Acc");  DirNames.push_back("SuSav2_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2 (Truth Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
 
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_Filtered"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_Truth_RadCorr");
@@ -169,11 +172,12 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
 //	NameOfPlots.push_back("MissMomentum_NoWeight"); LabelOfPlots.push_back("P_{miss}^{#perp} [GeV/c]"); OutputPlotNames.push_back("MissMomentum_NoWeight");
 
+//	NameOfPlots.push_back("DeltaAlphaT_Int_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} P_{T} [GeV/c]"); OutputPlotNames.push_back("DeltaAlphaT_Int_0");
 	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-//	NameOfPlots.push_back("ECal_Int_1"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_1");
-//	NameOfPlots.push_back("ECal_Int_2"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_2");
-//	NameOfPlots.push_back("ECal_Int_3"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_3");
-//	NameOfPlots.push_back("ECal_Int_4"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_4");
+	NameOfPlots.push_back("ECal_Int_1"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_1");
+	NameOfPlots.push_back("ECal_Int_2"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_2");
+	NameOfPlots.push_back("ECal_Int_3"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_3");
+	NameOfPlots.push_back("ECal_Int_4"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_4");
 
 //	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_1"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]");  OutputPlotNames.push_back("epRecoEnergy_slice_1");
@@ -670,7 +674,7 @@ void OverlayPlots() {
 //						double ScalingFactor = 18E8 / Plots[WhichFSIModel]->GetMaximum();
 //						double ScalingFactor = 1.;
 						//Plots[WhichFSIModel]->Scale(ScalingFactor);
-
+cout << "FSIModelsToLabels[FSIModel[WhichFSIModel]] = " << FSIModelsToLabels[FSIModel[WhichFSIModel]] << endl;
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
 
 						// -----------------------------------------------------------------------------------

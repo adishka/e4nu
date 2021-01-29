@@ -25,7 +25,7 @@ TGraph* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec, TString Energy, TStrin
 	TH1D::SetDefaultSumw2();
 
 	double DoubleE = -99., reso = 0.;
-	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.06; }
+	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.07; }
 	if (Energy == "2_261") { DoubleE = 2.261; reso = 0.08; }
 	if (Energy == "4_461") { DoubleE = 4.461; reso = 0.06; }
 
@@ -34,6 +34,7 @@ TGraph* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec, TString Energy, TStrin
 	// ---------------------------------------------------------------------------------------------------------
 
 	TH1D* RMSClone = (TH1D*)(hVec[0]->Clone("RMSClone"));
+	TString XaxisTitle = RMSClone->GetXaxis()->GetTitle();  
 	RMSClone->Add(hVec[1],-1);
 	RMSClone->Divide(h);
 	RMSClone->Scale(1./TMath::Sqrt(12.));
@@ -74,7 +75,7 @@ TGraph* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec, TString Energy, TStrin
 
 			if (BinCenter/DoubleE < 1.1) {
 
-				bincenter[WhichBin-1] = BinCenter/DoubleE;
+				bincenter[WhichBin-1] = BinCenter;
 
 				if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
 
@@ -82,22 +83,6 @@ TGraph* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec, TString Energy, TStrin
 					binentry[WhichBin-1] = sum;
 
 				} else { binentry[WhichBin-1] = BinContent; }
-
-			}
-
-		}
-
-	} else if (Var == "eRecoEnergy_slice_0") {
-
- 		for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
-
-			double BinCenter = RMSClone->GetBinCenter(WhichBin);
-			double BinContent = RMSClone->GetBinContent(WhichBin);
-
-			if (BinCenter/DoubleE < 1.1) {
-
-				bincenter[WhichBin-1] = BinCenter/DoubleE;
-				binentry[WhichBin-1] = BinContent;
 
 			}
 
@@ -120,7 +105,7 @@ TGraph* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec, TString Energy, TStrin
 	// ---------------------------------------------------------------------------------------------------------
 
 	TGraph* GraphClone = new TGraph(NBins,bincenter,binentry);
-
+	GraphClone->GetXaxis()->SetTitle(XaxisTitle);
 
 	// ---------------------------------------------------------------------------------------------------------
 
@@ -152,11 +137,11 @@ void AveragedUncOverlay() {
 
 //	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
 	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
-//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
+	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
 
-	E.push_back("1_161"); LabelE.push_back(", 1.1 GeV");
+//	E.push_back("1_161"); LabelE.push_back(", 1.1 GeV");
 //	E.push_back("2_261"); LabelE.push_back(", 2.2 GeV");	
-//	E.push_back("4_461"); LabelE.push_back(", 4.4 GeV");
+	E.push_back("4_461"); LabelE.push_back(", 4.4 GeV");
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
@@ -299,7 +284,7 @@ void AveragedUncOverlay() {
 					//clone->Scale(100.);
 
 					clone->SetTitle("");
-					clone->GetXaxis()->SetTitle("E^{reco}/E^{beam}");
+					//clone->GetXaxis()->SetTitle("E^{reco}/E^{beam}");
 					clone->GetYaxis()->SetTitle("Fractional Contribution (%)");
 //					clone->GetYaxis()->SetRangeUser(-20,20);
 					clone->GetYaxis()->SetRangeUser(0,40);

@@ -28,6 +28,8 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 	GlobalSettings();
 	//TGaxis::SetMaxDigits(3);
+//	double EnhaceTail = 1./4.;
+	double EnhaceTail = 1./1.;
 
 	// ------------------------------------------------------------------------
 
@@ -35,31 +37,34 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 	std::vector<TString> nucleus; 
 	std::vector<TString> JustNucleus;
 	std::vector<TString> E;
+	std::vector<double> DoubleE;
 	std::vector<TString> FSIModel;
 	std::vector<TString> FSILabel; 
 	std::vector<TString> NameOfPlots; 
 	std::vector<TString> LabelOfPlots;  
 	std::vector<TString> OutputPlotNames;
 
+	// ------------------------------------------------------------------------
+
 	nucleus.push_back("12C"); 
 	JustNucleus.push_back("C");
-	E.push_back("1_161");
+	E.push_back("1_161"); DoubleE.push_back(1.161);
 
 //	nucleus.push_back("12C"); 
 //	JustNucleus.push_back("C");
-//	E.push_back("2_261");
+//	E.push_back("2_261"); DoubleE.push_back(2.261);
 
 //	nucleus.push_back("12C"); 
 //	JustNucleus.push_back("C");
-//	E.push_back("4_461");
+//	E.push_back("4_461"); DoubleE.push_back(4.461);
 
 //	nucleus.push_back("56Fe"); 
 //	JustNucleus.push_back("Fe");
-//	E.push_back("2_261");
+//	E.push_back("2_261"); DoubleE.push_back(2.261);
 
 //	nucleus.push_back("56Fe"); 
 //	JustNucleus.push_back("Fe");
-//	E.push_back("4_461");
+//	E.push_back("4_461"); DoubleE.push_back(4.461);
 
 //	nucleus.push_back("4He"); 
 //	JustNucleus.push_back("4He");
@@ -68,25 +73,13 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 //	nucleus.push_back("4He"); 
 //	JustNucleus.push_back("4He");
 //	E.push_back("4_461");
+
+	// ------------------------------------------------------------------------
 
 	xBCut.push_back("NoxBCut");
 
-//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
-	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-
-//	FSIModel.push_back("Pinned_Data_Final_XSec"); FSILabel.push_back("Pinned Data");
-
-//	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
-
-//		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth0pi_WithoutFidAcc_XSec"); FSILabel.push_back("SuSav2");	
-//		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth0pi_WithoutFidAcc_XSec"); FSILabel.push_back("G2018");
-
-//	} else {
-
-//		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_XSec"); FSILabel.push_back("SuSav2");	
-//		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithoutFidAcc_XSec"); FSILabel.push_back("G2018");
-
-//	}
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
+	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
 
@@ -98,7 +91,6 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 	} else {
 
 		FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
-		//FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
 		FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
 
 	}
@@ -134,6 +126,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 					TString CanvasName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
 					TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768);
+					PlotCanvas->SetLogy();
 
 					// ---------------------------------------------------------------------------
 
@@ -145,7 +138,8 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 					pad1->SetFillColor(kWhite); pad1->Draw();
 					pad1->SetTopMargin(0.1);
 					pad1->SetBottomMargin(0.18);
-					pad1->SetLeftMargin(0.17); 
+					pad1->SetLeftMargin(0.18); 
+					if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0" && E[WhichEnergy] == "1_161") { pad1->SetLeftMargin(0.15); }
 					pad1->SetRightMargin(0.04);
 					pad1->cd();
 
@@ -153,16 +147,17 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 					Plots.clear();
 
-					double LegXmin = 0.22, LegYmin = 0.45, YSpread = 0.35;
+					double LegXmin = 0.21, LegYmin = 0.45, YSpread = 0.35;
 
 					TLegend* legGenie = new TLegend(LegXmin,LegYmin,LegXmin+0.15,LegYmin+YSpread);
 					legGenie->SetNColumns(1);
 
-					TLegend* legGenieBlackLine = new TLegend(LegXmin,0.68,LegXmin+0.15,0.82);
+					TLegend* legGenieBlackLine = new TLegend(LegXmin,0.76,LegXmin+0.15,0.88);
 					legGenieBlackLine->SetNColumns(1);
 
-					TLegend* legGenieBreak = new TLegend(LegXmin,0.51,0.4,0.68);					
+					TLegend* legGenieBreak = new TLegend(LegXmin,0.59,0.4,0.76);					
 					legGenieBreak->SetNColumns(2);
+					legGenieBreak->SetMargin(0.39);
 
 					double max = -99.;
 					double min = 1E12;
@@ -189,10 +184,13 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 						Plots[WhichFSIModel]->GetXaxis()->SetTitle(JustNucleus[WhichNucleus]+LabelOfPlots[WhichPlot]);
 						Plots[WhichFSIModel]->GetXaxis()->CenterTitle(0);
 
+						Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(1.12);
+						if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0"  && E[WhichEnergy] == "1_161") { Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(0.85); }
+
 						if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") 
-							{ Plots[WhichFSIModel]->GetYaxis()->SetTitle("#frac{d#sigma}{dE^{QE}} [#frac{#mub}{GeV}]"); }
+							{ Plots[WhichFSIModel]->GetYaxis()->SetTitle(XSecEQELabel); }
 						if (NameOfPlots[0] == "epRecoEnergy_slice_0") 
-							{ Plots[WhichFSIModel]->GetYaxis()->SetTitle("#frac{d#sigma}{dE^{cal}} [#frac{#mub}{GeV}]"); }
+							{ Plots[WhichFSIModel]->GetYaxis()->SetTitle(XSecEcalLabel); }
 
 						// -----------------------------------------------------------------------------------
 
@@ -201,11 +199,36 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 						// divides by the bin width to obtain normalized yields / absolute cross sections
 						// uses the relevant binning
 						// gets the relevant x axis range
-						// If data sample: 
-						//                 apply systematics due to rotations et al
-						//                 apply acceptance systematics using sector-by -sector uncertainties
+						// If data sample, also: 
+						// 	apply systematics due to rotations et al
+						// 	apply acceptance systematics using sector-by -sector uncertainties
+						//	apply acceptance correction uncertainties	
 
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
+
+						//-----------------------------------------------------------------------------------------------
+
+//						//Larry's suggestion because ECal has a sharp peak and a low tail 
+//						//Thus we multiply the peak by EnhaceTail
+
+//						if ( DoubleE[WhichEnergy] == 2.261 || DoubleE[WhichEnergy] == 4.461 ) {
+
+//							double LowE = 0.95*DoubleE[WhichEnergy];
+//							int LowEBin = Plots[WhichFSIModel]->FindBin(LowE);
+//							int HighEBin = Plots[WhichFSIModel]->GetNbinsX();
+
+//							for (int i = LowEBin + 1; i <= HighEBin; i++) { 
+//					
+//								double content = Plots[WhichFSIModel]->GetBinContent(i);
+//								double error = Plots[WhichFSIModel]->GetBinError(i);
+//								double newcontent = EnhaceTail * content;
+//								double newerror = EnhaceTail * error;				
+//								Plots[WhichFSIModel]->SetBinContent(i,newcontent);
+//								Plots[WhichFSIModel]->SetBinError(i,newerror);
+
+//							}
+
+//						}
 
 						// ----------------------------------------------------------------------------------
 
@@ -233,6 +256,30 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 								UniversalE4vFunction(BreakDownPlots[j-1],FSIModelsToLabels[FSIModel[WhichFSIModel]],\
 										     nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
+
+//								//-----------------------------------------------------------------------------------------------
+
+//								//Larry's suggestion because ECal has a sharp peak and a low tail 
+//								//Thus we multiply the peak by EnhaceTail
+
+//								if ( DoubleE[WhichEnergy] == 2.261 || DoubleE[WhichEnergy] == 4.461 ) {
+
+//									double LowE = 0.95*DoubleE[WhichEnergy];
+//									int LowEBin = BreakDownPlots[j-1]->FindBin(LowE);
+//									int HighEBin = BreakDownPlots[j-1]->GetNbinsX();
+
+//									for (int i = LowEBin + 1; i <= HighEBin; i++) { 
+//							
+//										double content = BreakDownPlots[j-1]->GetBinContent(i);
+//										double error = BreakDownPlots[j-1]->GetBinError(i);
+//										double newcontent = EnhaceTail * content;
+//										double newerror = EnhaceTail * error;				
+//										BreakDownPlots[j-1]->SetBinContent(i,newcontent);
+//										BreakDownPlots[j-1]->SetBinError(i,newerror);
+
+//									}
+
+//								}
 
 								//-----------------------------------------------------------------------------------------------
 
@@ -262,7 +309,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 						//if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { height = 2.3; }
 
 						if ( xBCut[WhichxBCut] == "xBCut" ) { height = 1.1; }
-						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
+						//Plots[0]->GetYaxis()->SetRangeUser(-0.005*max,height*max);
 
 						double localmin = Plots[WhichFSIModel]->GetBinContent(Plots[WhichFSIModel]->FindBin(4)); // multiplicity 4 is the highest one in data
 						if (localmin < min && localmin != 0) { min = localmin; }
@@ -286,12 +333,14 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 							DataPlot->SetMarkerSize(2.); 
 							DataPlot->SetLineColor(kBlack);	
 							DataPlot->SetMarkerColor(kBlack);
-							DataPlot->GetYaxis()->SetRangeUser(0.,height*max);	
+							DataPlot->GetYaxis()->SetRangeUser(-0.005*max,height*max);	
 							DataPlot->Draw("e same"); 
 
-TFile* f = TFile::Open("AccCorr_12C_1_161_GeV.root","recreate");
-DataPlot->Write();
-f->Close();
+// --------------------------------------------------------					
+
+//TFile* f = TFile::Open("AccCorr_12C_1_161_GeV.root","recreate");
+//DataPlot->Write();
+//f->Close();
 
 //							TH1D* DataPlotG2018 = AcceptanceCorrection(Plots[WhichFSIModel],"hA2018_Final", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
@@ -301,35 +350,21 @@ f->Close();
 //							DataPlotG2018->SetMarkerColor(kRed);	
 //							DataPlotG2018->Draw("e same"); 
 
-// --------------------------------------------------------
-
-//TH1D* CloneUp = (TH1D*)(DataPlot->Clone("CloneUp"));
-
-//CloneUp->SetLineColor(kRed);
-//CloneUp->SetMarkerColor(kRed);
-//CloneUp->Scale(1.2);
-//CloneUp->Draw("e same");
-
-//// --------------------------------------------------------
-
-//TH1D* CloneDown = (TH1D*)(DataPlot->Clone("CloneDown"));
-
-//CloneDown->SetLineColor(kMagenta);
-//CloneDown->SetMarkerColor(kMagenta);
-//CloneDown->Scale(0.8);
-//CloneDown->Draw("e same");
-
-// ---------------------------------------------------------							
+// --------------------------------------------------------					
 
 						} else { 
 
 							if (FSILabel[WhichFSIModel] == "G2018") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }
 							Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
-							
-							if (FSILabel[WhichFSIModel] == "SuSav2") 
-								{ legGenieBlackLine->AddEntry(Plots[WhichFSIModel],"SuSav2 (Total)", "l"); }
+							if (FSILabel[WhichFSIModel] == "G2018") { BreakDownPlots[3]->Draw("C hist same"); }						
 
-							DataPlot->GetYaxis()->SetRangeUser(0.,height*max);	
+							if (FSILabel[WhichFSIModel] == "SuSav2") { 
+
+								legGenieBlackLine->AddEntry(Plots[WhichFSIModel],"SuSav2 (Total)", "l"); 
+
+							}
+
+							DataPlot->GetYaxis()->SetRangeUser(-0.005*max,height*max);	
 							DataPlot->Draw("e same"); 
 
 							//Plots[0]->Draw("e same"); 
@@ -339,6 +374,8 @@ f->Close();
 		                                // --------------------------------------------------------------------------------------------------
 
 					} // End of the loop over the FSI Models 
+
+					gPad->RedrawAxis();
 
 					legGenie->SetBorderSize(0);
 					legGenie->SetTextFont(FontStyle);
@@ -363,23 +400,143 @@ f->Close();
 					myNucleus->SetTextFont(FontStyle);
 					myNucleus->SetTextColor(kBlack);
 					myNucleus->SetTextSize(TextSize-0.02);
-					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myNucleus->DrawLatexNDC(0.22,0.85,JustNucleus[WhichNucleus]+"(e,e')_{0#pi}"); }
+//					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myNucleus->DrawLatexNDC(0.22,0.85,JustNucleus[WhichNucleus]+"(e,e')_{0#pi}"); }
 
 					TLatex* myEbeam = new TLatex();
 					myEbeam->SetTextFont(FontStyle);
 					myEbeam->SetTextColor(kAzure+4);
 					myEbeam->SetTextSize(TextSize-0.02);
-					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myEbeam->DrawLatexNDC(0.72,0.3,"E_{beam}"); }
+					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myEbeam->DrawLatexNDC(0.72,0.28,"E_{beam}"); }
 
 					TLatex* myArrow = new TLatex();
 					myArrow->SetTextFont(FontStyle);
 					myArrow->SetTextColor(kAzure+4);
 					myArrow->SetTextSize(1.2*TextSize);
-					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myArrow->DrawLatex(1.141,0.03,"#Downarrow"); }
+					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myArrow->DrawLatex(1.141,0.01,"#Downarrow"); }
 
-					// Monitor where 1.161 GeV is
+					// Monitor where 1.161 GeV is (if needed)
 					//TLine* line = new TLine(1.161,0.,1.161,2.);
 					//line->Draw();
+
+// -------------------------------------------------------------------------------------------
+
+// Extra pad zooming in tail if Ecal plot
+
+if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
+
+	// ---------------------------------------
+
+	double PadNDCXmin = 0.35,PadNDCXmax = 0.75, PadNDCYmin = 0.3,PadNDCYmax = 0.65;
+	double PadLeftMargin = 0.105, PadRightMargin = 0.05, PadBottomMargin = 0.1;
+
+	double Xmin = 0, Xmax = 0, Ymin = 0, Ymax = 0;
+
+	// ---------------------------------------
+		
+	if (E[WhichEnergy] == "1_161") { 
+
+		Xmin = 0.565; Xmax = 1.105; 
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.45; }
+
+	}
+
+		
+	if (E[WhichEnergy] == "2_261") { 
+
+		Xmin = 0.7; Xmax = 2.1; 
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.19; }
+		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.0; Ymax = 0.79; }
+
+	}
+
+	if (E[WhichEnergy] == "4_461") { 
+
+		Xmin = 1.6; Xmax = 4.3; 
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.049; }
+		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.0; Ymax = 0.17; }
+
+	}
+
+	// ---------------------------------------
+
+	TH1D* DataPlotClone = (TH1D*)(DataPlot->Clone("DataPlotClone"));
+	TH1D* SuSav2PlotClone = (TH1D*)(Plots[1]->Clone("SuSav2PlotClone"));
+	TH1D* G2018PlotClone = (TH1D*)(Plots[2]->Clone("G2018PlotClone"));
+
+	TH1D* QEPlotClone = (TH1D*)(BreakDownPlots[0]->Clone("QEPlotClone"));
+	TH1D* MECPlotClone = (TH1D*)(BreakDownPlots[1]->Clone("MECPlotClone"));
+	TH1D* RESPlotClone = (TH1D*)(BreakDownPlots[2]->Clone("RESPlotClone"));
+	TH1D* DISPlotClone = (TH1D*)(BreakDownPlots[3]->Clone("DISPlotClone"));
+
+	// ---------------------------------------
+
+	double XminLeftLine = DataPlotClone->GetBinCenter(DataPlotClone->FindBin(Xmin));
+	double XminRightLine = DataPlotClone->GetBinCenter(DataPlotClone->FindBin(Xmax));
+
+	double XmaxLeftLine = NDCtoX(PadNDCXmin+0.5*PadLeftMargin*(PadNDCXmax-PadNDCXmin));
+	double XmaxRightLine = NDCtoX(PadNDCXmax-0.5*PadRightMargin*(PadNDCXmax-PadNDCXmin));
+
+	double YmaxLeftLine = NDCtoY(PadNDCYmin+0.5*PadBottomMargin*(PadNDCYmax-PadNDCYmin));
+
+	double YminLeftLine = DataPlotClone->GetBinContent(DataPlotClone->FindBin(Xmin));
+	double YminRightLine = DataPlotClone->GetBinContent(DataPlotClone->FindBin(Xmax));
+
+	TLine* Leftline = new TLine(XminLeftLine,YminLeftLine,XmaxLeftLine,YmaxLeftLine);
+	Leftline->SetLineWidth(2);
+	Leftline->SetLineColor(kBlack);
+	Leftline->SetLineStyle(9);
+	Leftline->Draw();
+
+	TLine* Rightline = new TLine(XminRightLine,YminRightLine,XmaxRightLine,YmaxLeftLine);
+	Rightline->SetLineWidth(2);
+	Rightline->SetLineColor(kBlack);
+	Rightline->SetLineStyle(9);
+	Rightline->Draw();
+
+	// ---------------------------------------
+
+	TString PadName = "ZoomInPad";
+	TPad* padZoomIn = new TPad(PadName,PadName,PadNDCXmin,PadNDCYmin,PadNDCXmax,PadNDCYmax,21); 
+	padZoomIn->SetFillColor(kWhite); 
+	padZoomIn->SetFrameLineWidth(3);
+	padZoomIn->Draw();
+	padZoomIn->SetTopMargin(0.005);
+	padZoomIn->SetBottomMargin(PadBottomMargin);
+	padZoomIn->SetLeftMargin(PadLeftMargin);
+	padZoomIn->SetRightMargin(PadRightMargin);
+	padZoomIn->SetFillStyle(4000); // make pad trasnparent
+	padZoomIn->cd();
+
+	// ---------------------------------------------------------------
+
+	auto frame = PlotCanvas->DrawFrame(Xmin,Ymin,Xmax,Ymax);
+
+	frame->GetXaxis()->SetNdivisions(6);
+	frame->GetXaxis()->SetLabelSize(0.1);
+	frame->GetXaxis()->SetLabelFont(FontStyle);
+
+	frame->GetYaxis()->SetNdivisions(6);
+	frame->GetYaxis()->SetLabelSize(0.1);
+	frame->GetYaxis()->SetLabelFont(FontStyle);
+
+	DataPlotClone->GetYaxis()->SetNdivisions(4);
+	DataPlotClone->GetYaxis()->SetLabelOffset(0.1);
+	DataPlotClone->Draw("e same");
+
+	G2018PlotClone->Draw("c hist same");
+	SuSav2PlotClone->Draw("c hist same");
+	QEPlotClone->Draw("c hist same");
+	MECPlotClone->Draw("c hist same");
+	RESPlotClone->Draw("c hist same");
+	DISPlotClone->Draw("c hist same");
+
+	DataPlotClone->Draw("e same");
+
+	gPad->RedrawAxis();
+
+}
+
+// -------------------------------------------------------------------------------------------
 
 					// -------------------------------------------------------------------------------------------
 

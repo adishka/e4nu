@@ -51,21 +51,21 @@ void AcceptanceCorrections() {
 	// ------------------------------------------------------------------------
 
 //	nucleus.push_back("4He"); JustNucleus.push_back("He");
-	nucleus.push_back("12C"); JustNucleus.push_back("C");
-//	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
+//	nucleus.push_back("12C"); JustNucleus.push_back("C");
+	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
 
-	E.push_back("1_161"); LabelE.push_back(" @ E = 1.157 GeV"); DoubleE.push_back(1.161);	
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
+//	E.push_back("1_161"); LabelE.push_back(" @ E = 1.157 GeV"); DoubleE.push_back(1.161);	
+	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
 //	E.push_back("4_461"); LabelE.push_back(" @ E = 4.457 GeV"); DoubleE.push_back(4.461);	
 
 	xBCut.push_back("NoxBCut");
 
-//	NameOfPlots.push_back("DeltaPhiT_Int_0"); LabelOfPlots.push_back("#delta#phi_{T} [deg]"); OutputPlotNames.push_back("DeltaPhiT");
-//	NameOfPlots.push_back("DeltaAlphaT_Int_0"); LabelOfPlots.push_back("#delta#alpha_{T} [deg]"); OutputPlotNames.push_back("DeltaAlphaT");
-//	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
-//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+	NameOfPlots.push_back("DeltaPhiT_Int_0"); LabelOfPlots.push_back("#delta#phi_{T} [deg]"); OutputPlotNames.push_back("DeltaPhiT");
+	NameOfPlots.push_back("DeltaAlphaT_Int_0"); LabelOfPlots.push_back("#delta#alpha_{T} [deg]"); OutputPlotNames.push_back("DeltaAlphaT");
+	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
+	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 ////	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e')_{1p0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("eRecoEnergy_slice_0");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("eRecoEnergy_slice_0");
 ////	NameOfPlots.push_back("h1_EQE_FullyInclusive"); LabelOfPlots.push_back("(e,e') E^{QE} [GeV]");  OutputPlotNames.push_back("FullyInclusiveeRecoEnergy_slice_0");
 
 	// 0th plot is CV
@@ -76,14 +76,18 @@ void AcceptanceCorrections() {
 
 	if (Label == "SuSav2") {
 
-		FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
-		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("TrueWithFid");
+//		FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
+//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("TrueWithFid");
+		FSIModel.push_back(Label+"_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("Reco");
+		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("TrueWithFid");
 		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
 
 	} else {
 
 		FSIModel.push_back(Label+"_RadCorr_LFGM_Offset"); FSILabel.push_back("Reco");
 		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_Offset"); FSILabel.push_back("TrueWithFid");
+//		FSIModel.push_back(Label+"_RadCorr_LFGM_UpdatedSchwinger_Offset"); FSILabel.push_back("Reco");
+//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger_Offset"); FSILabel.push_back("TrueWithFid");
 		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
 
 	}
@@ -144,7 +148,7 @@ void AcceptanceCorrections() {
 					if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
 						FSIModel[1] = Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger";
-						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc";
+						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"; // need to be offset
 
 					}
 

@@ -59,7 +59,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors"); FSILabel.push_back("G2018");
 
-	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]");
+	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]");
 	OutputPlotNames.push_back("epRecoEnergy_slice_0");
 
 	std::vector<TH1D*> Plots;
@@ -529,9 +529,9 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 		//latexYTitle.DrawLatexNDC(0.8,0.08,DoubleAccCorrXSecTitle);
 
 		if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") 
-			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE^{QE}} [#frac{#mub}{GeV}]"); }
+			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE_{QE}} [#frac{#mub}{GeV}]"); }
 		if (NameOfPlots[0] == "epRecoEnergy_slice_0") 
-			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE^{cal}} [#frac{#mub}{GeV}]"); }
+			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE_{cal}} [#frac{#mub}{GeV}]"); }
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -551,9 +551,9 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 		//latexYTitleFe.DrawLatexNDC(0.8,0.,DoubleAccCorrXSecTitle);
 
 		if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") 
-			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE^{QE}} [#frac{#mub}{GeV}]"); }
+			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE_{QE}} [#frac{#mub}{GeV}]"); }
 		if (NameOfPlots[0] == "epRecoEnergy_slice_0") 
-			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE^{cal}} [#frac{#mub}{GeV}]"); }
+			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE_{cal}} [#frac{#mub}{GeV}]"); }
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 

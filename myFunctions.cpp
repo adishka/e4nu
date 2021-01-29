@@ -253,7 +253,7 @@ void PrettyDoubleXSecPlot(TH1D* h) {
 
 	h->GetYaxis()->CenterTitle();
 	h->GetYaxis()->SetTitleSize(TextSize); 
-	h->GetYaxis()->SetTickSize(0.02);
+	//h->GetYaxis()->SetTickSize(0.02);
 	h->GetYaxis()->SetLabelSize(TextSize);
 	h->GetYaxis()->SetTitle(DoubleXSecTitle);
 	h->GetYaxis()->SetTitleFont(FontStyle);
@@ -291,7 +291,7 @@ void PrettyGraph(TGraph* h) {
 
 	h->GetYaxis()->CenterTitle();
 	h->GetYaxis()->SetTitleSize(TextSize); 
-	h->GetYaxis()->SetTickSize(0.02);
+	//h->GetYaxis()->SetTickSize(0.02);
 	h->GetYaxis()->SetLabelSize(TextSize);
 	h->GetYaxis()->SetTitle(DoubleXSecTitle);
 	h->GetYaxis()->SetTitleFont(FontStyle);
@@ -813,16 +813,21 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 //	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension);
 //	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension);
 
-	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"+Extension); // main plots for unfolding
+//apapadop
+//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"+Extension); // main plots for unfolding
+	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension); // main plots for unfolding
 	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension); // main plots for unfolding
-	FSIModel.push_back(AlternativeModel+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"+Extension); // alternative model plots for acceptance correction uncertainty
+//	FSIModel.push_back(AlternativeModel+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"+Extension); // alternative model plots for acceptance correction uncertainty
+	FSIModel.push_back(AlternativeModel+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension); // alternative model plots for acceptance correction uncertainty
 	FSIModel.push_back(AlternativeModel+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension); // alternative model plots for acceptance correction uncertainty
 
 	if (name == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
-		FSIModel[0] = ScaleToDataSet+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"+Extension;
+		FSIModel[0] = ScaleToDataSet+"_RadCorr_LFGM_Truth0pi_WithFidAcc"+Extension;
+//		FSIModel[0] = ScaleToDataSet+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"+Extension;
 		FSIModel[1] = ScaleToDataSet+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"+Extension;
-		FSIModel[2] = AlternativeModel+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"+Extension;
+//		FSIModel[2] = AlternativeModel+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"+Extension;
+		FSIModel[2] = AlternativeModel+"_RadCorr_LFGM_Truth0pi_WithFidAcc"+Extension;
 		FSIModel[3] = AlternativeModel+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"+Extension;
 
 	}
@@ -885,6 +890,12 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 std::vector<TH1D*> PlotsOffset; PlotsOffset.clear();
 std::vector<TString> FSIModelOffset; FSIModelOffset.clear();
 
+// apapadop
+//FSIModelOffset.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); // main reco plots for unfolding uncertainty with smearing
+//FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // main plots for unfolding uncertainty with smearing
+//FSIModelOffset.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset 
+//FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset
+
 FSIModelOffset.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); // main reco plots for unfolding uncertainty with smearing
 FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // main plots for unfolding uncertainty with smearing
 FSIModelOffset.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset 
@@ -892,10 +903,16 @@ FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset
 
 if (name == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
+// apapadop
+//	FSIModelOffset[0] = "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger";
+//	FSIModelOffset[1] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
+//	FSIModelOffset[2] = "hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger";
+//	FSIModelOffset[3] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
+
 	FSIModelOffset[0] = "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc";
-	FSIModelOffset[1] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc";
+	FSIModelOffset[1] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
 	FSIModelOffset[2] = "hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc";
-	FSIModelOffset[3] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc";
+	FSIModelOffset[3] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
 
 }
 
@@ -957,7 +974,7 @@ for (int WhichBin = 0; WhichBin < NBinsSpread; WhichBin++) {
 // We merge the bins around the peak
 
 double DoubleE = -99., reso = 0.;
-if (E == "1_161") { DoubleE = 1.161; reso = 0.06; }
+if (E == "1_161") { DoubleE = 1.161; reso = 0.07; }
 if (E == "2_261") { DoubleE = 2.261; reso = 0.08; }
 if (E == "4_461") { DoubleE = 4.461; reso = 0.06; }
 
@@ -1015,8 +1032,8 @@ for (int WhichBin = 0; WhichBin < NBinsSpread; WhichBin++) {
 	OverallClone->SetBinError(WhichBin+1,NewXSecBinError); // final bin error
 
 
-double BinCenter = OverallClone->GetBinCenter(WhichBin+1);
-cout << "Bin center = " << BinCenter << " XSecBinError = " << XSecBinError << "  SpreadBinContent = " << SpreadBinContent << "  AccCorrError = " << AccCorrError << endl;
+//double BinCenter = OverallClone->GetBinCenter(WhichBin+1);
+//cout << "Bin center = " << BinCenter << " XSecBinError = " << XSecBinError << "  SpreadBinContent = " << SpreadBinContent << "  AccCorrError = " << AccCorrError << endl;
 
 }
 
@@ -1226,3 +1243,159 @@ TPad* CreateTPad(int WhichEnergy, int WhichNucleus, double Energy, TString nucle
 }
 
 // -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  GetFrameWidthNDC()
+  {
+    return 1.0 - gPad->GetLeftMargin() - gPad->GetRightMargin();
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  GetUxmax()
+  {
+    gPad->Update();
+    return gPad->GetUxmax();
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  GetUxmin()
+  {
+    gPad->Update();
+    return gPad->GetUxmin();
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  GetUymin()
+  {
+    gPad->Update();
+    return gPad->GetUymin();
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  GetUymax()
+  {
+    gPad->Update();
+    return gPad->GetUymax();
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  GetFrameWidthAxis()
+  {
+    return GetUxmax() - GetUxmin();
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  AxisToUser(const double x, const bool logx)
+  {
+    return logx ? std::pow(10.0, x) : x;
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  AxisToX(const double ax)
+  {
+    return AxisToUser(ax, gPad->GetLogx());
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  GetRatioWidthNDCAxis()
+  {
+    return GetFrameWidthNDC() / GetFrameWidthAxis();
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  NDCtoX(const double ndcx)
+  {
+    const double ax =
+        (ndcx - gPad->GetLeftMargin()) / GetRatioWidthNDCAxis() + GetUxmin();
+    return AxisToX(ax);
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  GetFrameHeightNDC()
+  {
+    return 1.0 - gPad->GetTopMargin() - gPad->GetBottomMargin();
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  GetFrameHeightAxis()
+  {
+    return GetUymax() - GetUymin();
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  GetRatioHeightNDCAxis()
+  {
+    return GetFrameHeightNDC() / GetFrameHeightAxis();
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  AxisToY(const double ay)
+  {
+    return AxisToUser(ay, gPad->GetLogy());
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  NDCtoY(const double ndcy)
+  {
+    const double ay =
+        (ndcy - gPad->GetBottomMargin()) / GetRatioHeightNDCAxis() + GetUymin();
+    return AxisToY(ay);
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  UserToAxis(const double x, const bool logx)
+  {
+    return logx ? std::log10(x) : x;
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  XtoAxis(const double x)
+  {
+    return UserToAxis(x, gPad->GetLogx());
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+  double
+  XtoNDC(const double x)
+  {
+    const double ax = XtoAxis(x);
+    return GetRatioWidthNDCAxis() * (ax - GetUxmin()) + gPad->GetLeftMargin();
+  }
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+
+

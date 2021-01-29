@@ -25,7 +25,7 @@ TH1D* AveragedFunc(TH1D* h, TString Energy) {
 	TH1D::SetDefaultSumw2();
 
 	double DoubleE = -99., reso = 0.;
-	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.06; }
+	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.07; }
 	if (Energy == "2_261") { DoubleE = 2.261; reso = 0.08; }
 	if (Energy == "4_461") { DoubleE = 4.461; reso = 0.06; }
 
@@ -106,12 +106,12 @@ void OverlayPlots() {
 	std::vector<int> Colors;
 
 //	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
-	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
-//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
+//	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
+	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV");
-	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");	
-//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
+//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");	
+	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");

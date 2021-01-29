@@ -87,7 +87,7 @@ void OverlayMultiplicities_FigExtData7() {
 
 	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(kCyan); BreakDownColors.push_back(kGreen); BreakDownColors.push_back(kMagenta);
 
-	FSIModel.push_back("Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 
@@ -152,7 +152,7 @@ void OverlayMultiplicities_FigExtData7() {
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-						TString PathToFiles = "../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
+						TString PathToFiles = "../../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
 						TFile* FileSample = TFile::Open(FileName);
 
@@ -240,7 +240,8 @@ void OverlayMultiplicities_FigExtData7() {
 							Plots[WhichFSIModel]->GetYaxis()->SetLabelOffset(-0.004);
 							Plots[WhichFSIModel]->Rebin();
 							Plots[0]->GetYaxis()->SetRangeUser(0.5*min,2.*max); PlotCanvas->SetLogy();
-							if (FSILabel[WhichFSIModel] == "Data") { 
+
+							if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 						 
 								Plots[WhichFSIModel]->SetMarkerSize(3.); 
 								if (NameOfPlots[WhichPlot] == "h1_Nprot") { 
@@ -301,7 +302,7 @@ void OverlayMultiplicities_FigExtData7() {
 				TString ext = "";
 				if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
-				PlotCanvas->SaveAs("../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"+ext+nucleus[WhichNucleus]+"_" 
+				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"+ext+nucleus[WhichNucleus]+"_" 
 					+E[WhichEnergy]+"_" +"Multiplicities"+WhatModelsAreIncluded+".pdf");
 
 				//delete PlotCanvas;
