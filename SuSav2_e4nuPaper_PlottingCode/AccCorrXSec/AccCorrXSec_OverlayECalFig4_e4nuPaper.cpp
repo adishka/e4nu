@@ -130,7 +130,9 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 					// Loop over the FSI Models
 					
 					int LowBin = -1;
-					int HighBin = -1;					
+					int HighBin = -1;
+
+					TH1D* DataPlot = nullptr;					
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
@@ -279,7 +281,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 
 						// Max, min, title & # divisions
 
-						Plots[0]->GetYaxis()->SetRangeUser(0.,MaxHeight);
+						Plots[0]->GetYaxis()->SetRangeUser(-0.02,MaxHeight);
 
 						double localmin = Plots[WhichFSIModel]->GetBinContent(Plots[WhichFSIModel]->FindBin(4)); // multiplicity 4 is the highest one in data
 						if (localmin < min && localmin != 0) { min = localmin; }
@@ -305,7 +307,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 							gStyle->SetErrorX(0); // Removing the horizontal errors
 							//Plots[WhichFSIModel]->Draw("e same"); 
 
-							TH1D* DataPlot = Plots[WhichFSIModel];
+							DataPlot = Plots[WhichFSIModel];
 
 							DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
@@ -313,7 +315,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 							DataPlot->SetMarkerSize(2.); 
 							DataPlot->SetLineColor(kBlack);	
 							DataPlot->SetMarkerColor(kBlack);
-							DataPlot->GetYaxis()->SetRangeUser(0.,height*DataPlot->GetMaximum());	
+							DataPlot->GetYaxis()->SetRangeUser(-0.02,height*DataPlot->GetMaximum());	
 							DataPlot->Draw("e same"); 
 
 //							TH1D* DataPlotG2018 = AcceptanceCorrection(Plots[WhichFSIModel],"hA2018_Final", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
@@ -342,7 +344,127 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 
 						}
 
-					} // End of the loop over the FSI Models 				
+					} // End of the loop over the FSI Models 
+
+// -------------------------------------------------------------------------------------------
+
+// Extra pad zooming in tail if Ecal plot
+
+if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
+
+	// ---------------------------------------
+
+	double PadNDCXmin = 0.15,PadNDCXmax = 0.85, PadNDCYmin = 0.3,PadNDCYmax = 0.75;
+	double PadLeftMargin = 0.12, PadRightMargin = 0.05, PadBottomMargin = 0.1;
+
+	double Xmin = 0, Xmax = 0, Ymin = -0.01, Ymax = 0;
+
+	// ---------------------------------------
+		
+	if (E[WhichEnergy] == "1_161") { 
+
+		Xmin = 0.565; Xmax = 1.105; 
+		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.22; }
+
+	}
+
+		
+	if (E[WhichEnergy] == "2_261") { 
+
+		Xmin = 0.7; Xmax = 2.1; 
+		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.22; }
+		if (nucleus[WhichNucleus] == "56Fe") { /*Ymin = 0.0;*/ Ymax = 0.79; }
+
+	}
+
+	if (E[WhichEnergy] == "4_461") { 
+
+		Xmin = 1.6; Xmax = 4.3; 
+		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.22; }
+		if (nucleus[WhichNucleus] == "56Fe") { /*Ymin = 0.0;*/ Ymax = 0.79; }
+
+	}
+
+	// ---------------------------------------
+
+	TH1D* DataPlotClone = (TH1D*)(DataPlot->Clone("DataPlotClone"));
+	TH1D* SuSav2PlotClone = (TH1D*)(Plots[1]->Clone("SuSav2PlotClone"));
+	TH1D* G2018PlotClone = (TH1D*)(Plots[2]->Clone("G2018PlotClone"));
+
+	TH1D* QEPlotClone = (TH1D*)(BreakDownPlots[0]->Clone("QEPlotClone"));
+	TH1D* MECPlotClone = (TH1D*)(BreakDownPlots[1]->Clone("MECPlotClone"));
+	TH1D* RESPlotClone = (TH1D*)(BreakDownPlots[2]->Clone("RESPlotClone"));
+	TH1D* DISPlotClone = (TH1D*)(BreakDownPlots[3]->Clone("DISPlotClone"));
+
+	// ---------------------------------------
+
+	double XminLeftLine = DataPlotClone->GetBinCenter(DataPlotClone->FindBin(Xmin));
+	double XminRightLine = DataPlotClone->GetBinCenter(DataPlotClone->FindBin(Xmax));
+
+	double XmaxLeftLine = NDCtoX(PadNDCXmin+0.5*PadLeftMargin*(PadNDCXmax-PadNDCXmin));
+	double XmaxRightLine = NDCtoX(PadNDCXmax-0.5*PadRightMargin*(PadNDCXmax-PadNDCXmin));
+
+	double YmaxLeftLine = NDCtoY(PadNDCYmin+0.5*PadBottomMargin*(PadNDCYmax-PadNDCYmin));
+
+	double YminLeftLine = DataPlotClone->GetBinContent(DataPlotClone->FindBin(Xmin));
+	double YminRightLine = DataPlotClone->GetBinContent(DataPlotClone->FindBin(Xmax));
+
+	TLine* Leftline = new TLine(XminLeftLine,YminLeftLine,XmaxLeftLine,YmaxLeftLine);
+	Leftline->SetLineWidth(2);
+	Leftline->SetLineColor(kBlack);
+	Leftline->SetLineStyle(9);
+//	Leftline->Draw();
+
+	TLine* Rightline = new TLine(XminRightLine,YminRightLine,XmaxRightLine,YmaxLeftLine);
+	Rightline->SetLineWidth(2);
+	Rightline->SetLineColor(kBlack);
+	Rightline->SetLineStyle(9);
+//	Rightline->Draw();
+
+	// ---------------------------------------
+
+	TString PadName = "ZoomInPad";
+	TPad* padZoomIn = new TPad(PadName,PadName,PadNDCXmin,PadNDCYmin,PadNDCXmax,PadNDCYmax,21); 
+	padZoomIn->SetFillColor(kWhite); 
+	padZoomIn->SetFrameLineWidth(1);
+	padZoomIn->Draw();
+	padZoomIn->SetTopMargin(0.005);
+	padZoomIn->SetBottomMargin(PadBottomMargin);
+	padZoomIn->SetLeftMargin(PadLeftMargin);
+	padZoomIn->SetRightMargin(PadRightMargin);
+	padZoomIn->SetFillStyle(4000); // make pad trasnparent
+	padZoomIn->cd();
+
+	// ---------------------------------------------------------------
+
+	auto frame = PlotCanvas->DrawFrame(Xmin,Ymin,Xmax,Ymax);
+
+	frame->GetXaxis()->SetNdivisions(6);
+	frame->GetXaxis()->SetLabelSize(0.1);
+	frame->GetXaxis()->SetLabelFont(FontStyle);
+
+	frame->GetYaxis()->SetNdivisions(6);
+	frame->GetYaxis()->SetLabelSize(0.1);
+	frame->GetYaxis()->SetLabelFont(FontStyle);
+
+	DataPlotClone->GetYaxis()->SetNdivisions(4);
+	DataPlotClone->GetYaxis()->SetLabelOffset(0.1);
+	DataPlotClone->Draw("e same");
+
+	G2018PlotClone->Draw("c hist same");
+	SuSav2PlotClone->Draw("c hist same");
+	QEPlotClone->Draw("c hist same");
+	MECPlotClone->Draw("c hist same");
+	RESPlotClone->Draw("c hist same");
+	DISPlotClone->Draw("c hist same");
+
+	DataPlotClone->Draw("e same");
+
+	gPad->RedrawAxis();
+
+}
+
+// -------------------------------------------------------------------------------------------				
 
 					// ---------------------------------------------------------------------------------------------------------
 

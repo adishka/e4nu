@@ -380,9 +380,13 @@ void genie_analysis::Loop(Int_t choice) {
 	//Output file definition
 
 	TFile *file_out;
-	if (choice == 0) { file_out = new TFile(Form("data_e2a_ep_%s_%s_neutrino6_united4_radphot_test.root",ftarget.c_str(),fbeam_en.c_str()), "Recreate");}
-	if (choice == 1){ file_out = new TFile(Form("genie_e2a_ep_%s_%s_neutrino6_united4_radphot_test_SuSav2.root",ftarget.c_str(),fbeam_en.c_str()), "Recreate");}
-	if (choice == 2) { file_out = new TFile(Form("genie_e2a_ep_%s_%s_neutrino6_united4_radphot_test_G18_10a_02_11a.root",ftarget.c_str(),fbeam_en.c_str()), "Recreate"); }
+	TString FileName = ""; 
+
+	if (choice == 0) { FileName = Form("/w/hallb-scifs17exp/clas/claseg2/apapadop/data_e2a_ep_%s_%s_neutrino6_united4_radphot_test.root",ftarget.c_str(),fbeam_en.c_str()); }
+	if (choice == 1){ FileName = Form("genie_e2a_ep_%s_%s_neutrino6_united4_radphot_test_SuSav2.root",ftarget.c_str(),fbeam_en.c_str()); }
+	if (choice == 2) { FileName = Form("genie_e2a_ep_%s_%s_neutrino6_united4_radphot_test_G18_10a_02_11a.root",ftarget.c_str(),fbeam_en.c_str()); }
+
+	file_out = new TFile(FileName, "Recreate");
 
 	// ---------------------------------------------------------------------------------------------------------------
 
@@ -1085,6 +1089,8 @@ void genie_analysis::Loop(Int_t choice) {
 
 	/** Beginning of Event Loop **/
 
+	int TotalCounter = 0;
+
 	for (Long64_t jentry=0; jentry<nentries;jentry++) {
 //	for (Long64_t jentry=0; jentry<Nentries;jentry++) {
 
@@ -1094,13 +1100,15 @@ void genie_analysis::Loop(Int_t choice) {
 		int nb = GetEntry(jentry);
 		if (nb == 0) { std::cout <<"Event loop: 0 byte read for entry " << jentry << ". Indicate failure in reading the file" <<	std::endl;}
 
-		if (jentry%1000 == 0) {std::cout << jentry/1000 << " k " << std::setprecision(3) << double(jentry)/fChain->GetEntries()*100. << " %"<< std::endl;}
+		if (jentry%1000 == 0) {std::cout << jentry/1000 << " k " << std::setprecision(3) << double(jentry)/double(fChain->GetEntries())*100. << " %"<< std::endl;}
 
 		if( jentry%200000 == 0 )
 		{
 			gDirectory->Write("hist_Files", TObject::kOverwrite);
 			//cout<<jentry<<endl;
 		}
+
+		TotalCounter ++;
 
 		// ---------------------------------------------------------------------------------------------------------------
 
@@ -6613,9 +6621,9 @@ void genie_analysis::Loop(Int_t choice) {
 	// --------------------------------------------------------------------------------------------------------
 
 	std::cout << std::endl << "-----------------------------------------------------------------------------------------------------" << std::endl;
-	std::cout << std::endl << "Initial # Events = " << fChain->GetEntries() << std::endl;
+	std::cout << std::endl << "# Processed Events = " << TotalCounter << std::endl;
 	std::cout << std::endl << "1e1p0pi Signal # Events = " << SignalEvents << std::endl;
-	std::cout << std::endl << "Passing Rate = " << int(double(SignalEvents) / double(fChain->GetEntries())*100.) << " \%"<< std::endl << std::endl;
+	std::cout << std::endl << "Passing Rate = " << int(double(SignalEvents) / double(TotalCounter)*100.) << " \%"<< std::endl << std::endl;
 
 //	std::cout << std::endl << "-----------------------------------------------------------------------------------------------------" << std::endl;
 //	std::cout << std::endl << "PMiss Fraction 1st Slice = " << int(double(PMiss_FirstSlice) / double(SignalEvents)*100.) << " \%"<< std::endl << std::endl;
@@ -6646,7 +6654,10 @@ void genie_analysis::Loop(Int_t choice) {
 
 	}
 
-}
+
+	std::cout << "File " << FileName << " created" << std::endl;
+
+} // End of program
 
 //End Loop function
 

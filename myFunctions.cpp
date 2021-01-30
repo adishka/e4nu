@@ -801,34 +801,21 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 	std::vector<TH1D*> Plots; Plots.clear();
 	std::vector<TString> FSIModel; FSIModel.clear();
 
+	// --------------------------------------------------------------------------------------	
+
 	TString AlternativeModel = "hA2018_Final";
 	if (ScaleToDataSet == "hA2018_Final") { AlternativeModel = "SuSav2"; }
 
-//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM"+Extension);
-//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension);
-//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithoutFidAcc"+Extension);
-
-//	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM"+Extension);
-
-//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension);
-//	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension);
-
-//apapadop
-//	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"+Extension); // main plots for unfolding
+	// Unfolding using SuSav2
+	// keep in mind that the G2018 sample is questionable
+	
 	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension); // main plots for unfolding
 	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension); // main plots for unfolding
-//	FSIModel.push_back(AlternativeModel+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"+Extension); // alternative model plots for acceptance correction uncertainty
-	FSIModel.push_back(AlternativeModel+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension); // alternative model plots for acceptance correction uncertainty
-	FSIModel.push_back(AlternativeModel+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension); // alternative model plots for acceptance correction uncertainty
 
 	if (name == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
 		FSIModel[0] = ScaleToDataSet+"_RadCorr_LFGM_Truth0pi_WithFidAcc"+Extension;
-//		FSIModel[0] = ScaleToDataSet+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"+Extension;
 		FSIModel[1] = ScaleToDataSet+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"+Extension;
-//		FSIModel[2] = AlternativeModel+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"+Extension;
-		FSIModel[2] = AlternativeModel+"_RadCorr_LFGM_Truth0pi_WithFidAcc"+Extension;
-		FSIModel[3] = AlternativeModel+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"+Extension;
 
 	}
 
@@ -883,6 +870,7 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 
 	// --------------------------------------------------------------------------------------
 
+// Obtain acceptance correction using non radiative samples
 
 // First, grab the files with smearing at truth level (_Truth_WithoutFidAcc_Offset), otherwise infinities at the edges 
 // Second, grab the G2018 true 1p0pi files with offset (_Truth_WithFidAcc_Offset), otherwise infinities at the double ratio
@@ -890,11 +878,7 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 std::vector<TH1D*> PlotsOffset; PlotsOffset.clear();
 std::vector<TString> FSIModelOffset; FSIModelOffset.clear();
 
-// apapadop
-//FSIModelOffset.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); // main reco plots for unfolding uncertainty with smearing
-//FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // main plots for unfolding uncertainty with smearing
-//FSIModelOffset.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset 
-//FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset
+// apapadop FIX IT to no rad samples
 
 FSIModelOffset.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); // main reco plots for unfolding uncertainty with smearing
 FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // main plots for unfolding uncertainty with smearing
@@ -903,11 +887,7 @@ FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset
 
 if (name == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
-// apapadop
-//	FSIModelOffset[0] = "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger";
-//	FSIModelOffset[1] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
-//	FSIModelOffset[2] = "hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger";
-//	FSIModelOffset[3] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
+// apapadop FIX IT to no rad samples
 
 	FSIModelOffset[0] = "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc";
 	FSIModelOffset[1] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
@@ -920,7 +900,7 @@ if (name == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
 int NFSIModelsOffset = FSIModelOffset.size();
 
-for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
+for (int WhichFSIModel = 0; WhichFSIModel < NFSIModelsOffset; WhichFSIModel ++) {
 
 	// --------------------------------------------------------------------------------------
 

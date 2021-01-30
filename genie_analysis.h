@@ -342,7 +342,7 @@ genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int n
       		
       		// Non radiative SuSav2
 
-		//chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_SuSav2/Exclusive/electrons/%s_%sGeV/apapadop_SuSav2_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
+		chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_SuSav2/Exclusive/electrons/%s_%sGeV/apapadop_SuSav2_%s_%sGeV_master*.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
 		
       		// Ext Radiation SuSav2
 
@@ -350,7 +350,7 @@ genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int n
 
       		// Ext_Int Radiation SuSav2
 		
-		chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_SuSav2/Exclusive/electrons/%s_%sGeV/apapadop_UpdatedSchwingerRad_SuSav2_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));  		   
+		//chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_SuSav2/Exclusive/electrons/%s_%sGeV/apapadop_UpdatedSchwingerRad_SuSav2_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));  		   
 		
 	}
 
@@ -358,7 +358,7 @@ genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int n
       
       		// Non Radiative G2018
 
-		//chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_G2018/Exclusive/electrons/%s_%sGeV/apapadop_G2018_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
+		chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_G2018/Exclusive/electrons/%s_%sGeV/apapadop_G2018_%s_%sGeV_master*.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
 
       		// Ext Radiation G2018
 
@@ -366,7 +366,7 @@ genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int n
 
       		// Ext+Int Radiation G2018
 
-		chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_G2018/Exclusive/electrons/%s_%sGeV/apapadop_UpdatedSchwingerRad_G2018_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
+		//chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_G2018/Exclusive/electrons/%s_%sGeV/apapadop_UpdatedSchwingerRad_G2018_%s_%sGeV.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));
 
 	}
 

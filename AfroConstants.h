@@ -400,24 +400,24 @@
 /*		{ std::make_pair("56Fe", "4_461"), 0 } // Q2 > 0.8*/
 
 		// master branch production
-		{ std::make_pair("4He", "2_261"), 20000000 }, // Q2 > 0.4
-		{ std::make_pair("4He", "4_461"), 17700000 }, // Q2 > 0.8
-		{ std::make_pair("12C", "1_161"), 19800000 }, // Q2 > 0.1
-		{ std::make_pair("12C", "2_261"), 174600000 }, // Q2 > 0.4
-		{ std::make_pair("12C", "4_461"), 164300000 }, // Q2 > 0.8
+		{ std::make_pair("4He", "2_261"),  20000000 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"),  17700000 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"),  19800000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"),  174600000 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"),  164300000 }, // Q2 > 0.8
 		{ std::make_pair("56Fe", "2_261"), 167000000 }, // Q2 > 0.4
-		{ std::make_pair("56Fe", "4_461"), 141000000 } // Q2 > 0.8
+		{ std::make_pair("56Fe", "4_461"), 190600000 } // Q2 > 0.8
 	};
 
 	// Rad SuSav2 GENIE number events 
 
 	static std::map<std::pair<TString,TString>,double> SuSav2NumberEvents =
 	{
-		{ std::make_pair("4He", "2_261"), 19800000 }, // Q2 > 0.4
-		{ std::make_pair("4He", "4_461"), 20000000 }, // Q2 > 0.8
-		{ std::make_pair("12C", "1_161"), 39700000 }, // Q2 > 0.1
-		{ std::make_pair("12C", "2_261"), 201300000 }, // Q2 > 0.4
-		{ std::make_pair("12C", "4_461"), 179600000 }, // Q2 > 0.8
+		{ std::make_pair("4He", "2_261"),  19800000 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"),  20000000 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"),  39700000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"),  201300000 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"),  179600000 }, // Q2 > 0.8
 		{ std::make_pair("56Fe", "2_261"), 152800000 }, // Q2 > 0.4
 		{ std::make_pair("56Fe", "4_461"), 130800000 } // Q2 > 0.8
 	};
@@ -443,12 +443,12 @@
 
 	static std::map<std::pair<TString,TString>,double> G2018NumberEvents =
 	{
-		{ std::make_pair("1H", "1_161"), 3000000 }, // Q2 > 0.1
-		{ std::make_pair("4He", "2_261"), 20000000 }, // Q2 > 0.4
-		{ std::make_pair("4He", "4_461"), 9000000 }, // Q2 > 0.8
-		{ std::make_pair("12C", "1_161"), 50000000 }, // Q2 > 0.1
-		{ std::make_pair("12C", "2_261"), 227100000 }, // Q2 > 0.4
-		{ std::make_pair("12C", "4_461"), 150100000 }, // Q2 > 0.8
+		{ std::make_pair("1H", "1_161"),   3000000 }, // Q2 > 0.1
+		{ std::make_pair("4He", "2_261"),  20000000 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"),  9000000 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"),  50000000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"),  227100000 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"),  150100000 }, // Q2 > 0.8
 		{ std::make_pair("56Fe", "2_261"), 50000000 }, // Q2 > 0.4
 		{ std::make_pair("56Fe", "4_461"), 150100000 } // Q2 > 0.8
 
@@ -490,11 +490,11 @@
 /*		{ std::make_pair("56Fe", "4_461"), 0 } // Q2 > 0.8*/
 
 //		{ std::make_pair("1H", "1_161"), 0 }, // Q2 > 0.1
-		{ std::make_pair("4He", "2_261"), 69000000 }, // Q2 > 0.4
-		{ std::make_pair("4He", "4_461"), 70400000 }, // Q2 > 0.8
-		{ std::make_pair("12C", "1_161"), 43900000 }, // Q2 > 0.1
-		{ std::make_pair("12C", "2_261"), 53200000 }, // Q2 > 0.4
-		{ std::make_pair("12C", "4_461"), 67900000 }, // Q2 > 0.8
+		{ std::make_pair("4He", "2_261"),  69000000 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"),  70400000 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"),  43900000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"),  53200000 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"),  67900000 }, // Q2 > 0.8
 		{ std::make_pair("56Fe", "2_261"), 69600000 }, // Q2 > 0.4
 		{ std::make_pair("56Fe", "4_461"), 81100000 } // Q2 > 0.8
 
