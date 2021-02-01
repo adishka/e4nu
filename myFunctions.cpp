@@ -673,7 +673,8 @@ void ApplyRange(TH1D* h, TString Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("E_tot") != std::string::npos) {
 
-		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.57,1.23); }
+//		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.57,1.23); } // default, but now in the Ecal 6-pannel, we need to expand the range for smaller box 
+		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.5,1.23); }
 		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.67,2.4); }
 		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(1.5,4.6); }
 
@@ -878,7 +879,7 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 std::vector<TH1D*> PlotsOffset; PlotsOffset.clear();
 std::vector<TString> FSIModelOffset; FSIModelOffset.clear();
 
-// apapadop FIX IT to no rad samples
+// apapadop FIX IT to no rad samples when offset samples ready
 
 FSIModelOffset.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); // main reco plots for unfolding uncertainty with smearing
 FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // main plots for unfolding uncertainty with smearing

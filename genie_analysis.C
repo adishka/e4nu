@@ -6655,7 +6655,7 @@ void genie_analysis::Loop(Int_t choice) {
 	}
 
 
-	std::cout << "File " << FileName << " created" << std::endl;
+	std::cout << "File " << FileName << " created" << std::endl << std::endl;
 
 } // End of program
 

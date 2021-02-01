@@ -354,10 +354,10 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 	// ---------------------------------------
 
-	double PadNDCXmin = 0.15,PadNDCXmax = 0.85, PadNDCYmin = 0.3,PadNDCYmax = 0.75;
+	double PadNDCXmin = 0.14,PadNDCXmax = 0.88, PadNDCYmin = 0.28,PadNDCYmax = 0.712;
 	double PadLeftMargin = 0.12, PadRightMargin = 0.05, PadBottomMargin = 0.1;
 
-	double Xmin = 0, Xmax = 0, Ymin = -0.01, Ymax = 0;
+	double Xmin = 0, Xmax = 0, Ymin = 0.002, Ymax = 0;
 
 	// ---------------------------------------
 		
@@ -371,17 +371,17 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 		
 	if (E[WhichEnergy] == "2_261") { 
 
-		Xmin = 0.7; Xmax = 2.1; 
-		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.22; }
-		if (nucleus[WhichNucleus] == "56Fe") { /*Ymin = 0.0;*/ Ymax = 0.79; }
+		Xmin = 0.8; Xmax = 2.1; 
+		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.22; PadNDCXmin = 0.0; PadLeftMargin = 0.1; }
+		if (nucleus[WhichNucleus] == "56Fe") { /*Ymin = 0.0;*/ Ymax = 0.79; PadNDCXmin = 0.1; PadLeftMargin = 0.11; }
 
 	}
 
 	if (E[WhichEnergy] == "4_461") { 
 
-		Xmin = 1.6; Xmax = 4.3; 
-		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.22; }
-		if (nucleus[WhichNucleus] == "56Fe") { /*Ymin = 0.0;*/ Ymax = 0.79; }
+		Xmin = 1.8; Xmax = 4.15; 
+		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.22; PadNDCXmin = 0.04; PadLeftMargin = 0.088; PadNDCXmax = 0.88; PadRightMargin = 0.04; }
+		if (nucleus[WhichNucleus] == "56Fe") { /*Ymin = 0.0;*/ Ymax = 0.79; PadNDCXmin = 0.04; PadLeftMargin = 0.088; PadNDCXmax = 0.88; PadRightMargin = 0.04; }
 
 	}
 
@@ -439,13 +439,19 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 	auto frame = PlotCanvas->DrawFrame(Xmin,Ymin,Xmax,Ymax);
 
-	frame->GetXaxis()->SetNdivisions(6);
-	frame->GetXaxis()->SetLabelSize(0.1);
+	frame->GetXaxis()->SetNdivisions(4);
+//	frame->GetXaxis()->SetLabelSize(0.15);
+	frame->GetXaxis()->SetLabelSize(0.);
 	frame->GetXaxis()->SetLabelFont(FontStyle);
+	frame->GetXaxis()->SetTickLength(0.05);
 
-	frame->GetYaxis()->SetNdivisions(6);
-	frame->GetYaxis()->SetLabelSize(0.1);
+	frame->GetYaxis()->SetNdivisions(4);
+	frame->GetYaxis()->SetLabelSize(0.15);
 	frame->GetYaxis()->SetLabelFont(FontStyle);
+
+	frame->GetYaxis()->SetTickLength(-0.02);
+	frame->GetYaxis()->SetLabelOffset(-0.098);
+	//if (E[WhichEnergy] == "4_461") { frame->GetYaxis()->SetLabelOffset(-0.098); }
 
 	DataPlotClone->GetYaxis()->SetNdivisions(4);
 	DataPlotClone->GetYaxis()->SetLabelOffset(0.1);
