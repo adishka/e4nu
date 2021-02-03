@@ -405,6 +405,20 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
+	else if (Sample == "SuSav2 Master NoRad") { 
+
+				SF = (SuSav2GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+					ConversionFactorCm2ToMicroBarn / (MasterNoRadSuSav2NumberEvents[std::make_pair(Nucleus, E)] ) ) ;
+
+	}
+
+	else if (Sample == "SuSav2 Master Rad") { 
+
+				SF = (SuSav2GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+					ConversionFactorCm2ToMicroBarn / (MasterRadSuSav2NumberEvents[std::make_pair(Nucleus, E)] ) ) ;
+
+	}
+
 	else if (Sample == "SuSav2 Rad Schwinger") { 
 
 				SF = (SuSav2GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
@@ -437,6 +451,27 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 		SF = ( G2018GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
 					ConversionFactorCm2ToMicroBarn / (G2018NumberEvents[std::make_pair(Nucleus, E)] ) );
+
+	}
+
+	else if (Sample == "G2018 Master Rad") { 
+
+		SF = ( G2018GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+					ConversionFactorCm2ToMicroBarn / (MasterRadG2018NumberEvents[std::make_pair(Nucleus, E)] ) );
+
+	}
+
+	else if (Sample == "G2018 Master NoRad") { 
+
+		SF = ( G2018GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+					ConversionFactorCm2ToMicroBarn / (MasterNoRadG2018NumberEvents[std::make_pair(Nucleus, E)] ) );
+
+	}
+
+	else if (Sample == "G2018 QE Only") { 
+
+		SF = ( QEG2018GenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+					ConversionFactorCm2ToMicroBarn / (QEMasterRadG2018NumberEvents[std::make_pair(Nucleus, E)] ) );
 
 	}
 
@@ -879,9 +914,7 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 std::vector<TH1D*> PlotsOffset; PlotsOffset.clear();
 std::vector<TString> FSIModelOffset; FSIModelOffset.clear();
 
-// apapadop FIX IT to no rad samples when offset samples ready
-
-FSIModelOffset.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); // main reco plots for unfolding uncertainty with smearing
+FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); // main reco plots for unfolding uncertainty with smearing
 FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // main plots for unfolding uncertainty with smearing
 FSIModelOffset.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset 
 FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset
@@ -890,7 +923,7 @@ if (name == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
 // apapadop FIX IT to no rad samples
 
-	FSIModelOffset[0] = "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc";
+	FSIModelOffset[0] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc";
 	FSIModelOffset[1] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
 	FSIModelOffset[2] = "hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc";
 	FSIModelOffset[3] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";

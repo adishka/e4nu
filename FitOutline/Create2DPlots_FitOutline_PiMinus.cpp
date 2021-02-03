@@ -129,19 +129,23 @@ void Create2DPlots_FitOutline_PiMinus() {
 	std::vector<int> IntSector;
 
 //	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
-//	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
-	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
+	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
+//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV");
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");
-	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
+	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");
+//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
 
 	xBCut.push_back("NoxBCut");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data");
+
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Ext+Int Rad)");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Ext+Int Rad)");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (No Rad)");
+
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("True 1p0pi W/");
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("G2018 (1p0pi No Rad)");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("G2018 (Ext+Int Rad)");
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------

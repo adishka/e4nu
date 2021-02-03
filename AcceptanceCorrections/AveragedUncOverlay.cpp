@@ -137,11 +137,11 @@ void AveragedUncOverlay() {
 
 //	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
 	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
-	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
+//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
 
-//	E.push_back("1_161"); LabelE.push_back(", 1.1 GeV");
+	E.push_back("1_161"); LabelE.push_back(", 1.1 GeV");
 //	E.push_back("2_261"); LabelE.push_back(", 2.2 GeV");	
-	E.push_back("4_461"); LabelE.push_back(", 4.4 GeV");
+//	E.push_back("4_461"); LabelE.push_back(", 4.4 GeV");
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");

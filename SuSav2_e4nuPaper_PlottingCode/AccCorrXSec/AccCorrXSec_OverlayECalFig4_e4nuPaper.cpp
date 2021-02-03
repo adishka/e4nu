@@ -79,13 +79,17 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 
 		TCanvas* PlotCanvas = new TCanvas(xBCut[WhichxBCut],xBCut[WhichxBCut],205,34,1600,900);
 		
-		TLegend* legGenieBlackLine = new TLegend(0.1,0.5,0.54,1.);
+		TLegend* legGenieBlackLine = new TLegend(0.1,0.5,0.5,1.);
 		legGenieBlackLine->SetNColumns(1);
 		legGenieBlackLine->SetTextFont(FontStyle); 
 					
-		TLegend* legGenieBreak = new TLegend(0.1,0.,1.,0.5);
+		TLegend* legGenieBreak = new TLegend(0.2,0.21,0.85,0.53);
 		legGenieBreak->SetNColumns(2);
-		legGenieBreak->SetTextFont(FontStyle);							
+		legGenieBreak->SetTextFont(FontStyle);
+
+		TLegend* legG2018 = new TLegend(0.1,0.0,1.,0.1);
+		legG2018->SetNColumns(2);
+		legG2018->SetTextFont(FontStyle);							
 
 		// Loop over the plots
 
@@ -346,6 +350,8 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 
 					} // End of the loop over the FSI Models 
 
+					gPad->RedrawAxis();
+
 // -------------------------------------------------------------------------------------------
 
 // Extra pad zooming in tail if Ecal plot
@@ -354,8 +360,8 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 	// ---------------------------------------
 
-	double PadNDCXmin = 0.14,PadNDCXmax = 0.88, PadNDCYmin = 0.28,PadNDCYmax = 0.712;
-	double PadLeftMargin = 0.12, PadRightMargin = 0.05, PadBottomMargin = 0.1;
+	double PadNDCXmin = 0.14,PadNDCXmax = 0.88, PadNDCYmin = 0.36,PadNDCYmax = 0.76;
+	double PadLeftMargin = 0.12, PadRightMargin = 0.05, PadBottomMargin = 0.1, PadTopMargin = 0.005;
 
 	double Xmin = 0, Xmax = 0, Ymin = 0.002, Ymax = 0;
 
@@ -373,7 +379,7 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 		Xmin = 0.8; Xmax = 2.1; 
 		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.22; PadNDCXmin = 0.0; PadLeftMargin = 0.1; }
-		if (nucleus[WhichNucleus] == "56Fe") { /*Ymin = 0.0;*/ Ymax = 0.79; PadNDCXmin = 0.1; PadLeftMargin = 0.11; }
+		if (nucleus[WhichNucleus] == "56Fe") { /*Ymin = 0.0;*/ Ymax = 0.79; PadNDCXmin = 0.1; PadLeftMargin = 0.11; PadNDCYmin = 0.39; PadNDCYmax = 0.81; PadTopMargin = 0.004; }
 
 	}
 
@@ -381,7 +387,9 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 		Xmin = 1.8; Xmax = 4.15; 
 		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.22; PadNDCXmin = 0.04; PadLeftMargin = 0.088; PadNDCXmax = 0.88; PadRightMargin = 0.04; }
-		if (nucleus[WhichNucleus] == "56Fe") { /*Ymin = 0.0;*/ Ymax = 0.79; PadNDCXmin = 0.04; PadLeftMargin = 0.088; PadNDCXmax = 0.88; PadRightMargin = 0.04; }
+		if (nucleus[WhichNucleus] == "56Fe") { 
+			/*Ymin = 0.0;*/ Ymax = 0.79; PadNDCXmin = 0.04; PadLeftMargin = 0.088; PadNDCXmax = 0.88; PadRightMargin = 0.04; PadNDCYmin = 0.39; PadNDCYmax = 0.81; PadTopMargin = 0.004;
+		}
 
 	}
 
@@ -428,7 +436,7 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 	padZoomIn->SetFillColor(kWhite); 
 	padZoomIn->SetFrameLineWidth(1);
 	padZoomIn->Draw();
-	padZoomIn->SetTopMargin(0.005);
+	padZoomIn->SetTopMargin(PadTopMargin);
 	padZoomIn->SetBottomMargin(PadBottomMargin);
 	padZoomIn->SetLeftMargin(PadLeftMargin);
 	padZoomIn->SetRightMargin(PadRightMargin);
@@ -443,7 +451,8 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 //	frame->GetXaxis()->SetLabelSize(0.15);
 	frame->GetXaxis()->SetLabelSize(0.);
 	frame->GetXaxis()->SetLabelFont(FontStyle);
-	frame->GetXaxis()->SetTickLength(0.05);
+//	frame->GetXaxis()->SetTickLength(0.05);
+	frame->GetXaxis()->SetTickLength(0.08);
 
 	frame->GetYaxis()->SetNdivisions(4);
 	frame->GetYaxis()->SetLabelSize(0.15);
@@ -451,10 +460,11 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 	frame->GetYaxis()->SetTickLength(-0.02);
 	frame->GetYaxis()->SetLabelOffset(-0.098);
-	//if (E[WhichEnergy] == "4_461") { frame->GetYaxis()->SetLabelOffset(-0.098); }
+	//if (nucleus[WhichNucleus] == "56Fe") { frame->GetYaxis()->SetLabelOffset(-0.105); }
 
 	DataPlotClone->GetYaxis()->SetNdivisions(4);
 	DataPlotClone->GetYaxis()->SetLabelOffset(0.1);
+	DataPlotClone->SetMarkerSize(1.); 
 	DataPlotClone->Draw("e same");
 
 	G2018PlotClone->Draw("c hist same");
@@ -484,7 +494,7 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 		TLatex latexCarbon;
 		latexCarbon.SetTextFont(FontStyle);
-		latexCarbon.SetTextSize(0.8*TextSize);
+		latexCarbon.SetTextSize(0.79*TextSize);
 		PlotCanvas->cd();
 		latexCarbon.DrawLatexNDC(0.005,0.77,"^{12}C");
 
@@ -492,9 +502,9 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 		TLatex latexIron;
 		latexIron.SetTextFont(FontStyle);
-		latexIron.SetTextSize(0.8*TextSize);
+		latexIron.SetTextSize(0.79*TextSize);
 		PlotCanvas->cd();
-		latexIron.DrawLatexNDC(0.3,0.385,"^{56}Fe");
+		latexIron.DrawLatexNDC(0.29,0.365,"^{56}Fe");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -618,12 +628,12 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 		// Extra pad for the legend
 
 		PlotCanvas->cd();
-		TPad* padLegend = new TPad("padLegend","padLegend",0.07,0.19,0.3,0.53, 21); 
+		TPad* padLegend = new TPad("padLegend","padLegend",0.07,0.19,0.28,0.53, 21); 
 		padLegend->SetFillColor(kWhite); 
 		padLegend->Draw();
 		padLegend->cd();
 		
-		legGenieBreak->AddEntry(Plots[2],"G2018", "l");		
+		//legGenieBreak->AddEntry(Plots[2],"G2018", "l");		
 
 		legGenieBlackLine->SetTextSize(2.*TextSize); 
 		legGenieBlackLine->SetBorderSize(0); 
@@ -632,6 +642,11 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 		legGenieBreak->SetTextSize(2.*TextSize); 
 		legGenieBreak->SetBorderSize(0); 
 		legGenieBreak->Draw();
+
+		legG2018->AddEntry(Plots[2],"G2018", "l");
+		legG2018->SetTextSize(2.*TextSize); 
+		legG2018->SetBorderSize(0); 
+		legG2018->Draw();		
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -651,15 +666,15 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 		TLatex latexYTitle;
 		latexYTitle.SetTextFont(FontStyle);
-		latexYTitle.SetTextSize(YaxisSize);
+		latexYTitle.SetTextSize(0.97*YaxisSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
 		//latexYTitle.DrawLatexNDC(0.8,0.08,DoubleAccCorrXSecTitle);
 
 		if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") 
-			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE_{QE}} [#frac{#mub}{GeV}]"); }
+			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE_{QE}} #left[#frac{#mub}{GeV}#right]"); }
 		if (NameOfPlots[0] == "epRecoEnergy_slice_0") 
-			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE_{cal}} [#frac{#mub}{GeV}]"); }
+			{ latexYTitle.DrawLatexNDC(0.62,0.25,"#frac{d#sigma}{dE_{cal}} #left[#frac{#mub}{GeV}#right]"); }
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -673,15 +688,15 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 		TLatex latexYTitleFe;
 		latexYTitleFe.SetTextFont(FontStyle);
-		latexYTitleFe.SetTextSize(YaxisSize);
+		latexYTitleFe.SetTextSize(0.98*YaxisSize);
 		latexYTitleFe.SetTextColor(kBlack);
 		latexYTitleFe.SetTextAngle(90);
 		//latexYTitleFe.DrawLatexNDC(0.8,0.,DoubleAccCorrXSecTitle);
 
 		if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") 
-			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE_{QE}} [#frac{#mub}{GeV}]"); }
+			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE_{QE}} #left[#frac{#mub}{GeV}#right]"); }
 		if (NameOfPlots[0] == "epRecoEnergy_slice_0") 
-			{ latexYTitle.DrawLatexNDC(0.6,0.25,"#frac{d#sigma}{dE_{cal}} [#frac{#mub}{GeV}]"); }
+			{ latexYTitle.DrawLatexNDC(0.6245,0.25,"#frac{d#sigma}{dE_{cal}} #left[#frac{#mub}{GeV}#right]"); }
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 

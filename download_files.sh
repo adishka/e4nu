@@ -13,10 +13,13 @@ GENIEAccount=apapadop@geniegpvm01.fnal.gov
 GENIEPath=/genie/app/users/apapadop/e4nu
 
 GENIEOnlineExtension=G18_10a_02_11a
-GENIELocalExtension=hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc
+#GENIELocalExtension=hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset
+GENIELocalExtension=hA2018_Final_NoRadCorr_LFGM_Offset
+#GENIELocalExtension=G2018_MasterNoRad
 
 #GENIEOnlineExtension=SuSav2
-#GENIELocalExtension=SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc
+##GENIELocalExtension=SuSav2_NoRadCorr_LFGM
+#GENIELocalExtension=SuSav2_MasterNoRad
 
 ##### Genie Samples
 

@@ -117,6 +117,8 @@
 		{ "Pinned_Data_NewFiducials_SixSectors", "Pinned Data" },
 		{ "Pinned_Data_Final_SixSectors", "Pinned Data" },
 
+		// ------------------------------------------------------------------------------------------------------
+
 		{ "SuSav2_RadCorr_LFGM_Schwinger", "SuSav2 Rad Schwinger" },
 
 		{ "SuSav2_RadCorr_LFGM_UpdatedSchwinger", "SuSav2 Rad Updated Schwinger" },
@@ -152,6 +154,9 @@
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_XSec", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc_XSec", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc", "SuSav2 NoRad" },
+
+		// ------------------------------------------------------------------------------------------------------
 
 		{ "hA2018_Final_RadCorr_LFGM", "G2018" },
 		{ "hA2018_Final_RadCorr_LFGM_Offset", "G2018" },
@@ -181,6 +186,54 @@
 		{ "hA2018_Final_NoRadCorr_LFGM_XSec", "G2018 NoRad" },
 		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc_XSec", "G2018 NoRad" },
 		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc_Offset", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithFidAcc", "G2018 NoRad" },
+
+		// ------------------------------------------------------------------------------------------------------
+
+		{ "SuSav2_MasterNoRad", "SuSav2 Master NoRad" },
+		{ "SuSav2_MasterNoRad_Truth_WithFidAcc", "SuSav2 Master NoRad" },
+		{ "SuSav2_MasterNoRad_Truth0pi_WithFidAcc", "SuSav2 Master NoRad" },
+		{ "SuSav2_MasterNoRad_Truth_WithoutFidAcc", "SuSav2 Master NoRad" },
+		{ "SuSav2_MasterNoRad_Truth0pi_WithoutFidAcc", "SuSav2 Master NoRad" },
+
+		{ "SuSav2_MasterRad", "SuSav2 Master Rad" },
+		{ "SuSav2_MasterRad_Truth_WithFidAcc", "SuSav2 Master Rad" },
+		{ "SuSav2_MasterRad_Truth0pi_WithFidAcc", "SuSav2 Master Rad" },
+		{ "SuSav2_MasterRad_Truth_WithoutFidAcc", "SuSav2 Master Rad" },
+		{ "SuSav2_MasterRad_Truth0pi_WithoutFidAcc", "SuSav2 Master Rad" },
+
+		// ------------------------------------------------------------------------------------------------------
+
+		{ "G2018_MasterNoRad", "G2018 Master NoRad" },
+		{ "G2018_MasterNoRad_Truth_WithFidAcc", "G2018 Master NoRad" },
+		{ "G2018_MasterNoRad_Truth0pi_WithFidAcc", "G2018 Master NoRad" },
+		{ "G2018_MasterNoRad_Truth_WithoutFidAcc", "G2018 Master NoRad" },
+		{ "G2018_MasterNoRad_Truth0pi_WithoutFidAcc", "G2018 Master NoRad" },
+
+		{ "G2018_MasterRad", "G2018 Master Rad" },
+		{ "G2018_MasterRad_Truth_WithFidAcc", "G2018 Master Rad" },
+		{ "G2018_MasterRad_Truth0pi_WithFidAcc", "G2018 Master Rad" },
+		{ "G2018_MasterRad_Truth_WithoutFidAcc", "G2018 Master Rad" },
+		{ "G2018_MasterRad_Truth0pi_WithoutFidAcc", "G2018 Master Rad" },
+
+		{ "G2018_MasterRad_QEOnly", "G2018 QE Only" },
+
+		// ------------------------------------------------------------------------------------------------------
+
+		{ "G2018_MasterNoRad_Offset", "G2018 Master NoRad" },
+		{ "G2018_MasterNoRad_Truth_WithFidAcc_Offset", "G2018 Master NoRad" },
+		{ "G2018_MasterNoRad_Truth0pi_WithFidAcc_Offset", "G2018 Master NoRad" },
+		{ "G2018_MasterNoRad_Truth_WithoutFidAcc_Offset", "G2018 Master NoRad" },
+		{ "G2018_MasterNoRad_Truth0pi_WithoutFidAcc_Offset", "G2018 Master NoRad" },
+
+		{ "G2018_MasterRad_Offset", "G2018 Master Rad" },
+		{ "G2018_MasterRad_Truth_WithFidAcc_Offset", "G2018 Master Rad" },
+		{ "G2018_MasterRad_Truth0pi_WithFidAcc_Offset", "G2018 Master Rad" },
+		{ "G2018_MasterRad_Truth_WithoutFidAcc_Offset", "G2018 Master Rad" },
+		{ "G2018_MasterRad_Truth0pi_WithoutFidAcc_Offset", "G2018 Master Rad" },
+
+
 
 	};
 
@@ -439,6 +492,21 @@
 		{ std::make_pair("56Fe", "4_461"), 3.76765e+08 } // Q2 > 0.8
 	};
 
+	// QE Only G2018 GENIE spline xsec // 10^{-38} cm^2
+
+	static std::map<std::pair<TString,TString>,double> QEG2018GenieXSec =
+	{
+		{ std::make_pair("1H", "2_261"),  0. }, // Q2 > 0.4
+		{ std::make_pair("1H", "4_461"),  0. }, // Q2 > 0.8
+		{ std::make_pair("4He", "2_261"), 0. }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"), 0. }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"),  6.0386491e+08 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"), 0. }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"), 0. }, // Q2 > 0.8
+		{ std::make_pair("56Fe", "2_261"),0.  }, // Q2 > 0.4
+		{ std::make_pair("56Fe", "4_461"), 0. } // Q2 > 0.8
+	};
+
 	// Rad G2018 GENIE number events 
 
 	static std::map<std::pair<TString,TString>,double> G2018NumberEvents =
@@ -500,6 +568,86 @@
 
 	};
 
+	//  ------------------------------------------------------------------------------
+	//  ------------------------------------------------------------------------------
+
+	// Master No Rad G2018 number events 
+
+	static std::map<std::pair<TString,TString>,double> MasterNoRadG2018NumberEvents =
+	{
+
+		{ std::make_pair("4He", "2_261"),  48100000 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"),  48100000 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"),  49700000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"),  49700000 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"),  49500000 }, // Q2 > 0.8
+		{ std::make_pair("56Fe", "2_261"), 48600000 }, // Q2 > 0.4
+		{ std::make_pair("56Fe", "4_461"), 48300000 } // Q2 > 0.8
+
+	};
+
+	// Master Rad G2018 number events 
+
+	static std::map<std::pair<TString,TString>,double> MasterRadG2018NumberEvents =
+	{
+
+		{ std::make_pair("4He", "2_261"),  48600000 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"),  48100000 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"),  47600000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"),  48800000 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"),  47500000 }, // Q2 > 0.8
+		{ std::make_pair("56Fe", "2_261"), 47900000 }, // Q2 > 0.4
+		{ std::make_pair("56Fe", "4_461"), 47700000 } // Q2 > 0.8
+
+	};
+
+	// QE Only Master Rad G2018 number events 
+
+	static std::map<std::pair<TString,TString>,double> QEMasterRadG2018NumberEvents =
+	{
+
+		{ std::make_pair("4He", "2_261"),  0 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"),  0 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"),  200000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"),  0 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"),  0 }, // Q2 > 0.8
+		{ std::make_pair("56Fe", "2_261"), 0 }, // Q2 > 0.4
+		{ std::make_pair("56Fe", "4_461"), 0 } // Q2 > 0.8
+
+	};
+
+	// Master No Rad SuSav2 number events 
+
+	static std::map<std::pair<TString,TString>,double> MasterNoRadSuSav2NumberEvents =
+	{
+
+		{ std::make_pair("4He", "2_261"),  47200000 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"),  47400000 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"),  48000000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"),  47800000 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"),  47500000 }, // Q2 > 0.8
+		{ std::make_pair("56Fe", "2_261"), 0 }, // Q2 > 0.4
+		{ std::make_pair("56Fe", "4_461"), 47900000 } // Q2 > 0.8
+
+	};
+
+	// Master Rad SuSav2 number events 
+
+	static std::map<std::pair<TString,TString>,double> MasterRadSuSav2NumberEvents =
+	{
+
+		{ std::make_pair("4He", "2_261"),  47100000 }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"),  47200000 }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"),  47800000 }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"),  47800000 }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"),  47400000 }, // Q2 > 0.8
+		{ std::make_pair("56Fe", "2_261"), 45700000 }, // Q2 > 0.4
+		{ std::make_pair("56Fe", "4_461"), 46000000 } // Q2 > 0.8
+
+	};
+
+
+	//  ------------------------------------------------------------------------------
 	//  ------------------------------------------------------------------------------
 
 //	const std::vector<int> BreakDownColors{kBlue,429,410,610}; // QE, MEC, RES, DIS

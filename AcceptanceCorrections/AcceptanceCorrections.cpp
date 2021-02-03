@@ -31,8 +31,8 @@ void AcceptanceCorrections() {
 	const std::vector<int> LocalDataSetColors{1,610,410,kRed+2,kBlue};
 	double split = 0.1;
 
-	//TString Label = "SuSav2";
-	TString Label = "hA2018_Final";
+	TString Label = "SuSav2";
+	//TString Label = "hA2018_Final";
 
 	// ------------------------------------------------------------------------
 
@@ -51,8 +51,8 @@ void AcceptanceCorrections() {
 	// ------------------------------------------------------------------------
 
 //	nucleus.push_back("4He"); JustNucleus.push_back("He");
-//	nucleus.push_back("12C"); JustNucleus.push_back("C");
-	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
+	nucleus.push_back("12C"); JustNucleus.push_back("C");
+//	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.157 GeV"); DoubleE.push_back(1.161);	
 	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
@@ -78,16 +78,25 @@ void AcceptanceCorrections() {
 
 //		FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
 //		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("TrueWithFid");
-		FSIModel.push_back(Label+"_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("Reco");
-		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("TrueWithFid");
+
+//		FSIModel.push_back(Label+"_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("Reco");
+//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("TrueWithFid");
+//		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
+
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM"); FSILabel.push_back("Reco");
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("TrueWithFid");
 		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
 
 	} else {
 
-		FSIModel.push_back(Label+"_RadCorr_LFGM_Offset"); FSILabel.push_back("Reco");
-		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_Offset"); FSILabel.push_back("TrueWithFid");
-//		FSIModel.push_back(Label+"_RadCorr_LFGM_UpdatedSchwinger_Offset"); FSILabel.push_back("Reco");
-//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger_Offset"); FSILabel.push_back("TrueWithFid");
+//		FSIModel.push_back(Label+"_RadCorr_LFGM_Offset"); FSILabel.push_back("Reco");
+//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_Offset"); FSILabel.push_back("TrueWithFid");
+////		FSIModel.push_back(Label+"_RadCorr_LFGM_UpdatedSchwinger_Offset"); FSILabel.push_back("Reco");
+////		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger_Offset"); FSILabel.push_back("TrueWithFid");
+//		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
+
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Offset"); FSILabel.push_back("Reco");
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithFidAcc_Offset"); FSILabel.push_back("TrueWithFid");
 		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
 
 	}
@@ -147,8 +156,11 @@ void AcceptanceCorrections() {
 
 					if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
-						FSIModel[1] = Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger";
-						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"; // need to be offset
+//						FSIModel[1] = Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger";
+//						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"; // need to be offset
+
+						FSIModel[1] = Label+"_NoRadCorr_LFGM_Truth0pi_WithFidAcc";
+						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
 
 					}
 
