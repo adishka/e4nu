@@ -47,7 +47,7 @@ void OverlayECalVsEQE_FigExtData9() {
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
 
-	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Pinned Data");
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");

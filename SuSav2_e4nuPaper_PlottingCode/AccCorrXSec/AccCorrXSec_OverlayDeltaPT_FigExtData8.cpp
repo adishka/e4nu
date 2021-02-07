@@ -80,13 +80,17 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 
 		TCanvas* PlotCanvas = new TCanvas(xBCut[WhichxBCut],xBCut[WhichxBCut],205,34,1600,900);
 
-		TLegend* legGenieBlackLine = new TLegend(0.1,0.5,0.54,1.);
+		TLegend* legGenieBlackLine = new TLegend(0.1,0.5,0.5,1.);
 		legGenieBlackLine->SetNColumns(1);
 		legGenieBlackLine->SetTextFont(FontStyle); 
-
-		TLegend* legGenieBreak = new TLegend(0.1,0.,1.,0.5);
+					
+		TLegend* legGenieBreak = new TLegend(0.2,0.21,0.85,0.53);
 		legGenieBreak->SetNColumns(2);
 		legGenieBreak->SetTextFont(FontStyle);
+
+		TLegend* legG2018 = new TLegend(0.1,0.0,1.,0.1);
+		legG2018->SetNColumns(2);
+		legG2018->SetTextFont(FontStyle);
 
 		// Loop over the plots
 
@@ -291,7 +295,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 		latexIron.SetTextFont(FontStyle);
 		latexIron.SetTextSize(0.8*TextSize);
 		PlotCanvas->cd();
-		latexIron.DrawLatexNDC(0.26,0.385,"^{56}Fe");
+		latexIron.DrawLatexNDC(0.29,0.385,"^{56}Fe");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -350,7 +354,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 		// Extra pad for the legend
 
 		PlotCanvas->cd();
-		TPad* padLegend = new TPad("padLegend","padLegend",0.03,0.19,0.26,0.53, 21); 
+		TPad* padLegend = new TPad("padLegend","padLegend",0.07,0.19,0.26,0.53, 21); 
 		padLegend->SetFillColor(kWhite); 
 		padLegend->Draw();
 		padLegend->cd();
@@ -359,10 +363,15 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 		legGenieBlackLine->SetBorderSize(0); 
 		legGenieBlackLine->Draw();
 
-		legGenieBreak->AddEntry(Plots[2],"G2018", "l");
+		//legGenieBreak->AddEntry(Plots[2],"G2018", "l");
 		legGenieBreak->SetTextSize(2.*TextSize); 
 		legGenieBreak->SetBorderSize(0); 
 		legGenieBreak->Draw();
+
+		legG2018->AddEntry(Plots[2],"G2018", "l");
+		legG2018->SetTextSize(2.*TextSize); 
+		legG2018->SetBorderSize(0); 
+		legG2018->Draw();
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -379,7 +388,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 		latexYTitle.SetTextSize(6*TextSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
-		latexYTitle.DrawLatexNDC(0.55,0.1,"#frac{d#sigma}{dP_{T}} [#frac{#mub}{GeV/c}]");
+		latexYTitle.DrawLatexNDC(0.55,0.1,"#frac{d#sigma}{dP_{T}} #left[#frac{#mub}{GeV/c}#right]");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -396,7 +405,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 		latexYTitleFe.SetTextSize(6*TextSize);
 		latexYTitleFe.SetTextColor(kBlack);
 		latexYTitleFe.SetTextAngle(90);
-		latexYTitleFe.DrawLatexNDC(0.6,0.05,"#frac{d#sigma}{dP_{T}} [#frac{#mub}{GeV/c}]");
+		latexYTitleFe.DrawLatexNDC(0.6,0.05,"#frac{d#sigma}{dP_{T}} #left[#frac{#mub}{GeV/c}#right]");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 

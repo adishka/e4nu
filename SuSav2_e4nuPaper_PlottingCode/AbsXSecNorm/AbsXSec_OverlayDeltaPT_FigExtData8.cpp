@@ -50,8 +50,8 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 	// ------------------------------------------------------------------------
 
 	FSIModel.push_back("Pinned_Data_Final");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc");
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc");
 
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors");
@@ -80,13 +80,17 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 
 		TCanvas* PlotCanvas = new TCanvas(xBCut[WhichxBCut],xBCut[WhichxBCut],205,34,1600,900);
 
-		TLegend* legGenieBlackLine = new TLegend(0.1,0.5,0.54,1.);
+		TLegend* legGenieBlackLine = new TLegend(0.1,0.5,0.5,1.);
 		legGenieBlackLine->SetNColumns(1);
 		legGenieBlackLine->SetTextFont(FontStyle); 
-
-		TLegend* legGenieBreak = new TLegend(0.1,0.,1.,0.5);
+					
+		TLegend* legGenieBreak = new TLegend(0.2,0.21,0.85,0.53);
 		legGenieBreak->SetNColumns(2);
 		legGenieBreak->SetTextFont(FontStyle);
+
+		TLegend* legG2018 = new TLegend(0.1,0.0,1.,0.1);
+		legG2018->SetNColumns(2);
+		legG2018->SetTextFont(FontStyle);
 
 		// Loop over the plots
 
@@ -108,13 +112,13 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 
 	 			// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
 			
-				double MaxHeight = 0.17;
+				double MaxHeight = 0.19;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 0.27; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 0.29; }
 
 					// ---------------------------------------------------------------------------------------------------------------
 
@@ -185,7 +189,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 						// Genie Break Down
 
 						if (
-							FSIModelsToLabels[FSIModel[WhichFSIModel]] == "SuSav2 Rad Updated Schwinger"
+							FSIModelsToLabels[FSIModel[WhichFSIModel]] == "SuSav2 NoRad"
 						) {
 
 							if (Energy[WhichEnergy] == 1.161 && nucleus[WhichNucleus] == "12C") {
@@ -281,7 +285,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 		latexIron.SetTextFont(FontStyle);
 		latexIron.SetTextSize(0.8*TextSize);
 		PlotCanvas->cd();
-		latexIron.DrawLatexNDC(0.26,0.385,"^{56}Fe");
+		latexIron.DrawLatexNDC(0.3,0.385,"^{56}Fe");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -340,7 +344,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 		// Extra pad for the legend
 
 		PlotCanvas->cd();
-		TPad* padLegend = new TPad("padLegend","padLegend",0.03,0.19,0.26,0.53, 21); 
+		TPad* padLegend = new TPad("padLegend","padLegend",0.07,0.19,0.26,0.53, 21); 
 		padLegend->SetFillColor(kWhite); 
 		padLegend->Draw();
 		padLegend->cd();
@@ -349,17 +353,22 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 		legGenieBlackLine->SetBorderSize(0); 
 		legGenieBlackLine->Draw();
 
-		legGenieBreak->AddEntry(Plots[2],"G2018", "l");
+		//legGenieBreak->AddEntry(Plots[2],"G2018", "l");
 		legGenieBreak->SetTextSize(2.*TextSize); 
 		legGenieBreak->SetBorderSize(0); 
 		legGenieBreak->Draw();
+
+		legG2018->AddEntry(Plots[2],"G2018", "l");
+		legG2018->SetTextSize(2.*TextSize); 
+		legG2018->SetBorderSize(0); 
+		legG2018->Draw();
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
 		// Extra pad for the Y-axis units carbon
 
 		PlotCanvas->cd();
-		TPad* padTitle = new TPad("padTitle","padTitle",0.052,0.58,0.077,1., 21); 
+		TPad* padTitle = new TPad("padTitle","padTitle",0.062,0.58,0.087,1., 21); 
 		padTitle->SetFillColor(kWhite); 
 		padTitle->Draw();
 		padTitle->cd();
@@ -376,7 +385,7 @@ void AbsXSec_OverlayDeltaPT_FigExtData8() {
 		// Extra pad for the Y-axis units iron
 
 		PlotCanvas->cd();
-		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.34,0.18,0.365,0.55,21); 
+		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.36,0.18,0.385,0.55,21); 
 		padTitleFe->SetFillColor(kWhite); 
 		padTitleFe->Draw();
 		padTitleFe->cd();

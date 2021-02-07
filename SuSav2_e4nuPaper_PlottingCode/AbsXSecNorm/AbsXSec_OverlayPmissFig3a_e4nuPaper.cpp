@@ -45,14 +45,14 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 
 	nucleus.push_back("12C"); JustNucleus.push_back("C");
 
-	E.push_back("2_261"); LabelE.push_back(" @ E = 2.257 GeV"); DoubleE.push_back(2.261);	
+	E.push_back("2_261"); LabelE.push_back("2.257 GeV"); DoubleE.push_back(2.261);	
 
 	xBCut.push_back("NoxBCut");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
 
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("Genie");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2");
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("Genie");
 
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");
@@ -92,7 +92,7 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 
 					TCanvas* PlotCanvas = new TCanvas(nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut],
 									 nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut],
-									 205,34,850,1024);
+									 205,34,850,1000);
 
 					// ----------------------------------------------------------------------------------------------
 
@@ -121,8 +121,14 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 
 					Plots.clear();
 
-					TLegend* legGenie = new TLegend(0.15,0.01,0.9,0.7);					
-					legGenie->SetNColumns(3);
+					TLegend* legData = new TLegend(0.6,0.82,0.9,0.99);					
+					legData->SetNColumns(1);
+
+					TLegend* legGenie = new TLegend(0.67,0.65,0.95,0.82);					
+					legGenie->SetNColumns(2);
+
+					TLegend* legG2018 = new TLegend(0.6,0.55,0.9,0.65);					
+					legG2018->SetNColumns(1);
 
 					// Loop over the FSI Models
 
@@ -163,7 +169,7 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 							FSILabel[WhichFSIModel] == "SuSav2"
 						) {
 
-							legGenie->AddEntry(Plots[0],"Data", "lep"); 
+							legData->AddEntry(Plots[0],"Data", "lep"); 
 //							legGenie->AddEntry(Plots[WhichFSIModel],"GENIE (Total)", "l"); 
 
 							BreakDownPlots.clear();
@@ -183,7 +189,7 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 								//BreakDownPlots[j-1]->SetLineStyle(Style[j-1]);
 
 								TLegendEntry* l1 = legGenie->AddEntry(BreakDownPlots[j-1],GenieFSILabel[j-1], "l");
-								if (j == 2) { legGenie->AddEntry(Plots[WhichFSIModel],"SuSav2 (Total)", "l");  }
+								if (j == 2) { legData->AddEntry(Plots[WhichFSIModel],"SuSav2 (Total)", "l");  }
 								//if (j == 2) { legGenie->AddEntry(UncertaintyPlots[1],"GENIE (Total)", "lf");  }
 								l1->SetTextColor(BreakDownColors[j-1]);
 
@@ -245,20 +251,31 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 					double LowPmiss = 0.2, MidPmiss = 0.4, HighPmiss = 1.;
 
 					TLine* line1 = new TLine(LowPmiss,0.,LowPmiss,height*max);
-					line1->SetLineColor(kBlack); line1->SetLineWidth(LineWidth);
+					line1->SetLineColor(kBlack); line1->SetLineWidth(1);
 					line1->Draw(); 
 
 					TLine* line2 = new TLine(MidPmiss,0.,MidPmiss,height*max);
-					line2->SetLineColor(kBlack); line2->SetLineWidth(LineWidth);
+					line2->SetLineColor(kBlack); line2->SetLineWidth(1);
 					line2->Draw(); 
 
 					legGenie->SetBorderSize(0);
 					legGenie->SetTextFont(FontStyle);
 
-					pad2->cd(); 
-					legGenie->SetTextSize(3.*TextSize);
-					legGenie->AddEntry(Plots[2],"G2018", "l"); 
+					legData->SetBorderSize(0);
+					legData->SetTextFont(FontStyle);
+					legData->SetTextSize(TextSize);
+					legData->Draw();
+
+					//pad2->cd(); 
+					legGenie->SetTextSize(TextSize);
+					//legGenie->AddEntry(Plots[2],"G2018", "l"); 
 					legGenie->Draw(); 
+
+					legG2018->SetBorderSize(0);
+					legG2018->SetTextFont(FontStyle);
+					legG2018->SetTextSize(TextSize);
+					legG2018->AddEntry(Plots[2],"G2018", "l"); 
+					legG2018->Draw();
 
 					// ---------------------------------------------------------------------------------------------------
 
@@ -267,7 +284,7 @@ void AbsXSec_OverlayPmissFig3a_e4nuPaper() {
 					myNucleus->SetTextColor(kBlack);
 					myNucleus->SetTextSize(3.5*TextSize);
 					pad2->cd();
-					myNucleus->DrawLatexNDC(0.25,0.8,JustNucleus[WhichNucleus]+"(e,e'p)_{1p0#pi}"+LabelE[WhichEnergy]);
+					myNucleus->DrawLatexNDC(0.43,0.05,LabelE[WhichEnergy]);
 
 					// ---------------------------------------------------------------------------------------------------------
 

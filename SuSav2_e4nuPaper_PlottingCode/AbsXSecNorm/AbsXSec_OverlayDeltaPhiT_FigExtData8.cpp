@@ -49,8 +49,8 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 	// ------------------------------------------------------------------------
 
 	FSIModel.push_back("Pinned_Data_Final");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc");
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc");
 
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors");
@@ -79,13 +79,17 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 
 		TCanvas* PlotCanvas = new TCanvas(xBCut[WhichxBCut],xBCut[WhichxBCut],205,34,1600,900);
 
-		TLegend* legGenieBlackLine = new TLegend(0.1,0.5,0.54,1.);
+		TLegend* legGenieBlackLine = new TLegend(0.1,0.5,0.5,1.);
 		legGenieBlackLine->SetNColumns(1);
 		legGenieBlackLine->SetTextFont(FontStyle); 
-
-		TLegend* legGenieBreak = new TLegend(0.1,0.,1.,0.5);
+					
+		TLegend* legGenieBreak = new TLegend(0.2,0.21,0.85,0.53);
 		legGenieBreak->SetNColumns(2);
 		legGenieBreak->SetTextFont(FontStyle);
+
+		TLegend* legG2018 = new TLegend(0.1,0.0,1.,0.1);
+		legG2018->SetNColumns(2);
+		legG2018->SetTextFont(FontStyle);
 
 		// Loop over the plots
 
@@ -183,7 +187,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 						// Genie Break Down
 
 						if (
-							FSIModelsToLabels[FSIModel[WhichFSIModel]] == "SuSav2 Rad Updated Schwinger"
+							FSIModelsToLabels[FSIModel[WhichFSIModel]] == "SuSav2 NoRad"
 						) {
 
 							if (Energy[WhichEnergy] == 1.161 && nucleus[WhichNucleus] == "12C") {
@@ -271,7 +275,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 		latexCarbon.SetTextFont(FontStyle);
 		latexCarbon.SetTextSize(0.8*TextSize);
 		PlotCanvas->cd();
-		latexCarbon.DrawLatexNDC(0.005,0.77,"^{12}C");
+		latexCarbon.DrawLatexNDC(0.01,0.77,"^{12}C");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -279,7 +283,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 		latexIron.SetTextFont(FontStyle);
 		latexIron.SetTextSize(0.8*TextSize);
 		PlotCanvas->cd();
-		latexIron.DrawLatexNDC(0.26,0.385,"^{56}Fe");
+		latexIron.DrawLatexNDC(0.3,0.385,"^{56}Fe");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -338,7 +342,7 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 		// Extra pad for the legend
 
 		PlotCanvas->cd();
-		TPad* padLegend = new TPad("padLegend","padLegend",0.03,0.19,0.26,0.53, 21); 
+		TPad* padLegend = new TPad("padLegend","padLegend",0.07,0.19,0.26,0.53, 21); 
 		padLegend->SetFillColor(kWhite); 
 		padLegend->Draw();
 		padLegend->cd();
@@ -347,17 +351,22 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 		legGenieBlackLine->SetBorderSize(0); 
 		legGenieBlackLine->Draw();
 
-		legGenieBreak->AddEntry(Plots[2],"G2018", "l");
+		//legGenieBreak->AddEntry(Plots[2],"G2018", "l");
 		legGenieBreak->SetTextSize(2.*TextSize); 
 		legGenieBreak->SetBorderSize(0); 
 		legGenieBreak->Draw();
+
+		legG2018->AddEntry(Plots[2],"G2018", "l");
+		legG2018->SetTextSize(2.*TextSize); 
+		legG2018->SetBorderSize(0); 
+		legG2018->Draw();
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
 		// Extra pad for the Y-axis units carbon
 
 		PlotCanvas->cd();
-		TPad* padTitle = new TPad("padTitle","padTitle",0.052,0.54,0.077,1., 21); 
+		TPad* padTitle = new TPad("padTitle","padTitle",0.072,0.54,0.097,1., 21); 
 		padTitle->SetFillColor(kWhite); 
 		padTitle->Draw();
 		padTitle->cd();
@@ -367,14 +376,15 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 		latexYTitle.SetTextSize(14*TextSize);
 		latexYTitle.SetTextColor(kBlack);
 		latexYTitle.SetTextAngle(90);
-		latexYTitle.DrawLatexNDC(0.8,0.1,DoubleXSecTitle+ " x10 ^{3}");
+//		latexYTitle.DrawLatexNDC(0.8,0.1,DoubleXSecTitle+ " x10 ^{3}");
+		latexYTitle.DrawLatexNDC(0.8,0.2,DoubleXSecTitle);
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
 		// Extra pad for the Y-axis units iron
 
 		PlotCanvas->cd();
-		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.34,0.15,0.365,0.56,21); 
+		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.37,0.23,0.395,0.55,21); 
 		padTitleFe->SetFillColor(kWhite); 
 		padTitleFe->Draw();
 		padTitleFe->cd();
@@ -384,7 +394,8 @@ void AbsXSec_OverlayDeltaPhiT_FigExtData8() {
 		latexYTitleFe.SetTextSize(14*TextSize);
 		latexYTitleFe.SetTextColor(kBlack);
 		latexYTitleFe.SetTextAngle(90);
-		latexYTitleFe.DrawLatexNDC(0.85,0.0,DoubleXSecTitle+ " x10 ^{3}");
+//		latexYTitleFe.DrawLatexNDC(0.85,0.0,DoubleXSecTitle+ " x10 ^{3}");
+		latexYTitleFe.DrawLatexNDC(0.85,0.0,DoubleXSecTitle);
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 

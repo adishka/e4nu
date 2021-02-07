@@ -28,8 +28,8 @@ void OverlayECal_FigExtData11() {
 	lat1->SetNDC();
 	lat2->SetNDC();
 
-	TString PathToFile = "/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/4_461/Data_Final/NoxBCut/";
-	TFile* file_in = new TFile(PathToFile+target+"_4_461_Data_Final_Plots_FSI_em.root");
+	TString PathToFile = "/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/4_461/Pinned_Data_Final/NoxBCut/";
+	TFile* file_in = new TFile(PathToFile+target+"_4_461_Pinned_Data_Final_Plots_FSI_em.root");
 
 	gStyle->SetOptStat(0);
 	gStyle->SetPadTopMargin(0.05);
@@ -133,7 +133,7 @@ void OverlayECal_FigExtData11() {
 	gStyle->SetErrorX(kFALSE);
 
 	h1_Erec_1pi_e_weight->SetAxisRange(xmin, xmax, "X"); 
-	h1_Erec_1pi_e_weight->GetXaxis()->SetTitle("E^{QE}[GeV]");
+	h1_Erec_1pi_e_weight->GetXaxis()->SetTitle("E_{QE}[GeV]");
 	h1_Erec_1pi_e_weight->GetXaxis()->SetTitleOffset(1.);
 
 	h1_Erec_1pi_e_weight->GetXaxis()->CenterTitle();
@@ -167,7 +167,7 @@ void OverlayECal_FigExtData11() {
 	h1_Erec_2pi_e_weight->SetMarkerColor(42);
 	h1_Erec_3pi_e_weight->SetMarkerColor(28);
 
-	h1_Erec_1pi_e_weight->GetYaxis()->SetRangeUser(0.,1.1*h1_Erec_1pi_e_weight->GetMaximum());
+	h1_Erec_1pi_e_weight->GetYaxis()->SetRangeUser(0.,1.1*h1_Erec_1pi_e->GetMaximum());
 	h1_Erec_1pi_e_weight->Draw("e");
 	h1_Erec_1pi_e->Draw("e same");
 
@@ -175,7 +175,7 @@ void OverlayECal_FigExtData11() {
 	h1_Erec_2pi_e_weight->Draw("P e Same");
 
 	h1_Erec_3pi_e_weight->SetLineColor(28);
-	h1_Erec_3pi_e_weight->Draw("P e Same");
+	//h1_Erec_3pi_e_weight->Draw("P e Same");
 
 	//h1_Erec_4pi_e_weight->SetLineColor(6);
 
@@ -183,14 +183,14 @@ void OverlayECal_FigExtData11() {
 	lat1->SetTextFont(FontStyle);
 	
 	lat1->SetTextColor(38);
-	lat1->DrawLatex(0.58, 0.85, "Detected 1 #pi^{#pm} or #gamma");
+	lat1->DrawLatex(0.58, 0.85, "Detected 1 #pi^{#pm}/#gamma");
 	lat1->SetTextSize(TextSize);
 	lat1->SetTextColor(46);
 	lat1->DrawLatex(0.58, 0.78, "Undetected 1#pi^{#pm}/#gamma (-)");
 	lat1->SetTextColor(42);
 	lat1->DrawLatex(0.58, 0.71, "Undetected 2#pi^{#pm}/#gamma (+)");
 	lat1->SetTextColor(28);
-	lat1->DrawLatex(0.58, 0.64, "Undetected 3#pi^{#pm}/#gamma (+)");
+	//lat1->DrawLatex(0.58, 0.64, "Undetected 3#pi^{#pm}/#gamma (+)");
 	lat1->SetTextColor(6);
 
 	lat1->SetTextColor(1);
@@ -199,7 +199,7 @@ void OverlayECal_FigExtData11() {
 	lat1->SetTextSize(TextSize);
 	lat1->DrawLatex(0.17, 0.85, "^{56}Fe");
 
-	c1->SaveAs("../../myPlots/pdf/NoxBCut/"+version+target+"/FigExtData11_EQE_Inclusive_Subtractions_"+target+"_SuSav2.pdf");
+	c1->SaveAs("../../../myPlots/pdf/NoxBCut/"+version+target+"/FigExtData11_EQE_Inclusive_Subtractions_"+target+"_SuSav2.pdf");
 
 	// -------------------------------------------------------------------------------------------
 
@@ -207,9 +207,9 @@ void OverlayECal_FigExtData11() {
 	c2->cd();
 
 	h1_E_rec->SetAxisRange(xmin, xmax, "X"); 
-	h1_E_rec->GetXaxis()->SetTitle("E^{QE} [GeV]");
+	h1_E_rec->GetXaxis()->SetTitle("E_{QE} [GeV]");
 	h1_E_rec->GetYaxis()->SetTitle("Weighted Events / GeV");
-	h1_E_rec->GetXaxis()->SetTitleOffset(1.2);
+	h1_E_rec->GetXaxis()->SetTitleOffset(1.);
 	h1_E_rec->SetMinimum(0);
 	h1_E_rec->UseCurrentStyle();
 	h1_E_rec->SetMarkerStyle(20);
@@ -228,8 +228,10 @@ void OverlayECal_FigExtData11() {
 	h1_E_rec->GetYaxis()->SetLabelFont(FontStyle);
 	h1_E_rec->GetYaxis()->SetTitleSize(TextSize);
 	h1_E_rec->GetYaxis()->SetLabelSize(TextSize);
+	h1_E_rec->GetYaxis()->SetTitleOffset(1.);
 
-	//h1_E_rec->SetAxisRange(3*h1_Erec_3pi_e_weight->GetMinimum(),1.05*h1_E_rec->GetMaximum(),"Y");
+//	h1_E_rec->SetAxisRange(3*h1_Erec_3pi_e_weight->GetMinimum(),1.05*h1_E_rec->GetMaximum(),"Y");
+	h1_E_rec->SetAxisRange(0,1.17*h1_E_rec->GetMaximum(),"Y");
 	h1_E_rec->Draw("e");
 	
 	h1_Erec_0pi_e->SetAxisRange(xmin, xmax, "X"); 
@@ -240,27 +242,27 @@ void OverlayECal_FigExtData11() {
 	h1_Erec_0pi_e->SetMarkerColor(46);
 	h1_Erec_0pi_e->Draw("e same");
 
-	h1_Erec_0pi_sub_e->SetLineColor(8);
+	h1_Erec_0pi_sub_e->SetLineColor(42);
 	h1_Erec_0pi_sub_e->SetMarkerStyle(20);
 	h1_Erec_0pi_sub_e->SetMarkerSize(1.2);
-	h1_Erec_0pi_sub_e->SetMarkerColor(8);
+	h1_Erec_0pi_sub_e->SetMarkerColor(42);
 
 	h1_Erec_0pi_sub_e->Draw("e Same");
 
 	lat1->SetTextColor(38);
-	lat1->DrawLatex(0.35, 0.73, "No cuts");
+	lat1->DrawLatex(0.51, 0.89, "No cuts");
 
 	lat1->SetTextColor(46);
-	lat1->DrawLatex(0.3, 0.44, "No detected #pi^{#pm}/#gamma");
+	lat1->DrawLatex(0.51, 0.82, "No detected #pi^{#pm}/#gamma");
 	 
-	lat1->SetTextColor(8);
-	lat1->DrawLatex(0.26, 0.24, "Subtract undetected #pi^{#pm}/#gamma");
+	lat1->SetTextColor(42);
+	lat1->DrawLatex(0.51, 0.75, "Subtract undetected #pi^{#pm}/#gamma");
 		
 	lat1->SetTextColor(1);
 	lat1->SetTextSize(0.09);
 	lat1->SetTextSize(TextSize);
 	lat1->DrawLatex(0.17, 0.85, "^{56}Fe");
 
-	c2->SaveAs("../../myPlots/pdf/NoxBCut/"+version+target+"/FigExtData11_EQE_Exclusive_Subtractions_"+target+"_SuSav2.pdf");
+	c2->SaveAs("../../../myPlots/pdf/NoxBCut/"+version+target+"/FigExtData11_EQE_Exclusive_Subtractions_"+target+"_SuSav2.pdf");
  
 }

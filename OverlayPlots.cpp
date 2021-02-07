@@ -107,8 +107,8 @@ void OverlayPlots() {
 //	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
 //	nucleus.push_back("CH2"); LabelsOfSamples.push_back("CH2"); JustNucleus.push_back("CH2");
 
-	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
+//	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
+	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
 //	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");  DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
@@ -149,13 +149,13 @@ void OverlayPlots() {
 
 	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("G2018 (No Rad master)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 	FSIModel.push_back("G2018_MasterNoRad"); FSILabel.push_back("G2018 (No Rad master+adi_radcorr)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("G2018 (1p0pi No Rad)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018 (Ext Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("G2018 (Rad adi_radcorr)");  DirNames.push_back("hA2018_Truth_RadCorr");
+////	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("G2018 (1p0pi No Rad)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+////	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018 (Ext Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
+//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("G2018 (Rad adi_radcorr)");  DirNames.push_back("hA2018_Truth_RadCorr");
 
-	FSIModel.push_back("G2018_MasterRad"); FSILabel.push_back("G2018 (Rad master+adi_radcorr)");  DirNames.push_back("hA2018_Truth_RadCorr");
+//	FSIModel.push_back("G2018_MasterRad"); FSILabel.push_back("G2018 (Rad master+adi_radcorr)");  DirNames.push_back("hA2018_Truth_RadCorr");
 
-	FSIModel.push_back("G2018_MasterRad_QEOnly"); FSILabel.push_back("G2018 (QE Only)");  DirNames.push_back("hA2018_Truth_RadCorr");
+//	FSIModel.push_back("G2018_MasterRad_QEOnly"); FSILabel.push_back("G2018 (QE Only)");  DirNames.push_back("hA2018_Truth_RadCorr");
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -188,10 +188,10 @@ void OverlayPlots() {
 
 //	NameOfPlots.push_back("DeltaAlphaT_Int_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} P_{T} [GeV/c]"); OutputPlotNames.push_back("DeltaAlphaT_Int_0");
 	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-	NameOfPlots.push_back("ECal_Int_1"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_1");
-	NameOfPlots.push_back("ECal_Int_2"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_2");
-	NameOfPlots.push_back("ECal_Int_3"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_3");
-	NameOfPlots.push_back("ECal_Int_4"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_4");
+//	NameOfPlots.push_back("ECal_Int_1"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_1");
+//	NameOfPlots.push_back("ECal_Int_2"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_2");
+//	NameOfPlots.push_back("ECal_Int_3"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_3");
+//	NameOfPlots.push_back("ECal_Int_4"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("ECal_Int_4");
 
 //	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_1"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]");  OutputPlotNames.push_back("epRecoEnergy_slice_1");

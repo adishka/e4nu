@@ -152,12 +152,16 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 					TLegend* legGenie = new TLegend(LegXmin,LegYmin,LegXmin+0.15,LegYmin+YSpread);
 					legGenie->SetNColumns(1);
 
-					TLegend* legGenieBlackLine = new TLegend(LegXmin,0.76,LegXmin+0.15,0.88);
+					TLegend* legGenieBlackLine = new TLegend(LegXmin,0.74,LegXmin+0.15,0.88);
 					legGenieBlackLine->SetNColumns(1);
 
-					TLegend* legGenieBreak = new TLegend(LegXmin,0.59,0.4,0.76);					
+					TLegend* legGenieBreak = new TLegend(0.24,0.63,0.41,0.75);					
 					legGenieBreak->SetNColumns(2);
-					legGenieBreak->SetMargin(0.39);
+					legGenieBreak->SetMargin(0.35);
+
+					TLegend* legG2018 = new TLegend(0.21,0.57,0.39,0.63);					
+					legG2018->SetNColumns(2);
+					legG2018->SetMargin(0.39);
 
 					double max = -99.;
 					double min = 1E12;
@@ -184,7 +188,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 						Plots[WhichFSIModel]->GetXaxis()->SetTitle(JustNucleus[WhichNucleus]+LabelOfPlots[WhichPlot]);
 						Plots[WhichFSIModel]->GetXaxis()->CenterTitle(0);
 
-						Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(1.12);
+						Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(1.1);
 						if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0"  && E[WhichEnergy] == "1_161") { Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(0.85); }
 
 						if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") 
@@ -393,8 +397,14 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 					legGenieBlackLine->Draw(); 
 
 					legGenieBreak->SetTextSize(TextSize-0.03);
-					legGenieBreak->AddEntry(Plots[2],"G2018","l");					
+					//legGenieBreak->AddEntry(Plots[2],"G2018","l");					
 					legGenieBreak->Draw();
+
+					legG2018->SetBorderSize(0);
+					legG2018->SetTextFont(FontStyle);
+					legG2018->SetTextSize(TextSize-0.03);
+					legG2018->AddEntry(Plots[2],"G2018","l");					
+					legG2018->Draw();
 
 					TLatex* myNucleus = new TLatex();
 					myNucleus->SetTextFont(FontStyle);

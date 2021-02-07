@@ -177,6 +177,7 @@
 		{ "hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger_Offset", "G2018 Rad Updated Schwinger" },
 
 		{ "hA2018_Final_NoRadCorr_LFGM", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Offset", "G2018 NoRad" },
 		{ "hA2018_Final_NoRadCorr_LFGM_Playground", "G2018 NoRad" },
 		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc", "G2018 NoRad" },
 		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc", "G2018 NoRad" },
@@ -188,6 +189,7 @@
 		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec", "G2018 NoRad" },
 		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc_Offset", "G2018 NoRad" },
 		{ "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithFidAcc", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithFidAcc_Offset", "G2018 NoRad" },
 
 		// ------------------------------------------------------------------------------------------------------
 
@@ -565,6 +567,7 @@
 		{ std::make_pair("12C", "4_461"),  67900000 }, // Q2 > 0.8
 		{ std::make_pair("56Fe", "2_261"), 69600000 }, // Q2 > 0.4
 		{ std::make_pair("56Fe", "4_461"), 81100000 } // Q2 > 0.8
+//		{ std::make_pair("56Fe", "4_461"), 46500000 } // Q2 > 0.8
 
 	};
 
@@ -662,8 +665,8 @@
 
 	// XSec label
 
-	TString XSecEcalLabel = "#frac{d#sigma}{dE_{cal}} [#frac{#mub}{GeV}]";
-	TString XSecEQELabel = "#frac{d#sigma}{dE_{QE}} [#frac{#mub}{GeV}]";
+	TString XSecEcalLabel = "#frac{d#sigma}{dE_{cal}} #left[#frac{#mub}{GeV}#right]";
+	TString XSecEQELabel = "#frac{d#sigma}{dE_{QE}} #left[#frac{#mub}{GeV}#right]";
 
 	//  ------------------------------------------------------------------------------
 

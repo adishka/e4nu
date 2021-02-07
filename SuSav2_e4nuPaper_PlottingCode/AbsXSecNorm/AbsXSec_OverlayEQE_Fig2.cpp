@@ -78,13 +78,19 @@ void AbsXSec_OverlayEQE_Fig2() {
 
 	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
-		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2");	
-		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("G2018");
+		FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("SuSav2");	
+		FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("G2018");
+
+//		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2");	
+//		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("G2018");
 
 	} else {
 
-		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2");	
-		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("G2018");
+		FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2");	
+		FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("G2018");
+
+//		FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2");	
+//		FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("G2018");
 
 	}
 
@@ -142,16 +148,21 @@ void AbsXSec_OverlayEQE_Fig2() {
 
 					Plots.clear();
 
-					double LegXmin = 0.22, LegYmin = 0.45, YSpread = 0.35;
+					double LegXmin = 0.21, LegYmin = 0.45, YSpread = 0.35;
 
 					TLegend* legGenie = new TLegend(LegXmin,LegYmin,LegXmin+0.15,LegYmin+YSpread);
 					legGenie->SetNColumns(1);
 
-					TLegend* legGenieBlackLine = new TLegend(LegXmin,0.68,LegXmin+0.15,0.82);
+					TLegend* legGenieBlackLine = new TLegend(LegXmin,0.74,LegXmin+0.15,0.88);
 					legGenieBlackLine->SetNColumns(1);
 
-					TLegend* legGenieBreak = new TLegend(LegXmin,0.51,0.4,0.68);					
+					TLegend* legGenieBreak = new TLegend(0.24,0.63,0.41,0.75);					
 					legGenieBreak->SetNColumns(2);
+					legGenieBreak->SetMargin(0.35);
+
+					TLegend* legG2018 = new TLegend(0.21,0.57,0.39,0.63);					
+					legG2018->SetNColumns(2);
+					legG2018->SetMargin(0.39);
 
 					double max = -99.;
 					double min = 1E12;
@@ -239,7 +250,7 @@ void AbsXSec_OverlayEQE_Fig2() {
 
 						double localmax = Plots[WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }
-						double height = 1.05;
+						double height = 1.1;
 						if ( xBCut[WhichxBCut] == "xBCut" ) { height = 1.1; }
 						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 
@@ -293,15 +304,21 @@ void AbsXSec_OverlayEQE_Fig2() {
 					legGenieBlackLine->Draw(); 
 
 					legGenieBreak->SetTextSize(TextSize-0.03);
-					legGenieBreak->AddEntry(Plots[2],"G2018","l");					
+					//legGenieBreak->AddEntry(Plots[2],"G2018","l");					
 					legGenieBreak->Draw();
+
+					legG2018->SetBorderSize(0);
+					legG2018->SetTextFont(FontStyle);
+					legG2018->SetTextSize(TextSize-0.03);
+					legG2018->AddEntry(Plots[2],"G2018","l");					
+					legG2018->Draw();
 
 					TLatex* myNucleus = new TLatex();
 					myNucleus->SetTextFont(FontStyle);
 					myNucleus->SetTextColor(kBlack);
 					myNucleus->SetTextSize(TextSize-0.02);
-					if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myNucleus->DrawLatexNDC(0.22,0.85,JustNucleus[WhichNucleus]+"(e,e')_{0#pi}"); }
-					if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") { myNucleus->DrawLatexNDC(0.22,0.85,JustNucleus[WhichNucleus]+"(e,e')_{1p0#pi}"); }
+					//if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") { myNucleus->DrawLatexNDC(0.22,0.85,JustNucleus[WhichNucleus]+"(e,e')_{0#pi}"); }
+					//if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") { myNucleus->DrawLatexNDC(0.22,0.85,JustNucleus[WhichNucleus]+"(e,e')_{1p0#pi}"); }
 
 					TLatex* myEbeam = new TLatex();
 					myEbeam->SetTextFont(FontStyle);
@@ -318,6 +335,129 @@ void AbsXSec_OverlayEQE_Fig2() {
 					// Monitor where 1.161 GeV is
 					//TLine* line = new TLine(1.161,0.,1.161,2.);
 					//line->Draw();
+
+// -------------------------------------------------------------------------------------------
+
+// Extra pad zooming in tail if Ecal plot
+
+if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
+
+	// ---------------------------------------
+
+	double PadNDCXmin = 0.45,PadNDCXmax = 0.85, PadNDCYmin = 0.4,PadNDCYmax = 0.75;
+	double PadLeftMargin = 0.105, PadRightMargin = 0.05, PadBottomMargin = 0.1;
+
+	double Xmin = 0, Xmax = 0, Ymin = 0, Ymax = 0;
+
+	// ---------------------------------------
+		
+	if (E[WhichEnergy] == "1_161") { 
+
+		PadNDCXmin = 0.4;PadNDCXmax = 0.8;
+		Xmin = 0.565; Xmax = 1.105; 
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.055; }
+
+	}
+
+		
+	if (E[WhichEnergy] == "2_261") { 
+
+		Xmin = 0.7; Xmax = 2.1; 
+		if (nucleus[WhichNucleus] == "4He") { Ymin = 0.0; Ymax = 0.009; }
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.024; }
+		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.0; Ymax = 0.09; }
+
+	}
+
+	if (E[WhichEnergy] == "4_461") { 
+
+		Xmin = 1.6; Xmax = 4.3; 
+		if (nucleus[WhichNucleus] == "4He") { Ymin = 0.0; Ymax = 0.0049; }
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.01; }
+		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.0; Ymax = 0.035; }
+
+	}
+
+	// ---------------------------------------
+
+	TH1D* DataPlotClone = (TH1D*)(Plots[0]->Clone("DataPlotClone"));
+	TH1D* SuSav2PlotClone = (TH1D*)(Plots[1]->Clone("SuSav2PlotClone"));
+	TH1D* G2018PlotClone = (TH1D*)(Plots[2]->Clone("G2018PlotClone"));
+
+	TH1D* QEPlotClone = (TH1D*)(BreakDownPlots[0]->Clone("QEPlotClone"));
+	TH1D* MECPlotClone = (TH1D*)(BreakDownPlots[1]->Clone("MECPlotClone"));
+	TH1D* RESPlotClone = (TH1D*)(BreakDownPlots[2]->Clone("RESPlotClone"));
+	TH1D* DISPlotClone = (TH1D*)(BreakDownPlots[3]->Clone("DISPlotClone"));
+
+	// ---------------------------------------
+
+	double XminLeftLine = DataPlotClone->GetBinCenter(DataPlotClone->FindBin(Xmin));
+	double XminRightLine = DataPlotClone->GetBinCenter(DataPlotClone->FindBin(Xmax));
+
+	double XmaxLeftLine = NDCtoX(PadNDCXmin+0.5*PadLeftMargin*(PadNDCXmax-PadNDCXmin));
+	double XmaxRightLine = NDCtoX(PadNDCXmax-0.5*PadRightMargin*(PadNDCXmax-PadNDCXmin));
+
+	double YmaxLeftLine = NDCtoY(PadNDCYmin+0.5*PadBottomMargin*(PadNDCYmax-PadNDCYmin));
+
+	double YminLeftLine = DataPlotClone->GetBinContent(DataPlotClone->FindBin(Xmin));
+	double YminRightLine = DataPlotClone->GetBinContent(DataPlotClone->FindBin(Xmax));
+
+	TLine* Leftline = new TLine(XminLeftLine,YminLeftLine,XmaxLeftLine,YmaxLeftLine);
+	Leftline->SetLineWidth(2);
+	Leftline->SetLineColor(kBlack);
+	Leftline->SetLineStyle(9);
+	Leftline->Draw();
+
+	TLine* Rightline = new TLine(XminRightLine,YminRightLine,XmaxRightLine,YmaxLeftLine);
+	Rightline->SetLineWidth(2);
+	Rightline->SetLineColor(kBlack);
+	Rightline->SetLineStyle(9);
+	Rightline->Draw();
+
+	// ---------------------------------------
+
+	TString PadName = "ZoomInPad";
+	TPad* padZoomIn = new TPad(PadName,PadName,PadNDCXmin,PadNDCYmin,PadNDCXmax,PadNDCYmax,21); 
+	padZoomIn->SetFillColor(kWhite); 
+	padZoomIn->SetFrameLineWidth(3);
+	padZoomIn->Draw();
+	padZoomIn->SetTopMargin(0.1);
+	padZoomIn->SetBottomMargin(PadBottomMargin);
+	padZoomIn->SetLeftMargin(PadLeftMargin);
+	padZoomIn->SetRightMargin(PadRightMargin);
+	padZoomIn->SetFillStyle(4000); // make pad trasnparent
+	padZoomIn->cd();
+
+	// ---------------------------------------------------------------
+
+	auto frame = PlotCanvas->DrawFrame(Xmin,Ymin,Xmax,Ymax);
+
+	frame->GetXaxis()->SetNdivisions(6);
+	frame->GetXaxis()->SetLabelSize(0.1);
+	frame->GetXaxis()->SetLabelFont(FontStyle);
+
+	frame->GetYaxis()->SetNdivisions(6);
+	frame->GetYaxis()->SetLabelSize(0.1);
+	frame->GetYaxis()->SetLabelFont(FontStyle);
+
+	DataPlotClone->GetYaxis()->SetNdivisions(4);
+	DataPlotClone->GetYaxis()->SetLabelOffset(0.1);
+	DataPlotClone->Draw("e same");
+
+	G2018PlotClone->Draw("c hist same");
+	SuSav2PlotClone->Draw("c hist same");
+	QEPlotClone->Draw("c hist same");
+	MECPlotClone->Draw("c hist same");
+	RESPlotClone->Draw("c hist same");
+	DISPlotClone->Draw("c hist same");
+
+	DataPlotClone->Draw("e same");
+
+	gPad->RedrawAxis();
+
+}
+
+// -------------------------------------------------------------------------------------------
 
 					// -------------------------------------------------------------------------------------------
 

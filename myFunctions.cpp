@@ -477,7 +477,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	else {
 
-		std::cout << "Craaaaaaaaaaaaaaap !!!!!!!!! What is the SF in AbsoluteXSecScaling ???????????????" << std::endl;
+		std::cout << "Craaaaaaaaaaaaaaap !!!!!!!!! What is the SF in AbsoluteXSecScaling for " << h->GetName() << "???????????????" << std::endl;
 
 	}		
 
@@ -706,7 +706,7 @@ void ApplyRange(TH1D* h, TString Energy, TString PlotVar) {
 		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.7,2.6); }
 		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(2.,5.); }
 
-	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("E_tot") != std::string::npos) {
+	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("E_tot") != std::string::npos || string(PlotVar).find("h1_Ecal_SuperFine") != std::string::npos) {
 
 //		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.57,1.23); } // default, but now in the Ecal 6-pannel, we need to expand the range for smaller box 
 		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.5,1.23); }
@@ -916,16 +916,14 @@ std::vector<TString> FSIModelOffset; FSIModelOffset.clear();
 
 FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); // main reco plots for unfolding uncertainty with smearing
 FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // main plots for unfolding uncertainty with smearing
-FSIModelOffset.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset 
+FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset 
 FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset
 
 if (name == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
-// apapadop FIX IT to no rad samples
-
 	FSIModelOffset[0] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc";
 	FSIModelOffset[1] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
-	FSIModelOffset[2] = "hA2018_Final_RadCorr_LFGM_Truth0pi_WithFidAcc";
+	FSIModelOffset[2] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithFidAcc";
 	FSIModelOffset[3] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
 
 }

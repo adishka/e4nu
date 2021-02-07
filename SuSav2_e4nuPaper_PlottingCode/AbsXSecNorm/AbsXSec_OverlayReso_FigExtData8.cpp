@@ -44,7 +44,7 @@ void AbsXSec_OverlayReso_FigExtData8() {
 
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");	
-	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");		
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2");		
 
 	xBCut.push_back("NoxBCut");
 	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_factor_fracfeed"); OutputPlotNames.push_back("EcalReso");
@@ -127,10 +127,10 @@ void AbsXSec_OverlayReso_FigExtData8() {
 						
 						double LowRange = -1;
 						double HighRange = -1;						
-if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed") { 
-	LowRange = -0.85; HighRange = 0.2; 
-	Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->SetNdivisions(9); 
-} else { LowRange = -0.81; HighRange = 0.07; }
+						if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed") { 
+							LowRange = -0.85; HighRange = 0.2; 
+							Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->SetNdivisions(9); 
+						} else { LowRange = -0.81; HighRange = 0.07; }
 
 						
 						Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->SetRangeUser(LowRange,HighRange);
@@ -155,17 +155,30 @@ if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed") {
 
 						double NBins = Plots[WhichEnergy][WhichFSIModel]->GetNbinsX(); 
 				
-						for (int i = 1; i <= NBins; i++) { 
-					
-							double content = Plots[WhichEnergy][WhichFSIModel]->GetBinContent(i);
-							double error = Plots[WhichEnergy][WhichFSIModel]->GetBinError(i);
-							double width = Plots[WhichEnergy][WhichFSIModel]->GetBinWidth(i);
-							double newcontent = content / width;
-							double newerror = error / width;				
-							Plots[WhichEnergy][WhichFSIModel]->SetBinContent(i,newcontent);
-							Plots[WhichEnergy][WhichFSIModel]->SetBinError(i,newerror);
+//						for (int i = 1; i <= NBins; i++) { 
+//					
+//							double content = Plots[WhichEnergy][WhichFSIModel]->GetBinContent(i);
+//							double error = Plots[WhichEnergy][WhichFSIModel]->GetBinError(i);
+//							double width = Plots[WhichEnergy][WhichFSIModel]->GetBinWidth(i);
+//							double newcontent = content / width;
+//							double newerror = error / width;				
+//							Plots[WhichEnergy][WhichFSIModel]->SetBinContent(i,newcontent);
+//							Plots[WhichEnergy][WhichFSIModel]->SetBinError(i,newerror);
 
-						}
+//						}
+
+						// ---------------------------------------------------------------------------------------------------
+
+						// myFunctions
+						// Division by bin width
+						// Systematics for data
+
+						AbsoluteXSecScaling(Plots[WhichEnergy][WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy]);
+						ReweightPlots(Plots[WhichEnergy][WhichFSIModel]);
+						if (string(FSIModelsToLabels[FSIModel[WhichFSIModel]]).find("Data") != std::string::npos) 
+							{ ApplySystUnc(Plots[WhichEnergy][WhichFSIModel], E[WhichEnergy]); }
+
+						// ---------------------------------------------------------------------------------------------------
 
 						double localmax = Plots[WhichEnergy][WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }

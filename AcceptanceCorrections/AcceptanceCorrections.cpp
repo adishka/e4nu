@@ -65,7 +65,7 @@ void AcceptanceCorrections() {
 	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
 	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 ////	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e')_{1p0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("eRecoEnergy_slice_0");
+	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]"); OutputPlotNames.push_back("eRecoEnergy_slice_0");
 ////	NameOfPlots.push_back("h1_EQE_FullyInclusive"); LabelOfPlots.push_back("(e,e') E^{QE} [GeV]");  OutputPlotNames.push_back("FullyInclusiveeRecoEnergy_slice_0");
 
 	// 0th plot is CV
@@ -156,10 +156,8 @@ void AcceptanceCorrections() {
 
 					if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
-//						FSIModel[1] = Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger";
-//						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"; // need to be offset
-
-						FSIModel[1] = Label+"_NoRadCorr_LFGM_Truth0pi_WithFidAcc";
+						if (Label == "SuSav2") { FSIModel[1] = Label+"_NoRadCorr_LFGM_Truth0pi_WithFidAcc"; }
+						else { FSIModel[1] = Label+"_NoRadCorr_LFGM_Truth0pi_WithFidAcc_Offset"; }
 						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
 
 					}

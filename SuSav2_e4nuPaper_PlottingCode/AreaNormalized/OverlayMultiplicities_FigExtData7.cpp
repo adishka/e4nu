@@ -20,21 +20,21 @@ using namespace std;
 #include "/home/afroditi/Dropbox/PhD/Secondary_Code/SetOffsetAndSize.cpp"
 #include "/home/afroditi/Dropbox/PhD/Secondary_Code/ToString.cpp"
 
-// ----------------------------------------------------------------------------------------------------------------
+//// ----------------------------------------------------------------------------------------------------------------
 
-void ApplySystUnc(TH1D* h, double systunc) {
+//void ApplySystUnc(TH1D* h, double systunc) {
 
-	double NBins = h->GetNbinsX(); 
-				
-	for (int i = 1; i <= NBins; i++) { 
-					
-		double error = h->GetBinError(i);
-		double newerror = error * (1. + systunc);
-		h->SetBinError(i,newerror);
+//	double NBins = h->GetNbinsX(); 
+//				
+//	for (int i = 1; i <= NBins; i++) { 
+//					
+//		double error = h->GetBinError(i);
+//		double newerror = error * (1. + systunc);
+//		h->SetBinError(i,newerror);
 
-	}
+//	}
 
-}
+//}
 
 // ----------------------------------------------------------------------------------------------------------------
 
@@ -52,13 +52,13 @@ void OverlayMultiplicities_FigExtData7() {
 	
 	TString version = "v3_0_6/";
 
-	int NECalRebin = 1;
+//	int NECalRebin = 1;
 
 	// From Mariana's analysis note
 
-	double SystUnc1GeV = 0.02; // 2% syst uncertainty at 1.161 GeV
-	double SystUnc2GeV = 0.021; // 2.1% syst uncertainty at 2.261 GeV
-	double SystUnc4GeV = 0.047; // 4.7% syst uncertainty at 4.461 GeV
+//	double SystUnc1GeV = 0.02; // 2% syst uncertainty at 1.161 GeV
+//	double SystUnc2GeV = 0.021; // 2.1% syst uncertainty at 2.261 GeV
+//	double SystUnc4GeV = 0.047; // 4.7% syst uncertainty at 4.461 GeV
 
 	// ------------------------------------------------------------------------
 
@@ -91,8 +91,8 @@ void OverlayMultiplicities_FigExtData7() {
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");	
+//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");	
 
 	NameOfPlots.push_back("h1_Npi"); LabelOfPlots.push_back("Multiplicities"); OutputPlotNames.push_back("PionMultiPlot");
 	NameOfPlots.push_back("h1_Nprot"); LabelOfPlots.push_back("Multiplicities"); OutputPlotNames.push_back("Nproton");
@@ -108,8 +108,8 @@ void OverlayMultiplicities_FigExtData7() {
 	TString WhatModelsAreIncluded = "";
 	for (int LoopOverFSIModels = 0 ; LoopOverFSIModels < NFSIModels ; LoopOverFSIModels ++) { WhatModelsAreIncluded += "_"+DirNames[LoopOverFSIModels]; };
 
-	TString RecoCalorimetry = "(e,e'p)";
-	TString FSI = "FSI";
+//	TString RecoCalorimetry = "(e,e'p)";
+//	TString FSI = "FSI";
 
 	// Loop over the xB kinematics
 
@@ -127,7 +127,7 @@ void OverlayMultiplicities_FigExtData7() {
 									 nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+"Multiplicities"+"_"+xBCut[WhichxBCut],
 									 205,34,1024,768);
 
-				PlotCanvas->SetLeftMargin(0.12);
+				PlotCanvas->SetLeftMargin(0.13);
 				PlotCanvas->SetRightMargin(0.04);
 				PlotCanvas->SetBottomMargin(0.15);
 				PlotCanvas->SetTopMargin(0.01);
@@ -184,13 +184,13 @@ void OverlayMultiplicities_FigExtData7() {
 						// Y-axis label
 
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(TextSize);
-						Plots[WhichFSIModel]->GetYaxis()->SetTitle("Weighted Events");
+						Plots[WhichFSIModel]->GetYaxis()->SetTitle("# Events");
 
 						// --------------------------------------------------------------------------------------
 
 						Plots[WhichFSIModel]->GetYaxis()->SetTitleFont(FontStyle);
 						Plots[WhichFSIModel]->GetYaxis()->SetLabelFont(FontStyle);
-						Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(0.75); 
+						Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(0.8); 
 
 						Plots[WhichFSIModel]->SetLineWidth(LineWidth);
 
@@ -198,19 +198,24 @@ void OverlayMultiplicities_FigExtData7() {
 
 						// Scaling Factor
 
-						double ScalingFactor = Plots[0]->Integral() / Plots[WhichFSIModel]->Integral();
+//						double ScalingFactor = Plots[0]->Integral() / Plots[WhichFSIModel]->Integral();
+						double ScalingFactor = 1.;
+						if (NameOfPlots[WhichPlot] == "h1_Nprot") { ScalingFactor = double(Plots[0]->GetBinContent(2)) / double(Plots[WhichFSIModel]->GetBinContent(2) ); }
+
+						if (NameOfPlots[WhichPlot] == "h1_Npi") { ScalingFactor = double(Plots[0]->GetBinContent(1)) / double(Plots[WhichFSIModel]->GetBinContent(1) ); }
+
 						Plots[WhichFSIModel]->Scale(ScalingFactor);
 
 						// ----------------------------------------------------------------------------------
 
 						// Apply Systematic Uncertainties on Data Points
 
-						double SystUnc = 0;
-						if ( DoubleE[WhichEnergy] == 1.161 ) { SystUnc = SystUnc1GeV; }
-						if ( DoubleE[WhichEnergy] == 2.261 ) { SystUnc = SystUnc2GeV; }
-						if ( DoubleE[WhichEnergy] == 4.461 ) { SystUnc = SystUnc4GeV; }
+//						double SystUnc = 0;
+//						if ( DoubleE[WhichEnergy] == 1.161 ) { SystUnc = SystUnc1GeV; }
+//						if ( DoubleE[WhichEnergy] == 2.261 ) { SystUnc = SystUnc2GeV; }
+//						if ( DoubleE[WhichEnergy] == 4.461 ) { SystUnc = SystUnc4GeV; }
 
-						if (FSILabel[WhichFSIModel] == "Data") { ApplySystUnc(Plots[WhichFSIModel], SystUnc); }
+//						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { ApplySystUnc(Plots[WhichFSIModel], SystUnc); }
 
 						// ---------------------------------------------------------------------------------------------------
 
@@ -303,7 +308,7 @@ void OverlayMultiplicities_FigExtData7() {
 				if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
 				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"+ext+nucleus[WhichNucleus]+"_" 
-					+E[WhichEnergy]+"_" +"Multiplicities"+WhatModelsAreIncluded+".pdf");
+					+E[WhichEnergy]+"_" +"Multiplicities.pdf");
 
 				//delete PlotCanvas;
 

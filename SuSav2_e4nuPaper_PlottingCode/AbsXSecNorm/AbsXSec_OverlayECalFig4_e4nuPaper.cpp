@@ -54,8 +54,8 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("G2018");
 
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");
-	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("G2018");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2");
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("G2018");
 
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
@@ -101,13 +101,13 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 			for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
 				// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
-				double MaxHeight = 0.22;
+				double MaxHeight = 0.26;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 0.65; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 0.79; }
 
 					// ----------------------------------------------------------------------------
 
@@ -212,7 +212,8 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 						// Genie Break Down
 
 						if (
-							FSILabel[WhichFSIModel] == "SuSav2"
+							FSIModelsToLabels[FSIModel[WhichFSIModel]] == "SuSav2 NoRad"
+//							FSIModelsToLabels[FSIModel[WhichFSIModel]] == "G2018 NoRad"
 						) {
 						
 							if (nucleus[WhichNucleus] == "12C" && E[WhichEnergy] == "1_161") {
@@ -324,7 +325,140 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 						}
 
-					} // End of the loop over the FSI Models 				
+					} // End of the loop over the FSI Models 
+
+					gPad->RedrawAxis();
+
+// -------------------------------------------------------------------------------------------
+
+// Extra pad zooming in tail if Ecal plot
+
+if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
+
+	// ---------------------------------------
+
+	double PadNDCXmin = 0.14,PadNDCXmax = 0.88, PadNDCYmin = 0.36,PadNDCYmax = 0.76;
+	double PadLeftMargin = 0.12, PadRightMargin = 0.05, PadBottomMargin = 0.1, PadTopMargin = 0.005;
+
+	double Xmin = 0, Xmax = 0, Ymin = 0.0001, Ymax = 0;
+
+	// ---------------------------------------
+		
+	if (E[WhichEnergy] == "1_161") { 
+
+		Xmin = 0.565; Xmax = 1.105; 
+		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.049; }
+
+	}
+
+		
+	if (E[WhichEnergy] == "2_261") { 
+
+		Xmin = 0.8; Xmax = 2.1; 
+		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.049; PadNDCXmin = 0.0; PadLeftMargin = 0.1; }
+		if (nucleus[WhichNucleus] == "56Fe") { /*Ymin = 0.0;*/ Ymax = 0.19; PadNDCXmin = 0.1; PadLeftMargin = 0.11; PadNDCYmin = 0.39; PadNDCYmax = 0.81; PadTopMargin = 0.004; }
+
+	}
+
+	if (E[WhichEnergy] == "4_461") { 
+
+		Xmin = 1.8; Xmax = 4.15; 
+		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.049; PadNDCXmin = 0.04; PadLeftMargin = 0.088; PadNDCXmax = 0.88; PadRightMargin = 0.04; }
+		if (nucleus[WhichNucleus] == "56Fe") { 
+			/*Ymin = 0.0;*/ Ymax = 0.19; PadNDCXmin = 0.04; PadLeftMargin = 0.088; PadNDCXmax = 0.88; PadRightMargin = 0.04; PadNDCYmin = 0.39; PadNDCYmax = 0.81; PadTopMargin = 0.004;
+		}
+
+	}
+
+	// ---------------------------------------
+
+	TH1D* DataPlotClone = (TH1D*)(Plots[0]->Clone("DataPlotClone"));
+	TH1D* SuSav2PlotClone = (TH1D*)(Plots[1]->Clone("SuSav2PlotClone"));
+	TH1D* G2018PlotClone = (TH1D*)(Plots[2]->Clone("G2018PlotClone"));
+
+	TH1D* QEPlotClone = (TH1D*)(BreakDownPlots[0]->Clone("QEPlotClone"));
+	TH1D* MECPlotClone = (TH1D*)(BreakDownPlots[1]->Clone("MECPlotClone"));
+	TH1D* RESPlotClone = (TH1D*)(BreakDownPlots[2]->Clone("RESPlotClone"));
+	TH1D* DISPlotClone = (TH1D*)(BreakDownPlots[3]->Clone("DISPlotClone"));
+
+	// ---------------------------------------
+
+	double XminLeftLine = DataPlotClone->GetBinCenter(DataPlotClone->FindBin(Xmin));
+	double XminRightLine = DataPlotClone->GetBinCenter(DataPlotClone->FindBin(Xmax));
+
+	double XmaxLeftLine = NDCtoX(PadNDCXmin+0.5*PadLeftMargin*(PadNDCXmax-PadNDCXmin));
+	double XmaxRightLine = NDCtoX(PadNDCXmax-0.5*PadRightMargin*(PadNDCXmax-PadNDCXmin));
+
+	double YmaxLeftLine = NDCtoY(PadNDCYmin+0.5*PadBottomMargin*(PadNDCYmax-PadNDCYmin));
+
+	double YminLeftLine = DataPlotClone->GetBinContent(DataPlotClone->FindBin(Xmin));
+	double YminRightLine = DataPlotClone->GetBinContent(DataPlotClone->FindBin(Xmax));
+
+	TLine* Leftline = new TLine(XminLeftLine,YminLeftLine,XmaxLeftLine,YmaxLeftLine);
+	Leftline->SetLineWidth(2);
+	Leftline->SetLineColor(kBlack);
+	Leftline->SetLineStyle(9);
+//	Leftline->Draw();
+
+	TLine* Rightline = new TLine(XminRightLine,YminRightLine,XmaxRightLine,YmaxLeftLine);
+	Rightline->SetLineWidth(2);
+	Rightline->SetLineColor(kBlack);
+	Rightline->SetLineStyle(9);
+//	Rightline->Draw();
+
+	// ---------------------------------------
+
+	TString PadName = "ZoomInPad";
+	TPad* padZoomIn = new TPad(PadName,PadName,PadNDCXmin,PadNDCYmin,PadNDCXmax,PadNDCYmax,21); 
+	padZoomIn->SetFillColor(kWhite); 
+	padZoomIn->SetFrameLineWidth(1);
+	padZoomIn->Draw();
+	padZoomIn->SetTopMargin(PadTopMargin);
+	padZoomIn->SetBottomMargin(PadBottomMargin);
+	padZoomIn->SetLeftMargin(PadLeftMargin);
+	padZoomIn->SetRightMargin(PadRightMargin);
+	padZoomIn->SetFillStyle(4000); // make pad trasnparent
+	padZoomIn->cd();
+
+	// ---------------------------------------------------------------
+
+	auto frame = PlotCanvas->DrawFrame(Xmin,Ymin,Xmax,Ymax);
+
+	frame->GetXaxis()->SetNdivisions(4);
+//	frame->GetXaxis()->SetLabelSize(0.15);
+	frame->GetXaxis()->SetLabelSize(0.);
+	frame->GetXaxis()->SetLabelFont(FontStyle);
+//	frame->GetXaxis()->SetTickLength(0.05);
+	frame->GetXaxis()->SetTickLength(0.08);
+
+	frame->GetYaxis()->SetNdivisions(4);
+	frame->GetYaxis()->SetLabelSize(0.15);
+	frame->GetYaxis()->SetLabelFont(FontStyle);
+
+	frame->GetYaxis()->SetTickLength(-0.02);
+	frame->GetYaxis()->SetLabelOffset(-0.115);
+	if (nucleus[WhichNucleus] == "56Fe") { frame->GetYaxis()->SetLabelOffset(-0.12); }
+
+	DataPlotClone->GetYaxis()->SetNdivisions(3);
+	DataPlotClone->GetYaxis()->SetLabelOffset(0.1);
+	DataPlotClone->SetMarkerSize(1.); 
+	DataPlotClone->Draw("e same");
+
+	G2018PlotClone->Draw("c hist same");
+	SuSav2PlotClone->Draw("c hist same");
+	QEPlotClone->Draw("c hist same");
+	MECPlotClone->Draw("c hist same");
+	RESPlotClone->Draw("c hist same");
+	DISPlotClone->Draw("c hist same");
+
+	DataPlotClone->Draw("e same");
+
+	gPad->RedrawAxis();
+
+}
+
+// -------------------------------------------------------------------------------------------				
+				
 
 					// ---------------------------------------------------------------------------------------------------------
 
@@ -348,7 +482,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		latexIron.SetTextFont(FontStyle);
 		latexIron.SetTextSize(0.8*TextSize);
 		PlotCanvas->cd();
-		latexIron.DrawLatexNDC(0.3,0.385,"^{56}Fe");
+		latexIron.DrawLatexNDC(0.29,0.385,"^{56}Fe");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -404,42 +538,42 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 
 		// -------------------------------------------------------------------------------------------------
 	
-		TPad* padx14C12 = new TPad("padx14C12","padx14C12",0.255,0.65,0.305,0.72,21); 
-		padx14C12->SetFillColor(kWhite); 
-		PlotCanvas->cd();
-		padx14C12->Draw();
-		padx14C12->cd();
+//		TPad* padx14C12 = new TPad("padx14C12","padx14C12",0.255,0.65,0.305,0.72,21); 
+//		padx14C12->SetFillColor(kWhite); 
+//		PlotCanvas->cd();
+//		padx14C12->Draw();
+//		padx14C12->cd();
 
-		TLatex latexx14C12;
-		latexx14C12.SetTextFont(FontStyle);
-		latexx14C12.SetTextSize(8*TextSize);
-		//latexx14C12.DrawLatexNDC(0.,0.4,"x1/2");
-
-		// -------------------------------------------------------------------------------------------------
-	
-		TPad* padx5aC12 = new TPad("padx5aC12","padx5aC12",0.855,0.7,0.905,0.77,21); 
-		padx5aC12->SetFillColor(kWhite); 
-		PlotCanvas->cd();
-		padx5aC12->Draw();
-		padx5aC12->cd();
-
-		TLatex latexx5aC12;
-		latexx5aC12.SetTextFont(FontStyle);
-		latexx5aC12.SetTextSize(8*TextSize);
-		//latexx5aC12.DrawLatexNDC(0.,0.4,"x5");
+//		TLatex latexx14C12;
+//		latexx14C12.SetTextFont(FontStyle);
+//		latexx14C12.SetTextSize(8*TextSize);
+//		latexx14C12.DrawLatexNDC(0.,0.4,"x1/2");
 
 		// -------------------------------------------------------------------------------------------------
 	
-		TPad* padx5bC12 = new TPad("padx5bC12","padx5bC12",0.855,0.35,0.905,0.42,21); 
-		padx5bC12->SetFillColor(kWhite); 
-		PlotCanvas->cd();
-		padx5bC12->Draw();
-		padx5bC12->cd();
+//		TPad* padx5aC12 = new TPad("padx5aC12","padx5aC12",0.855,0.7,0.905,0.77,21); 
+//		padx5aC12->SetFillColor(kWhite); 
+//		PlotCanvas->cd();
+//		padx5aC12->Draw();
+//		padx5aC12->cd();
 
-		TLatex latexx5bC12;
-		latexx5bC12.SetTextFont(FontStyle);
-		latexx5bC12.SetTextSize(8*TextSize);
-		//latexx5bC12.DrawLatexNDC(0.,0.4,"x5");
+//		TLatex latexx5aC12;
+//		latexx5aC12.SetTextFont(FontStyle);
+//		latexx5aC12.SetTextSize(8*TextSize);
+//		latexx5aC12.DrawLatexNDC(0.,0.4,"x5");
+
+		// -------------------------------------------------------------------------------------------------
+	
+//		TPad* padx5bC12 = new TPad("padx5bC12","padx5bC12",0.855,0.35,0.905,0.42,21); 
+//		padx5bC12->SetFillColor(kWhite); 
+//		PlotCanvas->cd();
+//		padx5bC12->Draw();
+//		padx5bC12->cd();
+
+//		TLatex latexx5bC12;
+//		latexx5bC12.SetTextFont(FontStyle);
+//		latexx5bC12.SetTextSize(8*TextSize);
+//		latexx5bC12.DrawLatexNDC(0.,0.4,"x5");
 
 		// -------------------------------------------------------------------------------------------------
 	
@@ -472,7 +606,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		// Extra pad for the legend
 
 		PlotCanvas->cd();
-		TPad* padLegend = new TPad("padLegend","padLegend",0.07,0.19,0.3,0.53, 21); 
+		TPad* padLegend = new TPad("padLegend","padLegend",0.07,0.19,0.28,0.53, 21); 
 		padLegend->SetFillColor(kWhite); 
 		padLegend->Draw();
 		padLegend->cd();
@@ -498,7 +632,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		// Extra pad for the Y-axis units carbon
 
 		PlotCanvas->cd();
-		TPad* padTitle = new TPad("padTitle","padTitle",0.04,0.58,0.09,1., 21); 
+		TPad* padTitle = new TPad("padTitle","padTitle",0.05,0.58,0.1,1., 21); 
 		padTitle->SetFillColor(kWhite); 
 		padTitle->Draw();
 		padTitle->cd();
@@ -515,7 +649,7 @@ void AbsXSec_OverlayECalFig4_e4nuPaper() {
 		// Extra pad for the Y-axis units iron
 
 		PlotCanvas->cd();
-		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.345,0.18,0.395,0.55,21); 
+		TPad* padTitleFe = new TPad("padTitleFe","padTitleFe",0.345,0.2,0.395,0.57,21); 
 		padTitleFe->SetFillColor(kWhite); 
 		padTitleFe->Draw();
 		padTitleFe->cd();

@@ -57,8 +57,8 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 	xBCut.push_back("NoxBCut");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2");
-	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("G2018");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2");
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("G2018");
 
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018");
@@ -272,7 +272,7 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 
 						double localmax = Plots[WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }
-						double height = 1.2;
+						double height = 1.15;
 						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 
 						double localmin = Plots[WhichFSIModel]->GetBinContent(Plots[WhichFSIModel]->FindBin(4)); // multiplicity 4 is the highest one in data
@@ -304,10 +304,17 @@ void AbsXSec_OverlayPmissFig3b_e4nuPaper() {
 						myPmissSlice->SetTextSize(TextSize);
 						pad->cd();
 						if (OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_3") { 
-							myPmissSlice->SetTextSize(TextSize-0.02);
-							myPmissSlice->DrawLatexNDC(0.2,0.85,LabelOfPlots[WhichPlot]); 
+
+							myPmissSlice->SetTextSize(TextSize-0.03);
+							myPmissSlice->DrawLatexNDC(0.22,0.85,LabelOfPlots[WhichPlot]);
+
 						}
-						else { myPmissSlice->DrawLatexNDC(0.2,0.8,LabelOfPlots[WhichPlot]); }
+						else {
+
+							myPmissSlice->SetTextSize(TextSize-0.01);
+							myPmissSlice->DrawLatexNDC(0.22,0.8,LabelOfPlots[WhichPlot]); 
+
+						}
 
 						// -----------------------------------------------------------------------------------
 

@@ -132,7 +132,9 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 					// Loop over the FSI Models
 					
 					int LowBin = -1;
-					int HighBin = -1;					
+					int HighBin = -1;	
+
+					TH1D* DataPlot = nullptr;				
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
@@ -289,7 +291,7 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 							gStyle->SetErrorX(0); // Removing the horizontal errors
 							//Plots[WhichFSIModel]->Draw("e same"); 
 
-							TH1D* DataPlot = Plots[WhichFSIModel];
+							DataPlot = Plots[WhichFSIModel];
 
 							DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
@@ -325,10 +327,17 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 						myPmissSlice->SetTextSize(TextSize);
 						pad->cd();
 						if (OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_3") { 
-							myPmissSlice->SetTextSize(TextSize-0.02);
-							myPmissSlice->DrawLatexNDC(0.24,0.85,LabelOfPlots[WhichPlot]); 
+
+							myPmissSlice->SetTextSize(TextSize-0.03);
+							myPmissSlice->DrawLatexNDC(0.27,0.85,LabelOfPlots[WhichPlot]); 
+
 						}
-						else { myPmissSlice->DrawLatexNDC(0.24,0.8,LabelOfPlots[WhichPlot]); }
+						else { 
+						
+							myPmissSlice->SetTextSize(TextSize-0.01);
+							myPmissSlice->DrawLatexNDC(0.27,0.8,LabelOfPlots[WhichPlot]); 
+
+						}
 
 						// -----------------------------------------------------------------------------------
 
@@ -349,7 +358,76 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 //						latexScale.SetTextColor(kBlack);
 //						if ( OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_1" ) { latexScale.DrawLatexNDC(0.85,0.47,"x1/3"); }
 
+						gPad->RedrawAxis();
+
 					} // End of the loop over the FSI Models 
+
+// -----------------------------------------------------------------------------------------------------------------------------------
+/*
+if (OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_1") {
+
+	// ---------------------------------------
+
+	double PadNDCXmin = 0.35,PadNDCXmax = 0.75, PadNDCYmin = 0.3,PadNDCYmax = 0.65;
+	double PadLeftMargin = 0.105, PadRightMargin = 0.05, PadBottomMargin = 0.1;
+
+	double Xmin = 1.5, Xmax = 2.25, Ymin = 0, Ymax = 0.19;
+
+	// ---------------------------------------
+
+	TH1D* DataPlotClone = (TH1D*)(DataPlot->Clone("DataPlotClone"));
+	TH1D* SuSav2PlotClone = (TH1D*)(Plots[1]->Clone("SuSav2PlotClone"));
+	TH1D* G2018PlotClone = (TH1D*)(Plots[2]->Clone("G2018PlotClone"));
+
+	TH1D* QEPlotClone = (TH1D*)(BreakDownPlots[0]->Clone("QEPlotClone"));
+	TH1D* MECPlotClone = (TH1D*)(BreakDownPlots[1]->Clone("MECPlotClone"));
+	TH1D* RESPlotClone = (TH1D*)(BreakDownPlots[2]->Clone("RESPlotClone"));
+	TH1D* DISPlotClone = (TH1D*)(BreakDownPlots[3]->Clone("DISPlotClone"));
+
+	// ---------------------------------------
+
+	TString PadName = "ZoomInPad";
+	TPad* padZoomIn = new TPad(PadName,PadName,PadNDCXmin,PadNDCYmin,PadNDCXmax,PadNDCYmax,21); 
+	padZoomIn->SetFillColor(kWhite); 
+	padZoomIn->SetFrameLineWidth(3);
+	padZoomIn->Draw();
+	padZoomIn->SetTopMargin(0.005);
+	padZoomIn->SetBottomMargin(PadBottomMargin);
+	padZoomIn->SetLeftMargin(PadLeftMargin);
+	padZoomIn->SetRightMargin(PadRightMargin);
+	padZoomIn->SetFillStyle(4000); // make pad trasnparent
+	padZoomIn->cd();
+
+	// ---------------------------------------------------------------
+
+	auto frame = PlotCanvas->DrawFrame(Xmin,Ymin,Xmax,Ymax);
+
+	frame->GetXaxis()->SetNdivisions(6);
+	frame->GetXaxis()->SetLabelSize(0.1);
+	frame->GetXaxis()->SetLabelFont(FontStyle);
+
+	frame->GetYaxis()->SetNdivisions(6);
+	frame->GetYaxis()->SetLabelSize(0.1);
+	frame->GetYaxis()->SetLabelFont(FontStyle);
+
+	DataPlotClone->GetYaxis()->SetNdivisions(4);
+	DataPlotClone->GetYaxis()->SetLabelOffset(0.1);
+	DataPlotClone->Draw("e same");
+
+	G2018PlotClone->Draw("c hist same");
+	SuSav2PlotClone->Draw("c hist same");
+	QEPlotClone->Draw("c hist same");
+	MECPlotClone->Draw("c hist same");
+	RESPlotClone->Draw("c hist same");
+	DISPlotClone->Draw("c hist same");
+
+	DataPlotClone->Draw("e same");
+
+	gPad->RedrawAxis();
+
+}
+*/
+// -----------------------------------------------------------------------------------------------------------------------------------
 
 					// --------------------------------------------------------------------------------------								
 
@@ -372,7 +450,7 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 				latexXTitle.SetTextFont(FontStyle);
 				latexXTitle.SetTextSize(5*TextSize);
 				latexXTitle.SetTextColor(kBlack);
-				latexXTitle.DrawLatexNDC(0.25,0.5,"(e,e'p)_{1p0#pi} E_{cal} [GeV]");
+				latexXTitle.DrawLatexNDC(0.3,0.5,"(e,e'p)_{1p0#pi} E_{cal} [GeV]");
 
 				// -----------------------------------------------------------------------------------------
 
@@ -389,7 +467,7 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 				latexYTitle.SetTextSize(3*TextSize);
 				latexYTitle.SetTextColor(kBlack);
 				latexYTitle.SetTextAngle(90);
-				latexYTitle.DrawLatexNDC(0.59,0.27,"#frac{d#sigma}{dE^{cal}} [#frac{#mub}{GeV}]");
+				latexYTitle.DrawLatexNDC(0.59,0.27,"#frac{d#sigma}{dE^{cal}} #left[#frac{#mub}{GeV}#right]");
 
 				// --------------------------------------------------------------------------------------------
 
