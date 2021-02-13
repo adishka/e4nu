@@ -34,7 +34,9 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 	std::vector<TString> nucleus;
 	std::vector<double> Energy;
 	std::vector<TString> FSIModel;
+	std::vector<TString> FSILabel;
 	std::vector<TString> NameOfPlots; 
+	std::vector<TString> OutputPlotNames; 
 
 	// ------------------------------------------------------------------------
 
@@ -49,15 +51,15 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 
 	// ------------------------------------------------------------------------
 
-	FSIModel.push_back("Pinned_Data_Final");
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc");
-	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc");
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc");  FSILabel.push_back("G2018");
 
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors");
 
-	NameOfPlots.push_back("MissMomentum");
+	NameOfPlots.push_back("MissMomentum"); OutputPlotNames.push_back("DeltaPT");
 
 	// ------------------------------------------------------------------------
 
@@ -77,6 +79,8 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 	// Loop over the xB kinematics
 
 	for (int WhichxBCut = 0; WhichxBCut < NxBCuts; WhichxBCut ++) {
+
+		TFile* fXSecFile = TFile::Open("myXSec/DeltaPT_AccCorr_XSec_"+xBCut[WhichxBCut]+".root","recreate");
 
 		TCanvas* PlotCanvas = new TCanvas(xBCut[WhichxBCut],xBCut[WhichxBCut],205,34,1600,900);
 
@@ -183,6 +187,14 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E,NameOfPlots[WhichPlot]);
 						if (Energy[WhichEnergy] == 4.461 ) { Plots[WhichFSIModel]->Scale(5.); }
 
+						// --------------------------------------------------------------------------------------				
+
+						// Store extracted xsec
+
+						fXSecFile->cd();
+						TString XSecName = OutputPlotNames[WhichPlot]+"_"+nucleus[WhichNucleus]+"_"+E+"_"+FSILabel[WhichFSIModel];
+						Plots[WhichFSIModel]->Write(XSecName);
+
 						// ----------------------------------------------------------------------------------
 
 						// Genie Break Down
@@ -280,6 +292,10 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 			} // End of the loop over the nuclei
 
 		} // End of the loop over the plots
+
+		// ----------------------------------------------------------------------------------
+
+		fXSecFile->Close();
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 

@@ -27,7 +27,7 @@ void gst::Loop() {
 
 	// --------------------------------------------------------------
 
-	TString FileName = "/pnfs/genie/persistent/users/apapadop/FilteredSamples/FilteredGenie_56Fe_4461GeV_1p0pi_1p1pi.root";
+	TString FileName = "/pnfs/genie/persistent/users/apapadop/e4v_FilteredSamples/FilteredGenie_56Fe_4461GeV_1p0pi_1p1pi.root";
 	TFile* FilteredFile = new TFile(FileName,"recreate");
 	TTree *maketreenew = fChain->GetTree()->CloneTree(0); 
 

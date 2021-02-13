@@ -142,13 +142,14 @@ void OverlayPlots() {
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_MasterNoRad"); FSILabel.push_back("SuSav2 (No Rad master+adi_radcorr)");  DirNames.push_back("hA2018_Truth_RadCorr");
 ////	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (1p0pi No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
-////	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2 (Ext Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad adi_radcorr)");  DirNames.push_back("SuSav2_Truth_RadCorr");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2 (Ext Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad adi_radcorr)");  DirNames.push_back("SuSav2_Truth_RadCorr");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (1p0pi Rad adi_radcorr)");  DirNames.push_back("SuSav2_Truth_RadCorr");
 
 //	FSIModel.push_back("SuSav2_MasterRad"); FSILabel.push_back("SuSav2 (Rad master+adi_radcorr)");  DirNames.push_back("hA2018_Truth_RadCorr");
 
-	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("G2018 (No Rad master)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-	FSIModel.push_back("G2018_MasterNoRad"); FSILabel.push_back("G2018 (No Rad master+adi_radcorr)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("G2018 (No Rad master)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+//	FSIModel.push_back("G2018_MasterNoRad"); FSILabel.push_back("G2018 (No Rad master+adi_radcorr)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 ////	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("G2018 (1p0pi No Rad)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 ////	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018 (Ext Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("G2018 (Rad adi_radcorr)");  DirNames.push_back("hA2018_Truth_RadCorr");

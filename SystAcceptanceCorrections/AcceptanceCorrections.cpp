@@ -31,8 +31,8 @@ void AcceptanceCorrections() {
 	const std::vector<int> LocalDataSetColors{1,610,410,kRed+2,kBlue};
 	double split = 0.1;
 
-	//TString Label = "SuSav2";
-	TString Label = "hA2018_Final";
+	TString Label = "SuSav2";
+	//TString Label = "hA2018_Final";
 
 	// ------------------------------------------------------------------------
 
@@ -76,26 +76,28 @@ void AcceptanceCorrections() {
 
 	if (Label == "SuSav2") {
 
+//		FSIModel.push_back(Label+"_RadCorr_LFGM"); FSILabel.push_back("Reco");
+//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("TrueWithFid");
+
 //		FSIModel.push_back(Label+"_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("Reco");
 //		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("TrueWithFid");
-//		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True");
+//		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
 
 		FSIModel.push_back(Label+"_NoRadCorr_LFGM"); FSILabel.push_back("Reco");
 		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("TrueWithFid");
-		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True");
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
 
 	} else {
 
-		// Not to be used
-		// G2018 Rad is problematic
-
-//		FSIModel.push_back(Label+"_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("Reco");
-//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("TrueWithFid");
-//		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True");
+//		FSIModel.push_back(Label+"_RadCorr_LFGM_Offset"); FSILabel.push_back("Reco");
+//		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_Offset"); FSILabel.push_back("TrueWithFid");
+////		FSIModel.push_back(Label+"_RadCorr_LFGM_UpdatedSchwinger_Offset"); FSILabel.push_back("Reco");
+////		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger_Offset"); FSILabel.push_back("TrueWithFid");
+//		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
 
 		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Offset"); FSILabel.push_back("Reco");
 		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithFidAcc_Offset"); FSILabel.push_back("TrueWithFid");
-		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True");
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True");
 
 	}
 
@@ -140,7 +142,6 @@ void AcceptanceCorrections() {
 
 					PlotCanvas->SetLeftMargin(0.15);
 					PlotCanvas->SetBottomMargin(0.19);
-					//PlotCanvas->SetLogy();
 
 					// ---------------------------------------------------------------------------------------
 
@@ -155,15 +156,9 @@ void AcceptanceCorrections() {
 
 					if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
-//						if (Label == "SuSav2") { FSIModel[1] = Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"; }
-//						else { FSIModel[1] = Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"; } // Not to be used
-//						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc";
-
-
 						if (Label == "SuSav2") { FSIModel[1] = Label+"_NoRadCorr_LFGM_Truth0pi_WithFidAcc"; }
-						else { FSIModel[1] = Label+"_NoRadCorr_LFGM_Truth0pi_WithFidAcc"; } // Not to be used
-						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc";
-
+						else { FSIModel[1] = Label+"_NoRadCorr_LFGM_Truth0pi_WithFidAcc_Offset"; }
+						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
 
 					}
 
@@ -206,8 +201,8 @@ void AcceptanceCorrections() {
 
 						double localmax = Plots[WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }
-						Plots[WhichFSIModel]->GetYaxis()->SetRangeUser(0.01,height*max);
-						Plots[0]->GetYaxis()->SetRangeUser(0.01,height*max);
+						Plots[WhichFSIModel]->GetYaxis()->SetRangeUser(0.,height*max);
+						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 
 						TString XLabel = Plots[WhichFSIModel]->GetXaxis()->GetTitle();
 						Plots[WhichFSIModel]->GetXaxis()->SetTitle(XLabel);
@@ -234,8 +229,8 @@ void AcceptanceCorrections() {
 						} else { 
 						
 							if (FSILabel[WhichFSIModel] =="G2018") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }
-//							Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
-							Plots[WhichFSIModel]->Draw("e hist same");  // draw them as lines
+							Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
+//							Plots[WhichFSIModel]->Draw("e hist same");  // draw them as lines
 
 							if (string(FSILabel[0]).find("Data") != std::string::npos) { Plots[0]->Draw("e same"); } 
 

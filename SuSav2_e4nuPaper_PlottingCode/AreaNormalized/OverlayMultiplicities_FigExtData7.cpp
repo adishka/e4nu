@@ -45,7 +45,7 @@ void OverlayMultiplicities_FigExtData7() {
 	SetOffsetAndSize();
 	TGaxis::SetMaxDigits(3);
 
-	int Ndivisions = 3;
+	int Ndivisions = 4;
 	int LineWidth = 3;
 	int FontStyle = 132;
 	double TextSize = 0.08;
@@ -225,7 +225,7 @@ void OverlayMultiplicities_FigExtData7() {
 						if (localmax > max) { max = localmax; }
 						double height = 1.05;
 						if ( xBCut[WhichxBCut] == "xBCut" ) { height = 1.1; }
-						Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
+						//Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 
 						double localmin = Plots[WhichFSIModel]->GetBinContent(Plots[WhichFSIModel]->FindBin(4)); // multiplicity 4 is the highest one in data
 						if (localmin < min && localmin != 0) { min = localmin; }
@@ -244,7 +244,8 @@ void OverlayMultiplicities_FigExtData7() {
 
 							Plots[WhichFSIModel]->GetYaxis()->SetLabelOffset(-0.004);
 							//Plots[WhichFSIModel]->Rebin();
-							Plots[0]->GetYaxis()->SetRangeUser(0.5*min,2.*max); PlotCanvas->SetLogy();
+							Plots[WhichFSIModel]->GetYaxis()->SetRangeUser(1E3,2*1E7);
+							PlotCanvas->SetLogy();
 
 							if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 						 
@@ -257,7 +258,6 @@ void OverlayMultiplicities_FigExtData7() {
 									Plots[WhichFSIModel]->SetMarkerStyle(24);
 								}
 								gStyle->SetErrorX(0); 
-								Plots[WhichFSIModel]->GetYaxis()->SetRangeUser(1E1,1E8);
 								Plots[WhichFSIModel]->Draw("e same"); 
 							}
 							else { 
@@ -294,13 +294,13 @@ void OverlayMultiplicities_FigExtData7() {
 				TLatex latexData;
 				latexData.SetTextFont(FontStyle);
 				latexData.SetTextSize(TextSize);
-				latexData.DrawLatexNDC(0.65,0.8,"Protons");
+				latexData.DrawLatexNDC(0.65,0.7,"Protons");
 
 				TLatex latexGenie;
 				latexGenie.SetTextFont(FontStyle);
 				latexGenie.SetTextColor(kBlue);
 				latexGenie.SetTextSize(TextSize);
-				latexGenie.DrawLatexNDC(0.5,0.6,"#pi^{#pm}");
+				latexGenie.DrawLatexNDC(0.5,0.5,"#pi^{#pm}");
 
 				// -----------------------------------------------------------------------------------------------------------------------------------------
 

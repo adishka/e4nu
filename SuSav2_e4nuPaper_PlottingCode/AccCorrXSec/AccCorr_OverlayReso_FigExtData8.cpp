@@ -19,7 +19,7 @@ using namespace std;
 #include "../../myFunctions.cpp"
 #include "../../AfroConstants.h"
 
-void OverlayReso_FigExtData8() {
+void AccCorr_OverlayReso_FigExtData8() {
 
 	// ------------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ void OverlayReso_FigExtData8() {
 
 	// ------------------------------------------------------------------------
 
-	int Ndivisions = 4;
+	int Ndivisions = 6;
 	int LineWidth = 5;
 	double TextSize = 0.06;
 
@@ -49,8 +49,7 @@ void OverlayReso_FigExtData8() {
 	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV"); JustE.push_back("4.453 GeV");
  
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data");	
-//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2"); // We need to use the NoRad SuSav2 sample, given issue in G2018 Rad sample		
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");		
 
 	xBCut.push_back("NoxBCut");
 	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed"); OutputPlotNames.push_back("EcalReso");
@@ -82,6 +81,8 @@ void OverlayReso_FigExtData8() {
 
 	for (int WhichxBCut = 0; WhichxBCut < NxBCuts; WhichxBCut ++) {
 
+		TFile* fXSecFile = TFile::Open("myXSec/Reso_AccCorr_XSec_"+xBCut[WhichxBCut]+".root","recreate");
+
 		// Loop over the nuclei
 
 		for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
@@ -94,19 +95,23 @@ void OverlayReso_FigExtData8() {
 				TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768);
 
 				PlotCanvas->SetBottomMargin(0.16);
-				TLegend* leg = new TLegend(0.12,0.69,0.4,0.835);
-				if (nucleus[WhichNucleus] == "56Fe") { leg = new TLegend(0.12,0.73,0.4,0.835); }
+				PlotCanvas->SetLeftMargin(0.17);
+
+				if (OutputPlotNames[WhichPlot] == "EcalReso") { PlotCanvas->SetLogy(); }
+
+				TLegend* leg = new TLegend(0.19,0.69,0.4,0.835);
+				if (nucleus[WhichNucleus] == "56Fe") { leg = new TLegend(0.19,0.73,0.4,0.835); }
 				leg->SetNColumns(2);
 				double max = -99.;
-
-				if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_frac_feed3pi" || NameOfPlots[WhichPlot] == "h1_E_rec_0pi_frac_feed") 
-						{ FSIModel[1] = "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"; }
-				else { FSIModel[1] = "SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"; }
 
 				// Loop over the energies
 				
 				int LowBin = -1;
-				int HighBin = -1;				
+				int HighBin = -1;
+
+				if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_frac_feed3pi" || NameOfPlots[WhichPlot] == "h1_E_rec_0pi_frac_feed") 
+						{ FSIModel[1] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"; }
+				else { FSIModel[1] = "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"; }				
 
 				for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
@@ -132,18 +137,18 @@ void OverlayReso_FigExtData8() {
 						Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->SetNdivisions(7);
 						Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->CenterTitle();
 						
-//						double LowRange = -1;
-//						double HighRange = -1;	
-//					
-//						if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed") { 
-//							LowRange = -0.85; HighRange = 0.2; 
-//						} else { LowRange = -0.81; HighRange = 0.07; }
+						double LowRange = -1;
+						double HighRange = -1;	
+					
+						if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed") { 
+							LowRange = -0.85; HighRange = 0.2; 
+						} else { LowRange = -0.81; HighRange = 0.07; }
 
-//						
-//						Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->SetRangeUser(LowRange,HighRange);
-//						
-//						LowBin = Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->FindBin(LowRange);
-//						HighBin = Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->FindBin(HighRange);
+						
+						Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->SetRangeUser(LowRange,HighRange);
+						
+						LowBin = Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->FindBin(LowRange);
+						HighBin = Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->FindBin(HighRange);
 
 						Plots[WhichEnergy][WhichFSIModel]->GetYaxis()->SetTickSize(0.02);
 						Plots[WhichEnergy][WhichFSIModel]->GetYaxis()->SetLabelFont(FontStyle);
@@ -151,31 +156,48 @@ void OverlayReso_FigExtData8() {
 						Plots[WhichEnergy][WhichFSIModel]->GetYaxis()->SetLabelSize(TextSize);
 						Plots[WhichEnergy][WhichFSIModel]->GetYaxis()->SetTitleSize(TextSize);
 						Plots[WhichEnergy][WhichFSIModel]->GetYaxis()->SetNdivisions(Ndivisions);
-						Plots[WhichEnergy][WhichFSIModel]->GetYaxis()->SetTitle("Weighted Events / GeV");
+
+//						Plots[WhichEnergy][WhichFSIModel]->GetYaxis()->SetTitle("Normalized Yield");
+						Plots[WhichEnergy][WhichFSIModel]->GetYaxis()->SetTitle(ResoXSecEcalLabel);
+						if (OutputPlotNames[WhichPlot] == "EQEReso") { Plots[WhichEnergy][WhichFSIModel]->GetYaxis()->SetTitle(ResoXSecEQELabel); }
+
 						Plots[WhichEnergy][WhichFSIModel]->GetYaxis()->CenterTitle();
-						Plots[WhichEnergy][WhichFSIModel]->GetYaxis()->SetTitleOffset(0.8);
-
-						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { leg->AddEntry(Plots[WhichEnergy][WhichFSIModel],"/", "ep"); }
-						else { leg->AddEntry(Plots[WhichEnergy][WhichFSIModel]," "+JustE[WhichEnergy], "l"); }
-
-						ApplyRange(Plots[WhichEnergy][WhichFSIModel],E[WhichEnergy],NameOfPlots[WhichPlot]);
+						Plots[WhichEnergy][WhichFSIModel]->GetYaxis()->SetTitleOffset(1.3);
 
 						// ---------------------------------------------------------------------------------------------------
 
-						// Area normalize for weighted events
+						TH1D* DataPlot = Plots[WhichEnergy][WhichFSIModel];
+
+						// Absolute XSec Scaling 
 						// Then use myFunctions
 						// Division by bin width
 						// Systematics for data
 
-						double ScalingFactor = 1. / Plots[WhichEnergy][WhichFSIModel]->Integral();
-						Plots[WhichEnergy][WhichFSIModel]->Scale(ScalingFactor);
+//						double ScalingFactor = 1. / Plots[WhichEnergy][WhichFSIModel]->Integral();
+//						Plots[WhichEnergy][WhichFSIModel]->Scale(ScalingFactor);
 
-						//AbsoluteXSecScaling(Plots[WhichEnergy][WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy]);
+						AbsoluteXSecScaling(Plots[WhichEnergy][WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy]);
+						ApplyRebinning(Plots[WhichEnergy][WhichFSIModel],E[WhichEnergy],NameOfPlots[WhichPlot]);
 						ReweightPlots(Plots[WhichEnergy][WhichFSIModel]);
-						if (string(FSIModelsToLabels[FSIModel[WhichFSIModel]]).find("Data") != std::string::npos) 
-							{ ApplySystUnc(Plots[WhichEnergy][WhichFSIModel], E[WhichEnergy]); }
-						if (string(FSIModelsToLabels[FSIModel[WhichFSIModel]]).find("Data") != std::string::npos) 
-							{ ApplySectorSystUnc(Plots[WhichEnergy][WhichFSIModel], E[WhichEnergy]); }
+						ApplyRange(Plots[WhichEnergy][WhichFSIModel],E[WhichEnergy],NameOfPlots[WhichPlot]);
+						if (string(FSIModelsToLabels[FSIModel[WhichFSIModel]]).find("Data") != std::string::npos) {
+							
+							ApplySystUnc(Plots[WhichEnergy][WhichFSIModel], E[WhichEnergy]);
+							ApplySectorSystUnc(Plots[WhichEnergy][WhichFSIModel], E[WhichEnergy]); 
+
+							Plots[WhichEnergy][WhichFSIModel] = AcceptanceCorrection(Plots[WhichEnergy][WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+	
+						}
+
+						if (E[WhichEnergy] == "4_461") { Plots[WhichEnergy][WhichFSIModel]->Scale(3.); }
+
+						// --------------------------------------------------------------------------------------				
+
+						// Store extracted xsec
+
+						fXSecFile->cd();
+						TString XSecName = OutputPlotNames[WhichPlot]+"_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSILabel[WhichFSIModel];
+						Plots[WhichEnergy][WhichFSIModel]->Write(XSecName);
 
 						// ---------------------------------------------------------------------------------------------------
 
@@ -187,23 +209,32 @@ void OverlayReso_FigExtData8() {
 
 						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 
+							gStyle->SetErrorX(0);
+
 							Plots[WhichEnergy][WhichFSIModel]->SetMarkerSize(2.); 
 							Plots[WhichEnergy][WhichFSIModel]->SetMarkerColor(Colors[WhichEnergy][WhichFSIModel]);
-							gStyle->SetErrorX(0);
 							Plots[WhichEnergy][WhichFSIModel]->SetMarkerStyle(MarkerStyle[WhichEnergy]); 
-							Plots[WhichEnergy][WhichFSIModel]->Draw("e same"); 
+							Plots[WhichEnergy][WhichFSIModel]->Draw("e same");
+
+							leg->AddEntry(Plots[WhichEnergy][WhichFSIModel],"/", "ep");
+
+//							DataPlot->SetMarkerSize(2.); 
+//							DataPlot->SetMarkerColor(Colors[WhichEnergy][WhichFSIModel]);
+//							DataPlot->SetMarkerStyle(MarkerStyle[WhichEnergy]); 
+//							DataPlot->Draw("e same"); 
 
 						}
 						else { 
 
-							double MaxHeight = 1.3;
-
-							if (nucleus[WhichNucleus] == "12C") { Plots[0][0]->GetYaxis()->SetRangeUser(0.01,MaxHeight*max); }
-							else { Plots[1][0]->GetYaxis()->SetRangeUser(0.01,MaxHeight*max); }
+							if (nucleus[WhichNucleus] == "12C") { Plots[0][0]->GetYaxis()->SetRangeUser(0.01,1.3*max); }
+							else { Plots[1][0]->GetYaxis()->SetRangeUser(0.01,1.3*max); }
 							Plots[WhichEnergy][WhichFSIModel]->SetLineStyle(LineStyle[WhichEnergy]);
 							Plots[WhichEnergy][WhichFSIModel]->Draw("C hist same"); 
 
-						}
+							if (E[WhichEnergy] == "4_461") { leg->AddEntry(Plots[WhichEnergy][WhichFSIModel]," "+JustE[WhichEnergy]+"(x4)", "l"); }
+							else { leg->AddEntry(Plots[WhichEnergy][WhichFSIModel]," "+JustE[WhichEnergy], "l"); }
+
+						}				
 
 					} // End of the loop over the FSI Models 
 					
@@ -217,7 +248,7 @@ void OverlayReso_FigExtData8() {
 					//cout << endl << endl << nucleus[WhichNucleus] << "  " << E[WhichEnergy]  << " Chi2/ndof = " << Chi2Double;
 					//cout << "/" << NBinsX << endl << endl;
 					
-					// --------------------------------------------------------------------------------------	
+					// --------------------------------------------------------------------------------------				
 
 					// Integrated XSec Ratio Data / SuSav2
 
@@ -227,7 +258,7 @@ void OverlayReso_FigExtData8() {
 
 					std::cout << nucleus[WhichNucleus] << "  " << E[WhichEnergy] << "  " << OutputPlotNames[WhichPlot] << "  " << DataSuSav2Ratio << std::endl;
 
-					// --------------------------------------------------------------------------------------			
+					// --------------------------------------------------------------------------------------
 
 				} // End of the loop over the energies
 
@@ -239,18 +270,24 @@ void OverlayReso_FigExtData8() {
 				TLatex latex;
 				latex.SetTextFont(FontStyle);
 				latex.SetTextSize(TextSize);
-				latex.DrawLatexNDC(0.8,0.83,LabelsOfSamples[WhichNucleus]);
+				latex.DrawLatexNDC(0.7,0.83,LabelsOfSamples[WhichNucleus]);
 
 				TLatex latexDG;
 				latexDG.SetTextFont(FontStyle);
 				latexDG.SetTextSize(TextSize);
-				latexDG.DrawLatexNDC(0.13,0.855,"Data/SuSav2");
+				latexDG.DrawLatexNDC(0.2,0.855,"Data/SuSav2");
 
-				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/FeedDown_"+nucleus[WhichNucleus]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2.pdf");
+				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/AccCorr_FeedDown_"+nucleus[WhichNucleus]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2.pdf");
 
 			} // End of the loop over the plots
 
 		} // End of the loop over the nuclei
+
+		// ----------------------------------------------------------------------------------
+
+		fXSecFile->Close();
+
+		// ----------------------------------------------------------------------------------
 
 	} // End of the loop over the xB kinematics
 

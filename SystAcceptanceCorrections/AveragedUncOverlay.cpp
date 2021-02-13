@@ -20,87 +20,87 @@ using namespace std;
 #include "../myFunctions.cpp"
 #include "../AfroConstants.h"
 
-TGraph* RMSAveragedFunc(std::vector<TH1D*> hVec, TString Energy, TString Var) {
+TGraph* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec, TString Energy, TString Var) {
 
 	TH1D::SetDefaultSumw2();
 
-//	double DoubleE = -99., reso = 0.;
-//	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.07; }
-//	if (Energy == "2_261") { DoubleE = 2.261; reso = 0.08; }
-//	if (Energy == "4_461") { DoubleE = 4.461; reso = 0.06; }
+	double DoubleE = -99., reso = 0.;
+	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.07; }
+	if (Energy == "2_261") { DoubleE = 2.261; reso = 0.08; }
+	if (Energy == "4_461") { DoubleE = 4.461; reso = 0.06; }
 
-	const int NBins = hVec[0]->GetXaxis()->GetNbins();
+	const int NBins = h->GetXaxis()->GetNbins();
 
 	// ---------------------------------------------------------------------------------------------------------
 
-//	TH1D* RMSClone = (TH1D*)(hVec[0]->Clone("RMSClone"));
-	TString XaxisTitle = hVec[0]->GetXaxis()->GetTitle();  
-//	RMSClone->Add(hVec[1],-1);
-//	RMSClone->Divide(h);
-//	RMSClone->Scale(1./TMath::Sqrt(12.));
+	TH1D* RMSClone = (TH1D*)(hVec[0]->Clone("RMSClone"));
+	TString XaxisTitle = RMSClone->GetXaxis()->GetTitle();  
+	RMSClone->Add(hVec[1],-1);
+	RMSClone->Divide(h);
+	RMSClone->Scale(1./TMath::Sqrt(12.));
 
-//	double sum = 0; int nbins = 0;
+	double sum = 0; int nbins = 0;
 
-//	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
+	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
 
-//		double BinCenter = RMSClone->GetBinCenter(WhichBin);
-//		double BinContent = RMSClone->GetBinContent(WhichBin);
+		double BinCenter = RMSClone->GetBinCenter(WhichBin);
+		double BinContent = TMath::Abs(RMSClone->GetBinContent(WhichBin)) * 100.;
 
-//		RMSClone->SetBinContent(WhichBin,BinContent);
+		RMSClone->SetBinContent(WhichBin,BinContent);
 
-////		if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
+		if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
 
-////			sum += BinContent; nbins++;
+			sum += BinContent; nbins++;
 
-////		}
+		}
 
-//	}
+	}
 
-////	sum = sum / double(nbins);
+	sum = sum / double(nbins);
 
 	// ---------------------------------------------------------------------------------------------------------
 
 	double bincenter[NBins];
 	double binentry[NBins];
 
-//	// For Ecal only
-//	// Use the average around the Ecal peak in the bins (1 +/- reso) Ebeam
+	// For Ecal only
+	// Use the average around the Ecal peak in the bins (1 +/- reso) Ebeam
 
-//	if (Var == "epRecoEnergy_slice_0") {
-
-//		for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
-
-//			double BinCenter = RMSClone->GetBinCenter(WhichBin);
-//			double BinContent = RMSClone->GetBinContent(WhichBin);
-
-//			if (BinCenter/DoubleE < 1.1) {
-
-//				bincenter[WhichBin-1] = BinCenter;
-
-//				if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
-
-//					RMSClone->SetBinContent(WhichBin,sum);
-//					binentry[WhichBin-1] = sum;
-
-//				} else { binentry[WhichBin-1] = BinContent; }
-
-//			}
-
-//		}
-
-//	} else {
+	if (Var == "epRecoEnergy_slice_0") {
 
 		for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
 
-			double BinCenter = hVec[0]->GetBinCenter(WhichBin);
-			double BinContent = hVec[0]->GetBinContent(WhichBin);
+			double BinCenter = RMSClone->GetBinCenter(WhichBin);
+			double BinContent = RMSClone->GetBinContent(WhichBin);
+
+			if (BinCenter/DoubleE < 1.1) {
+
+				bincenter[WhichBin-1] = BinCenter;
+
+				if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
+
+					RMSClone->SetBinContent(WhichBin,sum);
+					binentry[WhichBin-1] = sum;
+
+				} else { binentry[WhichBin-1] = BinContent; }
+
+			}
+
+		}
+
+	} else {
+
+		for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
+
+			double BinCenter = RMSClone->GetBinCenter(WhichBin);
+			double BinContent = RMSClone->GetBinContent(WhichBin);
 
 			bincenter[WhichBin-1] = BinCenter;
 			binentry[WhichBin-1] = BinContent;
 
 		}
 
-//	}
+	}
 
 	// ---------------------------------------------------------------------------------------------------------
 
@@ -147,7 +147,7 @@ void AveragedUncOverlay() {
 //	xBCut.push_back("xBCut");
 
 	FSIModel.push_back("SuSav2"); FSILabel.push_back("SuSav2");
-//	FSIModel.push_back("hA2018_Final"); FSILabel.push_back("G2018"); // Not to be used for acceptance correction
+	FSIModel.push_back("hA2018_Final"); FSILabel.push_back("G2018");
 
 	TString Var = "epRecoEnergy_slice_0";
 //	TString Var = "h_Erec_subtruct_piplpimi_noprot_3pi";
@@ -240,9 +240,9 @@ void AveragedUncOverlay() {
 
 					} // End of the loop over the FSI Models 
 
-//					average.push_back( (TH1D*)(Plots[0]->Clone()) );
-//					average[ColorCounter]->Add(Plots[1]);
-//					average[ColorCounter]->Scale(0.5);
+					average.push_back( (TH1D*)(Plots[0]->Clone()) );
+					average[ColorCounter]->Add(Plots[1]);
+					average[ColorCounter]->Scale(0.5);
 
 					std::vector<TH1D*> VectorPlots; VectorPlots.clear();
 
@@ -252,7 +252,7 @@ void AveragedUncOverlay() {
 
 					}
 
-					TGraph* clone = RMSAveragedFunc(VectorPlots,E[WhichEnergy],Var);
+					TGraph* clone = RMSAveragedFunc(average[ColorCounter],VectorPlots,E[WhichEnergy],Var);
 					ApplyRange(clone,E[WhichEnergy],Var);
 				
 					// ---------------------------------------------------------------------------------------------------------------------
@@ -269,7 +269,7 @@ void AveragedUncOverlay() {
 
 					// ---------------------------------------------------------------------------------------------------------------------
 
-					clone->GetYaxis()->SetTitle("Acceptance Correction");
+					clone->GetYaxis()->SetTitle("Fractional Contribution [%]");
 					clone->GetYaxis()->SetTitleFont(132);
 					clone->GetYaxis()->SetLabelFont(132);
 					clone->GetYaxis()->SetTitleSize(0.05);
@@ -280,7 +280,7 @@ void AveragedUncOverlay() {
 					clone->GetYaxis()->SetNdivisions(10);
 
 					clone->GetYaxis()->SetRangeUser(-0.3,17);
-					//if (E[WhichEnergy] == "1_161") { clone->GetYaxis()->SetRangeUser(-0.3,4.2); }
+					if (E[WhichEnergy] == "1_161") { clone->GetYaxis()->SetRangeUser(-0.3,4.2); }
 
 					// ---------------------------------------------------------------------------------------------------------------------
 
@@ -305,7 +305,7 @@ void AveragedUncOverlay() {
 
 			leg->Draw();
 
-			PlotCanvas->SaveAs("AccCorr_"+NameCanvas+".pdf");
+			PlotCanvas->SaveAs("AccCorrUnc_"+NameCanvas+".pdf");
 
 		} // End of the loop over the energies
 

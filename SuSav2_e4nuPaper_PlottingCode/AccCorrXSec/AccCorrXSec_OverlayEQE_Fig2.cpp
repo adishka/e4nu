@@ -78,8 +78,8 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 	xBCut.push_back("NoxBCut");
 
-	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
-//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
+	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
 
@@ -430,6 +430,18 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 // -------------------------------------------------------------------------------------------
 
+// Data / SuSav2 ratio
+
+double IntXSecData = IntegratedXSec(DataPlot);
+double IntXSecSuSav2 = IntegratedXSec(Plots[1]);
+//cout << "IntXSecData = " << IntXSecData << endl;
+//cout << "IntXSecSuSav2 = " << IntXSecSuSav2 << endl;
+double DataSuSav2Ratio = IntXSecData / IntXSecSuSav2;
+
+std::cout << "XSecs Data / SuSav2 Ratio = " << DataSuSav2Ratio << endl;
+
+// -------------------------------------------------------------------------------------------
+
 // Extra pad zooming in tail if Ecal plot
 
 if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
@@ -454,6 +466,7 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 	if (E[WhichEnergy] == "2_261") { 
 
 		Xmin = 0.7; Xmax = 2.1; 
+		if (nucleus[WhichNucleus] == "4He") { Ymin = 0.0; Ymax = 0.07; }
 		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.19; }
 		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.0; Ymax = 0.79; }
 
@@ -462,6 +475,7 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 	if (E[WhichEnergy] == "4_461") { 
 
 		Xmin = 1.6; Xmax = 4.3; 
+		if (nucleus[WhichNucleus] == "4He") { Ymin = 0.0; Ymax = 0.02; }
 		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.049; }
 		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.0; Ymax = 0.17; }
 

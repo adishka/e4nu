@@ -20,87 +20,66 @@ using namespace std;
 #include "../myFunctions.cpp"
 #include "../AfroConstants.h"
 
+// -------------------------------------------------------------------------------------------
+
+void PrettyPlot(TGraph* h) {
+
+	// ----------------------------------------------------------------------------------------------------------------
+
+	// X-axis
+
+	h->GetXaxis()->CenterTitle();
+	h->GetXaxis()->SetLabelFont(FontStyle);
+	h->GetXaxis()->SetTitleFont(FontStyle);
+	h->GetXaxis()->SetLabelSize(TextSize);
+	h->GetXaxis()->SetTitleSize(0);
+	//h->GetXaxis()->SetTitleOffset(1.05);
+	h->GetXaxis()->SetNdivisions(Ndivisions);
+	h->GetXaxis()->SetTickLength(0.02);
+
+	// ----------------------------------------------------------------------------------------------------------------
+
+	// Y-axis
+
+	h->GetYaxis()->CenterTitle();
+	h->GetYaxis()->SetTitleSize(TextSize); 
+	//h->GetYaxis()->SetTickSize(0.02);
+	h->GetYaxis()->SetLabelSize(TextSize);
+	h->GetYaxis()->SetTitle("Acceptance Correction");
+	h->GetYaxis()->SetTitleFont(FontStyle);
+	h->GetYaxis()->SetLabelFont(FontStyle);
+	h->GetYaxis()->SetTitleOffset(1.05);
+	h->GetYaxis()->SetTickLength(0.02);
+	//h->GetYaxis()->SetNdivisions(Ndivisions);
+
+}
+
+// -------------------------------------------------------------------------------------------
+
 TGraph* RMSAveragedFunc(std::vector<TH1D*> hVec, TString Energy, TString Var) {
 
 	TH1D::SetDefaultSumw2();
-
-//	double DoubleE = -99., reso = 0.;
-//	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.07; }
-//	if (Energy == "2_261") { DoubleE = 2.261; reso = 0.08; }
-//	if (Energy == "4_461") { DoubleE = 4.461; reso = 0.06; }
 
 	const int NBins = hVec[0]->GetXaxis()->GetNbins();
 
 	// ---------------------------------------------------------------------------------------------------------
 
-//	TH1D* RMSClone = (TH1D*)(hVec[0]->Clone("RMSClone"));
 	TString XaxisTitle = hVec[0]->GetXaxis()->GetTitle();  
-//	RMSClone->Add(hVec[1],-1);
-//	RMSClone->Divide(h);
-//	RMSClone->Scale(1./TMath::Sqrt(12.));
-
-//	double sum = 0; int nbins = 0;
-
-//	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
-
-//		double BinCenter = RMSClone->GetBinCenter(WhichBin);
-//		double BinContent = RMSClone->GetBinContent(WhichBin);
-
-//		RMSClone->SetBinContent(WhichBin,BinContent);
-
-////		if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
-
-////			sum += BinContent; nbins++;
-
-////		}
-
-//	}
-
-////	sum = sum / double(nbins);
 
 	// ---------------------------------------------------------------------------------------------------------
 
 	double bincenter[NBins];
 	double binentry[NBins];
 
-//	// For Ecal only
-//	// Use the average around the Ecal peak in the bins (1 +/- reso) Ebeam
+	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
 
-//	if (Var == "epRecoEnergy_slice_0") {
+		double BinCenter = hVec[0]->GetBinCenter(WhichBin);
+		double BinContent = hVec[0]->GetBinContent(WhichBin);
 
-//		for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
+		bincenter[WhichBin-1] = BinCenter;
+		binentry[WhichBin-1] = BinContent;
 
-//			double BinCenter = RMSClone->GetBinCenter(WhichBin);
-//			double BinContent = RMSClone->GetBinContent(WhichBin);
-
-//			if (BinCenter/DoubleE < 1.1) {
-
-//				bincenter[WhichBin-1] = BinCenter;
-
-//				if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
-
-//					RMSClone->SetBinContent(WhichBin,sum);
-//					binentry[WhichBin-1] = sum;
-
-//				} else { binentry[WhichBin-1] = BinContent; }
-
-//			}
-
-//		}
-
-//	} else {
-
-		for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
-
-			double BinCenter = hVec[0]->GetBinCenter(WhichBin);
-			double BinContent = hVec[0]->GetBinContent(WhichBin);
-
-			bincenter[WhichBin-1] = BinCenter;
-			binentry[WhichBin-1] = BinContent;
-
-		}
-
-//	}
+	}
 
 	// ---------------------------------------------------------------------------------------------------------
 
@@ -115,7 +94,7 @@ TGraph* RMSAveragedFunc(std::vector<TH1D*> hVec, TString Energy, TString Var) {
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void AveragedUncOverlay() {
+void CommonPanelAccCorr() {
 
 	// ------------------------------------------------------------------------
 
@@ -174,7 +153,6 @@ void AveragedUncOverlay() {
 	// ------------------------------------------------------------------------
 
 	std::vector<TH1D*> Plots;
-	std::vector<TH1D*> average;
 
 	int NxBCuts = xBCut.size();
 	int NNuclei = nucleus.size();
@@ -188,27 +166,31 @@ void AveragedUncOverlay() {
 
 	for (int WhichxBCut = 0; WhichxBCut < NxBCuts; WhichxBCut ++) {
 
+		TString CanvasName = "CommonPanel_"+xBCut[WhichxBCut];
+		TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,2624,768);
+
+		TPad* pad1 = new TPad(E[0],E[0],0.02,0,0.36,1.,21); 
+		pad1->SetFillColor(kWhite); pad1->Draw();
+		
+		TPad* pad2 = new TPad(E[1],E[1],0.36,0,0.68,1,22); 
+		pad2->SetFillColor(kWhite); pad2->Draw(); 
+		
+		TPad* pad3 = new TPad(E[2],E[2],0.68,0,1.,1,22); 
+		pad3->SetFillColor(kWhite); pad3->Draw(); 					
+		
+		pad1->SetBottomMargin(0.18);
+		pad2->SetBottomMargin(0.18);
+		pad3->SetBottomMargin(0.18);	
+
 		// Loop over the energies
 
 		for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
-			TString NameCanvas = Var + "_" + xBCut[WhichxBCut] + "_" + E[WhichEnergy];
-			TCanvas* PlotCanvas = new TCanvas(NameCanvas,NameCanvas,205,34,1024,768);
-					
-			PlotCanvas->SetLeftMargin(0.12);
-			PlotCanvas->SetBottomMargin(0.14);	
-//			PlotCanvas->SetGridx();	
-//			PlotCanvas->SetGridy();
+			if (WhichEnergy == 0) { pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.15); pad1->SetTitle("");}
+			if (WhichEnergy == 1)  { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.0); }
+			if (WhichEnergy == 2)  { pad3->cd(); pad3->SetLeftMargin(0.0); pad3->SetRightMargin(0.04); }
 
 			int ColorCounter = 0;
-			average.clear();
-
-			TLegend* leg = new TLegend(0.13,0.78,0.87,0.87);
-			leg->SetNColumns(4);
-			leg->SetBorderSize(0);
-			leg->SetTextFont(132);
-			leg->SetTextSize(0.05);
-			leg->SetFillStyle(0);
 
 			// Loop over the nuclei
 
@@ -240,10 +222,6 @@ void AveragedUncOverlay() {
 
 					} // End of the loop over the FSI Models 
 
-//					average.push_back( (TH1D*)(Plots[0]->Clone()) );
-//					average[ColorCounter]->Add(Plots[1]);
-//					average[ColorCounter]->Scale(0.5);
-
 					std::vector<TH1D*> VectorPlots; VectorPlots.clear();
 
 					for (int i = 0; i < NFSIModels; i++) {
@@ -257,30 +235,13 @@ void AveragedUncOverlay() {
 				
 					// ---------------------------------------------------------------------------------------------------------------------
 
-					clone->GetXaxis()->SetTitleFont(132);
-					clone->GetXaxis()->SetLabelFont(132);
-					clone->GetXaxis()->SetTitleSize(0.05);
-					clone->GetXaxis()->SetLabelSize(0.05);
-					clone->GetXaxis()->SetLabelOffset(0.01);
-					clone->GetXaxis()->SetTitleOffset(1.2);
-					clone->GetXaxis()->CenterTitle();
-					clone->GetXaxis()->SetTickLength(0.01);
-					clone->GetXaxis()->SetNdivisions(8);
+					PrettyPlot(clone);
 
 					// ---------------------------------------------------------------------------------------------------------------------
 
-					clone->GetYaxis()->SetTitle("Acceptance Correction");
-					clone->GetYaxis()->SetTitleFont(132);
-					clone->GetYaxis()->SetLabelFont(132);
-					clone->GetYaxis()->SetTitleSize(0.05);
-					clone->GetYaxis()->SetLabelSize(0.05);
-					clone->GetYaxis()->SetLabelOffset(0.01);
-					clone->GetYaxis()->CenterTitle();
-					clone->GetYaxis()->SetTickLength(0.01);
-					clone->GetYaxis()->SetNdivisions(10);
+					clone->GetYaxis()->SetNdivisions(8);
 
-					clone->GetYaxis()->SetRangeUser(-0.3,17);
-					//if (E[WhichEnergy] == "1_161") { clone->GetYaxis()->SetRangeUser(-0.3,4.2); }
+					clone->GetYaxis()->SetRangeUser(-0.3,16);
 
 					// ---------------------------------------------------------------------------------------------------------------------
 
@@ -290,10 +251,12 @@ void AveragedUncOverlay() {
 					clone->SetMarkerColor(Colors[ColorCounter]);
 
 					if (ColorCounter == 0) { clone->Draw("ap"); }
-					else { clone->Draw("p"); }
+					else { 
 
-					TLegendEntry* l1 = leg->AddEntry(clone,nucleus[WhichNucleus] + LabelE[WhichEnergy], "");
-					l1->SetTextColor(Colors[ColorCounter]);
+						clone->GetXaxis()->SetLabelSize(TextSize+0.01);
+						clone->Draw("p"); 
+
+					}
 
 					// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -303,11 +266,79 @@ void AveragedUncOverlay() {
 
 			} // End of the loop over the nuclei
 
-			leg->Draw();
-
-			PlotCanvas->SaveAs("AccCorr_"+NameCanvas+".pdf");
-
 		} // End of the loop over the energies
+
+		// ---------------------------------------
+
+		pad1->cd();
+		TLatex *sample12C = new TLatex(); 
+		sample12C->SetTextFont(FontStyle); 
+		sample12C->SetTextColor(kBlack); 
+		sample12C->SetTextSize(TextSize);
+//		sample12C->DrawLatexNDC(0.45,0.52,"^{12}C");
+
+		TLatex *E1 = new TLatex(); 
+		E1->SetTextFont(FontStyle); 
+		E1->SetTextColor(kBlack); 
+		E1->SetTextSize(TextSize);
+		E1->DrawLatexNDC(0.23,0.8,"1.159 GeV"); 
+
+		// ---------------------------------------
+
+		pad2->cd();
+		sample12C->SetTextSize(TextSize+0.006);
+		sample12C->DrawLatexNDC(0.25,0.24,"^{12}C");
+
+		TLatex *sample56Fe = new TLatex(); 
+		sample56Fe->SetTextFont(FontStyle); 
+		sample56Fe->SetTextColor(Colors[1]); 
+		sample56Fe->SetTextSize(TextSize);
+		sample56Fe->DrawLatexNDC(0.45,0.3,"^{56}Fe");
+
+		TLatex *sample4He = new TLatex(); 
+		sample4He->SetTextFont(FontStyle); 
+		sample4He->SetTextColor(Colors[2]); 
+		sample4He->SetTextSize(TextSize);
+		sample4He->DrawLatexNDC(0.35,0.45,"^{4}He");
+
+		TLatex *E2 = new TLatex(); 
+		E2->SetTextFont(FontStyle); 
+		E2->SetTextColor(kBlack); 
+		E2->SetTextSize(TextSize+0.006);
+		E2->DrawLatexNDC(0.1,0.8,"2.257 GeV"); 
+
+		// ---------------------------------------
+
+		pad3->cd();
+//		sample12C->SetTextSize(TextSize+0.006);
+//		sample12C->DrawLatexNDC(0.45,0.2,"^{12}C");
+
+//		sample56Fe->DrawLatexNDC(0.68,0.26,"^{56}Fe");
+
+//		sample4He->DrawLatexNDC(0.5,0.4,"^{4}He");
+
+		TLatex *E3 = new TLatex(); 
+		E3->SetTextFont(FontStyle); 
+		E3->SetTextColor(kBlack); 
+		E3->SetTextSize(TextSize+0.006);
+		E3->DrawLatexNDC(0.1,0.8,"4.453 GeV"); 
+
+		// -----------------------------------------------------------------------------------------------------------------------------------------
+		
+		PlotCanvas->cd();
+
+		TPad* pad4 = new TPad("Ecal","Ecal",0.,0.,1.,0.1,21); 
+		pad4->SetFillColor(kWhite); pad4->Draw(); pad4->cd();
+
+		TLatex *XLabel = new TLatex(); 
+		XLabel->SetTextFont(FontStyle); 
+		XLabel->SetTextColor(kBlack); 
+		XLabel->SetTextSize(9.2*TextSize);
+		XLabel->DrawLatexNDC(0.4,0.5,"(e,e'p)_{1p0#pi} E_{cal} [GeV]"); 
+
+		// -----------------------------------------------------------------------------------------------------------------------------------------
+
+		PlotCanvas->SaveAs("PanelAccCorr_"+CanvasName+".pdf");
 
 	} // End of the loop over the xB kinematics
 

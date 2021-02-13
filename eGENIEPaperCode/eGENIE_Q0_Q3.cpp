@@ -60,8 +60,8 @@ void eGENIE_Q0_Q3() {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
-//	NameOfPlots.push_back("QE_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("QE");
-	NameOfPlots.push_back("MEC_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("MEC");
+	NameOfPlots.push_back("QE_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("QE");
+//	NameOfPlots.push_back("MEC_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("MEC");
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -102,8 +102,8 @@ void eGENIE_Q0_Q3() {
 				pad2->SetFillColor(kWhite); pad2->Draw(); 
 				TPad* pad4 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPadFour,YMinPadFour,XMaxPadFour,YMaxPadFour,24); 
 				pad4->SetFillColor(kWhite); pad4->Draw();
-				pad1->SetBottomMargin(0.18);
-				pad2->SetBottomMargin(0.18);
+				pad1->SetBottomMargin(0.16);
+				pad2->SetBottomMargin(0.16);
 
 				pad4->cd();
 				TLatex *title = new TLatex(); 
@@ -112,7 +112,7 @@ void eGENIE_Q0_Q3() {
 				title->SetTextColor(kBlack); 
 				title->SetTextSize(0.8);
 				TString myTitle = LabelsOfSamples[WhichNucleus] + " " +LabelE[WhichEnergy] + ", " + TuneLabel;
-				title->DrawLatex(0.05,0.3,myTitle);
+//				title->DrawLatex(0.05,0.3,myTitle); // title / nucleus / energy
 
 				// ---------------------------------------------------------------------------------------------------------------------------
 
@@ -155,8 +155,8 @@ void eGENIE_Q0_Q3() {
 
 					// Rebinning & Ranges
 
-					Plots->GetXaxis()->SetRangeUser(0.02,1.7);
-					Plots->GetYaxis()->SetRangeUser(0.,1.2);
+					Plots->GetXaxis()->SetRangeUser(0.25,1.7);
+					Plots->GetYaxis()->SetRangeUser(-0.05,1.15);
 
 //					Plots->GetZaxis()->SetRangeUser(1.,Plots->GetMaximum());
 					double XMin =-99.,XMax =-99.;
@@ -174,8 +174,8 @@ void eGENIE_Q0_Q3() {
 					Plots->GetZaxis()->SetTitleFont(FontStyle);
 					Plots->GetZaxis()->SetTitleSize(TextSize);
 
-					Plots->GetXaxis()->SetNdivisions(5);
-					Plots->GetYaxis()->SetNdivisions(5);
+					Plots->GetXaxis()->SetNdivisions(8);
+					Plots->GetYaxis()->SetNdivisions(7);
 
 					Plots->Draw("colt");
 					PlotCanvas->Update();
@@ -205,7 +205,7 @@ void eGENIE_Q0_Q3() {
 
 				} // End of the loop over the FSI Models 
 
-//				PlotCanvas->SaveAs(nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_" +".pdf");
+				PlotCanvas->SaveAs(PlotName+".pdf");
 
 				//delete PlotCanvas;
 

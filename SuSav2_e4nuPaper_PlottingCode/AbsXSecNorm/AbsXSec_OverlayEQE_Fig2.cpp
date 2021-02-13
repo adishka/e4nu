@@ -73,8 +73,8 @@ void AbsXSec_OverlayEQE_Fig2() {
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
 
-//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
-	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
+//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 
 	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
@@ -335,6 +335,18 @@ void AbsXSec_OverlayEQE_Fig2() {
 					// Monitor where 1.161 GeV is
 					//TLine* line = new TLine(1.161,0.,1.161,2.);
 					//line->Draw();
+
+// -------------------------------------------------------------------------------------------
+
+// Data / SuSav2 ratio
+
+double IntXSecData = IntegratedXSec(Plots[0]);
+double IntXSecSuSav2 = IntegratedXSec(Plots[1]);
+//cout << "IntXSecData = " << IntXSecData << endl;
+//cout << "IntXSecSuSav2 = " << IntXSecSuSav2 << endl;
+double DataSuSav2Ratio = IntXSecData / IntXSecSuSav2;
+
+std::cout << "Normalized Yield Data / SuSav2 Ratio = " << DataSuSav2Ratio << endl;
 
 // -------------------------------------------------------------------------------------------
 

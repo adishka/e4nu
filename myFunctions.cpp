@@ -18,6 +18,41 @@ using namespace std;
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 
+double round(double var,int acc = 0) 
+{ 
+    double value = (int)(var * TMath::Power(10.,acc) + .5); 
+    return (double)value / TMath::Power(10.,acc); 
+} 
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+double IntegratedXSec(TH1D* h, int MinBin = -1, int MaxBin = -1) {
+
+	int NBinsX = h->GetXaxis()->GetNbins();
+
+	double IntegratedXSec = 0;
+
+	double LocalMinBin = 0;
+	if (MinBin != -1) { LocalMinBin = MinBin; }
+
+	double LocalMaxBin = NBinsX;
+	if (MaxBin != -1) { LocalMaxBin = MaxBin; }
+
+	for (int WhichXBin = LocalMinBin; WhichXBin < LocalMaxBin; WhichXBin++) {
+
+		double BinWidth = h->GetBinWidth(WhichXBin+1);
+		double BinEntry = h->GetBinContent(WhichXBin+1);
+
+		IntegratedXSec += BinEntry * BinWidth;
+
+	}
+
+	return IntegratedXSec;
+
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
 void GlobalSettings() {
 
 	TGaxis::SetMaxDigits(5);
@@ -606,7 +641,11 @@ void ApplyRebinningTProfile(TProfile* h, TString Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
 
-	} else if (string(PlotVar).find("EQEReso") != std::string::npos || string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+	} else if (
+		string(PlotVar).find("EQEReso") != std::string::npos || 
+		string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ||
+		string(PlotVar).find("h_Erec_subtruct_piplpimi_noprot_frac_feed") != std::string::npos
+	) {
 
 	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos || string(PlotVar).find("Erec") != std::string::npos) {
 
@@ -650,7 +689,12 @@ void ApplyRebinning(TH1D* h, TString Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
 
-	} else if (string(PlotVar).find("EQEReso") != std::string::npos || string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+	} else if (
+		string(PlotVar).find("EQEReso") != std::string::npos || 
+		string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ||
+		string(PlotVar).find("h_Erec_subtruct_piplpimi_noprot_frac_feed") != std::string::npos
+
+	) {
 
 	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos || string(PlotVar).find("Erec") != std::string::npos) {
 
@@ -692,19 +736,32 @@ void ApplyRange(TH1D* h, TString Energy, TString PlotVar) {
 		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.,1.5); }
 		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(0.5,3.); }
 
-	} else if (string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+	} else if (
+		string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || 
+		string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ||
+		string(PlotVar).find("h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed") != std::string::npos
+	) {
 
-		h->GetXaxis()->SetRangeUser(-0.81,0.07);
+		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(-0.7,0.06); }
+		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(-0.7,0.06); }
+		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(-0.7,0.03); }
 
-	} else if (string(PlotVar).find("EQEReso") != std::string::npos || string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+	} else if (
+		string(PlotVar).find("EQEReso") != std::string::npos || 
+		string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ||
+		string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ||
+		string(PlotVar).find("h_Erec_subtruct_piplpimi_noprot_frac_feed") != std::string::npos
+		) {
 
-		h->GetXaxis()->SetRangeUser(-0.85,0.2);
+		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(-0.75,0.21); }
+		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(-0.75,0.21); }
+		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(-0.75,0.21); }
 
 	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos || string(PlotVar).find("Erec") != std::string::npos) {
 
 		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.47,1.4); }
 		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.7,2.6); }
-		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(2.,5.); }
+		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(1.9,5.2); }
 
 	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("E_tot") != std::string::npos || string(PlotVar).find("h1_Ecal_SuperFine") != std::string::npos) {
 
@@ -748,7 +805,11 @@ void ApplyRange(TGraph* h, TString Energy, TString PlotVar) {
 
 		h->GetXaxis()->SetRangeUser(-0.81,0.07);
 
-	} else if (string(PlotVar).find("EQEReso") != std::string::npos || string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
+	} else if (
+		string(PlotVar).find("EQEReso") != std::string::npos || 
+		string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ||
+		string(PlotVar).find("h_Erec_subtruct_piplpimi_noprot_frac_feed") != std::string::npos
+		) {
 
 		h->GetXaxis()->SetRangeUser(-0.85,0.2);
 
@@ -758,9 +819,10 @@ void ApplyRange(TGraph* h, TString Energy, TString PlotVar) {
 		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.7,2.6); }
 		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(2.,5.); }
 
-	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("ECal") != std::string::npos || string(PlotVar).find("Ecal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos ) {
+	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("E_tot") != std::string::npos || string(PlotVar).find("h1_Ecal_SuperFine") != std::string::npos) {
 
-		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.57,1.19); }
+//		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.57,1.23); } // default, but now in the Ecal 6-pannel, we need to expand the range for smaller box 
+		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.5,1.23); }
 		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.67,2.4); }
 		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(1.5,4.6); }
 
@@ -768,11 +830,9 @@ void ApplyRange(TGraph* h, TString Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("DeltaAlphaT") != std::string::npos ) {
 
-		h->GetXaxis()->SetRangeUser(10,180);
-
 	} else if (string(PlotVar).find("DeltaPhiT") != std::string::npos ) {
 
-	} else if (string(PlotVar).find("Wvar") != std::string::npos ) {
+	} else if (string(PlotVar).find("Wvar") != std::string::npos || string(PlotVar).find("W_") != std::string::npos ) {
 
 		h->GetXaxis()->SetRangeUser(0.6,1.5);
 
@@ -784,7 +844,6 @@ void ApplyRange(TGraph* h, TString Energy, TString PlotVar) {
 	return;	
 
 }
-
 // -------------------------------------------------------------------------------------------------------------------------------------
 
 void UniversalE4vFunction(TH1D* h, TString DataSetLabel, TString nucleus, TString E, TString name) {
@@ -843,14 +902,18 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 	if (ScaleToDataSet == "hA2018_Final") { AlternativeModel = "SuSav2"; }
 
 	// Unfolding using SuSav2
-	// keep in mind that the G2018 sample is questionable
+	// keep in mind that the Rad G2018 sample is questionable
 	
-	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc"+Extension); // main plots for unfolding
+	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"+Extension); // main plots for unfolding
 	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension); // main plots for unfolding
 
-	if (name == "h_Erec_subtruct_piplpimi_noprot_3pi") {
+	if (
+		name == "h_Erec_subtruct_piplpimi_noprot_3pi" || 
+		name == "h_Erec_subtruct_piplpimi_noprot_frac_feed" ||
+		name == "h_Erec_subtruct_piplpimi_noprot_frac_feed3pi"
+	) {
 
-		FSIModel[0] = ScaleToDataSet+"_RadCorr_LFGM_Truth0pi_WithFidAcc"+Extension;
+		FSIModel[0] = ScaleToDataSet+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"+Extension;
 		FSIModel[1] = ScaleToDataSet+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"+Extension;
 
 	}
@@ -890,12 +953,17 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 		double NewBinContent = 0.;
 		double NewBinError = 0.;		
 
-		if (Plots[1]->GetBinContent(WhichBin + 1) > 0) { 
+		if (Plots[0]->GetBinContent(WhichBin + 1) > 0) { 
 
-			AccCorr = Plots[0]->GetBinContent(WhichBin + 1) / Plots[1]->GetBinContent(WhichBin + 1);
+			AccCorr = Plots[1]->GetBinContent(WhichBin + 1) / Plots[0]->GetBinContent(WhichBin + 1); // 0: Rad reco, 1: NoRad true
 
-			NewBinContent = h->GetBinContent(WhichBin + 1) / AccCorr;
-			NewBinError = h->GetBinError(WhichBin + 1) / AccCorr;
+			NewBinContent = h->GetBinContent(WhichBin + 1) * AccCorr;
+			NewBinError = h->GetBinError(WhichBin + 1) * AccCorr;
+
+//cout << "h->GetBinCenter(WhichBin + 1) = " << h->GetBinCenter(WhichBin + 1) << endl;
+//cout << "AccCorr = " << AccCorr << endl;
+//cout << "h->GetBinContent(WhichBin + 1) = " << h->GetBinContent(WhichBin + 1) << "   NewBinContent = " << NewBinContent << endl;
+//cout << "h->GetBinError(WhichBin + 1) = " << h->GetBinError(WhichBin + 1) << "   NewBinError = " << NewBinError << endl << endl;
 
 		}
 
@@ -906,7 +974,7 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 
 	// --------------------------------------------------------------------------------------
 
-// Obtain acceptance correction using non radiative samples
+// Obtain acceptance correction uncertainy using non radiative samples
 
 // First, grab the files with smearing at truth level (_Truth_WithoutFidAcc_Offset), otherwise infinities at the edges 
 // Second, grab the G2018 true 1p0pi files with offset (_Truth_WithFidAcc_Offset), otherwise infinities at the double ratio
@@ -919,7 +987,12 @@ FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); //
 FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset 
 FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset
 
-if (name == "h_Erec_subtruct_piplpimi_noprot_3pi") {
+if (
+	name == "h_Erec_subtruct_piplpimi_noprot_3pi" || 
+	name == "h_Erec_subtruct_piplpimi_noprot_frac_feed" ||
+	name == "h_Erec_subtruct_piplpimi_noprot_frac_feed3pi"
+
+) {
 
 	FSIModelOffset[0] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc";
 	FSIModelOffset[1] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";

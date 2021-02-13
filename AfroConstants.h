@@ -663,10 +663,13 @@
 
 	//  ------------------------------------------------------------------------------
 
-	// XSec label
+	// XSec labels
 
 	TString XSecEcalLabel = "#frac{d#sigma}{dE_{cal}} #left[#frac{#mub}{GeV}#right]";
 	TString XSecEQELabel = "#frac{d#sigma}{dE_{QE}} #left[#frac{#mub}{GeV}#right]";
+
+	TString ResoXSecEcalLabel = "#frac{d#sigma}{dE_{cal}^{Feed}} #left[#mub#right]";
+	TString ResoXSecEQELabel = "#frac{d#sigma}{dE_{QE}^{Feed}} #left[#mub#right]";
 
 	//  ------------------------------------------------------------------------------
 

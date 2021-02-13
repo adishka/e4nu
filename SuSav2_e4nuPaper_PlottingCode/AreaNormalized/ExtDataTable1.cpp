@@ -59,7 +59,7 @@ void ExtDataTable1() {
 	
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
 	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");	
-	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
 
 //	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 //	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
@@ -70,6 +70,9 @@ void ExtDataTable1() {
 	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h1_Ecal_SuperFine"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h1_EQE_SuperFine"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
+//	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
+//	NameOfPlots.push_back("DeltaAlphaT_Int_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} #delta#alpha_{T} [GeV/c]"); OutputPlotNames.push_back("DeltaAlphaT_Int_0");
+//	NameOfPlots.push_back("DeltaPhiT_Int_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} #delta#phi_{T} [GeV/c]"); OutputPlotNames.push_back("DeltaPhiT_Int_0");
 
 	std::vector<TH1D*> Plots;
 
@@ -94,12 +97,11 @@ void ExtDataTable1() {
 
 		for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
-			double range = 0.06;
-			if (DoubleE[WhichEnergy] == 2.261) { range = 0.08; }
-			if (DoubleE[WhichEnergy] == 4.461) { range = 0.06; }
+			double MinE = 1.1;
+			double MaxE = 1.22;
 
-			double MinE = (1.-range)*DoubleE[WhichEnergy];
-			double MaxE = (1.+range)*DoubleE[WhichEnergy];
+			if (DoubleE[WhichEnergy] == 2.261) { MinE = 2.19; MaxE = 2.34; }
+			if (DoubleE[WhichEnergy] == 4.461) { MinE = 4.35; MaxE = 4.6; }
 
 			// Loop over the nuclei
 
@@ -109,6 +111,8 @@ void ExtDataTable1() {
 				cout << nucleus[WhichNucleus]+"_"+E[WhichEnergy] << "  Emin = " << MinE << "  Emax = " << MaxE << endl;
 
 				// Loop over the plots
+
+				double max = -99.;
 
 				for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
@@ -123,7 +127,7 @@ void ExtDataTable1() {
 					TLegend* leg = new TLegend(0.2,0.5,0.45,0.8);
 					leg->SetNColumns(1);
 
-					cout << "---------------------------------------------------------------" << endl;
+					cout << "---------------------------------------------------------------" << endl << endl;
 
 					// Loop over the FSI Models
 
@@ -134,6 +138,47 @@ void ExtDataTable1() {
 						TFile* FileSample = TFile::Open(FileName);
 						Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
 
+						// ----------------------------------------------------------------------------
+
+						PlotCanvas->cd();
+
+						Plots[WhichFSIModel]->GetXaxis()->SetTitle(LabelOfPlots[WhichPlot]);
+
+						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
+
+						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
+						Plots[WhichFSIModel]->SetLineWidth(3);
+
+						Plots[WhichFSIModel]->GetYaxis()->SetTitle(XSecEcalLabel);
+
+						// ---------------------------------------------------------------------------------------------------------
+
+						// Unfold Data plot
+
+						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
+
+						Plots[WhichFSIModel] = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],"NoxBCut");
+
+						}
+
+						// ---------------------------------------------------------------------------------------------------------
+
+						double IntXSec = IntegratedXSec(Plots[WhichFSIModel]); 
+						//cout << endl << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": integrated xsec = " << IntXSec << endl;
+
+						// ----------------------------------------------------------------------------
+
+						// Percentages with respect to the true beam energy
+
+						int MinBin = Plots[WhichFSIModel]->FindBin(MinE);
+						int MaxBin = Plots[WhichFSIModel]->FindBin(MaxE);
+
+						double ExtraHeight = 0.2;
+
+						double localmax = TMath::Max(max,Plots[WhichFSIModel]->GetMaximum());
+						if (localmax > max) { max = localmax; }
+						Plots[0]->GetYaxis()->SetRangeUser(0.,(1+ExtraHeight)*max);
+
 						// ---------------------------------------------------------------------------------------------------------
 
 						// Energy Reconstruction Percentages Calculation
@@ -141,89 +186,82 @@ void ExtDataTable1() {
 						if (string(OutputPlotNames[WhichPlot]).find("RecoEnergy_slice") != std::string::npos 
 						|| string(OutputPlotNames[WhichPlot]).find("h1_E") != std::string::npos) {
 
-							// ----------------------------------------------------------------------------
+							// ------------------------------------------------------------------------------------------------------------
 
-							// Percentages with respect to the true beam energy
-
-//							double range = 0.06;
-//							if (DoubleE[WhichEnergy] == 2.261) { range = 0.08; }
-//							if (DoubleE[WhichEnergy] == 4.461) { range = 0.06; }
-
-//							double MinE = (1.-range)*DoubleE[WhichEnergy];
-//							double MaxE = (1.+range)*DoubleE[WhichEnergy];
-
-							int MinBin = Plots[WhichFSIModel]->FindBin(MinE);
-							int MaxBin = Plots[WhichFSIModel]->FindBin(MaxE);
-							int percentage = Plots[WhichFSIModel]->Integral(MinBin,MaxBin) / Plots[WhichFSIModel]->Integral() * 100.;
+							double IntXSecRange = IntegratedXSec(Plots[WhichFSIModel],MinBin,MaxBin); 
+							//cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": integrated xsec within peak range = " << IntXSecRange << endl;
 
 							// ------------------------------------------------------------------------------------------------------------
 
-							cout << endl << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": fraction within " << int(range*100.) 
-							     << "% = " << percentage << endl;
+							// Fraction
+
+							int percentage = IntXSecRange / IntXSec * 100.;
+
+							cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": fraction within range = " << percentage << endl;
+
 							// ------------------------------------------------------------------------------------------------------------
 
-							PlotCanvas->cd();
+						} // End of the if statement that we are talking about a reco energy plot
 
-							Plots[WhichFSIModel]->GetXaxis()->SetTitle(LabelOfPlots[WhichPlot]);
+						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 
-						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
+							Plots[WhichFSIModel]->SetMarkerStyle(20);
+							Plots[WhichFSIModel]->SetLineColor(kBlack);
+							Plots[WhichFSIModel]->SetMarkerColor(kBlack);
+							Plots[WhichFSIModel]->Draw("e same"); 
+							leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel],"lep"); 
 
-							Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
-							Plots[WhichFSIModel]->SetLineWidth(3);
-
-							Plots[WhichFSIModel]->GetYaxis()->SetTitle(XSecEcalLabel);
-
-							if ( FSIModel[WhichFSIModel] == "Pinned_Data_Final" ) { 
-
-								Plots[WhichFSIModel]->SetLineColor(kWhite);
-								Plots[WhichFSIModel]->SetMarkerColor(kWhite);
-								Plots[WhichFSIModel]->Draw("e same"); 
-
-						TH1D* DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],"NoxBCut");
-
-								DataPlot->SetMarkerStyle(20);
-								DataPlot->SetMarkerColor(kBlack);
-								DataPlot->SetLineColor(kBlack);
-								DataPlot->Draw("e same");
-
-								leg->AddEntry(DataPlot,FSILabel[WhichFSIModel],"lep"); 
-
-								double sum = DataPlot->Integral(MinBin,MaxBin);
-								cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": sum within " << int(range*100.) 
-							     << "% = " << sum << endl;
-
-							}
-							else { 
-
-								Plots[WhichFSIModel]->Draw("c hist same");
-
-								leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel],"l"); 
+							if (string(OutputPlotNames[WhichPlot]).find("RecoEnergy_slice") != std::string::npos 
+							|| string(OutputPlotNames[WhichPlot]).find("h1_E") != std::string::npos) {
 
 								double sum = Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
-								cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": sum within " << int(range*100.) 
-							     << "% = " << sum << endl;
+								cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": sum within range = "<< round(sum,2) << endl << endl;
 
 							}
 
-							double ExtraHeight = 0.1;
+						}
+						else { 
 
-							TLine* line = new TLine(DoubleE[WhichEnergy],0,DoubleE[WhichEnergy],(1+ExtraHeight)*Plots[WhichFSIModel]->GetMaximum());
+							Plots[WhichFSIModel]->Draw("c hist same");
+							Plots[0]->Draw("e same"); 
+
+							leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel],"l"); 
+
+							if (string(OutputPlotNames[WhichPlot]).find("RecoEnergy_slice") != std::string::npos 
+							|| string(OutputPlotNames[WhichPlot]).find("h1_E") != std::string::npos) {
+
+								double sum = Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
+								cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": sum within range = " << round(sum,2) << endl << endl;
+
+							}
+
+						}
+
+
+						// ---------------------------------------------------------------------------------------------------------
+
+						// Energy Reconstruction Percentages Calculation
+
+						if (string(OutputPlotNames[WhichPlot]).find("RecoEnergy_slice") != std::string::npos 
+						|| string(OutputPlotNames[WhichPlot]).find("h1_E") != std::string::npos) {
+
+							TLine* line = new TLine(DoubleE[WhichEnergy],0,DoubleE[WhichEnergy],(1+ExtraHeight)*max);
 							line->SetLineWidth(3);
 							line->SetLineStyle(kDashed);
 							line->Draw();
 
-							TLine* linelow = new TLine( MinE,0,MinE,(1+ExtraHeight)*Plots[WhichFSIModel]->GetMaximum());
+							TLine* linelow = new TLine( MinE,0,MinE,(1+ExtraHeight)*max);
 							linelow->SetLineWidth(3);
 							linelow->Draw();
 
-							TLine* linehigh = new TLine( MaxE,0,MaxE,(1+ExtraHeight)*Plots[WhichFSIModel]->GetMaximum());
+							TLine* linehigh = new TLine( MaxE,0,MaxE,(1+ExtraHeight)*max);
 							linehigh->SetLineWidth(3);
 							linehigh->Draw();
 
- 							Plots[0]->GetYaxis()->SetRangeUser(0.,(1+ExtraHeight)*Plots[WhichFSIModel]->GetMaximum());
-							Plots[0]->Draw("e same");
+						}
 
-						} // End of the if statement that we are talking about a reco energy plot
+//	 					Plots[0]->GetYaxis()->SetRangeUser(0.,(1+ExtraHeight)*Plots[WhichFSIModel]->GetMaximum());
+//						Plots[0]->Draw("e same");
 
 					} // End of the loop over the FSI Models 
 
