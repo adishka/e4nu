@@ -337,6 +337,13 @@ void CommonPanelAccCorrUnc() {
 		E1->SetTextSize(TextSize);
 		E1->DrawLatexNDC(0.23,0.8,"1.159 GeV"); 
 
+		TLatex* label = new TLatex();
+		label->SetTextFont(FontStyle);
+		label->SetTextColor(kBlack);
+		label->SetTextSize(TextSize);
+
+		label->DrawLatexNDC(0.82,0.8,"(a)");
+
 		// ---------------------------------------
 
 		pad2->cd();
@@ -361,6 +368,9 @@ void CommonPanelAccCorrUnc() {
 		E2->SetTextSize(TextSize+0.006);
 		E2->DrawLatexNDC(0.1,0.8,"2.257 GeV"); 
 
+		label->SetTextSize(TextSize+0.006);
+		label->DrawLatexNDC(0.82,0.8,"(b)");
+
 		// ---------------------------------------
 
 		pad3->cd();
@@ -376,6 +386,8 @@ void CommonPanelAccCorrUnc() {
 		E3->SetTextColor(kBlack); 
 		E3->SetTextSize(TextSize+0.006);
 		E3->DrawLatexNDC(0.1,0.8,"4.453 GeV"); 
+
+		label->DrawLatexNDC(0.82,0.8,"(c)");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 		

@@ -18,7 +18,7 @@
 
 using namespace std;
 
-void eGENIE_Q0_Q3() {
+void QE_Q0_Q3_Electrons() {
 
 	gStyle->SetOptStat(0);	
 
@@ -28,9 +28,8 @@ void eGENIE_Q0_Q3() {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
-	TString Tune = "GTEST19_10b_00_000"; TString TuneLabel = "SuSav2";
-//	TString Tune = "G18_10a_02_11a"; TString TuneLabel = "G2018";
-//	TString Tune = "G00_00a_00_000"; TString TuneLabel = "G2000";
+//	TString Interaction = "CCinclMEC";
+	TString Interaction = "EM+MEC";
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -40,12 +39,12 @@ void eGENIE_Q0_Q3() {
 	std::vector<TString> LabelsOfSamples; 
 	std::vector<TString> E;
 	std::vector<TString> LabelE; 
-	std::vector<TString> Interaction;
-	std::vector<TString> FSILabel; 
 	std::vector<TString> NameOfPlots; 
 	std::vector<TString> Channel; 
 	std::vector<TString> XLabelOfPlots; 
 	std::vector<TString> YLabelOfPlots;  
+	std::vector<TString> Tunes;
+	std::vector<TString> TuneLabels;  
 
 //	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
 	nucleus.push_back("C12"); LabelsOfSamples.push_back("^{12}C");
@@ -55,8 +54,9 @@ void eGENIE_Q0_Q3() {
 //	E.push_back("2261"); LabelE.push_back(" @ E = 2.261 GeV");
 //	E.push_back("4461"); LabelE.push_back(" @ E = 4.461 GeV");
 
-	Interaction.push_back("CCinclMEC"); FSILabel.push_back("#nu");
-	Interaction.push_back("EM+MEC"); FSILabel.push_back("e");
+	Tunes.push_back("GTEST19_10b_00_000"); TuneLabels.push_back("SuSav2");
+	Tunes.push_back("G18_10a_02_11a"); TuneLabels.push_back("G2018");
+//	Tunes.push_back("G00_00a_00_000"); TuneLabels.push_back("G2000");
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -67,7 +67,7 @@ void eGENIE_Q0_Q3() {
 
 	int NNuclei = nucleus.size();
 	int NEnergies = E.size();
-	int NInteractions = Interaction.size();
+	int NTunes = Tunes.size();
 	int NPlots = NameOfPlots.size();
 
 	// Loop over the energies
@@ -111,21 +111,23 @@ void eGENIE_Q0_Q3() {
 				title->SetTextFont(FontStyle); 
 				title->SetTextColor(kBlack); 
 				title->SetTextSize(0.8);
-				TString myTitle = LabelsOfSamples[WhichNucleus] + " " +LabelE[WhichEnergy] + ", " + TuneLabel;
+//				TString myTitle = LabelsOfSamples[WhichNucleus] + " " +LabelE[WhichEnergy] + ", " + TuneLabels[WhichTune];
 //				title->DrawLatex(0.05,0.3,myTitle); // title / nucleus / energy
+				TString myTitle = "QE Electron Scattering";
+				title->DrawLatex(0.14,0.2,myTitle); // title / nucleus / energy
 
 				// ---------------------------------------------------------------------------------------------------------------------------
 
-				for (int WhichInteraction = 0; WhichInteraction < NInteractions; WhichInteraction ++) {
+				for (int WhichTune = 0; WhichTune < NTunes; WhichTune ++) {
 
-					if (WhichInteraction == 0) { 
+					if (WhichTune == 0) { 
 
 						pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.15); 
 
 					} else { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.15); }
 
 					TString PathToFiles = "./myFiles/";
-					TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+Tune+"_"+Interaction[WhichInteraction]+".root";
+					TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+Tunes[WhichTune]+"_"+Interaction+".root";
 					TFile* FileSample = TFile::Open(FileName);
 
 					TH2D* Plots =  (TH2D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) ;
@@ -134,8 +136,7 @@ void eGENIE_Q0_Q3() {
 					Plots->GetYaxis()->CenterTitle();
 
 					Plots->SetTitleSize(TextSize,"t");
-					if (FSILabel[WhichInteraction] == "Data") { gStyle->SetTitleX(.54); }
-					else { gStyle->SetTitleX(.47); }
+					gStyle->SetTitleX(.47);
 
 					Plots->GetXaxis()->SetLabelFont(FontStyle);
 					Plots->GetXaxis()->SetTitleFont(FontStyle);
@@ -180,14 +181,14 @@ void eGENIE_Q0_Q3() {
 					Plots->Draw("colt");
 					PlotCanvas->Update();
 
-					if (WhichInteraction == 0) { 
+					if (WhichTune == 0) { 
 
 						TLatex *titleChannel = new TLatex(); 
 						titleChannel->SetNDC();
 						titleChannel->SetTextFont(FontStyle); 
 						titleChannel->SetTextColor(kBlack); 
 						titleChannel->SetTextSize(TextSize);
-						titleChannel->DrawLatex(0.2,0.8,Channel[WhichPlot]);
+						//titleChannel->DrawLatex(0.2,0.8,Channel[WhichPlot]);
 
 					}
 
@@ -197,7 +198,7 @@ void eGENIE_Q0_Q3() {
 					titleParticle->SetTextFont(FontStyle); 
 					titleParticle->SetTextColor(kBlack); 
 					titleParticle->SetTextSize(TextSize);
-					titleParticle->DrawLatex(0.85-0.15*WhichInteraction,0.8,FSILabel[WhichInteraction]);
+					titleParticle->DrawLatex(0.25-0.15*WhichTune,0.8,TuneLabels[WhichTune]);
 
 					// ----------------------------------------------------------------------------------------------------------------
 
@@ -205,7 +206,7 @@ void eGENIE_Q0_Q3() {
 
 				} // End of the loop over the FSI Models 
 
-				PlotCanvas->SaveAs("myPlots/"+PlotName+".pdf");
+				PlotCanvas->SaveAs("myPlots/QE_Q0_Q3_Electrons_"+PlotName+".pdf");
 
 				//delete PlotCanvas;
 

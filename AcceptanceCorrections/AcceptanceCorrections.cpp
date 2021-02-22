@@ -31,8 +31,8 @@ void AcceptanceCorrections() {
 	const std::vector<int> LocalDataSetColors{1,610,410,kRed+2,kBlue};
 	double split = 0.1;
 
-	//TString Label = "SuSav2";
-	TString Label = "hA2018_Final";
+	TString Label = "SuSav2";
+	//TString Label = "hA2018_Final";
 
 	// ------------------------------------------------------------------------
 
@@ -44,14 +44,15 @@ void AcceptanceCorrections() {
 	std::vector<TString> LabelE; 
 	std::vector<TString> FSIModel;
 	std::vector<TString> FSILabel; 
+	std::vector<TString> LegendLabel; 
 	std::vector<TString> NameOfPlots; 
 	std::vector<TString> LabelOfPlots;  
 	std::vector<TString> OutputPlotNames;
 
 	// ------------------------------------------------------------------------
 
-//	nucleus.push_back("4He"); JustNucleus.push_back("He");
-	nucleus.push_back("12C"); JustNucleus.push_back("C");
+	nucleus.push_back("4He"); JustNucleus.push_back("He");
+//	nucleus.push_back("12C"); JustNucleus.push_back("C");
 //	nucleus.push_back("56Fe"); JustNucleus.push_back("Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.157 GeV"); DoubleE.push_back(1.161);	
@@ -80,9 +81,13 @@ void AcceptanceCorrections() {
 //		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("TrueWithFid");
 //		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True");
 
-		FSIModel.push_back(Label+"_NoRadCorr_LFGM"); FSILabel.push_back("Reco");
-		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("TrueWithFid");
-		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True");
+//		FSIModel.push_back(Label+"_NoRadCorr_LFGM"); FSILabel.push_back("e4v Reco");
+//		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("1p0#pi Reco");
+//		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("1p0#pi True");
+
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM"); FSILabel.push_back("Reco"); LegendLabel.push_back("e4v Reco");
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("TrueWithFid"); LegendLabel.push_back("1p0#pi Reco");
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True"); LegendLabel.push_back("1p0#pi True");
 
 	} else {
 
@@ -93,9 +98,13 @@ void AcceptanceCorrections() {
 //		FSIModel.push_back(Label+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("TrueWithFid");
 //		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True");
 
-		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Offset"); FSILabel.push_back("Reco");
-		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithFidAcc_Offset"); FSILabel.push_back("TrueWithFid");
-		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True");
+//		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Offset"); FSILabel.push_back("e4v Reco");
+//		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithFidAcc_Offset"); FSILabel.push_back("1p0#pi Reco");
+//		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("1p0#pi True");
+
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Offset"); FSILabel.push_back("Reco");  LegendLabel.push_back("e4v Reco");
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithFidAcc_Offset"); FSILabel.push_back("TrueWithFid");  LegendLabel.push_back("1p0#pi Reco");
+		FSIModel.push_back(Label+"_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("True"); LegendLabel.push_back("1p0#pi True");
 
 	}
 
@@ -123,10 +132,6 @@ void AcceptanceCorrections() {
 			for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
 				// Loop over the plots
-
-				double max = -99.;
-				double min = 1E12;
-				double height = 1.05;
 
 				TFile* StoreEfficiencyFile = TFile::Open("myFiles/Efficiency_"+Label+"_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+xBCut[WhichxBCut]+".root","update");
 
@@ -159,13 +164,19 @@ void AcceptanceCorrections() {
 //						else { FSIModel[1] = Label+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"; } // Not to be used
 //						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc";
 
+						FSIModel[0] = Label+"_NoRadCorr_LFGM"; 
 
 						if (Label == "SuSav2") { FSIModel[1] = Label+"_NoRadCorr_LFGM_Truth0pi_WithFidAcc"; }
-						else { FSIModel[1] = Label+"_NoRadCorr_LFGM_Truth0pi_WithFidAcc"; } // Not to be used
+						else { FSIModel[1] = Label+"_NoRadCorr_LFGM_Truth0pi_WithFidAcc"; }
+
 						FSIModel[2] = Label+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc";
 
 
 					}
+
+					double max = -99.;
+					double min = 1E12;
+					double height = 1.05;
 
 					// Loop over the FSI Models
 
@@ -206,8 +217,7 @@ void AcceptanceCorrections() {
 
 						double localmax = Plots[WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }
-						Plots[WhichFSIModel]->GetYaxis()->SetRangeUser(0.01,height*max);
-						Plots[0]->GetYaxis()->SetRangeUser(0.01,height*max);
+						Plots[WhichFSIModel]->GetYaxis()->SetRangeUser(0.0,height*max);
 
 						TString XLabel = Plots[WhichFSIModel]->GetXaxis()->GetTitle();
 						Plots[WhichFSIModel]->GetXaxis()->SetTitle(XLabel);
@@ -237,11 +247,12 @@ void AcceptanceCorrections() {
 //							Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
 							Plots[WhichFSIModel]->Draw("e hist same");  // draw them as lines
 
-							if (string(FSILabel[0]).find("Data") != std::string::npos) { Plots[0]->Draw("e same"); } 
+							Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
+							Plots[0]->Draw("e hist same");
 
 						}
 
-						legGenie->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel]);
+						legGenie->AddEntry(Plots[WhichFSIModel],LegendLabel[WhichFSIModel]);
 
 					} // End of the loop over the FSI Models 
 

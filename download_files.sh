@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#xB=NoxBCut
-xB=xBCut
+xB=NoxBCut
+#xB=xBCut
 
 LocalPath=/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles
 
@@ -13,10 +13,10 @@ GENIEAccount=apapadop@geniegpvm01.fnal.gov
 GENIEPath=/genie/app/users/apapadop/e4nu
 
 #GENIEOnlineExtension=G18_10a_02_11a
-#GENIELocalExtension=hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc
+#GENIELocalExtension=hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing
 
 GENIEOnlineExtension=SuSav2
-GENIELocalExtension=SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc
+GENIELocalExtension=SuSav2_NoRadCorr_LFGM
 
 ##### Genie Samples
 

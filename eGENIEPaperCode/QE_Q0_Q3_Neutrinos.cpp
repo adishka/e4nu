@@ -18,7 +18,7 @@
 
 using namespace std;
 
-void eGENIE_Q0_Q3() {
+void QE_Q0_Q3_Neutrinos() {
 
 	gStyle->SetOptStat(0);	
 
@@ -28,9 +28,8 @@ void eGENIE_Q0_Q3() {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
-	TString Tune = "GTEST19_10b_00_000"; TString TuneLabel = "SuSav2";
-//	TString Tune = "G18_10a_02_11a"; TString TuneLabel = "G2018";
-//	TString Tune = "G00_00a_00_000"; TString TuneLabel = "G2000";
+	TString Interaction = "CCinclMEC";
+//	TString Interaction = "EM+MEC";
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -40,12 +39,12 @@ void eGENIE_Q0_Q3() {
 	std::vector<TString> LabelsOfSamples; 
 	std::vector<TString> E;
 	std::vector<TString> LabelE; 
-	std::vector<TString> Interaction;
-	std::vector<TString> FSILabel; 
 	std::vector<TString> NameOfPlots; 
 	std::vector<TString> Channel; 
 	std::vector<TString> XLabelOfPlots; 
 	std::vector<TString> YLabelOfPlots;  
+	std::vector<TString> Tunes;
+	std::vector<TString> TuneLabels;  
 
 //	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
 	nucleus.push_back("C12"); LabelsOfSamples.push_back("^{12}C");
@@ -55,8 +54,9 @@ void eGENIE_Q0_Q3() {
 //	E.push_back("2261"); LabelE.push_back(" @ E = 2.261 GeV");
 //	E.push_back("4461"); LabelE.push_back(" @ E = 4.461 GeV");
 
-	Interaction.push_back("CCinclMEC"); FSILabel.push_back("#nu");
-	Interaction.push_back("EM+MEC"); FSILabel.push_back("e");
+	Tunes.push_back("GTEST19_10b_00_000"); TuneLabels.push_back("SuSav2");
+	Tunes.push_back("G18_10a_02_11a"); TuneLabels.push_back("G2018");
+	Tunes.push_back("G00_00a_00_000"); TuneLabels.push_back("G18_02a");
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -67,7 +67,7 @@ void eGENIE_Q0_Q3() {
 
 	int NNuclei = nucleus.size();
 	int NEnergies = E.size();
-	int NInteractions = Interaction.size();
+	int NTunes = Tunes.size();
 	int NPlots = NameOfPlots.size();
 
 	// Loop over the energies
@@ -89,9 +89,9 @@ void eGENIE_Q0_Q3() {
 
 				// Dimensions of TPads (pad2 will be deleted at the very end for the Ereco plots)
 
-				double XMinPadOne = 0., XMaxPadOne = 0.5, YMinPadOne = 0., YMaxPadOne = 1.;
-				double XMinPadTwo = 0.5, XMaxPadTwo = 1., YMinPadTwo = 0., YMaxPadTwo = YMaxPadOne;
-				double XMinPadThree = 0.5, XMaxPadThree = 0.53, YMinPadThree = 0.07, YMaxPadThree = 0.17;
+				double XMinPadOne = 0., XMaxPadOne = 0.35, YMinPadOne = 0., YMaxPadOne = 1.;
+				double XMinPadTwo = 0.35, XMaxPadTwo = 0.64, YMinPadTwo = 0., YMaxPadTwo = YMaxPadOne;
+				double XMinPadThree = 0.64, XMaxPadThree = 1., YMinPadThree = 0., YMaxPadThree = YMaxPadOne;
 				double XMinPadFour = 0.3, XMaxPadFour = 0.85, YMinPadFour = 0.91, YMaxPadFour = 1.;
 
 				// ---------------------------------------------------------------------------------------------------------------------------
@@ -99,11 +99,14 @@ void eGENIE_Q0_Q3() {
 				TPad* pad1 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPadOne,YMinPadOne,XMaxPadOne,YMaxPadOne, 21); 
 				pad1->SetFillColor(kWhite); pad1->Draw();
 				TPad* pad2 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPadTwo,YMinPadTwo,XMaxPadTwo,YMaxPadTwo,22); 
-				pad2->SetFillColor(kWhite); pad2->Draw(); 
+				pad2->SetFillColor(kWhite); pad2->Draw();
+				TPad* pad3 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPadThree,YMinPadThree,XMaxPadThree,YMaxPadThree,22); 
+				pad3->SetFillColor(kWhite); pad3->Draw(); 
 				TPad* pad4 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPadFour,YMinPadFour,XMaxPadFour,YMaxPadFour,24); 
 				pad4->SetFillColor(kWhite); pad4->Draw();
 				pad1->SetBottomMargin(0.16);
 				pad2->SetBottomMargin(0.16);
+				pad3->SetBottomMargin(0.16);
 
 				pad4->cd();
 				TLatex *title = new TLatex(); 
@@ -111,21 +114,24 @@ void eGENIE_Q0_Q3() {
 				title->SetTextFont(FontStyle); 
 				title->SetTextColor(kBlack); 
 				title->SetTextSize(0.8);
-				TString myTitle = LabelsOfSamples[WhichNucleus] + " " +LabelE[WhichEnergy] + ", " + TuneLabel;
+//				TString myTitle = LabelsOfSamples[WhichNucleus] + " " +LabelE[WhichEnergy] + ", " + TuneLabels[WhichTune];
 //				title->DrawLatex(0.05,0.3,myTitle); // title / nucleus / energy
+				TString myTitle = "QE Neutrino Scattering";
+				title->DrawLatex(0.14,0.2,myTitle); // title / nucleus / energy
 
 				// ---------------------------------------------------------------------------------------------------------------------------
 
-				for (int WhichInteraction = 0; WhichInteraction < NInteractions; WhichInteraction ++) {
+				for (int WhichTune = 0; WhichTune < NTunes; WhichTune ++) {
 
-					if (WhichInteraction == 0) { 
+					if (WhichTune == 0) 
+						{ pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.21); pad1->SetTitle("");}
+					if (WhichTune == 1)  { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.0); }
+					
+					if (WhichTune == 2)  { pad3->cd(); pad3->SetLeftMargin(0.0); pad3->SetRightMargin(0.21); }
 
-						pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.15); 
-
-					} else { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.15); }
 
 					TString PathToFiles = "./myFiles/";
-					TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+Tune+"_"+Interaction[WhichInteraction]+".root";
+					TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+Tunes[WhichTune]+"_"+Interaction+".root";
 					TFile* FileSample = TFile::Open(FileName);
 
 					TH2D* Plots =  (TH2D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) ;
@@ -134,8 +140,7 @@ void eGENIE_Q0_Q3() {
 					Plots->GetYaxis()->CenterTitle();
 
 					Plots->SetTitleSize(TextSize,"t");
-					if (FSILabel[WhichInteraction] == "Data") { gStyle->SetTitleX(.54); }
-					else { gStyle->SetTitleX(.47); }
+					gStyle->SetTitleX(.47);
 
 					Plots->GetXaxis()->SetLabelFont(FontStyle);
 					Plots->GetXaxis()->SetTitleFont(FontStyle);
@@ -143,12 +148,22 @@ void eGENIE_Q0_Q3() {
 					Plots->GetXaxis()->SetTitleSize(TextSize);
 					Plots->GetXaxis()->SetTitleOffset(1.);
 					Plots->GetXaxis()->SetTitle(XLabelOfPlots[WhichPlot]);
+					Plots->GetXaxis()->SetTickSize(0.02);
 
 					Plots->GetYaxis()->SetLabelFont(FontStyle);
 					Plots->GetYaxis()->SetTitleFont(FontStyle);
+
 					Plots->GetYaxis()->SetLabelSize(TextSize);
+					if (WhichTune == 1) { 
+						Plots->GetXaxis()->SetLabelSize(TextSize+0.02); 
+						Plots->GetXaxis()->SetLabelOffset(-0.01); 
+
+						Plots->GetXaxis()->SetTitleSize(TextSize+0.02); 
+						Plots->GetXaxis()->SetTitleOffset(0.78); 
+					}
+
 					Plots->GetYaxis()->SetTitleSize(TextSize);
-					Plots->GetYaxis()->SetTitleOffset(1.);
+					Plots->GetYaxis()->SetTitleOffset(1.35);
 					Plots->GetYaxis()->SetTitle(YLabelOfPlots[WhichPlot]);
 
 					// --------------------------------------------------------------------------------------------------------------------------
@@ -180,14 +195,14 @@ void eGENIE_Q0_Q3() {
 					Plots->Draw("colt");
 					PlotCanvas->Update();
 
-					if (WhichInteraction == 0) { 
+					if (WhichTune == 0) { 
 
 						TLatex *titleChannel = new TLatex(); 
 						titleChannel->SetNDC();
 						titleChannel->SetTextFont(FontStyle); 
 						titleChannel->SetTextColor(kBlack); 
 						titleChannel->SetTextSize(TextSize);
-						titleChannel->DrawLatex(0.2,0.8,Channel[WhichPlot]);
+						//titleChannel->DrawLatex(0.2,0.8,Channel[WhichPlot]);
 
 					}
 
@@ -197,7 +212,10 @@ void eGENIE_Q0_Q3() {
 					titleParticle->SetTextFont(FontStyle); 
 					titleParticle->SetTextColor(kBlack); 
 					titleParticle->SetTextSize(TextSize);
-					titleParticle->DrawLatex(0.85-0.15*WhichInteraction,0.8,FSILabel[WhichInteraction]);
+					if (WhichTune == 1) { titleParticle->SetTextSize(TextSize+0.02); }
+
+					if (WhichTune == 0) { titleParticle->DrawLatex(0.3,0.8,TuneLabels[WhichTune]); }
+					else { titleParticle->DrawLatex(0.09,0.8,TuneLabels[WhichTune]); }
 
 					// ----------------------------------------------------------------------------------------------------------------
 
@@ -205,7 +223,7 @@ void eGENIE_Q0_Q3() {
 
 				} // End of the loop over the FSI Models 
 
-				PlotCanvas->SaveAs("myPlots/"+PlotName+".pdf");
+				PlotCanvas->SaveAs("myPlots/QE_Q0_Q3_Neutrino_"+PlotName+".pdf");
 
 				//delete PlotCanvas;
 

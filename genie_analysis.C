@@ -487,7 +487,8 @@ void genie_analysis::Loop(Int_t choice) {
 
 	// -------------------------------------------------------------------------------------------------------
 
-	//Binning for energy reconstruction histograms
+	// Binning for energy reconstruction histograms && feeddown
+
 	int n_bins;
 	double *x_values;
 	double *x_qe;
@@ -589,6 +590,9 @@ void genie_analysis::Loop(Int_t choice) {
 	TH2F *h2_N_prot_pi_phot_nonrad=new TH2F("h2_N_prot_pi_phot_nonrad","",20,0,10,20,0,10);
 //	TH2F *h2_el_theta_phi = new TH2F("h2_el_theta_phi","",200,0,360,200,0,180);
 	TH2F *h2_el_theta_phi = new TH2F("h2_el_theta_phi","",200,0,360,200,10,60);
+
+	TH2F *h2_el_theta_EQE = new TH2F("h2_el_theta_EQE","",200,0,5,200,10,60);
+	TH2F *h2_el_P_EQE = new TH2F("h2_el_P_EQE","",200,0,5,200,0,5);
 
 	TH1F *h1_Electron_Momentum = new TH1F("h1_Electron_Momentum",";P_{e'} [GeV/c]",6000,0.,6);
 	TH1F *h1_Proton_Momentum = new TH1F("h1_Proton_Momentum",";P_{p} [GeV/c]",6000,0.,6);
@@ -1072,6 +1076,8 @@ void genie_analysis::Loop(Int_t choice) {
 	
 //	int Nentries = TMath::Min(Ntfileentries,NtweightsEntries);
 
+	// ---------------------------------------------------------------------------------------------------------------
+
 	// Justification for the parameter choice
 	// https://docs.google.com/presentation/d/1ghG08JfCYXRXh6O8hcXKrhJOFxkAs_9i5ZfoIkiiEHU/edit?usp=sharing
 
@@ -1264,7 +1270,7 @@ void genie_analysis::Loop(Int_t choice) {
 		// ---------------------------------------------------------------------------------------------------------------------
 
 		// Sanity check, especially for radiation
-		if (wght < 0 || wght > 10) { std::cout << "Something is really wrong with yur weights !!!" << std::endl; }
+		if (wght < 0 || wght > 10) { std::cout << "Something is really wrong with your weights !!!" << std::endl; }
 
 		double WeightIncl = wght*e_acc_ratio / Mott_cross_sec;
 
@@ -1318,6 +1324,8 @@ void genie_analysis::Loop(Int_t choice) {
 		int ElectronSector = el_phi_mod / 60.;
 
 		h2_el_theta_phi->Fill(el_phi_mod,el_theta,WeightIncl);
+		h2_el_theta_EQE->Fill(E_rec,el_theta,WeightIncl);
+		h2_el_P_EQE->Fill(E_rec,el_momentum,WeightIncl);
 
 		if (el_phi_mod > 0 && el_phi_mod < 60) { h2_Electron_Theta_Momentum_FirstSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 
 		if (el_phi_mod > 60 && el_phi_mod < 120) { h2_Electron_Theta_Momentum_SecondSector->Fill(V4_el.Rho(),V3_el.Theta()*180./TMath::Pi(),e_acc_ratio); } 

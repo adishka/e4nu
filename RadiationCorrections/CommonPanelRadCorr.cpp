@@ -45,7 +45,7 @@ void PrettyPlot(TGraph* h) {
 	h->GetYaxis()->SetTitleSize(TextSize); 
 	//h->GetYaxis()->SetTickSize(0.02);
 	h->GetYaxis()->SetLabelSize(TextSize);
-	h->GetYaxis()->SetTitle("Acceptance Correction");
+	h->GetYaxis()->SetTitle("Radiation Correction");
 	h->GetYaxis()->SetTitleFont(FontStyle);
 	h->GetYaxis()->SetLabelFont(FontStyle);
 	h->GetYaxis()->SetTitleOffset(1.05);
@@ -94,7 +94,7 @@ TGraph* RMSAveragedFunc(std::vector<TH1D*> hVec, TString Energy, TString Var) {
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void CommonPanelAccCorr() {
+void CommonPanelRadCorr() {
 
 	// ------------------------------------------------------------------------
 
@@ -130,7 +130,6 @@ void CommonPanelAccCorr() {
 
 	TString Var = "epRecoEnergy_slice_0";
 //	TString Var = "h_Erec_subtruct_piplpimi_noprot_3pi";
-
 //	TString Var = "MissMomentum";
 //	TString Var = "DeltaAlphaT_Int_0";
 //	TString Var = "DeltaPhiT_Int_0";
@@ -150,7 +149,7 @@ void CommonPanelAccCorr() {
 //	NameOfPlots.push_back("AccCorrection_epRecoEnergy_slice_0");
 
 //	NameOfPlots.push_back("InverseAccCorrection_"+Var);
-	NameOfPlots.push_back("AverageInverseAccCorrection_"+Var);
+	NameOfPlots.push_back("RadiationCorrection_"+Var);
 
 	// ------------------------------------------------------------------------
 
@@ -243,7 +242,7 @@ void CommonPanelAccCorr() {
 
 					clone->GetYaxis()->SetNdivisions(8);
 
-					clone->GetYaxis()->SetRangeUser(-0.3,16);
+					clone->GetYaxis()->SetRangeUser(0.5,1.5);
 
 					// ---------------------------------------------------------------------------------------------------------------------
 
@@ -285,13 +284,6 @@ void CommonPanelAccCorr() {
 		E1->SetTextSize(TextSize);
 		E1->DrawLatexNDC(0.23,0.8,"1.159 GeV"); 
 
-		TLatex* label = new TLatex();
-		label->SetTextFont(FontStyle);
-		label->SetTextColor(kBlack);
-		label->SetTextSize(TextSize);
-
-		label->DrawLatexNDC(0.82,0.8,"(a)");
-
 		// ---------------------------------------
 
 		pad2->cd();
@@ -316,9 +308,6 @@ void CommonPanelAccCorr() {
 		E2->SetTextSize(TextSize+0.006);
 		E2->DrawLatexNDC(0.1,0.8,"2.257 GeV"); 
 
-		label->SetTextSize(TextSize+0.006);
-		label->DrawLatexNDC(0.82,0.8,"(b)");
-
 		// ---------------------------------------
 
 		pad3->cd();
@@ -335,8 +324,6 @@ void CommonPanelAccCorr() {
 		E3->SetTextSize(TextSize+0.006);
 		E3->DrawLatexNDC(0.1,0.8,"4.453 GeV"); 
 
-		label->DrawLatexNDC(0.82,0.8,"(c)");
-
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 		
 		PlotCanvas->cd();
@@ -348,15 +335,11 @@ void CommonPanelAccCorr() {
 		XLabel->SetTextFont(FontStyle); 
 		XLabel->SetTextColor(kBlack); 
 		XLabel->SetTextSize(9.2*TextSize);
-		if (Var == "epRecoEnergy_slice_0") { XLabel->DrawLatexNDC(0.4,0.5,"(e,e'p)_{1p0#pi} E_{cal} [GeV]"); }
-		if (Var == "h_Erec_subtruct_piplpimi_noprot_3pi") { XLabel->DrawLatexNDC(0.4,0.5,"(e,e')_{0#pi} E_{QE} [GeV]"); }
+		XLabel->DrawLatexNDC(0.4,0.5,"(e,e'p)_{1p0#pi} E_{cal} [GeV]"); 
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
-		if (Var == "epRecoEnergy_slice_0") { PlotCanvas->SaveAs("ECal_PanelAccCorr_"+CanvasName+".pdf"); }
-		if (Var == "h_Erec_subtruct_piplpimi_noprot_3pi") { PlotCanvas->SaveAs("EQE_PanelAccCorr_"+CanvasName+".pdf"); }
-
-		// -----------------------------------------------------------------------------------------------------------------------------------------
+		PlotCanvas->SaveAs("PanelAccCorr_"+CanvasName+".pdf");
 
 	} // End of the loop over the xB kinematics
 

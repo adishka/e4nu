@@ -41,9 +41,9 @@ void AbsXSec_OverlayEQE_Fig2() {
 	std::vector<TString> LabelOfPlots;  
 	std::vector<TString> OutputPlotNames;
 
-	nucleus.push_back("12C"); 
-	JustNucleus.push_back("C");
-	E.push_back("1_161");
+//	nucleus.push_back("12C"); 
+//	JustNucleus.push_back("C");
+//	E.push_back("1_161");
 
 //	nucleus.push_back("12C"); 
 //	JustNucleus.push_back("C");
@@ -57,9 +57,9 @@ void AbsXSec_OverlayEQE_Fig2() {
 //	JustNucleus.push_back("Fe");
 //	E.push_back("2_261");
 
-//	nucleus.push_back("56Fe"); 
-//	JustNucleus.push_back("Fe");
-//	E.push_back("4_461");
+	nucleus.push_back("56Fe"); 
+	JustNucleus.push_back("Fe");
+	E.push_back("4_461");
 
 //	nucleus.push_back("4He"); 
 //	JustNucleus.push_back("He");
@@ -73,8 +73,8 @@ void AbsXSec_OverlayEQE_Fig2() {
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
 
-	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
-//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
+	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 
 	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
@@ -367,7 +367,7 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 		PadNDCXmin = 0.4;PadNDCXmax = 0.8;
 		Xmin = 0.565; Xmax = 1.105; 
-		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.055; }
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.059; }
 
 	}
 

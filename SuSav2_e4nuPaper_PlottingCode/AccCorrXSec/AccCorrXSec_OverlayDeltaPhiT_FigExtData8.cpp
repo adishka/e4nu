@@ -278,6 +278,21 @@ void AccCorrXSec_OverlayDeltaPhiT_FigExtData8() {
 							DataPlot->GetYaxis()->SetRangeUser(0.,height*DataPlot->GetMaximum());	
 							DataPlot->Draw("e same");
 
+							// -------------------------------------------------------------------------------------------
+
+							TLatex* label = new TLatex();
+							label->SetTextFont(FontStyle);
+							label->SetTextColor(kBlack);
+							label->SetTextSize(1.5*TextSize);
+
+							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 1.161) { label->DrawLatexNDC(0.82,0.87,"(a)"); }
+							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 2.261) { label->DrawLatexNDC(0.78,0.87,"(b)"); }
+							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 4.461) { label->DrawLatexNDC(0.78,0.87,"(c)"); }
+							if (nucleus[WhichNucleus] == "56Fe" && Energy[WhichEnergy] == 2.261) { label->DrawLatexNDC(0.78,0.87,"(d)"); }
+							if (nucleus[WhichNucleus] == "56Fe" && Energy[WhichEnergy] == 4.461) { label->DrawLatexNDC(0.78,0.87,"(e)"); }
+
+							// -------------------------------------------------------------------------------------------
+
 						} else { 
 
 							Plots[WhichFSIModel]->SetLineStyle(Style[WhichFSIModel]);

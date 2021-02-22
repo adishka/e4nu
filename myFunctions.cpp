@@ -739,7 +739,9 @@ void ApplyRange(TH1D* h, TString Energy, TString PlotVar) {
 	} else if (
 		string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || 
 		string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ||
+		string(PlotVar).find("h1_Ecal_Reso") != std::string::npos ||
 		string(PlotVar).find("h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed") != std::string::npos
+
 	) {
 
 		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(-0.7,0.06); }
@@ -754,13 +756,13 @@ void ApplyRange(TH1D* h, TString Energy, TString PlotVar) {
 		) {
 
 		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(-0.75,0.21); }
-		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(-0.75,0.21); }
+		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(-0.69,0.0615); }
 		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(-0.75,0.21); }
 
 	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos || string(PlotVar).find("Erec") != std::string::npos) {
 
 		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.47,1.4); }
-		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.7,2.6); }
+		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.7,2.4); }
 		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(1.9,5.2); }
 
 	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("E_tot") != std::string::npos || string(PlotVar).find("h1_Ecal_SuperFine") != std::string::npos) {
@@ -904,8 +906,11 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 	// Unfolding using SuSav2
 	// keep in mind that the Rad G2018 sample is questionable
 	
-	FSIModel.push_back(ScaleToDataSet+"_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"+Extension); // main plots for unfolding
-	FSIModel.push_back(ScaleToDataSet+"_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension); // main plots for unfolding
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"+Extension); // 0: SuSav2 Rad for radiation correction
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"+Extension); // 1: Reco 1p0pi SuSav2 NoRad plot for average & for radiation correction
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc_Offset"+Extension); // 2: Reco 1p0pi G2018 NoRad Offset plot for average
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"+Extension); // 3: True 1p0pi SuSav2 NoRad plot for average
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"+Extension); // 4: True 1p0pi G2018 NoRad plot Offset for average
 
 	if (
 		name == "h_Erec_subtruct_piplpimi_noprot_3pi" || 
@@ -913,8 +918,11 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 		name == "h_Erec_subtruct_piplpimi_noprot_frac_feed3pi"
 	) {
 
-		FSIModel[0] = ScaleToDataSet+"_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"+Extension;
-		FSIModel[1] = ScaleToDataSet+"_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"+Extension;
+		FSIModel[0] = "SuSav2_RadCorr_LFGM_Truth0pi_WithFidAcc_UpdatedSchwinger"+Extension;
+		FSIModel[1] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc"+Extension;
+		FSIModel[2] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithFidAcc"+Extension;
+		FSIModel[3] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"+Extension;
+		FSIModel[4] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"+Extension;
 
 	}
 
@@ -940,32 +948,73 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 
 	// --------------------------------------------------------------------------------------	
 
+	// Clone initial histo before you start setting the bin contents
+
 	TH1D* OverallClone = (TH1D*)h->Clone();	
-	TH1D* Correction = (TH1D*)Plots[1]->Clone();	
-	Correction->Divide(Plots[0]);
+
+	// --------------------------------------------------------------------------------------	
+
+	// Acceptance Correction
+
+	// Two simulation models: get their average & use it as a correction factor
+	// 1: Reco 1p0pi SuSav2 NoRad plot for average
+	// 2: Reco 1p0pi G2018 Offset NoRad plot for average
+	// 3: True 1p0pi SuSav2 NoRad plot for average
+	// 4: True 1p0pi G2018 Offset NoRad plot for average
+
+	TH1D* CorrectionSuSav2 = (TH1D*)Plots[3]->Clone();	
+	CorrectionSuSav2->Divide(Plots[1]);
+	TH1D* CorrectionG2018 = (TH1D*)Plots[4]->Clone();	
+	CorrectionG2018->Divide(Plots[2]);
+
+	TH1D* Average = (TH1D*)(CorrectionSuSav2->Clone());
+	Average->Add(CorrectionG2018);
+	Average->Scale(0.5);
+
+	// Radiation Correction	// Use SuSav2
+
+	TH1D* RadCorrection = (TH1D*)Plots[1]->Clone();
+	RadCorrection->Divide(Plots[0]);
+
+	// --------------------------------------------------------------------------------------	
 
 	int NBins = OverallClone->GetXaxis()->GetNbins();
 
 	for (int WhichBin = 0; WhichBin < NBins; WhichBin++) {
 
 		double AccCorr = 0.;
+		double RadCorr = 0.;
 
 		double NewBinContent = 0.;
 		double NewBinError = 0.;		
 
-		if (Plots[0]->GetBinContent(WhichBin + 1) > 0) { 
+		//if (Plots[0]->GetBinContent(WhichBin + 1) > 0) { 
 
-			AccCorr = Plots[1]->GetBinContent(WhichBin + 1) / Plots[0]->GetBinContent(WhichBin + 1); // 0: Rad reco, 1: NoRad true
+			AccCorr = Average->GetBinContent(WhichBin + 1);
 
-			NewBinContent = h->GetBinContent(WhichBin + 1) * AccCorr;
-			NewBinError = h->GetBinError(WhichBin + 1) * AccCorr;
+			// Sanity checks for acceptance corrections 
+			if (AccCorr < 0 || AccCorr >30) { 
+
+				double CorrectionSuSav2Bin = CorrectionSuSav2->GetBinContent(WhichBin + 1); 
+				double CorrectionG2018Bin = CorrectionG2018->GetBinContent(WhichBin + 1); 
+				
+				if (CorrectionSuSav2Bin > 0 && CorrectionSuSav2Bin < 30) { AccCorr = CorrectionSuSav2Bin; } 
+				else if (CorrectionG2018Bin > 0 && CorrectionG2018Bin < 30) { AccCorr = CorrectionG2018Bin; }
+				else { AccCorr = 0.; } 
+
+			}
+
+			RadCorr = RadCorrection->GetBinContent(WhichBin + 1);
+
+			NewBinContent = h->GetBinContent(WhichBin + 1) * AccCorr * RadCorr;
+			NewBinError = h->GetBinError(WhichBin + 1) * AccCorr * RadCorr;
 
 //cout << "h->GetBinCenter(WhichBin + 1) = " << h->GetBinCenter(WhichBin + 1) << endl;
 //cout << "AccCorr = " << AccCorr << endl;
 //cout << "h->GetBinContent(WhichBin + 1) = " << h->GetBinContent(WhichBin + 1) << "   NewBinContent = " << NewBinContent << endl;
 //cout << "h->GetBinError(WhichBin + 1) = " << h->GetBinError(WhichBin + 1) << "   NewBinError = " << NewBinError << endl << endl;
 
-		}
+		//}
 
 		OverallClone->SetBinContent(WhichBin + 1, NewBinContent);
 		OverallClone->SetBinError(WhichBin + 1, NewBinError);
@@ -985,7 +1034,7 @@ std::vector<TString> FSIModelOffset; FSIModelOffset.clear();
 FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); // main reco plots for unfolding uncertainty with smearing
 FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // main plots for unfolding uncertainty with smearing
 FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset 
-FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset
+FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset
 
 if (
 	name == "h_Erec_subtruct_piplpimi_noprot_3pi" || 
@@ -1065,7 +1114,7 @@ if (E == "4_461") { DoubleE = 4.461; reso = 0.06; }
 
 double sum = 0; int nbins = 0;
 
-if (name == "epRecoEnergy_slice_0") {
+if (string(name).find("epRecoEnergy_slice") != std::string::npos) {
 
 	// Loop over the bins and take the average of the bins around the peak
 
@@ -1117,8 +1166,9 @@ for (int WhichBin = 0; WhichBin < NBinsSpread; WhichBin++) {
 	OverallClone->SetBinError(WhichBin+1,NewXSecBinError); // final bin error
 
 
-//double BinCenter = OverallClone->GetBinCenter(WhichBin+1);
+double BinCenter = OverallClone->GetBinCenter(WhichBin+1);
 //cout << "Bin center = " << BinCenter << " XSecBinError = " << XSecBinError << "  SpreadBinContent = " << SpreadBinContent << "  AccCorrError = " << AccCorrError << endl;
+//cout << "Bin center = " << BinCenter << " XSecBinError = " << XSecBinError << "  NewXSecBinError = " << NewXSecBinError << endl;
 
 }
 

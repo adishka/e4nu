@@ -48,7 +48,7 @@ void Create2DPlots_FitOutline_Electron() {
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
 
-	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
+//	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Data"); DirNames.push_back("Data");
 //	FSIModel.push_back("Pinned_Data_NewFiducials_SixSectors"); FSILabel.push_back("Data NF"); DirNames.push_back("Data NF");
 
@@ -56,9 +56,9 @@ void Create2DPlots_FitOutline_Electron() {
 //	FSIModel.push_back("hA2018_Final_NoRadCorr"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 
-	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");  DirNames.push_back("True 1p0pi W/");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi W/O");  DirNames.push_back("True 1p0pi W/O");
+//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("Reco 1p0pi");  DirNames.push_back("Reco 1p0pi");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi");  DirNames.push_back("True 1p0pi");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_NoThetaCut"); FSILabel.push_back("True 1p0pi W/O");  DirNames.push_back("True 1p0pi W/O");
 
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");  DirNames.push_back("True 1p0pi W/");
@@ -188,6 +188,14 @@ void Create2DPlots_FitOutline_Electron() {
 //										 205,34,1024,768);
 //										 205,34,2048,1656);
 										 205,34,2024,768);
+
+					// ---------------------------------------------------------------------------------------------------------------------------
+
+					TLegend* leg = new TLegend(0.6,0.7,0.8,0.89);
+					leg->SetBorderSize(0);
+					leg->SetTextSize(TextSize);
+					leg->SetTextFont(FontStyle);
+					leg->SetNColumns(1);
 
 					// ---------------------------------------------------------------------------------------------------------------------------
 
@@ -411,7 +419,7 @@ void Create2DPlots_FitOutline_Electron() {
 						sample->SetTextColor(kBlack); 
 						sample->SetTextSize(TextSize);
 						if (FSILabel[WhichFSIModel] == "Data") { sample->DrawTextNDC(0.2,0.84,FSILabel[WhichFSIModel]); }
-						else { sample->DrawTextNDC(0.05,0.84,FSILabel[WhichFSIModel]); } 
+						else { sample->DrawTextNDC(0.2,0.25,FSILabel[WhichFSIModel]); } 
 
 						if ( string(NameOfPlots[WhichPlot]).find("Electron_Theta_Momentum") != std::string::npos ) {
 
@@ -463,7 +471,64 @@ if (E[WhichEnergy] == "4_461") { myFit->SetParameters(13.5,15); }
 myFit->SetLineColor(kRed);
 myFit->SetLineWidth(4);
 myFit->Draw("same");
-						}
+
+TF1 *myUpperFit = new TF1("myUpperFit","TMath::ACos( 1 + 0.938 * (0.02095 - [0] + x)/ x / [0] ) * 180./ TMath::Pi()",0.,5.);
+
+myUpperFit->SetParameter(0,2.261);
+myUpperFit->SetLineColor(kGreen);
+myUpperFit->SetLineWidth(4);
+myUpperFit->Draw("same");
+
+TF1* myUpperFitC1 = (TF1*)(myUpperFit->Clone());
+myUpperFitC1->SetParameter(0,2.3);
+myUpperFitC1->SetLineColor(kMagenta);
+myUpperFitC1->SetLineWidth(4);
+myUpperFitC1->Draw("same");
+
+TF1* myUpperFitC2 = (TF1*)(myUpperFit->Clone());
+myUpperFitC2->SetParameter(0,2.35);
+myUpperFitC2->SetLineColor(kCyan);
+myUpperFitC2->SetLineWidth(4);
+myUpperFitC2->Draw("same");
+
+TF1* myUpperFitC3 = (TF1*)(myUpperFit->Clone());
+myUpperFitC3->SetParameter(0,2.2);
+myUpperFitC3->SetLineColor(kYellow);
+myUpperFitC3->SetLineWidth(4);
+myUpperFitC3->Draw("same");
+
+TF1* myUpperFitC4 = (TF1*)(myUpperFit->Clone());
+myUpperFitC4->SetParameter(0,2.4);
+myUpperFitC4->SetLineColor(kOrange+1);
+myUpperFitC4->SetLineWidth(4);
+myUpperFitC4->Draw("same");
+
+TF1* myUpperFitC5 = (TF1*)(myUpperFit->Clone());
+myUpperFitC5->SetParameter(0,2.45);
+myUpperFitC5->SetLineColor(kBlue);
+myUpperFitC5->SetLineWidth(4);
+myUpperFitC5->Draw("same");
+
+TF1* myUpperFitC6 = (TF1*)(myUpperFit->Clone());
+myUpperFitC6->SetParameter(0,2.45);
+myUpperFitC6->SetLineColor(kViolet);
+myUpperFitC6->SetLineWidth(4);
+myUpperFitC6->Draw("same");
+
+if (WhichFSIModel == 0) { 
+
+	leg->AddEntry(myUpperFitC3,"2.2","l");
+	leg->AddEntry(myUpperFit,"2.261","l");
+	leg->AddEntry(myUpperFitC1,"2.3","l");
+	leg->AddEntry(myUpperFitC2,"2.35","l");
+	leg->AddEntry(myUpperFitC4,"2.4","l");
+	leg->AddEntry(myUpperFitC5,"2.45","l");
+	leg->AddEntry(myUpperFitC6,"2.5","l");
+
+}
+
+//cout << myUpperFit->Eval(1) << endl;	
+					}
 
 
 //						if ( NameOfPlots[WhichPlot] == "h2_Q2_nu_weight" ) {
@@ -535,6 +600,8 @@ myFit->Draw("same");
 						//delete PlotCanvas;
 
 					} // End of the loop over the FSI Models 
+
+leg->Draw();
 
 //					PlotCanvas->SaveAs("../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"+nucleus[WhichNucleus]+"_" 
 //							+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+".pdf");

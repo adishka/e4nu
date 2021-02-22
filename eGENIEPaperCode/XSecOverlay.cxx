@@ -42,7 +42,9 @@ void PrettyGraph(TGraph* g, int color,TString Interaction) {
 
 	g->SetTitle("");
 
-	g->GetXaxis()->SetTitle("E_{#nu} [GeV]");
+	if (string(Interaction).find("EM") != std::string::npos) { g->GetXaxis()->SetTitle("E_{e} [GeV]"); }
+	else { g->GetXaxis()->SetTitle("E_{#nu} [GeV]"); }
+
 	g->GetXaxis()->CenterTitle();
 	g->GetXaxis()->SetRangeUser(0,3.);
 	g->GetXaxis()->SetNdivisions(7);
@@ -51,9 +53,9 @@ void PrettyGraph(TGraph* g, int color,TString Interaction) {
 	g->GetXaxis()->SetLabelFont(FontStyle);
 	g->GetXaxis()->SetTitleFont(FontStyle);
 
-	g->GetYaxis()->SetTitle("#sigma_{"+Interaction+"} [10^{-38} #frac{cm^{2}}{nucleus}]");
+	g->GetYaxis()->SetTitle("#sigma_{"+Interaction+"} #left[10^{-38} #frac{cm^{2}}{nucleus}#right]");
 	g->GetYaxis()->CenterTitle();
-	g->GetYaxis()->SetNdivisions(7);
+	g->GetYaxis()->SetNdivisions(6);
 	g->GetYaxis()->SetLabelSize(TextSize);
 	g->GetYaxis()->SetTitleSize(TextSize);
 	g->GetYaxis()->SetLabelFont(FontStyle);
@@ -94,7 +96,7 @@ void XSecOverlay() {
 	CCQEPlotCanvas->SetBottomMargin(0.11);
 	CCQEPlotCanvas->SetLeftMargin(0.14);
 
-	TLegend* legCCQE = new TLegend(0.5,0.4,0.7,0.7);
+	TLegend* legCCQE = new TLegend(0.5,0.3,0.7,0.5);
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -102,6 +104,7 @@ void XSecOverlay() {
 	TDirectory* CCQEG2018Dir = (TDirectory*)(CCQEG2018File->Get("nu_mu_C12"));
 	TGraph* CCQEG2018 = (TGraph*)(CCQEG2018Dir->Get("tot_cc"));
 	PrettyGraph(CCQEG2018,kBlack,"CCQE");
+	CCQEG2018->GetYaxis()->SetRangeUser(1E-3,6.5);
 
 	TLegendEntry* legCCQEG2018 = legCCQE->AddEntry(CCQEG2018,"Nieves","");
 	legCCQEG2018->SetTextColor(kBlack);
@@ -125,7 +128,7 @@ void XSecOverlay() {
 	TGraph* CCQEG2000 = (TGraph*)(CCQEG2000Dir->Get("tot_cc"));
 	PrettyGraph(CCQEG2000,410,"CCQE");
 
-	TLegendEntry* legCCQEG2000 = legCCQE->AddEntry(CCQEG2000,"LS","");
+	TLegendEntry* legCCQEG2000 = legCCQE->AddEntry(CCQEG2000,"Llewellyn Smith","");
 	legCCQEG2000->SetTextColor(410);
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -135,7 +138,9 @@ void XSecOverlay() {
 	legCCQE->SetTextFont(FontStyle);
 	legCCQE->Draw();
 
-	delete CCQEPlotCanvas;
+	gPad->RedrawAxis();
+	CCQEPlotCanvas->SaveAs("myPlots/"+CCQEPlotCanvasName+".pdf");
+	//delete CCQEPlotCanvas;
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 	//                                    CCMEC (Nieves, SuSav2, Empirical)
@@ -146,14 +151,14 @@ void XSecOverlay() {
 	CCMECPlotCanvas->SetBottomMargin(0.11);
 	CCMECPlotCanvas->SetLeftMargin(0.14);
 
-	TLegend* legCCMEC = new TLegend(0.5,0.2,0.7,0.5);
+	TLegend* legCCMEC = new TLegend(0.5,0.3,0.7,0.5);
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	TFile* CCMECG2018File = TFile::Open("myXSec/xsec_carbon12_spline_CCMEC_G18_10a_02_11a_Q2_"+Q2Thres+".root");
 	TDirectory* CCMECG2018Dir = (TDirectory*)(CCMECG2018File->Get("nu_mu_C12"));
 	TGraph* CCMECG2018 = (TGraph*)(CCMECG2018Dir->Get("tot_cc"));
-	CCMECG2018->GetYaxis()->SetRangeUser(0,2.3);
+	CCMECG2018->GetYaxis()->SetRangeUser(1E-3,2.3);
 	PrettyGraph(CCMECG2018,kBlack,"CCMEC");
 
 	TLegendEntry* legCCMECG2018 = legCCMEC->AddEntry(CCMECG2018,"Nieves","");
@@ -176,7 +181,7 @@ void XSecOverlay() {
 	TFile* CCMECG2000File = TFile::Open("myXSec/xsec_carbon12_spline_CCMEC_G00_00a_00_000_Q2_"+Q2Thres+".root");
 	TDirectory* CCMECG2000Dir = (TDirectory*)(CCMECG2000File->Get("nu_mu_C12"));
 	TGraph* CCMECG2000 = (TGraph*)(CCMECG2000Dir->Get("tot_cc"));
-	CCMECG2000->GetYaxis()->SetRangeUser(0,2.3);
+	CCMECG2000->GetYaxis()->SetRangeUser(1E-3,2.3);
 	PrettyGraph(CCMECG2000,410,"CCMEC");
 
 	TLegendEntry* legCCMECG2000 = legCCMEC->AddEntry(CCMECG2000,"Empirical","");
@@ -189,6 +194,7 @@ void XSecOverlay() {
 	legCCMEC->SetTextFont(FontStyle);
 	legCCMEC->Draw();
 
+	CCMECPlotCanvas->SaveAs("myPlots/"+CCMECPlotCanvasName+".pdf");
 	//delete CCMECPlotCanvas;
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -200,7 +206,7 @@ void XSecOverlay() {
 	EMQEPlotCanvas->SetBottomMargin(0.11);
 	EMQEPlotCanvas->SetLeftMargin(0.14);
 
-	TLegend* legEMQE = new TLegend(0.5,0.2,0.7,0.5);
+	TLegend* legEMQE = new TLegend(0.5,0.35,0.7,0.5);
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -208,6 +214,8 @@ void XSecOverlay() {
 	TDirectory* EMQEG2018Dir = (TDirectory*)(EMQEG2018File->Get("e-_C12"));
 	TGraph* EMQEG2018 = (TGraph*)(EMQEG2018Dir->Get("tot_em"));
 	PrettyGraph(EMQEG2018,kBlack,"EMQE");
+	EMQEG2018->GetYaxis()->SetRangeUser(1E-3,7E8);
+	TGaxis::SetMaxDigits(5);
 
 	TLegendEntry* legEMQEG2018 = legEMQE->AddEntry(EMQEG2018,"Rosenbluth","");
 	legEMQEG2018->SetTextColor(kBlack);
@@ -229,7 +237,8 @@ void XSecOverlay() {
 	legEMQE->SetTextFont(FontStyle);
 	legEMQE->Draw();
 
-	delete EMQEPlotCanvas;
+	EMQEPlotCanvas->SaveAs("myPlots/"+EMQEPlotCanvasName+".pdf");
+	//delete EMQEPlotCanvas;
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 	//                                    EMMEC (SuSav2, Empirical)
@@ -240,14 +249,14 @@ void XSecOverlay() {
 	EMMECPlotCanvas->SetBottomMargin(0.11);
 	EMMECPlotCanvas->SetLeftMargin(0.14);
 
-	TLegend* legEMMEC = new TLegend(0.5,0.2,0.7,0.5);
+	TLegend* legEMMEC = new TLegend(0.5,0.35,0.7,0.5);
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	TFile* EMMECG2018File = TFile::Open("myXSec/xsec_carbon12_spline_EMMEC_G18_10a_02_11a_Q2_"+Q2Thres+".root");
 	TDirectory* EMMECG2018Dir = (TDirectory*)(EMMECG2018File->Get("e-_C12"));
 	TGraph* EMMECG2018 = (TGraph*)(EMMECG2018Dir->Get("tot_em"));
-	EMMECG2018->GetYaxis()->SetRangeUser(0,190000000);
+	EMMECG2018->GetYaxis()->SetRangeUser(1E-3,1.7E8);
 	PrettyGraph(EMMECG2018,kBlack,"EMMEC");
 
 	TLegendEntry* legEMMECG2018 = legEMMEC->AddEntry(EMMECG2018,"Empirical","");
@@ -265,13 +274,13 @@ void XSecOverlay() {
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	TFile* EMMECG2018FileLowQ2 = TFile::Open("myXSec/xsec_carbon12_spline_EMMEC_G18_10a_02_11a_Q2_0_1_Frac.root");
-	TDirectory* EMMECG2018DirLowQ2 = (TDirectory*)(EMMECG2018FileLowQ2->Get("e-_C12"));
-	TGraph* EMMECG2018LowQ2 = (TGraph*)(EMMECG2018DirLowQ2->Get("tot_em"));
-	PrettyGraph(EMMECG2018LowQ2,kGreen+2,"EMMEC");
+//	TFile* EMMECG2018FileLowQ2 = TFile::Open("myXSec/xsec_carbon12_spline_EMMEC_G18_10a_02_11a_Q2_0_1_Frac.root");
+//	TDirectory* EMMECG2018DirLowQ2 = (TDirectory*)(EMMECG2018FileLowQ2->Get("e-_C12"));
+//	TGraph* EMMECG2018LowQ2 = (TGraph*)(EMMECG2018DirLowQ2->Get("tot_em"));
+//	PrettyGraph(EMMECG2018LowQ2,kGreen+2,"EMMEC");
 
-	TLegendEntry* legEMMECG2018LowQ2 = legEMMEC->AddEntry(EMMECG2018LowQ2,"Empirical FracEMQE = 0.3","");
-	legEMMECG2018LowQ2->SetTextColor(kGreen+2);
+//	TLegendEntry* legEMMECG2018LowQ2 = legEMMEC->AddEntry(EMMECG2018LowQ2,"Empirical FracEMQE = 0.3","");
+//	legEMMECG2018LowQ2->SetTextColor(kGreen+2);
 
 //	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -290,6 +299,8 @@ void XSecOverlay() {
 	legEMMEC->SetTextFont(FontStyle);
 	legEMMEC->Draw();
 
+	gPad->RedrawAxis();
+	EMMECPlotCanvas->SaveAs("myPlots/"+EMMECPlotCanvasName+".pdf");
 	//delete EMMECPlotCanvas;
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------

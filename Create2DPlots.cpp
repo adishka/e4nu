@@ -38,12 +38,12 @@ void Create2DPlots() {
 	std::vector<TString> OutputPlotNames; std::vector<TString> Title;
 
 //	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");  JustNucleus.push_back("He");
-//	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
-	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
+	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
+//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV");
-	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");
-//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
+//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");
+	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
@@ -56,7 +56,10 @@ void Create2DPlots() {
 //	FSIModel.push_back("hA2018_Final_NoRadCorr"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("GENIE");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Ext+Int Rad)");  DirNames.push_back("SuSav2");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (W/ Fid)");  DirNames.push_back("SuSav2");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2 (W/O Fid)");  DirNames.push_back("SuSav2");
+
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Ext+Int Rad)");  DirNames.push_back("SuSav2");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2 e4v");  DirNames.push_back("SuSav2");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("True 1p0pi W/");  DirNames.push_back("True 1p0pi W/");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("True 1p0pi");  DirNames.push_back("True 1p0pi W/O");
@@ -465,7 +468,7 @@ if (DirNames[WhichFSIModel] == "True 1p0pi W/") {
 TF1 *myFit = new TF1("myFit","[0]+[1]/x",0.,5);
 
 //if (E[WhichEnergy] == "1_161") { myFit->SetParameters(15,7); } // Default
-if (E[WhichEnergy] == "1_161") { myFit->SetParameters(17,7); } // O.H. 2 deg higher [Nov 13 2020] ro be beyond the edges
+if (E[WhichEnergy] == "1_161") { myFit->SetParameters(17,7); } // O.H. 2 deg higher [Nov 13 2020] to be beyond the edges
 
 //if (E[WhichEnergy] == "2_261") { myFit->SetParameters(14,10.5); }
 if (E[WhichEnergy] == "2_261") { myFit->SetParameters(16,10.5); }

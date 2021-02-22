@@ -21,7 +21,7 @@ using namespace std;
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
+void AccCorrXSec_OverlayECal_FineBinning_Pilar() {
 
 	// ------------------------------------------------------------------------
 
@@ -62,8 +62,8 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors"); FSILabel.push_back("G2018");
 
-	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]");
-	OutputPlotNames.push_back("ECal_slice_0");
+	NameOfPlots.push_back("h1_Ecal_Reso"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]");
+	OutputPlotNames.push_back("ECalReso_FineBin");
 
 	std::vector<TH1D*> Plots;
 
@@ -80,7 +80,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 
 	for (int WhichxBCut = 0; WhichxBCut < NxBCuts; WhichxBCut ++) {
 
-		TFile* fXSecFile = TFile::Open("myXSec/ECal_AccCorr_XSec_"+xBCut[WhichxBCut]+".root","recreate");
+		TFile* fXSecFile = TFile::Open("myXSec/FineBin_ECalReso_AccCorr_XSec_"+xBCut[WhichxBCut]+".root","recreate");
 
 		TCanvas* PlotCanvas = new TCanvas(xBCut[WhichxBCut],xBCut[WhichxBCut],205,34,1600,900);
 		
@@ -105,13 +105,13 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 			for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
 				// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
-				double MaxHeight = 2.3;
+				double MaxHeight = 4.9;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 7.3; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 10.3; }
 
 					// ----------------------------------------------------------------------------
 
@@ -178,7 +178,12 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 						//                 apply systematics due to rotations et al
 						//                 apply acceptance systematics using sector-by -sector uncertainties
 
-						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
+						//UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
+
+						AbsoluteXSecScaling(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy]);
+						ReweightPlots(Plots[WhichFSIModel]);
+						//ApplyRange(Plots[WhichFSIModel],E[WhichEnergy],NameOfPlots[WhichPlot]);
+
 						Plots[WhichFSIModel]->SetLineWidth(1);
 						Plots[WhichFSIModel]->GetYaxis()->SetTitle(DoubleAccCorrXSecTitle);
 
@@ -230,7 +235,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 						// Genie Break Down
 
 						if (
-							FSILabel[WhichFSIModel] == "SuSav2"
+							FSILabel[WhichFSIModel] == "SuSav3"
 						) {
 						
 							if (nucleus[WhichNucleus] == "12C" && E[WhichEnergy] == "1_161") {
@@ -364,14 +369,15 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 							GenieTotalClone->SetLineColor(kBlack);
 
 							if (FSILabel[WhichFSIModel] == "G2018") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }
-							Plots[WhichFSIModel]->Draw("hist C same");							
+//							Plots[WhichFSIModel]->Draw("hist C same");							
+							Plots[WhichFSIModel]->Draw("hist same");							
 													
 							if (nucleus[WhichNucleus] == "12C" && E[WhichEnergy] == "1_161") {
 										
 								if (WhichFSIModel == 1)
 									{ legGenieBlackLine->AddEntry(Plots[WhichFSIModel],"SuSav2 (Total)", "l"); }
 							}
-							Plots[1]->Draw("hist C same");
+							//Plots[1]->Draw("hist C same");
 							//Plots[0]->Draw("e same"); 
 
 						}
@@ -381,7 +387,7 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 					gPad->RedrawAxis();
 
 // -------------------------------------------------------------------------------------------
-
+/*
 // Extra pad zooming in tail if Ecal plot
 
 if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
@@ -398,7 +404,7 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 	if (E[WhichEnergy] == "1_161") { 
 
 		Xmin = 0.565; Xmax = 1.105; 
-		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.22; }
+		if (nucleus[WhichNucleus] == "12C") { Ymax = 0.22; }
 
 	}
 
@@ -406,17 +412,17 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 	if (E[WhichEnergy] == "2_261") { 
 
 		Xmin = 0.8; Xmax = 2.1; 
-		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.22; PadNDCXmin = 0.0; PadLeftMargin = 0.1; }
-		if (nucleus[WhichNucleus] == "56Fe") { /*Ymin = 0.0;*/ Ymax = 0.79; PadNDCXmin = 0.1; PadLeftMargin = 0.11; PadNDCYmin = 0.39; PadNDCYmax = 0.81; PadTopMargin = 0.004; }
+		if (nucleus[WhichNucleus] == "12C") { Ymax = 0.22; PadNDCXmin = 0.0; PadLeftMargin = 0.1; }
+		if (nucleus[WhichNucleus] == "56Fe") { Ymax = 0.79; PadNDCXmin = 0.1; PadLeftMargin = 0.11; PadNDCYmin = 0.39; PadNDCYmax = 0.81; PadTopMargin = 0.004; }
 
 	}
 
 	if (E[WhichEnergy] == "4_461") { 
 
 		Xmin = 1.8; Xmax = 4.15; 
-		if (nucleus[WhichNucleus] == "12C") { /*Ymin = 0.0;*/ Ymax = 0.22; PadNDCXmin = 0.04; PadLeftMargin = 0.088; PadNDCXmax = 0.88; PadRightMargin = 0.04; }
+		if (nucleus[WhichNucleus] == "12C") { Ymax = 0.22; PadNDCXmin = 0.04; PadLeftMargin = 0.088; PadNDCXmax = 0.88; PadRightMargin = 0.04; }
 		if (nucleus[WhichNucleus] == "56Fe") { 
-			/*Ymin = 0.0;*/ Ymax = 0.79; PadNDCXmin = 0.04; PadLeftMargin = 0.088; PadNDCXmax = 0.88; PadRightMargin = 0.04; PadNDCYmin = 0.39; PadNDCYmax = 0.81; PadTopMargin = 0.004;
+			Ymax = 0.79; PadNDCXmin = 0.04; PadLeftMargin = 0.088; PadNDCXmax = 0.88; PadRightMargin = 0.04; PadNDCYmin = 0.39; PadNDCYmax = 0.81; PadTopMargin = 0.004;
 		}
 
 	}
@@ -507,7 +513,7 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 	gPad->RedrawAxis();
 
 }
-
+*/
 // -------------------------------------------------------------------------------------------				
 
 					// ---------------------------------------------------------------------------------------------------------
@@ -735,7 +741,7 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 		TString ext = "";
 		if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
-		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"ECal_Fig4_SuSav2_AccCorrXSec.pdf");
+		//PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"ECal_Fig4_SuSav2_AccCorrXSec.pdf");
 
 		//delete PlotCanvas;
 

@@ -95,8 +95,10 @@ void treeProducer_simulation::Loop() {
 	// -------------------------------------------------------------------------------
 
 	TH1D* Q2Plot = new TH1D("Q2Plot",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
+	TH1D* Q2Plot_OneProton = new TH1D("Q2Plot_OneProton",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
 	TH1D* xBPlot = new TH1D("xBPlot",TitlexB,NBinsxB,MinxB,MaxxB);
 	TH1D* nuPlot = new TH1D("nuPlot",Titlenu,NBinsnu,Minnu,Maxnu);
+	TH1D* nuPlot_OneProton = new TH1D("nuPlot_OneProton",Titlenu,NBinsnu,Minnu,Maxnu);
 	TH1D* WPlot = new TH1D("WPlot",TitleW,NBinsW,MinW,MaxW);
 	TH1D* PionMultiPlot = new TH1D("PionMultiPlot",TitlePionMulti,NBinsPionMulti,MinPionMulti,MaxPionMulti);
 	TH1D* PionMultiQEPlot = new TH1D("PionMultiQEPlot",TitlePionMulti,NBinsPionMulti,MinPionMulti,MaxPionMulti);
@@ -125,6 +127,10 @@ void treeProducer_simulation::Loop() {
 	TH1D* DeltaPhiTPlot = new TH1D("DeltaPhiTPlot",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
 	TH1D* DeltaAlphaTPlot = new TH1D("DeltaAlphaTPlot",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
 	TH1D* MissMomentumPlot = new TH1D("MissMomentumPlot",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
+
+	TH1D* QEDeltaPhiTPlot_OneProton = new TH1D("QEDeltaPhiTPlot_OneProton",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
+	TH1D* QEDeltaAlphaTPlot_OneProton = new TH1D("QEDeltaAlphaTPlot_OneProton",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
+	TH1D* QEMissMomentumPlot_OneProton = new TH1D("QEMissMomentumPlot_OneProton",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
 
 	TH1D* DeltaPhiTPlot_OneProton = new TH1D("DeltaPhiT_OneProtonPlot",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
 	TH1D* DeltaAlphaTPlot_OneProton = new TH1D("DeltaAlphaT_OneProtonPlot",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
@@ -438,9 +444,20 @@ void treeProducer_simulation::Loop() {
 
 		if (ProtonTagging == 1) {
 
+			Q2Plot_OneProton->Fill(Q2,Weight);
+			nuPlot_OneProton->Fill(nu,Weight);
+
 			DeltaPhiTPlot_OneProton->Fill(DeltaPhiT,Weight);
 			DeltaAlphaTPlot_OneProton->Fill(DeltaAlphaT,Weight);
 			MissMomentumPlot_OneProton->Fill(MissMomentumTMag,Weight);
+
+			if (qel) {
+
+				QEDeltaPhiTPlot_OneProton->Fill(DeltaPhiT,Weight);
+				QEDeltaAlphaTPlot_OneProton->Fill(DeltaAlphaT,Weight);
+				QEMissMomentumPlot_OneProton->Fill(MissMomentumTMag,Weight);
+
+			}
 
 			DeltaPhiTPlot_OneProton_BreakDown[Interaction]->Fill(DeltaPhiT,Weight);
 			DeltaAlphaTPlot_OneProton_BreakDown[Interaction]->Fill(DeltaAlphaT,Weight);

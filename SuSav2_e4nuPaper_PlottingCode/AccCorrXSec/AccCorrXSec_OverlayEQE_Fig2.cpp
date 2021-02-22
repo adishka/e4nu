@@ -240,6 +240,7 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 						if (
 							FSILabel[WhichFSIModel] == "SuSav2"
+//							FSILabel[WhichFSIModel] == "G2018"
 						) {
 
 							legGenie->AddEntry(Plots[0],"Data", "lep"); 

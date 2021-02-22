@@ -162,6 +162,7 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 
 						Plots[WhichFSIModel]->GetXaxis()->SetTitleOffset(1.05);
 						Plots[WhichFSIModel]->GetXaxis()->SetNdivisions(5);
+						Plots[WhichFSIModel]->GetXaxis()->SetTickLength(0.05);
 
 						// -------------------------------------------------------------------------------------
 
@@ -325,17 +326,30 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 						myPmissSlice->SetTextFont(FontStyle);
 						myPmissSlice->SetTextColor(kBlack);
 						myPmissSlice->SetTextSize(TextSize);
+
+						TLatex* label = new TLatex();
+						label->SetTextFont(FontStyle);
+						label->SetTextColor(kBlack);
+						label->SetTextSize(TextSize-0.01);
+
 						pad->cd();
+
 						if (OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_3") { 
 
 							myPmissSlice->SetTextSize(TextSize-0.03);
 							myPmissSlice->DrawLatexNDC(0.27,0.85,LabelOfPlots[WhichPlot]); 
+
+							label->SetTextSize(TextSize-0.03);
+							label->DrawLatexNDC(0.895,0.85,"(c)"); 
 
 						}
 						else { 
 						
 							myPmissSlice->SetTextSize(TextSize-0.01);
 							myPmissSlice->DrawLatexNDC(0.27,0.8,LabelOfPlots[WhichPlot]); 
+
+							if (OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_1") { label->DrawLatexNDC(0.895,0.85,"(a)"); }
+							if (OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_2") { label->DrawLatexNDC(0.895,0.85,"(b)"); }
 
 						}
 
@@ -363,15 +377,15 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 					} // End of the loop over the FSI Models 
 
 // -----------------------------------------------------------------------------------------------------------------------------------
-/*
+
 if (OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_1") {
 
 	// ---------------------------------------
 
-	double PadNDCXmin = 0.35,PadNDCXmax = 0.75, PadNDCYmin = 0.3,PadNDCYmax = 0.65;
+	double PadNDCXmin = 0.28,PadNDCXmax = 0.86, PadNDCYmin = 0.15,PadNDCYmax = 0.7;
 	double PadLeftMargin = 0.105, PadRightMargin = 0.05, PadBottomMargin = 0.1;
 
-	double Xmin = 1.5, Xmax = 2.25, Ymin = 0, Ymax = 0.19;
+	double Xmin = 0.9, Xmax = 2.1, Ymin = 0.001, Ymax = 0.09;
 
 	// ---------------------------------------
 
@@ -402,13 +416,17 @@ if (OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_1") {
 
 	auto frame = PlotCanvas->DrawFrame(Xmin,Ymin,Xmax,Ymax);
 
-	frame->GetXaxis()->SetNdivisions(6);
-	frame->GetXaxis()->SetLabelSize(0.1);
+	frame->GetXaxis()->SetNdivisions(4);
+//	frame->GetXaxis()->SetLabelSize(0.1);
+	frame->GetXaxis()->SetLabelSize(0.);
 	frame->GetXaxis()->SetLabelFont(FontStyle);
+	frame->GetXaxis()->SetTickSize(0.1);
 
-	frame->GetYaxis()->SetNdivisions(6);
-	frame->GetYaxis()->SetLabelSize(0.1);
+	frame->GetYaxis()->SetNdivisions(5);
+	frame->GetYaxis()->SetLabelSize(0.15);
 	frame->GetYaxis()->SetLabelFont(FontStyle);
+	frame->GetYaxis()->SetLabelOffset(-0.1);
+	frame->GetYaxis()->SetTickSize(-0.02);
 
 	DataPlotClone->GetYaxis()->SetNdivisions(4);
 	DataPlotClone->GetYaxis()->SetLabelOffset(0.1);
@@ -426,7 +444,7 @@ if (OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_1") {
 	gPad->RedrawAxis();
 
 }
-*/
+
 // -----------------------------------------------------------------------------------------------------------------------------------
 
 					// --------------------------------------------------------------------------------------								

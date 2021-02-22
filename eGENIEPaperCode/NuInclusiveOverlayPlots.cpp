@@ -41,7 +41,7 @@ void Reweight(TH1D* h, double SF = 1) {
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void OverlayPlots() {
+void NuInclusiveOverlayPlots() {
 
 //	TGaxis::SetMaxDigits(3);
 //	TGaxis::SetExponentOffset(-0.1, 1., "y");
@@ -71,17 +71,17 @@ void OverlayPlots() {
 
 	std::vector<TString> FSIModel;std::vector<TString> FSILabel; 
 
-	FSIModel.push_back("GTEST19_10b_00_000_CCinclMEC");FSILabel.push_back("#nu w/ FSI"); Colors.push_back(kBlue-7); Styles.push_back(kSolid); 
+	FSIModel.push_back("GTEST19_10b_00_000_CCinclMEC");FSILabel.push_back("#nu"); Colors.push_back(kBlue-7); Styles.push_back(kSolid); 
 	NEvents.push_back(3000000); GenieXSec.push_back(14.616779);
 
-	FSIModel.push_back("GTEST19_10b_00_000_NoFSI_CCinclMEC");FSILabel.push_back("#nu w/o FSI"); Colors.push_back(kBlue-7); Styles.push_back(kDashed); 
-	NEvents.push_back(1000000); GenieXSec.push_back(14.616779);
+//	FSIModel.push_back("GTEST19_10b_00_000_NoFSI_CCinclMEC");FSILabel.push_back("#nu w/o FSI"); Colors.push_back(kBlue-7); Styles.push_back(kDashed); 
+//	NEvents.push_back(1000000); GenieXSec.push_back(14.616779);
 
-	FSIModel.push_back("GTEST19_10b_00_000_EM+MEC");FSILabel.push_back("e w/ FSI (x3 #upoint 10^{-7})"); Colors.push_back(kOrange+1); Styles.push_back(kSolid); 
+	FSIModel.push_back("GTEST19_10b_00_000_EM+MEC");FSILabel.push_back("e (x2 #upoint 10^{-7})"); Colors.push_back(kOrange+1); Styles.push_back(kSolid); 
 	NEvents.push_back(19600000); GenieXSec.push_back(1.2896728e+09);
 
-	FSIModel.push_back("GTEST19_10b_00_000_NoFSI_EM+MEC");FSILabel.push_back("e w/o FSI (x3 #upoint 10^{-7})"); Colors.push_back(kOrange+1); Styles.push_back(kDashed); 
-	NEvents.push_back(1000000); GenieXSec.push_back(1.2896728e+09);
+//	FSIModel.push_back("GTEST19_10b_00_000_NoFSI_EM+MEC");FSILabel.push_back("e w/o FSI (x3e-7)"); Colors.push_back(kOrange+1); Styles.push_back(kDashed); 
+//	NEvents.push_back(1000000); GenieXSec.push_back(1.2896728e+09);
 	
 	//FSIModel.push_back("G18_10a_02_11a_CCinclMEC");FSILabel.push_back("#nu G2018");
 	//FSIModel.push_back("G18_10a_02_11a_EM+MEC");FSILabel.push_back("e G2018");
@@ -90,7 +90,7 @@ void OverlayPlots() {
 	
 	std::vector<TString> NameOfPlots;
 
-//	NameOfPlots.push_back("nu");
+	NameOfPlots.push_back("nuPlot_OneProton");
 //      NameOfPlots.push_back("Q2");
 
 //       NameOfPlots.push_back("ElectronCosTheta");
@@ -110,7 +110,7 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("DeltaAlphaT_VectorSum"); 
 //	NameOfPlots.push_back("DeltaPhiT_VectorSum");
 
-	NameOfPlots.push_back("MissMomentum_OneProton");                                                                                                                                            
+//	NameOfPlots.push_back("MissMomentum_OneProton");                                                                                                                                            
 //      NameOfPlots.push_back("DeltaAlphaT_OneProton");                                                                                                                                               
 //      NameOfPlots.push_back("DeltaPhiT_OneProton");
 
@@ -143,11 +143,11 @@ void OverlayPlots() {
 
 				PlotCanvas->SetBottomMargin(0.14);
 				PlotCanvas->SetLeftMargin(0.2);
-				PlotCanvas->SetRightMargin(0.02);
+				PlotCanvas->SetRightMargin(0.05);
 
 				Plots.clear();
 
-				TLegend* leg = new TLegend(0.5,0.6,0.85,0.85);
+				TLegend* leg = new TLegend(0.55,0.6,0.9,0.85);
 				leg->SetNColumns(1);
 				leg->SetMargin(0.15);
 
@@ -160,7 +160,7 @@ void OverlayPlots() {
 				  TString PathToFiles = "myFiles/";
 				  TFile* FileSample = TFile::Open(PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+".root");
 
-				  Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]+"Plot") ) );
+				  Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
 				  
 				  Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
 				  Plots[WhichFSIModel]->SetLineStyle(Styles[WhichFSIModel]);
@@ -180,16 +180,16 @@ void OverlayPlots() {
 				  Plots[WhichFSIModel]->GetYaxis()->SetTitleSize(TextSize);
 				  Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(Ndivisions);
 				  Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(1.2);
-				  Plots[WhichFSIModel]->GetYaxis()->SetTitle("#frac{d#sigma}{dP_{T}} #left[#frac{10^{-38}}{GeV/c ^{12}C}#right]");
+				  Plots[WhichFSIModel]->GetYaxis()->SetTitle("#frac{d#sigma}{d#omega} #left[#frac{10^{-38}}{GeV ^{12}C}#right]");
 				  Plots[WhichFSIModel]->GetYaxis()->CenterTitle();
 
 				  TLegendEntry* l1 = leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel], "l");
 				  l1->SetTextColor(Colors[WhichFSIModel]);
 
-				  Plots[WhichFSIModel]->Rebin();
+				  for (int i = 0; i < 1; i++) { Plots[WhichFSIModel]->Rebin(); }
 				
 				  double ExtraSF = 1.;
-				  if (string(FSIModel[WhichFSIModel]).find("EM+MEC") != std::string::npos) { ExtraSF = 3*1E-7; }
+				  if (string(FSIModel[WhichFSIModel]).find("EM+MEC") != std::string::npos) { ExtraSF = 2*1E-7; }
 				  double ScalingFactor = GenieXSec[WhichFSIModel] / NEvents[WhichFSIModel] * ExtraSF;
 
 				  Reweight(Plots[WhichFSIModel]);

@@ -147,9 +147,13 @@
 		{ "SuSav2_NoRadCorr_LFGM", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing_Offset", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Smearing", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc_Test", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_XSec", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_XSec", "SuSav2 NoRad" },
@@ -183,6 +187,9 @@
 		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc", "G2018 NoRad" },
 		{ "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc", "G2018 NoRad" },
 		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing_Offset", "G2018 NoRad" },
+		{ "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Smearing", "G2018 NoRad" },
 		{ "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset", "G2018 NoRad" },
 		{ "hA2018_Final_NoRadCorr_LFGM_XSec", "G2018 NoRad" },
 		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc_XSec", "G2018 NoRad" },
@@ -429,7 +436,7 @@
 		{ std::make_pair("12C", "2_261"), 34100000 }, // Q2 > 0.4
 		{ std::make_pair("12C", "4_461"), 37700000 }, // Q2 > 0.8
 		{ std::make_pair("56Fe", "2_261"), 34500000 }, // Q2 > 0.4
-		{ std::make_pair("56Fe", "4_461"), 41800000 } // Q2 > 0.8
+		{ std::make_pair("56Fe", "4_461"), 49900000 } // Q2 > 0.8
 
 /*		{ std::make_pair("4He", "2_261"), 81100000 }, // Q2 > 0.4*/
 /*		{ std::make_pair("4He", "4_461"), 92300000 }, // Q2 > 0.8*/
@@ -491,7 +498,7 @@
 		{ std::make_pair("12C", "2_261"), 1.96812e+08 }, // Q2 > 0.4
 		{ std::make_pair("12C", "4_461"), 8.20065e+07 }, // Q2 > 0.8
 		{ std::make_pair("56Fe", "2_261"),9.02272e+08  }, // Q2 > 0.4
-		{ std::make_pair("56Fe", "4_461"), 3.76765e+08 } // Q2 > 0.8
+		{ std::make_pair("56Fe", "4_461"), 3.8295048e+08 } // Q2 > 0.8
 	};
 
 	// QE Only G2018 GENIE spline xsec // 10^{-38} cm^2
@@ -566,7 +573,8 @@
 		{ std::make_pair("12C", "2_261"),  53200000 }, // Q2 > 0.4
 		{ std::make_pair("12C", "4_461"),  67900000 }, // Q2 > 0.8
 		{ std::make_pair("56Fe", "2_261"), 69600000 }, // Q2 > 0.4
-		{ std::make_pair("56Fe", "4_461"), 81100000 } // Q2 > 0.8
+//		{ std::make_pair("56Fe", "4_461"), 49749540 } // Q2 > 0.8 // Feb 18
+		{ std::make_pair("56Fe", "4_461"), 81100000 } // Q2 > 0.8 // Default
 //		{ std::make_pair("56Fe", "4_461"), 46500000 } // Q2 > 0.8
 
 	};

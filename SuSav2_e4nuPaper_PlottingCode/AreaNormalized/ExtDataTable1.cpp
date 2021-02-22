@@ -44,35 +44,34 @@ void ExtDataTable1() {
 	std::vector<TString> LabelOfPlots;  
 	std::vector<TString> OutputPlotNames;
 
-//	nucleus.push_back("4He");
+	nucleus.push_back("4He");
 //	nucleus.push_back("12C");
-	nucleus.push_back("56Fe");
+//	nucleus.push_back("56Fe");
 
 //	E.push_back("1_161"); DoubleE.push_back(1.161);
-//	E.push_back("2_261"); DoubleE.push_back(2.261);	
-	E.push_back("4_461"); DoubleE.push_back(4.461);
+	E.push_back("2_261"); DoubleE.push_back(2.261);	
+//	E.push_back("4_461"); DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
 
-//	FSIModel.push_back("Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
-	
-//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");	
-	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");	
+//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
 
-//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 //	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
 
 //	NameOfPlots.push_back("h1_Ecal"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h1_EQE"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
 
-	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-//	NameOfPlots.push_back("h1_Ecal_SuperFine"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-//	NameOfPlots.push_back("h1_EQE_SuperFine"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
 //	NameOfPlots.push_back("DeltaAlphaT_Int_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} #delta#alpha_{T} [GeV/c]"); OutputPlotNames.push_back("DeltaAlphaT_Int_0");
 //	NameOfPlots.push_back("DeltaPhiT_Int_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} #delta#phi_{T} [GeV/c]"); OutputPlotNames.push_back("DeltaPhiT_Int_0");
+//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} Feeddown"); OutputPlotNames.push_back("EcalReso");
+
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eQE0pi_slice_0");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_frac_feed3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} Feeddown");  OutputPlotNames.push_back("eQE0piReso_slice_0");
 
 	std::vector<TH1D*> Plots;
 
@@ -97,28 +96,26 @@ void ExtDataTable1() {
 
 		for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
-			double MinE = 1.1;
-			double MaxE = 1.22;
+			double MinE = 1.12;
+			double MaxE = 1.2;
 
-			if (DoubleE[WhichEnergy] == 2.261) { MinE = 2.19; MaxE = 2.34; }
-			if (DoubleE[WhichEnergy] == 4.461) { MinE = 4.35; MaxE = 4.6; }
+			if (DoubleE[WhichEnergy] == 2.261) { MinE = 2.19; MaxE = 2.31; }
+			if (DoubleE[WhichEnergy] == 4.461) { MinE = 4.35; MaxE = 4.55; }
 
 			// Loop over the nuclei
 
 			for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
 				cout << endl << "---------------------------------------------------------------" << endl;
-				cout << nucleus[WhichNucleus]+"_"+E[WhichEnergy] << "  Emin = " << MinE << "  Emax = " << MaxE << endl;
+				//cout << nucleus[WhichNucleus]+"_"+E[WhichEnergy] << "  Emin = " << MinE << "  Emax = " << MaxE << endl;
+				cout << nucleus[WhichNucleus]+"_"+E[WhichEnergy] << endl;
 
 				// Loop over the plots
 
-				double max = -99.;
-
 				for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
-					TCanvas* PlotCanvas = new TCanvas(nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut],
-									 nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut],
-									 205,34,1024,768);
+					TString PlotName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
+					TCanvas* PlotCanvas = new TCanvas(PlotName,PlotName,205,34,1024,768);
 
 					// ---------------------------------------------------------------------------------------
 
@@ -130,6 +127,10 @@ void ExtDataTable1() {
 					cout << "---------------------------------------------------------------" << endl << endl;
 
 					// Loop over the FSI Models
+
+					TF1* g[NFSIModels];
+
+					double max = -99.;
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
@@ -163,21 +164,46 @@ void ExtDataTable1() {
 
 						// ---------------------------------------------------------------------------------------------------------
 
-						double IntXSec = IntegratedXSec(Plots[WhichFSIModel]); 
-						//cout << endl << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": integrated xsec = " << IntXSec << endl;
+						double IntXSec = Plots[WhichFSIModel]->Integral("width"); 
+						if (NPlots > 1) { cout << endl << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": integrated xsec = " << IntXSec << endl; }
 
 						// ----------------------------------------------------------------------------
-
-						// Percentages with respect to the true beam energy
-
-						int MinBin = Plots[WhichFSIModel]->FindBin(MinE);
-						int MaxBin = Plots[WhichFSIModel]->FindBin(MaxE);
 
 						double ExtraHeight = 0.2;
 
 						double localmax = TMath::Max(max,Plots[WhichFSIModel]->GetMaximum());
 						if (localmax > max) { max = localmax; }
 						Plots[0]->GetYaxis()->SetRangeUser(0.,(1+ExtraHeight)*max);
+
+						// ---------------------------------------------------------------------------------------------------------
+
+						// Manually define range of integration
+
+						int MinBin = Plots[WhichFSIModel]->FindBin(MinE);
+						int MaxBin = Plots[WhichFSIModel]->FindBin(MaxE);
+
+						// Fit a Gaussian around the peak
+
+//						int MinBin = 0;
+//						int MaxBin = Plots[WhichFSIModel]->GetXaxis()->GetNbins();
+
+//						if (string(OutputPlotNames[WhichPlot]).find("RecoEnergy_slice") != std::string::npos 
+//						|| string(OutputPlotNames[WhichPlot]).find("h1_E") != std::string::npos) {
+
+//							g[WhichFSIModel] = new TF1("g_"+ToString(WhichFSIModel),"gaus",MinE,MaxE);
+//							Plots[WhichFSIModel]->Fit(g[WhichFSIModel],"R0Q","",MinE,MaxE); // 0: don't draw it , Q: quiet mode, don't print all this junk
+//							g[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
+
+//							// Percentages with respect to the true beam energy
+
+//							// Using +/- 2 sigma
+//							double mean = g[WhichFSIModel]->GetParameter(1);
+//							double sigma = g[WhichFSIModel]->GetParameter(2);
+
+//							MinBin = Plots[WhichFSIModel]->FindBin(mean-3*sigma);
+//							MaxBin = Plots[WhichFSIModel]->FindBin(mean+3*sigma);
+
+//						}
 
 						// ---------------------------------------------------------------------------------------------------------
 
@@ -188,7 +214,11 @@ void ExtDataTable1() {
 
 							// ------------------------------------------------------------------------------------------------------------
 
+							// Using hard coded enitegration limits
+//							double IntXSecRange = IntegratedXSec(Plots[WhichFSIModel],MinBin,MaxBin); 
+
 							double IntXSecRange = IntegratedXSec(Plots[WhichFSIModel],MinBin,MaxBin); 
+
 							//cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": integrated xsec within peak range = " << IntXSecRange << endl;
 
 							// ------------------------------------------------------------------------------------------------------------
@@ -197,7 +227,11 @@ void ExtDataTable1() {
 
 							int percentage = IntXSecRange / IntXSec * 100.;
 
-							cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": fraction within range = " << percentage << endl;
+							if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0" && NPlots == 1) { 
+		
+								cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": fraction within range = " << percentage << endl;
+
+							}
 
 							// ------------------------------------------------------------------------------------------------------------
 
@@ -215,14 +249,20 @@ void ExtDataTable1() {
 							|| string(OutputPlotNames[WhichPlot]).find("h1_E") != std::string::npos) {
 
 								double sum = Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
-								cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": sum within range = "<< round(sum,2) << endl << endl;
+
+								if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0" && NPlots == 1) { 
+
+									cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": sum within range = "<< round(sum,2) << endl << endl;
+
+								}
 
 							}
 
 						}
 						else { 
 
-							Plots[WhichFSIModel]->Draw("c hist same");
+//							Plots[WhichFSIModel]->Draw("c hist same");
+							Plots[WhichFSIModel]->Draw("hist same");
 							Plots[0]->Draw("e same"); 
 
 							leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel],"l"); 
@@ -231,12 +271,16 @@ void ExtDataTable1() {
 							|| string(OutputPlotNames[WhichPlot]).find("h1_E") != std::string::npos) {
 
 								double sum = Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
-								cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": sum within range = " << round(sum,2) << endl << endl;
+
+								if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0" && NPlots == 1) { 
+
+									cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": sum within range = " << round(sum,2) << endl << endl;
+
+								}
 
 							}
 
 						}
-
 
 						// ---------------------------------------------------------------------------------------------------------
 
@@ -244,6 +288,8 @@ void ExtDataTable1() {
 
 						if (string(OutputPlotNames[WhichPlot]).find("RecoEnergy_slice") != std::string::npos 
 						|| string(OutputPlotNames[WhichPlot]).find("h1_E") != std::string::npos) {
+
+							//g[WhichFSIModel]->Draw("same");
 
 							TLine* line = new TLine(DoubleE[WhichEnergy],0,DoubleE[WhichEnergy],(1+ExtraHeight)*max);
 							line->SetLineWidth(3);
@@ -260,19 +306,20 @@ void ExtDataTable1() {
 
 						}
 
-//	 					Plots[0]->GetYaxis()->SetRangeUser(0.,(1+ExtraHeight)*Plots[WhichFSIModel]->GetMaximum());
-//						Plots[0]->Draw("e same");
-
 					} // End of the loop over the FSI Models 
 
 					// -----------------------------------------------------------------------------------------------------------------------------------------
-
-//					delete PlotCanvas;
 
 					leg->SetBorderSize(0);
 					leg->SetTextFont(132);
 					leg->SetTextSize(0.07);
 					leg->Draw();
+
+					if (NameOfPlots[WhichPlot] != "epRecoEnergy_slice_0" || NPlots > 1) { 
+
+						//delete PlotCanvas; 
+
+					}
 
 					cout << "---------------------------------------------------------------" << endl << endl;
 

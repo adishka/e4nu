@@ -392,7 +392,7 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 		Xmin = 0.7; Xmax = 2.1; 
 		if (nucleus[WhichNucleus] == "4He") { Ymin = 0.0; Ymax = 0.8; }
-		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 1.2; }
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.9; }
 		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.0; Ymax = 0.9; }
 
 	}

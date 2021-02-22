@@ -20,59 +20,78 @@ using namespace std;
 #include "../myFunctions.cpp"
 #include "../AfroConstants.h"
 
-TH1D* AveragedFunc(TH1D* h, TString Energy) {
+TH1D* RMSAveragedFunc(TH1D* h, std::vector<TH1D*> hVec, TString Energy, TString Var) {
 
 	TH1D::SetDefaultSumw2();
 
 	double DoubleE = -99., reso = 0.;
-	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.07; }
+	if (Energy == "1_161") { DoubleE = 1.161; reso = 0.06; }
 	if (Energy == "2_261") { DoubleE = 2.261; reso = 0.08; }
 	if (Energy == "4_461") { DoubleE = 4.461; reso = 0.06; }
 
 	int NBins = h->GetXaxis()->GetNbins();
-	TString hName = h->GetName();
+//	int NPlots = hVec.size();
+
+//	TH1D* RMSClone = (TH1D*)(h->Clone("RMSClone"));
+
+//	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
+
+//		double sum = 0;
+
+//		for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot++) {
+
+//			sum += TMath::Power(hVec[WhichPlot]->GetBinContent(WhichBin) - h->GetBinContent(WhichBin),2.);		
+
+//		}
+
+//		double NewEntry = TMath::Sqrt( sum / (double)(NPlots) )  / TMath::Abs(h->GetBinContent(WhichBin)) * 100.;
+
+//		if (h->GetBinContent(WhichBin) > 0.) { RMSClone->SetBinContent(WhichBin,NewEntry); }
+
+//	}
 
 	// ---------------------------------------------------------------------------------------------------------
 
-	TH1D* Clone = (TH1D*)(h->Clone("Clone_"+hName));
+	TH1D* RMSClone = (TH1D*)(hVec[0]->Clone("RMSClone"));
+	RMSClone->Add(hVec[1],-1);
+	RMSClone->Divide(h);
+	RMSClone->Scale(1./TMath::Sqrt(12.));
 
-	double sum = 0; 
-	double sumErr = 0; 
-	int nbins = 0;
+	double sum = 0; int nbins = 0;
 
 	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
 
-		double BinCenter = Clone->GetBinCenter(WhichBin);
-		double BinContent = Clone->GetBinContent(WhichBin);
-		double BinError = Clone->GetBinError(WhichBin);
-//cout << endl;
+		double BinCenter = RMSClone->GetBinCenter(WhichBin);
+		double BinContent = TMath::Abs(RMSClone->GetBinContent(WhichBin)) * 100.;
+
+		RMSClone->SetBinContent(WhichBin,BinContent);
+
 		if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
 
-			sum += BinContent; 
-			sumErr += TMath::Power(BinError,2.);
-			nbins++;
-//cout << "BinContent = " << BinContent << endl;
+			sum += BinContent; nbins++;
+
 		}
 
 	}
 
-//	sumErr = TMath::Sqrt(sumErr) / double(nbins);
-	sumErr = 0;
 	sum = sum / double(nbins);
-//cout << "sum = " << sum << endl;
-//cout << "nbins = " << nbins << endl;
+
 	// ---------------------------------------------------------------------------------------------------------
 
+	// Foe Ecal only
 	// Use the average around the Ecal peak in the bins (1 +/- reso) Ebeam
 
-	for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
+	if (Var == "epRecoEnergy_slice_0") {
 
-		double BinCenter = Clone->GetBinCenter(WhichBin);
+		for (int WhichBin = 1; WhichBin <= NBins; WhichBin++) {
 
-		if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
+			double BinCenter = RMSClone->GetBinCenter(WhichBin);
 
-			Clone->SetBinContent(WhichBin,sum);
-			Clone->SetBinError(WhichBin,sumErr);
+			if (BinCenter > (1-reso) * DoubleE && BinCenter < (1+reso) * DoubleE ) {
+
+				RMSClone->SetBinContent(WhichBin,sum);
+
+			}
 
 		}
 
@@ -80,17 +99,18 @@ TH1D* AveragedFunc(TH1D* h, TString Energy) {
 
 	// ---------------------------------------------------------------------------------------------------------
 
-	return Clone;
+	return RMSClone;
 
 }
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void OverlayPlots() {
+void RMSAveragedUnc() {
 
 	// ------------------------------------------------------------------------
 
 	GlobalSettings();
+	TH1D::SetDefaultSumw2();
 
 	// ------------------------------------------------------------------------
 
@@ -106,12 +126,12 @@ void OverlayPlots() {
 	std::vector<int> Colors;
 
 //	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
-//	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
-	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
+	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
+//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV");
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");	
-	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
+	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");	
+//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
@@ -122,7 +142,6 @@ void OverlayPlots() {
 	FSIModel.push_back("hA2018_Final"); FSILabel.push_back("G2018");
 
 	TString Var = "epRecoEnergy_slice_0";
-//	TString Var = "h_Erec_subtruct_piplpimi_noprot_3pi";
 //	TString Var = "MissMomentum";
 //	TString Var = "DeltaAlphaT_Int_0";
 //	TString Var = "DeltaPhiT_Int_0";
@@ -135,17 +154,17 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("FidCorrection_eRecoEnergy_slice_0");
 //	NameOfPlots.push_back("AccCorrection_eRecoEnergy_slice_0");
 
-//	NameOfPlots.push_back("Reco_"+Var);
-	NameOfPlots.push_back("TrueWithFid_"+Var);
-	NameOfPlots.push_back("True_"+Var);
+//	NameOfPlots.push_back("Reco_epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("TrueWithFid_epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("True_epRecoEnergy_slice_0");
 
-//	NameOfPlots.push_back("AccCorrection_"+Var);
+//	NameOfPlots.push_back("AccCorrection_epRecoEnergy_slice_0");
+
 	NameOfPlots.push_back("InverseAccCorrection_"+Var);
 
 	// ------------------------------------------------------------------------
 
 	std::vector<TH1D*> Plots;
-	std::vector<TH1D*> TempPlots;
 
 	int NxBCuts = xBCut.size();
 	int NNuclei = nucleus.size();
@@ -171,16 +190,18 @@ void OverlayPlots() {
 
 				for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
-					TString PlotName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut];
-					TCanvas* PlotCanvas = new TCanvas(PlotName,PlotName,205,34,1024,768);
+					TCanvas* PlotCanvas = new TCanvas(nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut],
+									 nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]+"_"+xBCut[WhichxBCut],
+									 205,34,1024,768);
 				
 					PlotCanvas->SetLeftMargin(0.15);
 					PlotCanvas->SetBottomMargin(0.17);	
+					PlotCanvas->SetGridx();	
+					PlotCanvas->SetGridy();	
 
 					// ---------------------------------------------------------------------------------------
 
 					Plots.clear();
-					TempPlots.clear();
 
 					TLegend* leg = new TLegend(0.2,0.7,0.5,0.89);
 					leg->SetNColumns(1);
@@ -190,78 +211,69 @@ void OverlayPlots() {
 
 					// Loop over the FSI Models
 
-					TFile* FileSample[NFSIModels];
-
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
 						TString FileName = "myFiles/Efficiency_"+FSIModel[WhichFSIModel]+"_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+xBCut[WhichxBCut]+".root";
-						FileSample[WhichFSIModel] = TFile::Open(FileName,"update");
+						TFile* FileSample = TFile::Open(FileName);
 
-//TH1D* TempPlot = (TH1D*)FileSample->Get(FSIModel[WhichFSIModel]+"_"+NameOfPlots[WhichPlot]);
-//Plots.push_back( AveragedFunc(Plots[WhichFSIModel],E[WhichEnergy]) );	
+						Plots.push_back( (TH1D*)( FileSample->Get(FSIModel[WhichFSIModel]+"_"+NameOfPlots[WhichPlot]) ) );
 
-//						Plots.push_back( (TH1D*)( FileSample->Get(FSIModel[WhichFSIModel]+"_"+NameOfPlots[WhichPlot]) ) );
+//						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
 
-						TempPlots.push_back( (TH1D*)( FileSample[WhichFSIModel]->Get(FSIModel[WhichFSIModel]+"_"+NameOfPlots[WhichPlot]) ) );
-//						if (Var == "epRecoEnergy_slice_0") { Plots.push_back( AveragedFunc(TempPlots[WhichFSIModel],E[WhichEnergy]) ); }
-//						else { Plots.push_back( TempPlots[WhichFSIModel] ); }
-						Plots.push_back( TempPlots[WhichFSIModel] );
-//						Plots.push_back( TempPlots[WhichFSIModel] );	
+//						// ---------------------------------------------------------------------------------------------------
 
-						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
-						Plots[WhichFSIModel]->SetTitle("");
+//						TLegendEntry* l1 = leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel], "l");
+//						l1->SetTextColor(Colors[WhichFSIModel]);
 
-						// ---------------------------------------------------------------------------------------------------
+//						// ---------------------------------------------------------------------------------------------------
 
-						TLegendEntry* l1 = leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel], "");
-						l1->SetTextColor(Colors[WhichFSIModel]);
+//						// Max, min, title & # divisions
 
-						// ---------------------------------------------------------------------------------------------------
+//						double localmax = Plots[WhichFSIModel]->GetMaximum();
+//						if (localmax > max) { max = localmax; }
+//						double height = 1.1;
+//						Plots[0]->SetMaximum(height*max);
 
-						// Max, min, title & # divisions
+//		                                // --------------------------------------------------------------------------------------------------
 
-						double localmax = Plots[WhichFSIModel]->GetMaximum();
-						if (localmax > max) { max = localmax; }
-						double height = 1.1;
-						Plots[0]->GetYaxis()->SetRangeUser(0,height*max);
+////						Plots[WhichFSIModel]->Draw("C hist same");
+////						Plots[0]->Draw("C hist same");
 
-		                                // --------------------------------------------------------------------------------------------------
-
-//						Plots[WhichFSIModel]->Draw("C hist same");
-//						Plots[0]->Draw("C hist same");
-
-						Plots[WhichFSIModel]->GetXaxis()->SetNdivisions(8);
-						Plots[WhichFSIModel]->Draw("e same");
-						Plots[0]->Draw("e same");
+//						Plots[WhichFSIModel]->Draw("e  same");
+////						Plots[0]->Draw("e  same");
 
 		                                // --------------------------------------------------------------------------------------------------
 
 					} // End of the loop over the FSI Models 
 
-					if (NameOfPlots[WhichPlot] == "AccCorrection_"+Var || NameOfPlots[WhichPlot] == "InverseAccCorrection_"+Var) { 
+//					leg->SetBorderSize(0);
+//					leg->SetTextFont(FontStyle);
+//					leg->SetTextSize(TextSize);
+//					leg->Draw();
 
-						TH1D* average = (TH1D*)(Plots[0]->Clone());
-						average->Add(Plots[1]);
-						average->Scale(1./2.);
-						average->SetLineColor(kBlue);
+					TH1D* average = (TH1D*)(Plots[0]->Clone());
+					average->Add(Plots[1]);
+					average->Scale(0.5);
 
-						average->Draw("e same"); 
+					std::vector<TH1D*> VectorPlots;
 
-						TLegendEntry* l2 = leg->AddEntry(average,"Average", "");
-						l2->SetTextColor(kBlue);
+					for (int i = 0; i < NFSIModels; i++) {
 
-						for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel++) {
+						VectorPlots.push_back(Plots[i]);
 
-							FileSample[WhichFSIModel]->cd();
-							average->Write(FSIModel[WhichFSIModel]+"_Average"+NameOfPlots[WhichPlot]);
-
-						}
 					}
 
-					leg->SetBorderSize(0);
-					leg->SetTextFont(FontStyle);
-					leg->SetTextSize(TextSize);
-					leg->Draw();
+					TH1D* clone = RMSAveragedFunc(average,VectorPlots,E[WhichEnergy],Var);
+					//clone->Scale(100.);
+
+					clone->GetYaxis()->SetTitle("Fractional Contribution (%)");
+//					clone->GetYaxis()->SetRangeUser(-20,20);
+					clone->GetYaxis()->SetRangeUser(0,40);
+
+					clone->GetXaxis()->SetNdivisions(8);
+					clone->GetYaxis()->SetNdivisions(10);
+
+					clone->Draw("e same");
 
 					// -----------------------------------------------------------------------------------------------------------------------------------------
 

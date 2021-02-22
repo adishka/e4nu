@@ -185,7 +185,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 						//                 apply acceptance systematics using sector-by -sector uncertainties
 
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E,NameOfPlots[WhichPlot]);
-						if (Energy[WhichEnergy] == 4.461 ) { Plots[WhichFSIModel]->Scale(5.); }
+						if (Energy[WhichEnergy] == 4.461 ) { Plots[WhichFSIModel]->Scale(4.); }
 
 						// --------------------------------------------------------------------------------------				
 
@@ -219,7 +219,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 								//BreakDownPlots[j-1]->SetLineWidth(LineWidth);
 
 								UniversalE4vFunction(BreakDownPlots[j-1],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E,NameOfPlots[WhichPlot]);
-								if (Energy[WhichEnergy] == 4.461 ) { BreakDownPlots[j-1]->Scale(5.); }
+								if (Energy[WhichEnergy] == 4.461 ) { BreakDownPlots[j-1]->Scale(4.); }
 
 								//-----------------------------------------------------------------------------------------------
 
@@ -274,6 +274,21 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 							DataPlot->SetMarkerColor(kBlack);
 							DataPlot->GetYaxis()->SetRangeUser(0.,height*DataPlot->GetMaximum());	
 							DataPlot->Draw("e same");
+
+							// -------------------------------------------------------------------------------------------
+
+							TLatex* label = new TLatex();
+							label->SetTextFont(FontStyle);
+							label->SetTextColor(kBlack);
+							label->SetTextSize(1.5*TextSize);
+
+							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 1.161) { label->DrawLatexNDC(0.82,0.87,"(a)"); }
+							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 2.261) { label->DrawLatexNDC(0.78,0.87,"(b)"); }
+							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 4.461) { label->DrawLatexNDC(0.78,0.87,"(c)"); }
+							if (nucleus[WhichNucleus] == "56Fe" && Energy[WhichEnergy] == 2.261) { label->DrawLatexNDC(0.78,0.87,"(d)"); }
+							if (nucleus[WhichNucleus] == "56Fe" && Energy[WhichEnergy] == 4.461) { label->DrawLatexNDC(0.78,0.87,"(e)"); }
+
+							// -------------------------------------------------------------------------------------------
 
 						} else { 
 
@@ -350,7 +365,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 		TLatex latex4GeV;
 		latex4GeV.SetTextFont(FontStyle);
 		latex4GeV.SetTextSize(6*TextSize);
-		latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV (x5)");
+		latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV (x4)");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -428,7 +443,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 		// Extra pad for the lower X-axis to cover half zeros
 
 		PlotCanvas->cd();
-		TPad* padWhitePadTwo = new TPad("padWhitePadTwo","padWhitePadTwo",0.713,0.15,0.72,0.185,21); 
+		TPad* padWhitePadTwo = new TPad("padWhitePadTwo","padWhitePadTwo",0.703,0.15,0.72,0.185,21); 
 		padWhitePadTwo->SetFillColor(kWhite);
 		padWhitePadTwo->Draw();
 

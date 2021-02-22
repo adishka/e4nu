@@ -223,6 +223,28 @@ void AccCorr_OverlayReso_FigExtData8() {
 //							DataPlot->SetMarkerStyle(MarkerStyle[WhichEnergy]); 
 //							DataPlot->Draw("e same"); 
 
+							// -------------------------------------------------------------------------------------------
+
+							TLatex* label = new TLatex();
+							label->SetTextFont(FontStyle);
+							label->SetTextColor(kBlack);
+							label->SetTextSize(TextSize);
+
+							if (nucleus[WhichNucleus] == "12C" && E[WhichEnergy] == "1_161"
+							&& NameOfPlots[WhichPlot] =="h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed") { label->DrawLatexNDC(0.75,0.83,"(a)"); }
+
+
+							if (nucleus[WhichNucleus] == "12C" && E[WhichEnergy] == "1_161" 
+							&& NameOfPlots[WhichPlot] =="h_Erec_subtruct_piplpimi_noprot_frac_feed3pi") { label->DrawLatexNDC(0.75,0.83,"(b)"); }
+
+							if (nucleus[WhichNucleus] == "56Fe" && E[WhichEnergy] == "2_261"
+							&& NameOfPlots[WhichPlot] =="h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed") { label->DrawLatexNDC(0.75,0.83,"(c)"); }
+
+							if (nucleus[WhichNucleus] == "56Fe" && E[WhichEnergy] == "2_261"
+							&& NameOfPlots[WhichPlot] =="h_Erec_subtruct_piplpimi_noprot_frac_feed3pi") { label->DrawLatexNDC(0.75,0.83,"(d)"); }
+
+							// -------------------------------------------------------------------------------------------
+
 						}
 						else { 
 
@@ -270,7 +292,7 @@ void AccCorr_OverlayReso_FigExtData8() {
 				TLatex latex;
 				latex.SetTextFont(FontStyle);
 				latex.SetTextSize(TextSize);
-				latex.DrawLatexNDC(0.7,0.83,LabelsOfSamples[WhichNucleus]);
+				latex.DrawLatexNDC(0.6,0.83,LabelsOfSamples[WhichNucleus]);
 
 				TLatex latexDG;
 				latexDG.SetTextFont(FontStyle);

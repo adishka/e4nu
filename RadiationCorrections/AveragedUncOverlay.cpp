@@ -170,7 +170,7 @@ void AveragedUncOverlay() {
 //	NameOfPlots.push_back("AccCorrection_epRecoEnergy_slice_0");
 
 //	NameOfPlots.push_back("InverseAccCorrection_"+Var);
-	NameOfPlots.push_back("AverageInverseAccCorrection_"+Var);
+	NameOfPlots.push_back("RadiationCorrection_"+Var);
 
 	// ------------------------------------------------------------------------
 
@@ -270,7 +270,7 @@ void AveragedUncOverlay() {
 
 					// ---------------------------------------------------------------------------------------------------------------------
 
-					clone->GetYaxis()->SetTitle("Acceptance Correction");
+					clone->GetYaxis()->SetTitle("Radiation Correction");
 					clone->GetYaxis()->SetTitleFont(132);
 					clone->GetYaxis()->SetLabelFont(132);
 					clone->GetYaxis()->SetTitleSize(0.05);
@@ -280,7 +280,7 @@ void AveragedUncOverlay() {
 					clone->GetYaxis()->SetTickLength(0.01);
 					clone->GetYaxis()->SetNdivisions(10);
 
-					clone->GetYaxis()->SetRangeUser(-0.3,17);
+					clone->GetYaxis()->SetRangeUser(0.5,1.5);
 					//if (E[WhichEnergy] == "1_161") { clone->GetYaxis()->SetRangeUser(-0.3,4.2); }
 
 					// ---------------------------------------------------------------------------------------------------------------------
@@ -306,7 +306,7 @@ void AveragedUncOverlay() {
 
 			leg->Draw();
 
-			PlotCanvas->SaveAs("AccCorr_"+NameCanvas+".pdf");
+			PlotCanvas->SaveAs("RadCorr_"+NameCanvas+".pdf");
 
 		} // End of the loop over the energies
 

@@ -96,10 +96,10 @@ void THStackFluxes() {
 //	E.push_back("2261"); LabelE.push_back(" @ E = 2.261 GeV");
 //	E.push_back("4461"); LabelE.push_back(" @ E = 4.461 GeV");
 
-	E.push_back("uBFlux"); LabelE.push_back(" BNB Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} [10^{-39} #frac{cm^{2}}{GeV Ar}]");
-	E.push_back("DUNEFlux"); LabelE.push_back(" DUNE Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} [10^{-39} #frac{cm^{2}}{GeV Ar}]");
-	E.push_back("NovaFlux"); LabelE.push_back(" Nova Flux");  YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} [10^{-39} #frac{cm^{2}}{GeV CH2}]");
-	E.push_back("T2KFlux"); LabelE.push_back(" T2K Flux");  YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} [10^{-39} #frac{cm^{2}}{GeV CH}]");			
+	E.push_back("uBFlux"); LabelE.push_back(" BNB Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-39} #frac{cm^{2}}{GeV Ar}#right]");
+	E.push_back("DUNEFlux"); LabelE.push_back(" DUNE Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-39} #frac{cm^{2}}{GeV Ar}#right]");
+	E.push_back("NovaFlux"); LabelE.push_back(" NOvA Flux");  YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-39} #frac{cm^{2}}{GeV CH2}#right]");
+	E.push_back("T2KFlux"); LabelE.push_back(" T2K Flux");  YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-39} #frac{cm^{2}}{GeV CH}#right]");			
 
 	FSIModel.push_back("GTEST19_10b_00_000_CCinclMEC");FSILabel.push_back("SuSav2");
 	FSIModel.push_back("G18_10a_02_11a_CCinclMEC");FSILabel.push_back("G2018");
@@ -207,7 +207,7 @@ void THStackFluxes() {
 				
 				}				
 
-				// ---------------------------------------------------------------------------------------------------------------------------
+				// --------------------------------------------------------------------------------------------------
 
 				for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
@@ -272,7 +272,10 @@ void THStackFluxes() {
 						Plots[WhichInteraction]->GetXaxis()->SetLabelFont(FontStyle);
 						Plots[WhichInteraction]->GetXaxis()->SetTitleFont(FontStyle);
 						Plots[WhichInteraction]->GetXaxis()->SetLabelSize(TextSize);
-						Plots[WhichInteraction]->GetXaxis()->SetTitleSize(TextSize);
+
+						if (FSIModel[WhichFSIModel] == "G18_10a_02_11a_CCinclMEC") { Plots[WhichInteraction]->GetXaxis()->SetTitleSize(TextSize); }
+						else { Plots[WhichInteraction]->GetXaxis()->SetTitleSize(0); }
+
 						Plots[WhichInteraction]->GetXaxis()->SetTitleOffset(1.);
 						Plots[WhichInteraction]->GetXaxis()->SetTitle(XLabelOfPlots[WhichPlot]);
 						Plots[WhichInteraction]->GetXaxis()->SetNdivisions(6);
@@ -282,6 +285,7 @@ void THStackFluxes() {
 						Plots[WhichInteraction]->GetYaxis()->SetLabelFont(FontStyle);
 						Plots[WhichInteraction]->GetYaxis()->SetTitleFont(FontStyle);
 						Plots[WhichInteraction]->GetYaxis()->SetLabelSize(TextSize);
+						Plots[WhichInteraction]->GetYaxis()->SetLabelOffset(0.01);
 						Plots[WhichInteraction]->GetYaxis()->SetTitleSize(TextSize);
 						//Plots[WhichInteraction]->GetYaxis()->SetTitleOffset(1.35);
 						//Plots[WhichInteraction]->GetYaxis()->SetTitle(YLabelOfPlots[WhichEnergy]);
@@ -304,7 +308,7 @@ void THStackFluxes() {
 						}
 						if (E[WhichEnergy] == "T2KFlux") { 
 							Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.3,5.3); 
-							Plots[WhichInteraction]->GetYaxis()->SetRangeUser(0.,12); 
+							Plots[WhichInteraction]->GetYaxis()->SetRangeUser(0.,13); 
 						}
 						if (E[WhichEnergy] == "NovaFlux") { 
 							Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.6,4.9);
@@ -366,13 +370,13 @@ void THStackFluxes() {
 					latexYTitle.SetTextSize(6*TextSize);
 					latexYTitle.SetTextColor(kBlack);
 					latexYTitle.SetTextAngle(90);
-					latexYTitle.DrawLatexNDC(0.62,0.3,YLabelOfPlots[WhichEnergy]);
+					latexYTitle.DrawLatexNDC(0.66,0.2,YLabelOfPlots[WhichEnergy]);
 
 					//delete PlotCanvas;
 
 				} // End of the loop over the FSI Models 
 
-				PlotCanvas->SaveAs(E[WhichEnergy]+".pdf");
+				PlotCanvas->SaveAs("myPlots/"+E[WhichEnergy]+".pdf");
 
 				//delete PlotCanvas;
 

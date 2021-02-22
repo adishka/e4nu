@@ -116,13 +116,13 @@ void AccCorrXSec_OverlayDeltaAlphaT_FigExtData8() {
 
 	 			// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
 			
-				double MaxHeight = 2.6;
+				double MaxHeight = 3.1;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 12; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 14; }
 
 					// ---------------------------------------------------------------------------------------------------------------
 
@@ -277,6 +277,21 @@ void AccCorrXSec_OverlayDeltaAlphaT_FigExtData8() {
 							DataPlot->SetMarkerColor(kBlack);
 							DataPlot->GetYaxis()->SetRangeUser(0.,height*DataPlot->GetMaximum());	
 							DataPlot->Draw("e same");
+
+							// -------------------------------------------------------------------------------------------
+
+							TLatex* label = new TLatex();
+							label->SetTextFont(FontStyle);
+							label->SetTextColor(kBlack);
+							label->SetTextSize(1.5*TextSize);
+
+							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 1.161) { label->DrawLatexNDC(0.82,0.87,"(a)"); }
+							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 2.261) { label->DrawLatexNDC(0.78,0.87,"(b)"); }
+							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 4.461) { label->DrawLatexNDC(0.77,0.87,"(c)"); }
+							if (nucleus[WhichNucleus] == "56Fe" && Energy[WhichEnergy] == 2.261) { label->DrawLatexNDC(0.78,0.87,"(d)"); }
+							if (nucleus[WhichNucleus] == "56Fe" && Energy[WhichEnergy] == 4.461) { label->DrawLatexNDC(0.77,0.87,"(e)"); }
+
+							// -------------------------------------------------------------------------------------------
 
 						} else { 
 

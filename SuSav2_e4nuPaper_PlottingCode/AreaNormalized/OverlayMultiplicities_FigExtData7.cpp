@@ -83,16 +83,16 @@ void OverlayMultiplicities_FigExtData7() {
  
 	Colors.push_back(kBlack); Colors.push_back(kBlack); Colors.push_back(kBlue); Colors.push_back(kMagenta); Colors.push_back(kGreen); Colors.push_back(kOrange + 7);
 
-	Style.push_back(1); Style.push_back(1); Style.push_back(1); Style.push_back(1);
+	Style.push_back(1); Style.push_back(1); Style.push_back(7); Style.push_back(3);
 
 	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(kCyan); BreakDownColors.push_back(kGreen); BreakDownColors.push_back(kMagenta);
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
-//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");	
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");	
 
 	NameOfPlots.push_back("h1_Npi"); LabelOfPlots.push_back("Multiplicities"); OutputPlotNames.push_back("PionMultiPlot");
 	NameOfPlots.push_back("h1_Nprot"); LabelOfPlots.push_back("Multiplicities"); OutputPlotNames.push_back("Nproton");
@@ -134,8 +134,9 @@ void OverlayMultiplicities_FigExtData7() {
 
 				PlotCanvas->cd();
 
-//				TLegend* leg = new TLegend(0.2,0.35,0.5,0.55);
-//				leg->SetNColumns(2);
+				TLegend* leg = new TLegend(0.2,0.2,0.5,0.4);
+				leg->SetNColumns(1);
+				leg->SetMargin(0.1);
 
 				// Loop over the plots
 
@@ -261,8 +262,10 @@ void OverlayMultiplicities_FigExtData7() {
 								Plots[WhichFSIModel]->Draw("e same"); 
 							}
 							else { 
+
+								Plots[WhichFSIModel]->SetLineStyle(Style[WhichFSIModel]);
 								if (NameOfPlots[WhichPlot] == "h1_Nprot") { Plots[WhichFSIModel]->SetLineColor(kBlack); }
-								else { Plots[WhichFSIModel]->SetLineColor(kBlue); Plots[WhichFSIModel]->SetLineStyle(7); }
+								else { Plots[WhichFSIModel]->SetLineColor(kBlue); }
 								Plots[WhichFSIModel]->Draw("hist same"); 
 								gStyle->SetErrorX(0); 
 								Plots[0]->Draw("e same"); 
@@ -273,7 +276,8 @@ void OverlayMultiplicities_FigExtData7() {
 
 //						if ( FSILabel[WhichFSIModel] == "Data") { leg->AddEntry(Plots[WhichFSIModel]," /","p"); }
 //						else { 
-//							if (NameOfPlots[WhichPlot] == "h1_Nprot") { leg->AddEntry(Plots[WhichFSIModel]," protons","l"); }
+							if (NameOfPlots[WhichPlot] == "h1_Nprot" && FSILabel[WhichFSIModel] == "SuSav2") { leg->AddEntry(Plots[WhichFSIModel],"SuSav2","l"); }
+							if (NameOfPlots[WhichPlot] == "h1_Nprot" && FSILabel[WhichFSIModel] == "Genie") { leg->AddEntry(Plots[WhichFSIModel],"G2018","l"); }
 //							else { leg->AddEntry(Plots[WhichFSIModel]," #pi^{#pm}","l"); }
 //						}
 
@@ -286,10 +290,10 @@ void OverlayMultiplicities_FigExtData7() {
 
 				// -----------------------------------------------------------------------------------------------------------------------------------------
 
-//				leg->SetBorderSize(0);
-//				leg->SetTextFont(FontStyle);
-//				leg->SetTextSize(TextSize);
-//				leg->Draw();
+				leg->SetBorderSize(0);
+				leg->SetTextFont(FontStyle);
+				leg->SetTextSize(TextSize);
+				leg->Draw();
 
 				TLatex latexData;
 				latexData.SetTextFont(FontStyle);

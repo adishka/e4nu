@@ -41,8 +41,9 @@ void Reweight(TH1D* h, double SF = 1) {
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void OverlayPlots() {
+void FSI_Ratio_Study() {
 
+	TH1D::SetDefaultSumw2();
 //	TGaxis::SetMaxDigits(3);
 //	TGaxis::SetExponentOffset(-0.1, 1., "y");
 
@@ -69,15 +70,19 @@ void OverlayPlots() {
 	std::vector<int> Colors;
 	std::vector<int> Styles;
 
+	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	// Must be introduced in pairs (FSI / NoFSI)
+
 	std::vector<TString> FSIModel;std::vector<TString> FSILabel; 
 
-	FSIModel.push_back("GTEST19_10b_00_000_CCinclMEC");FSILabel.push_back("#nu w/ FSI"); Colors.push_back(kBlue-7); Styles.push_back(kSolid); 
+	FSIModel.push_back("GTEST19_10b_00_000_CCinclMEC");FSILabel.push_back("#nu w/  FSI"); Colors.push_back(kBlue-7); Styles.push_back(kSolid); 
 	NEvents.push_back(3000000); GenieXSec.push_back(14.616779);
 
 	FSIModel.push_back("GTEST19_10b_00_000_NoFSI_CCinclMEC");FSILabel.push_back("#nu w/o FSI"); Colors.push_back(kBlue-7); Styles.push_back(kDashed); 
 	NEvents.push_back(1000000); GenieXSec.push_back(14.616779);
 
-	FSIModel.push_back("GTEST19_10b_00_000_EM+MEC");FSILabel.push_back("e w/ FSI (x3 #upoint 10^{-7})"); Colors.push_back(kOrange+1); Styles.push_back(kSolid); 
+	FSIModel.push_back("GTEST19_10b_00_000_EM+MEC");FSILabel.push_back("e w/  FSI (x3 #upoint 10^{-7})"); Colors.push_back(kOrange+1); Styles.push_back(kSolid); 
 	NEvents.push_back(19600000); GenieXSec.push_back(1.2896728e+09);
 
 	FSIModel.push_back("GTEST19_10b_00_000_NoFSI_EM+MEC");FSILabel.push_back("e w/o FSI (x3 #upoint 10^{-7})"); Colors.push_back(kOrange+1); Styles.push_back(kDashed); 
@@ -87,6 +92,8 @@ void OverlayPlots() {
 	//FSIModel.push_back("G18_10a_02_11a_EM+MEC");FSILabel.push_back("e G2018");
 	//FSIModel.push_back("G18_10a_02_11a_NoFSI_CCinclMEC");FSILabel.push_back("#nu G2018 NoFSI");
 	//FSIModel.push_back("G18_10a_02_11a_NoFSI_EM+MEC");FSILabel.push_back("e G2018 NoFSI");
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	std::vector<TString> NameOfPlots;
 
@@ -138,7 +145,6 @@ void OverlayPlots() {
 			for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
 			        TString CanvasName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]; 
-
 				TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768) ;
 
 				PlotCanvas->SetBottomMargin(0.14);
@@ -157,54 +163,54 @@ void OverlayPlots() {
 				
 				for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-				  TString PathToFiles = "myFiles/";
-				  TFile* FileSample = TFile::Open(PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+".root");
+					TString PathToFiles = "myFiles/";
+					TFile* FileSample = TFile::Open(PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+".root");
 
-				  Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]+"Plot") ) );
-				  
-				  Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
-				  Plots[WhichFSIModel]->SetLineStyle(Styles[WhichFSIModel]);
-				  Plots[WhichFSIModel]->SetLineWidth(3);
+					Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]+"Plot") ) );
+					
+					Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
+					Plots[WhichFSIModel]->SetLineStyle(Styles[WhichFSIModel]);
+					Plots[WhichFSIModel]->SetLineWidth(3);
 
-				  Plots[WhichFSIModel]->GetXaxis()->SetLabelFont(FontStyle);
-				  Plots[WhichFSIModel]->GetXaxis()->SetTitleFont(FontStyle);
-				  Plots[WhichFSIModel]->GetXaxis()->SetLabelSize(TextSize);
-				  Plots[WhichFSIModel]->GetXaxis()->SetTitleSize(TextSize);
-				  Plots[WhichFSIModel]->GetXaxis()->SetTitleOffset(0.95);
-				  Plots[WhichFSIModel]->GetXaxis()->SetNdivisions(Ndivisions);
-				  Plots[WhichFSIModel]->GetXaxis()->CenterTitle();
+					Plots[WhichFSIModel]->GetXaxis()->SetLabelFont(FontStyle);
+					Plots[WhichFSIModel]->GetXaxis()->SetTitleFont(FontStyle);
+					Plots[WhichFSIModel]->GetXaxis()->SetLabelSize(TextSize);
+					Plots[WhichFSIModel]->GetXaxis()->SetTitleSize(TextSize);
+					Plots[WhichFSIModel]->GetXaxis()->SetTitleOffset(0.95);
+					Plots[WhichFSIModel]->GetXaxis()->SetNdivisions(Ndivisions);
+					Plots[WhichFSIModel]->GetXaxis()->CenterTitle();
 
-				  Plots[WhichFSIModel]->GetYaxis()->SetLabelFont(FontStyle);
-				  Plots[WhichFSIModel]->GetYaxis()->SetTitleFont(FontStyle);
-				  Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(TextSize);
-				  Plots[WhichFSIModel]->GetYaxis()->SetTitleSize(TextSize);
-				  Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(Ndivisions);
-				  Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(1.2);
-				  Plots[WhichFSIModel]->GetYaxis()->SetTitle("#frac{d#sigma}{dP_{T}} #left[#frac{10^{-38}}{GeV/c ^{12}C}#right]");
-				  Plots[WhichFSIModel]->GetYaxis()->CenterTitle();
+					Plots[WhichFSIModel]->GetYaxis()->SetLabelFont(FontStyle);
+					Plots[WhichFSIModel]->GetYaxis()->SetTitleFont(FontStyle);
+					Plots[WhichFSIModel]->GetYaxis()->SetLabelSize(TextSize);
+					Plots[WhichFSIModel]->GetYaxis()->SetTitleSize(TextSize);
+					Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(Ndivisions);
+					Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(1.2);
+					Plots[WhichFSIModel]->GetYaxis()->SetTitle("#frac{d#sigma}{dP_{T}} #left[#frac{10^{-38}}{GeV/c ^{12}C}#right]");
+					Plots[WhichFSIModel]->GetYaxis()->CenterTitle();
 
-				  TLegendEntry* l1 = leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel], "l");
-				  l1->SetTextColor(Colors[WhichFSIModel]);
+					TLegendEntry* l1 = leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel], "l");
+					l1->SetTextColor(Colors[WhichFSIModel]);
 
-				  Plots[WhichFSIModel]->Rebin();
+					Plots[WhichFSIModel]->Rebin();
 				
-				  double ExtraSF = 1.;
-				  if (string(FSIModel[WhichFSIModel]).find("EM+MEC") != std::string::npos) { ExtraSF = 3*1E-7; }
-				  double ScalingFactor = GenieXSec[WhichFSIModel] / NEvents[WhichFSIModel] * ExtraSF;
+					double ExtraSF = 1.;
+					if (string(FSIModel[WhichFSIModel]).find("EM+MEC") != std::string::npos) { ExtraSF = 3*1E-7; }
+					double ScalingFactor = GenieXSec[WhichFSIModel] / NEvents[WhichFSIModel] * ExtraSF;
 
-				  Reweight(Plots[WhichFSIModel]);
+					Reweight(Plots[WhichFSIModel]);
 
-				  Plots[WhichFSIModel]->Scale(ScalingFactor);
+					Plots[WhichFSIModel]->Scale(ScalingFactor);
 
-				  // -----------------------------------------------------------------------------------
+					// -----------------------------------------------------------------------------------
 
-				  double localmax = Plots[WhichFSIModel]->GetMaximum();
-				  if (localmax > max) { max = localmax; }
-				  Plots[0]->GetYaxis()->SetRangeUser(0,1.1*max);
+					double localmax = Plots[WhichFSIModel]->GetMaximum();
+					if (localmax > max) { max = localmax; }
+					Plots[0]->GetYaxis()->SetRangeUser(0,1.1*max);
 
-				  Plots[WhichFSIModel]->Draw("C hist same");
-				  Plots[0]->Draw("C hist same");
-				  
+					Plots[WhichFSIModel]->Draw("C hist same");
+					Plots[0]->Draw("C hist same");
+					
 				} // End of the loop over the FSI Models 
 				
 				leg->SetBorderSize(0);
@@ -218,6 +224,46 @@ void OverlayPlots() {
 				//latex->DrawLatexNDC(0.2,0.4,LabelsOfSamples[WhichNucleus]+LabelE[WhichEnergy]);
 
 				PlotCanvas->SaveAs("myPlots/"+nucleus[WhichNucleus]+"_" +E[WhichEnergy]+"_" +NameOfPlots[WhichPlot]+"_SuSav2.pdf"); 
+
+				// ----------------------------------------------------------------------------------------------------------------------
+
+				// Ratio plot to quantify FSI effect on e/v
+
+			        TString RatioCanvasName = "Ratio_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]; 
+				TCanvas* RatioPlotCanvas = new TCanvas(RatioCanvasName,RatioCanvasName,205,34,1024,768) ;
+
+				RatioPlotCanvas->SetBottomMargin(0.14);
+				RatioPlotCanvas->SetLeftMargin(0.13);
+				RatioPlotCanvas->SetRightMargin(0.02);
+
+				std::vector<TH1D*> Ratios; Ratios.clear();
+
+				for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
+
+					TH1D* TempPlot = (TH1D*)(Plots[WhichFSIModel]->Clone());
+					TempPlot->Divide(Plots[WhichFSIModel+1]);
+					Ratios.push_back(TempPlot);
+
+					WhichFSIModel ++;
+
+				}
+
+				int NRatios = Ratios.size();
+
+ 				for (int WhichRatio = 0; WhichRatio < NRatios; WhichRatio ++) {
+
+					Ratios[WhichRatio]->GetYaxis()->SetRangeUser(0.,3.);
+					Ratios[WhichRatio]->GetYaxis()->SetTitle("FSI / No FSI");
+					Ratios[WhichRatio]->GetYaxis()->SetTitleOffset(0.9);
+					Ratios[WhichRatio]->GetYaxis()->SetNdivisions(5);
+
+					Ratios[WhichRatio]->Draw("e hist same");
+
+				}
+
+				RatioPlotCanvas->SaveAs("myPlots/Ratio_"+nucleus[WhichNucleus]+"_" +E[WhichEnergy]+"_" +NameOfPlots[WhichPlot]+"_SuSav2.pdf"); 
+
+				// ----------------------------------------------------------------------------------------------------------------------
 
 			} // End of the loop over the plots
 

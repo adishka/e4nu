@@ -530,7 +530,12 @@ void GetCharge_FilterData::Loop()
 
 	//Output file definition
 
-	TString FileName = Form("/w/hallb-scifs17exp/clas/claseg2/apapadop/GetCharge_genie_filtered_data_e2a_ep_%s_%s_neutrino6_united4_radphot_test_100M.root",ftarget.c_str(),fbeam_en.c_str());
+	// e4v analysis files
+//	TString FileName = Form("/w/hallb-scifs17exp/clas/claseg2/apapadop/GetCharge_genie_filtered_data_e2a_ep_%s_%s_neutrino6_united4_radphot_test_100M.root",ftarget.c_str(),fbeam_en.c_str());
+
+	// e4v workshop files
+	TString FileName = Form("/w/hallb-scifs17exp/clas/claseg2/apapadop/e4vWorkshop_%s_%s.root",ftarget.c_str(),fbeam_en.c_str());
+
 	std::cout << "File " << FileName << " to be  created" << std::endl;
 
 	TFile *file_out = new TFile(FileName, "Recreate");
@@ -836,6 +841,17 @@ void GetCharge_FilterData::Loop()
 
 	std::cout << "Initial number of events = " << fChain->GetEntries() << std::endl;
 
+	// ---------------------------------------------------------------------------------------------------------------
+
+	// Justification for the parameter choice
+	// https://docs.google.com/presentation/d/1ghG08JfCYXRXh6O8hcXKrhJOFxkAs_9i5ZfoIkiiEHU/edit?usp=sharing
+
+	TF1 *myElectronFit = new TF1("myElectronFit","[0]+[1]/x",0.,5.);
+
+	if (en_beam[fbeam_en] == 1.161) { myElectronFit->SetParameters(17,7); }
+	if (en_beam[fbeam_en] == 2.261) { myElectronFit->SetParameters(16,10.5); }
+	if (en_beam[fbeam_en] == 4.461) { myElectronFit->SetParameters(13.5,15); }
+
 	// ------------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Starting the loop
@@ -1045,6 +1061,11 @@ void GetCharge_FilterData::Loop()
 
 		if( !EFiducialCut(fbeam_en, el_mom1) ) continue;//theta, phi cuts
 
+		// Extra layer of fiducials for electrons
+
+		double theta_min = myElectronFit->Eval(el_mom1.Mag());
+		if (el_theta < theta_min) { continue; }
+
 		ElectronFid_Counter++;
 
 		if( !CutUVW(e_ec_xyz1) ) continue; //u>60, v<360, w<400
@@ -1233,7 +1254,9 @@ void GetCharge_FilterData::Loop()
 					TLorentzVector V4_uncorrprot(p[ind_p]*cx[ind_p],p[ind_p]*cy[ind_p],p[ind_p]*cz[ind_p],TMath::Sqrt(p[ind_p]*p[ind_p]+ m_prot*m_prot ) );
 					p_vert_corr = vz[ind_p]+vz_corr(vz_corr_func,prot_phi_mod,prot_theta);
 
-					if(PFiducialCut(fbeam_en, V4_uncorrprot.Vect())) { //proton fiducial cuts
+					// Proton fiducial cuts & extra outline
+
+					if(PFiducialCut(fbeam_en, V4_uncorrprot.Vect()) && PFiducialCutExtra(fbeam_en,V4_uncorrprot.Vect()) ) {
 
 						//main vertex cut for protons
 						if( (el_vert_corr-p_vert_corr) > vertdiff_min[ftarget] && (el_vert_corr-p_vert_corr) < vertdiff_max[ftarget] ) {
@@ -1317,7 +1340,9 @@ void GetCharge_FilterData::Loop()
 					pimi_theta = TMath::ACos(cz[i])*TMath::RadToDeg();
 					pimi_vert_corr = pimi_vert+vz_corr(vz_corr_func, pimi_phi_mod,pimi_theta);
 
-					if(PimiFiducialCut(fbeam_en, V3_pimi, &pimi_phimin, &pimi_phimax)) {  //Pi minus fiducial cuts
+					// Pi minus fiducial cuts & extra outline 
+
+					if (PimiFiducialCut(fbeam_en, V3_pimi, &pimi_phimin, &pimi_phimax) && PimiFiducialCutExtra(fbeam_en, V3_pimi) ) {  
 
 						//main vertex cut for pi minus
 						if(fabs(el_vert_corr-pimi_vert_corr) < pimi_vertcut) {
@@ -1390,7 +1415,9 @@ void GetCharge_FilterData::Loop()
 					pipl_theta = TMath::ACos(cz[i])*TMath::RadToDeg();
 					pipl_vert_corr = pipl_vert + vz_corr(vz_corr_func,pipl_phi_mod,pipl_theta);
 
-					if (PiplFiducialCut(fbeam_en, V3_pipl, &pipl_phimin, &pipl_phimax)){ //Pi Plus fiducial cut
+					// Pi Plus fiducial cut & extra outline
+
+					if ( PiplFiducialCut(fbeam_en, V3_pipl, &pipl_phimin, &pipl_phimax) && PiplFiducialCutExtra(fbeam_en, V3_pipl)){
 
 						if (fabs(el_vert_corr-pipl_vert_corr) < pipl_vertcut) { //pi plus vertex cut
 							num_pipl = num_pipl + 1;
@@ -1463,7 +1490,9 @@ void GetCharge_FilterData::Loop()
 
 				if(neut_beta_corr > EC_photon_beta[ftarget]){   //photon identification
 
-					if(Phot_fid(V3_phot_angles)){ //photon fiducial function
+					// Photon fiducial function
+
+					if ( Phot_fid(V3_phot_angles) && Phot_fidExtra(V3_phot_angles) ) {
 
 						ec_num_n = ec_num_n + 1;
 						ec_index_n[ec_num_n - 1] = i;
@@ -1556,6 +1585,22 @@ void GetCharge_FilterData::Loop()
 
 	gStyle->SetOptFit(1);
 	gDirectory->Write("hist_Files", TObject::kOverwrite);
+
+	// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	// Store number of initial / selected events
+
+	TH1D* InitialNEvents = new TH1D("InitialNEvents","",1,0,1);
+	InitialNEvents->SetBinContent(1,fChain->GetEntries());
+	file_out->cd();
+	InitialNEvents->Write();
+
+	TH1D* SelectedNEvents = new TH1D("SelectedNEvents","",1,0,1);
+	SelectedNEvents->SetBinContent(1,fChain->GetEntries());
+	file_out->cd();
+	SelectedNEvents->Write();
+
+	// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 } //End Loop function
 

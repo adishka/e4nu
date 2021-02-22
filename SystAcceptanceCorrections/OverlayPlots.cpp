@@ -98,6 +98,7 @@ void OverlayPlots() {
 	std::vector<TString> nucleus; 
 	std::vector<TString> LabelsOfSamples; 
 	std::vector<TString> E;
+	std::vector<double> DoubleE;
 	std::vector<TString> LabelE; 
 	std::vector<TString> FSIModel;
 	std::vector<TString> FSILabel; 
@@ -109,9 +110,9 @@ void OverlayPlots() {
 //	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
 	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
 
-//	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV");
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV");	
-	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");
+//	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
+//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
+	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV"); DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
@@ -220,7 +221,15 @@ void OverlayPlots() {
 						double localmax = Plots[WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }
 						double height = 1.1;
-						Plots[0]->SetMaximum(height*max);
+						Plots[0]->GetYaxis()->SetRangeUser(0,height*max);
+
+						if (NameOfPlots[WhichPlot] != "AccCorrection_"+Var && NameOfPlots[WhichPlot] != "InverseAccCorrection_"+Var) { 
+
+							int BinMaxContent = Plots[WhichFSIModel]->FindBin(DoubleE[WhichEnergy]);
+							double BinMaxValue = 1.5 * Plots[WhichFSIModel]->GetBinContent(BinMaxContent);
+							Plots[0]->GetYaxis()->SetRangeUser(0,BinMaxValue);
+
+						}
 
 		                                // --------------------------------------------------------------------------------------------------
 
@@ -229,11 +238,14 @@ void OverlayPlots() {
 
 						Plots[WhichFSIModel]->GetXaxis()->SetNdivisions(8);
 						Plots[WhichFSIModel]->Draw("e same");
-//						Plots[0]->Draw("e  same");
+						Plots[0]->Draw("e same");
 
 		                                // --------------------------------------------------------------------------------------------------
 
 					} // End of the loop over the FSI Models 
+
+					PlotCanvas->Modified();
+					PlotCanvas->Update();
 
 					if (NameOfPlots[WhichPlot] == "AccCorrection_"+Var || NameOfPlots[WhichPlot] == "InverseAccCorrection_"+Var) { 
 
