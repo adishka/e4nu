@@ -22,23 +22,23 @@ using namespace std;
 
 void MapsProjections() {
 
-	TString Energy = "1_161";
-//	TString Energy = "2_261";
+//	TString Energy = "1_161";
+	TString Energy = "2_261";
 //	TString Energy = "4_461";
 
 
 //	TFile* file_acceptance = TFile::Open("/home/afroditi/Downloads/e2a_solid_2261_2250_e.root");
 
-//	TFile* file_acceptance = TFile::Open("e2a_maps_12C_E_"+Energy+".root");
+	TFile* file_acceptance = TFile::Open("e2a_maps_12C_E_"+Energy+".root");
 //	TFile* file_acceptance = TFile::Open("e2a_maps_12C_E_"+Energy+"_p.root");
 //	TFile* file_acceptance = TFile::Open("e2a_maps_12C_E_"+Energy+"_pip.root");
-	TFile* file_acceptance = TFile::Open("e2a_maps_12C_E_"+Energy+"_pim.root");
+//	TFile* file_acceptance = TFile::Open("e2a_maps_12C_E_"+Energy+"_pim.root");
 
 	TH3D* reco = (TH3D*)file_acceptance->Get("Accepted Particles");
 	TH3D* gen = (TH3D*)file_acceptance->Get("Generated Particles");	
 
-//	TString Option = "xy"; // cos theta vs P
-	TString Option = "yz"; // cos theta vs phi
+	TString Option = "xy"; // cos theta vs P
+//	TString Option = "yz"; // cos theta vs phi
 //	TString Option = "xz"; // P vs phi
 
 //	TCanvas* canReco = new TCanvas("canReco","canReco",205,34,1024,768);
@@ -63,7 +63,7 @@ void MapsProjections() {
 
 	TProfile2D* recoProf2DClone = (TProfile2D*)(recoProf2D->Clone());
 	recoProf2DClone->Divide(genProf2D);
-//	recoProf2DClone->GetZaxis()->SetRangeUser(0,1);
+	recoProf2DClone->GetZaxis()->SetRangeUser(0,1);
 	gStyle->SetOptStat(0);	
 
 	recoProf2DClone->Draw("coltz");

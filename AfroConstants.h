@@ -154,6 +154,7 @@
 		{ "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc_Test", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc_Test", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_XSec", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_XSec", "SuSav2 NoRad" },

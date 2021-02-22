@@ -1195,7 +1195,13 @@ void genie_analysis::Loop(Int_t choice) {
 
 			// acceptance_c takes phi in radians and here unmodified by 30 degree.
 
-			e_acc_ratio = acceptance_c(el_momentum, cos(el_theta), phi_ElectronOut, 11,file_acceptance,ApplyAccWeights);
+			double temp_el_momentum = el_momentum;
+
+			// hack, to be communicated to Axel
+			if ( en_beam[fbeam_en]>2. && en_beam[fbeam_en]<3. && temp_el_momentum > 1.5) { temp_el_momentum = 1.5; }
+
+			e_acc_ratio = acceptance_c(temp_el_momentum, cos(el_theta), phi_ElectronOut, 11,file_acceptance,ApplyAccWeights);
+//			e_acc_ratio = acceptance_c(el_momentum, cos(el_theta), phi_ElectronOut, 11,file_acceptance,ApplyAccWeights);
 			if ( fabs(e_acc_ratio) != e_acc_ratio ) { continue; }
 
 			// --------------------------------------------------------------------------------------------------

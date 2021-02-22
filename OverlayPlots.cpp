@@ -102,14 +102,14 @@ void OverlayPlots() {
 	std::vector<int> Colors;
 	std::vector<int> Style;
 
-//	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He"); JustNucleus.push_back("He");
+	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He"); JustNucleus.push_back("He");
 //	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
-	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
+//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
 //	nucleus.push_back("CH2"); LabelsOfSamples.push_back("CH2"); JustNucleus.push_back("CH2");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
-	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");  DoubleE.push_back(4.461);
+	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
+//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");  DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
@@ -142,16 +142,20 @@ void OverlayPlots() {
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc_Test"); FSILabel.push_back("SuSav2 Reco 0pi / No Maps");  DirNames.push_back("SuSav2_Reco_0pi");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("SuSav2 Reco 0pi");  DirNames.push_back("SuSav2_Reco_0pi");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("SuSav2 True 0pi");  DirNames.push_back("SuSav2_True_0pi");
+
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (e4v No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (e4v No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2 (Ext Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad adi_radcorr)");  DirNames.push_back("SuSav2_Truth_RadCorr");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad adi)");  DirNames.push_back("SuSav2_Truth_RadCorr");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad adi)");  DirNames.push_back("SuSav2_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad adi)");  DirNames.push_back("SuSav2_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad adi)");  DirNames.push_back("SuSav2_Truth_RadCorr");
 
-	FSIModel.push_back("SuSav2_MasterRad_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
-	FSIModel.push_back("SuSav2_MasterNoRad_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (No Rad adi_radcorr)");  DirNames.push_back("hA2018_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_MasterRad_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_MasterNoRad_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (No Rad adi_radcorr)");  DirNames.push_back("hA2018_Truth_RadCorr");
 
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("G2018 (No Rad master)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("G2018_MasterNoRad"); FSILabel.push_back("G2018 (No Rad master+adi_radcorr)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
@@ -223,7 +227,7 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("h1_xbjkCal_weight"); LabelOfPlots.push_back("Reconstructed x_{B}"); OutputPlotNames.push_back("xBCal");
 //	NameOfPlots.push_back("h1_nuCal_weight"); LabelOfPlots.push_back("Reconstructed Energy Transfer [GeV]"); OutputPlotNames.push_back("nuCal");
 //	NameOfPlots.push_back("h1_WvarCal_weight"); LabelOfPlots.push_back("Reconstructed W [GeV / c^{2})]"); OutputPlotNames.push_back("WCal");
-//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
+	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h1_EQE_FullyInclusive"); LabelOfPlots.push_back("(e,e') E^{QE} [GeV]");  OutputPlotNames.push_back("FullyInclusiveeRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]");  OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_E_rec"); LabelOfPlots.push_back("(e,e') E^{QE} [GeV]");  OutputPlotNames.push_back("FullyInclusiveeRecoEnergy_slice_0");

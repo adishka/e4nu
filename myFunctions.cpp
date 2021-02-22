@@ -756,13 +756,13 @@ void ApplyRange(TH1D* h, TString Energy, TString PlotVar) {
 		) {
 
 		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(-0.75,0.21); }
-		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(-0.69,0.0615); }
+		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(-0.69,0.21); }
 		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(-0.75,0.21); }
 
 	} else if (string(PlotVar).find("EQE") != std::string::npos || string(PlotVar).find("eReco") != std::string::npos || string(PlotVar).find("Erec") != std::string::npos) {
 
 		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(0.47,1.4); }
-		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.7,2.4); }
+		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(0.7,2.6); }
 		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(1.9,5.2); }
 
 	} else if (string(PlotVar).find("Etot") != std::string::npos || string(PlotVar).find("Cal") != std::string::npos || string(PlotVar).find("cal") != std::string::npos || string(PlotVar).find("epReco") != std::string::npos || string(PlotVar).find("E_tot") != std::string::npos || string(PlotVar).find("h1_Ecal_SuperFine") != std::string::npos) {
