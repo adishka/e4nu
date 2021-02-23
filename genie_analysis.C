@@ -133,7 +133,7 @@ void genie_analysis::Loop(Int_t choice) {
 	// ---------------------------------------------------------------------------------------------------------------
 
 	//Choice = 0 is for analysis of CLAS data while choice = 1 is for the analysis of GENIE Simulation
-	if (choice != 2 && choice != 1 && choice != 0) {
+	if (choice != 4 && choice != 3 && choice != 2 && choice != 1 && choice != 0) {
 		std::cout << "This parameter value is not implemented in genie_analysis::Loop(). It should be either 0 or 1. The given value is " << choice << std::endl;
 		std::exit(0);
 	}
@@ -220,7 +220,7 @@ void genie_analysis::Loop(Int_t choice) {
 	Ecal_offset["C12"]  = 0.005;
 	Ecal_offset["56Fe"] = 0.011;
 
-//	if (choice == 2) {
+//	if (choice == 2 || choice == 4) {
 
 //		if (ftarget == "3He") { Ecal_offset["3He"] += 0.01; }
 //		if (ftarget == "4He") { Ecal_offset["4He"] += 0.01; }
@@ -316,7 +316,8 @@ void genie_analysis::Loop(Int_t choice) {
 	if (ftarget.c_str() == "3He") { Target = "3He"; }
 	if (ftarget.c_str() == "4He") { Target = "4He"; }
 
-	if (choice == 1 || choice == 2) { // Only need acceptance maps for GENIE simulation data
+	if ( choice > 0 ) { // Only need acceptance maps for GENIE simulation
+
 		file_acceptance = TFile::Open(WhichMap+"/"+WhichMap+"_"+Target+"_E_"+E_acc_file+".root");
 		file_acceptance_p = TFile::Open(WhichMap+"/"+WhichMap+"_"+Target+"_E_"+E_acc_file+"_p.root");
 		file_acceptance_pip = TFile::Open(WhichMap+"/"+WhichMap+"_"+Target+"_E_"+E_acc_file+"_pip.root");
@@ -385,6 +386,8 @@ void genie_analysis::Loop(Int_t choice) {
 	if (choice == 0) { FileName = Form("/w/hallb-scifs17exp/clas/claseg2/apapadop/data_e2a_ep_%s_%s_neutrino6_united4_radphot_test.root",ftarget.c_str(),fbeam_en.c_str()); }
 	if (choice == 1){ FileName = Form("genie_e2a_ep_%s_%s_neutrino6_united4_radphot_test_SuSav2.root",ftarget.c_str(),fbeam_en.c_str()); }
 	if (choice == 2) { FileName = Form("genie_e2a_ep_%s_%s_neutrino6_united4_radphot_test_G18_10a_02_11a.root",ftarget.c_str(),fbeam_en.c_str()); }
+	if (choice == 3) { FileName = Form("genie_e2a_ep_%s_%s_neutrino6_united4_radphot_test_SuSav2_Rad.root",ftarget.c_str(),fbeam_en.c_str()); }
+	if (choice == 4) { FileName = Form("genie_e2a_ep_%s_%s_neutrino6_united4_radphot_test_G18_10a_02_11a_Rad.root",ftarget.c_str(),fbeam_en.c_str()); }
 
 	file_out = new TFile(FileName, "Recreate");
 
@@ -1509,7 +1512,7 @@ void genie_analysis::Loop(Int_t choice) {
 					if ( fabs(ProtonWeight) != ProtonWeight ) { continue; } 
 
 				}
-				else { //CLAS data does not need Fiducial Cut again
+				else { // CLAS data does not need Fiducial Cut again
 
 					num_p = num_p + 1;
 					index_p[num_p - 1] = i;
@@ -1854,6 +1857,7 @@ void genie_analysis::Loop(Int_t choice) {
 		// For GENIE samples, identify the interaction type
 
 		int Interaction = -1;
+
 		if (choice > 0) {
 
 			if (qel) { Interaction = 1; }

@@ -16,8 +16,13 @@ GENIEPath=/genie/app/users/apapadop/e4nu
 #GENIELocalExtension=hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing
 
 GENIEOnlineExtension=SuSav2
-#GENIELocalExtension=SuSav2_NoRadCorr_LFGM
-GENIELocalExtension=SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Smearing
+GENIELocalExtension=SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc
+
+#GENIEOnlineExtension=SuSav2_Rad
+#GENIELocalExtension=SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger
+
+#GENIEOnlineExtension=G18_10a_02_11a_Rad
+#GENIELocalExtension=hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger
 
 ##### Genie Samples
 
