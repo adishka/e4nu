@@ -23,6 +23,7 @@ TString fNucleus;
 TString fEnergy;
 TString fTune;
 TString fInteraction;
+TString fQ2_Thres;
 
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
@@ -218,7 +219,7 @@ public :
    TBranch        *b_sumKEf;   //!
    TBranch        *b_calresp0;   //!
 
-   treeProducer_simulation(TString Nucleus, TString Energy, TString Tune, TString Interaction,TTree *tree=0);
+   treeProducer_simulation(TString Nucleus, TString Energy, TString Tune, TString Interaction, TString Q2_Thres,TTree *tree=0);
    virtual ~treeProducer_simulation();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -233,18 +234,19 @@ public :
 #endif
 
 #ifdef treeProducer_simulation_cxx
-treeProducer_simulation::treeProducer_simulation(TString Nucleus, TString Energy, TString Tune, TString Interaction,TTree *tree) : fChain(0) 
+treeProducer_simulation::treeProducer_simulation(TString Nucleus, TString Energy, TString Tune, TString Interaction, TString Q2_Thres,TTree *tree) : fChain(0) 
 {
 
   fNucleus = Nucleus;
   fEnergy = Energy;
   fTune = Tune;
   fInteraction = Interaction;
+  fQ2_Thres = Q2_Thres;
 
   TString TuneLabel = "SuSav2";
   if (fTune == "G18_10a_02_11a") { TuneLabel = "G2018"; }
   if (fTune == "G18_02a_00_000") { TuneLabel = "G18_02a"; }  
-  if (fTune == "G00_00a_00_000") { TuneLabel = "G2000"; }
+  if (fTune == "G00_00a_00_000") { TuneLabel = "G00_00a"; }
 
   TString particle = "Neutrinos";
   if (fInteraction == "EM+MEC") { particle = "Electrons"; }
@@ -254,7 +256,7 @@ treeProducer_simulation::treeProducer_simulation(TString Nucleus, TString Energy
    if (tree == 0) {
 
      TString PathPersistent = "/pnfs/genie/persistent/users/apapadop/eGENIE/ElectronNeutrinoComparisons/"; 
-     TString FileIn = PathPersistent + TuneLabel + "/" + particle + "/" + fNucleus + "_" + fEnergy + "GeV/" + fNucleus + "_" + fEnergy + "GeV_" + fInteraction + "_" + fTune + "_Q2_0_1.root";
+     TString FileIn = PathPersistent + TuneLabel + "/" + particle + "/" + fNucleus + "_" + fEnergy + "GeV/" + fNucleus + "_" + fEnergy + "GeV_" + fInteraction + "_" + fTune + "_"+fQ2_Thres+".root";
 
      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(FileIn);
 	if (!f || !f->IsOpen()) f = new TFile(FileIn);

@@ -46,7 +46,7 @@ void MapsProjections() {
 	TProfile2D* recoProf2D = reco->Project3DProfile(Option);
 //	gStyle->SetOptStat(0);	
 
-//	recoProf2D->Draw("coltz");
+	recoProf2D->Draw("coltz");
 
 	// ------------------------------------------------------------------------
 
@@ -55,10 +55,10 @@ void MapsProjections() {
 	TProfile2D* genProf2D = gen->Project3DProfile(Option);
 //	gStyle->SetOptStat(0);	
 
-//	genProf2D->Draw("coltz");
+	genProf2D->Draw("coltz");
 
 	// ------------------------------------------------------------------------
-
+/*
 	TCanvas* canRatio = new TCanvas("canRatio","canRatio",205,34,1024,768);
 
 	TProfile2D* recoProf2DClone = (TProfile2D*)(recoProf2D->Clone());
@@ -67,6 +67,6 @@ void MapsProjections() {
 	gStyle->SetOptStat(0);	
 
 	recoProf2DClone->Draw("coltz");
-
+*/
 
 } // End of the program

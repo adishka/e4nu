@@ -43,7 +43,7 @@ void treeProducer_simulation::Loop() {
 
 	// -------------------------------------------------------------------------------
 
-	TString FileName = "myFiles/"+fNucleus+"_"+fEnergy+"_"+fTune+"_"+fInteraction+".root";
+	TString FileName = "myFiles/"+fNucleus+"_"+fEnergy+"_"+fTune+"_"+fInteraction+"_"+fQ2_Thres+".root";
 	
 	TFile* file = new TFile(FileName,"recreate");
 

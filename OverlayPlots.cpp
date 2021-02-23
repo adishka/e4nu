@@ -102,13 +102,13 @@ void OverlayPlots() {
 	std::vector<int> Colors;
 	std::vector<int> Style;
 
-	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He"); JustNucleus.push_back("He");
-//	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
+//	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He"); JustNucleus.push_back("He");
+	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
 //	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
 //	nucleus.push_back("CH2"); LabelsOfSamples.push_back("CH2"); JustNucleus.push_back("CH2");
 
-//	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
-	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
+	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
+//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
 //	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");  DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
@@ -142,7 +142,7 @@ void OverlayPlots() {
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc_Test"); FSILabel.push_back("SuSav2 Reco 0pi / No Maps");  DirNames.push_back("SuSav2_Reco_0pi");
+//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc_Test"); FSILabel.push_back("SuSav2 Reco 0pi / No Maps");  DirNames.push_back("SuSav2_Reco_0pi");
 	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("SuSav2 Reco 0pi");  DirNames.push_back("SuSav2_Reco_0pi");
 	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("SuSav2 True 0pi");  DirNames.push_back("SuSav2_True_0pi");
 
