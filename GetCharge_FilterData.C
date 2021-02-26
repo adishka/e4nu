@@ -540,6 +540,8 @@ void GetCharge_FilterData::Loop()
 
 	TFile *file_out = new TFile(FileName, "Recreate");
 
+	std::cout << std::endl << "Initial number of events = " << fChain->GetEntries() << std::endl << std::endl;
+
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	// apapadop

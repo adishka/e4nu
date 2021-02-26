@@ -2001,7 +2001,7 @@ void genie_analysis::Loop(Int_t choice) {
 					h2_Electron_Theta_Phi_InECalSlices[ECalBin]->Fill(el_phi_mod,V3_el.Theta()*180./TMath::Pi(),-P_N_2p[f]*histoweight);
 					h2_Proton_Theta_Phi_InECalSlices[ECalBin]->Fill(ProtonPhi_Deg,ProtonTheta_Deg,-P_N_2p[f]*histoweight);
 
-					h1_Ecal_Reso->Fill((E_tot_2p[f]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],P_N_2p[f]*histoweight);
+					h1_Ecal_Reso->Fill((E_tot_2p[f]-en_beam_Ecal[fbeam_en])/en_beam_Ecal[fbeam_en],-P_N_2p[f]*histoweight);
 					h2_Ecal_Etrue->Fill(E_tot_2p[f],Ev,-P_N_2p[f]*histoweight);
 					h2_Etrue_Ecal->Fill(Ev,E_tot_2p[f],-P_N_2p[f]*histoweight);
 					h2_EqeEcalratio_Eqe->Fill(E_rec,E_rec/E_tot_2p[f],-P_N_2p[f]*histoweight);

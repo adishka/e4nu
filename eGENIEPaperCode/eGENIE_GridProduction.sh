@@ -37,9 +37,12 @@ export GenieRelease=v3_00_06_WithSuSav2
 
 ./submit_genie_em_SuSav2_12C_1_161_Q2_0_1_NoRad_eGENIE.sh 100 apapadop_SuSav2_12C_1_161_eGENIE_NoFSI /pnfs/genie/persistent/users/apapadop/Grid/args_em_SuSav2_12C_1_161_Q2_0_1_NoRad.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_1/${GenieRelease}/carbon12_spline_EMPlusMEC_GTEST19_10b_00_000_Q2_0_1.xml /pnfs/genie/scratch/users/apapadop/eGENIE_grid/12C_1_161GeV_NoFSI/SuSav2/ origin/master_Q2_0_1_NoFSI
 
+
 ###################################################################################################################################################################
 
+
 # Electron 12C @ 1.1 GeV with Q2 > 0.1 w/ FSI
+
 
 ./submit_genie_em_G00_00a_12C_1_161_Q2_0_1_NoRad_eGENIE.sh 100 apapadop_G00_00a_12C_1_161_eGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_em_G00_00a_12C_1_161_Q2_0_1_NoRad.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_1/${GenieRelease}/carbon12_spline_EMPlusMEC_G00_00a_00_000_Q2_0_1.xml /pnfs/genie/scratch/users/apapadop/eGENIE_grid/12C_1_161GeV/G00_00a/ origin/master_Q2_0_1
 
@@ -49,9 +52,42 @@ export GenieRelease=v3_00_06_WithSuSav2
 
 ./submit_genie_em_SuSav2_12C_1_161_Q2_0_1_NoRad_eGENIE.sh 100 apapadop_SuSav2_12C_1_161_eGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_em_SuSav2_12C_1_161_Q2_0_1_NoRad.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_1/${GenieRelease}/carbon12_spline_EMPlusMEC_GTEST19_10b_00_000_Q2_0_1.xml /pnfs/genie/scratch/users/apapadop/eGENIE_grid/12C_1_161GeV/SuSav2/ origin/master_Q2_0_1
 
+
+###################################################################################################################################################################
 ###################################################################################################################################################################
 
-# Electron & Neutrino fluxes using DUNE/BNB/T2K/NOvA
+
+# Neutrino fluxes using DUNE/BNB/T2K/NOvA fluxes
+
+	# NOvA
+
+
+	# T2K
+
+
+	# BNB
+
+. ../submit_genie_cc_G00_00a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G00_00a_40Ar_BNBFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G00_00a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/v3_0_6_WithSuSav2/argon40_spline_CCinclMEC_G00_00a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_BNBFlux/G00_00a/ origin/master
+
+. ../submit_genie_cc_G18_02a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_02a_40Ar_BNBFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_02a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/v3_2/carbon12_spline_CCinclMEC_G18_02a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_BNBFlux/G18_02a/ origin/master
+
+. ../submit_genie_cc_G18_10a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_40Ar_BNBFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_10a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/v3_2/carbon12_spline_CCinclMEC_G18_10a_02_11a.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_BNBFlux/G2018/ origin/master
+
+. ../submit_genie_cc_GTEST19_10b_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_40Ar_BNBFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_GTEST19_10b_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/v3_2/carbon12_spline_CCinclMEC_GTEST19_10b_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_BNBFlux/SuSav2/ origin/master
+
+	# DUNE
+
+# Q2 > 0.02
+
+./submit_genie_cc_G00_00a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G00_00a_40Ar_BNBFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G00_00a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/v3_0_6_WithSuSav2/argon40_spline_CCinclMEC_G00_00a_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/40Ar_BNBFlux/G00_00a/ origin/master_Q2_0_02
+
+
+
+###################################################################################################################################################################
+###################################################################################################################################################################
+
+
+# Electron fluxes using DUNE/BNB/T2K/NOvA fluxes
 
 	# NOvA
 
@@ -94,9 +130,11 @@ export GenieRelease=v3_00_06_WithSuSav2
 
 . ../submit_genie_em_G2018_40Ar_DUNEFlux_Q2_0_02_NoRad_eGENIE.sh 50 apapadop_G2018_40Ar_DUNEFlux_NoRad /pnfs/genie/persistent/users/apapadop/Grid/args_em_G2018_40Ar_DUNEFlux_Q2_0_02_NoRad_eGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/argon40_spline_EMPlusMEC_G18_10a_02_11a.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC-dune-ND-file.root numu_flux /pnfs/genie/scratch/users/apapadop/eGENIE_grid/40Ar_DUNEFlux/G2018/ origin/master
 
+
+###################################################################################################################################################################
 ###################################################################################################################################################################
 
-# SuSav2
+# SuSav2 # Fixed energy and angle
 
 . ../GridJobs/eGENIE/submit_genie_em_SuSav2_12C_0_24_Q2_0_02_NoRad_eGENIE.sh 300 apapadop_SuSav2_12C_0_24_NoRad /pnfs/genie/persistent/users/apapadop/Grid/args_em_SuSav2_12C_0_24_Q2_0_02_NoRad_eGENIE.txt  /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/carbon12_spline_EMPlusMEC_GTEST19_10b_00_000.xml /pnfs/genie/scratch/users/apapadop/eGENIE_grid/12C_0_24GeV/SuSav2/ origin/master
 
@@ -129,7 +167,7 @@ export GenieRelease=v3_00_06_WithSuSav2
 
 
 
-# G2018
+# G2018 # Fixed energy and angle
 
 . ../../GridJobs/eGENIE/submit_genie_em_G2018_12C_0_24_Q2_0_02_NoRad_eGENIE.sh 300 apapadop_G2018_12C_0_24_NoRad /pnfs/genie/persistent/users/apapadop/Grid/args_em_G2018_12C_0_24_Q2_0_02_NoRad_eGENIE.txt  /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/carbon12_spline_EMPlusMEC_G18_10a_02_11a.xml /pnfs/genie/scratch/users/apapadop/eGENIE_grid/12C_0_24GeV/G2018/ origin/master
 

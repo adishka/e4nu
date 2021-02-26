@@ -126,7 +126,7 @@ void QE_Q0_Q3_Electrons() {
 
 					} else { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.15); }
 
-					TString PathToFiles = "./myFiles/";
+					TString PathToFiles = "./myFiles/save/";
 					TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+Tunes[WhichTune]+"_"+Interaction+".root";
 					TFile* FileSample = TFile::Open(FileName);
 

@@ -117,6 +117,7 @@ void FSI_Ratio_Study() {
 //	NameOfPlots.push_back("DeltaAlphaT_VectorSum"); 
 //	NameOfPlots.push_back("DeltaPhiT_VectorSum");
 
+//	NameOfPlots.push_back("QEMissMomentum_OneProton");                                                                                                                                            
 	NameOfPlots.push_back("MissMomentum_OneProton");                                                                                                                                            
 //      NameOfPlots.push_back("DeltaAlphaT_OneProton");                                                                                                                                               
 //      NameOfPlots.push_back("DeltaPhiT_OneProton");
@@ -163,7 +164,7 @@ void FSI_Ratio_Study() {
 				
 				for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-					TString PathToFiles = "myFiles/";
+					TString PathToFiles = "myFiles/save/";
 					TFile* FileSample = TFile::Open(PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+".root");
 
 					Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]+"Plot") ) );

@@ -128,8 +128,8 @@ void CommonPanelRadCorr() {
 	FSIModel.push_back("SuSav2"); FSILabel.push_back("SuSav2");
 //	FSIModel.push_back("hA2018_Final"); FSILabel.push_back("G2018"); // Not to be used for acceptance correction
 
-	TString Var = "epRecoEnergy_slice_0";
-//	TString Var = "h_Erec_subtruct_piplpimi_noprot_3pi";
+//	TString Var = "epRecoEnergy_slice_0";
+	TString Var = "h_Erec_subtruct_piplpimi_noprot_3pi";
 //	TString Var = "MissMomentum";
 //	TString Var = "DeltaAlphaT_Int_0";
 //	TString Var = "DeltaPhiT_Int_0";
@@ -335,11 +335,13 @@ void CommonPanelRadCorr() {
 		XLabel->SetTextFont(FontStyle); 
 		XLabel->SetTextColor(kBlack); 
 		XLabel->SetTextSize(9.2*TextSize);
-		XLabel->DrawLatexNDC(0.4,0.5,"(e,e'p)_{1p0#pi} E_{cal} [GeV]"); 
+		if (Var == "epRecoEnergy_slice_0") { XLabel->DrawLatexNDC(0.4,0.5,"(e,e'p)_{1p0#pi} E_{cal} [GeV]"); }
+		if (Var == "h_Erec_subtruct_piplpimi_noprot_3pi") { XLabel->DrawLatexNDC(0.4,0.5,"(e,e')_{0#pi} E_{QE} [GeV]"); }
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
-		PlotCanvas->SaveAs("PanelAccCorr_"+CanvasName+".pdf");
+		if (Var == "epRecoEnergy_slice_0") { PlotCanvas->SaveAs("ECal_PanelAccCorr_"+CanvasName+".pdf"); }
+		if (Var == "h_Erec_subtruct_piplpimi_noprot_3pi") { PlotCanvas->SaveAs("EQE_PanelAccCorr_"+CanvasName+".pdf"); }
 
 	} // End of the loop over the xB kinematics
 

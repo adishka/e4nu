@@ -84,7 +84,7 @@ void AccCorrXSec_OverlayPmissFig3a_e4nuPaper() {
 				double min = 1E12;
 //				double height = 1.05;
 //				double height = 2.7;
-				double height = 3.;
+				double height = 3.1;
 
 				for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 

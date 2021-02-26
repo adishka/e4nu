@@ -111,7 +111,7 @@ void AccCorrXSec_OverlayEQEFig4_e4nuPaper() {
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 1.9; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 2.3; }
 
 					// ----------------------------------------------------------------------------
 

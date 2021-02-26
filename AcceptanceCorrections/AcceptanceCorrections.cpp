@@ -133,7 +133,7 @@ void AcceptanceCorrections() {
 
 				// Loop over the plots
 
-				TFile* StoreEfficiencyFile = TFile::Open("myFiles/Efficiency_"+Label+"_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+xBCut[WhichxBCut]+".root","update");
+				TFile* StoreEfficiencyFile = TFile::Open("myFiles/Efficiency_"+Label+"_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+xBCut[WhichxBCut]+".root","recreate");
 
 				for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 

@@ -495,6 +495,8 @@ void FilterData::Loop()
 	//Output file definition
 	TFile *file_out = new TFile(Form("/w/hallb-scifs17exp/clas/claseg2/apapadop/genie_filtered_data_e2a_ep_%s_%s_neutrino6_united4_radphot_test_100M.root",ftarget.c_str(),fbeam_en.c_str()), "Recreate");
 
+	std::cout << std::endl << "Initial number of events = " << fChain->GetEntries() << std::endl << std::endl;
+
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	// apapadop

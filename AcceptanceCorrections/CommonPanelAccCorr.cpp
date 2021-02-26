@@ -128,8 +128,8 @@ void CommonPanelAccCorr() {
 	FSIModel.push_back("SuSav2"); FSILabel.push_back("SuSav2");
 //	FSIModel.push_back("hA2018_Final"); FSILabel.push_back("G2018"); // Not to be used for acceptance correction
 
-	TString Var = "epRecoEnergy_slice_0";
-//	TString Var = "h_Erec_subtruct_piplpimi_noprot_3pi";
+//	TString Var = "epRecoEnergy_slice_0";
+	TString Var = "h_Erec_subtruct_piplpimi_noprot_3pi";
 
 //	TString Var = "MissMomentum";
 //	TString Var = "DeltaAlphaT_Int_0";
@@ -244,6 +244,7 @@ void CommonPanelAccCorr() {
 					clone->GetYaxis()->SetNdivisions(8);
 
 					clone->GetYaxis()->SetRangeUser(-0.3,16);
+					if (Var == "h_Erec_subtruct_piplpimi_noprot_3pi") { clone->GetYaxis()->SetRangeUser(-0.1,12); }
 
 					// ---------------------------------------------------------------------------------------------------------------------
 

@@ -44,21 +44,21 @@ void ExtDataTable1() {
 	std::vector<TString> LabelOfPlots;  
 	std::vector<TString> OutputPlotNames;
 
-	nucleus.push_back("4He");
+//	nucleus.push_back("4He");
 //	nucleus.push_back("12C");
-//	nucleus.push_back("56Fe");
+	nucleus.push_back("56Fe");
 
 //	E.push_back("1_161"); DoubleE.push_back(1.161);
-	E.push_back("2_261"); DoubleE.push_back(2.261);	
-//	E.push_back("4_461"); DoubleE.push_back(4.461);
+//	E.push_back("2_261"); DoubleE.push_back(2.261);	
+	E.push_back("4_461"); DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
 
-	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
+//	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");	
-//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
 
-	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 //	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
 
 //	NameOfPlots.push_back("h1_Ecal"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
@@ -69,9 +69,10 @@ void ExtDataTable1() {
 //	NameOfPlots.push_back("DeltaPhiT_Int_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} #delta#phi_{T} [GeV/c]"); OutputPlotNames.push_back("DeltaPhiT_Int_0");
 //	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} Feeddown"); OutputPlotNames.push_back("EcalReso");
+//	NameOfPlots.push_back("h1_Ecal_Reso"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} Feeddown"); OutputPlotNames.push_back("ECalReso_FineBin");
 
-//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eQE0pi_slice_0");
-//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_frac_feed3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} Feeddown");  OutputPlotNames.push_back("eQE0piReso_slice_0");
+	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eQE0pi_slice_0");
+	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_frac_feed3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} Feeddown");  OutputPlotNames.push_back("eQE0piReso_slice_0");
 
 	std::vector<TH1D*> Plots;
 
@@ -133,6 +134,20 @@ void ExtDataTable1() {
 					double max = -99.;
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
+
+						// ----------------------------------------------------------------------------
+
+						if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi" || NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_frac_feed3pi") { 
+
+							if (FSIModel[WhichFSIModel] == "hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset") 
+								{ FSIModel[WhichFSIModel] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"; }
+
+							if (FSIModel[WhichFSIModel] == "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc") 
+								{ FSIModel[WhichFSIModel] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"; }
+
+						}
+
+						// ----------------------------------------------------------------------------
 
 						TString PathToFiles = "../../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
 						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
@@ -317,7 +332,7 @@ void ExtDataTable1() {
 
 					if (NameOfPlots[WhichPlot] != "epRecoEnergy_slice_0" || NPlots > 1) { 
 
-						//delete PlotCanvas; 
+						delete PlotCanvas; 
 
 					}
 

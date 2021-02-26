@@ -106,13 +106,13 @@ void OverlayPlots() {
 	std::vector<TString> NameOfSubPlots;
 	std::vector<int> Colors;
 
-//	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
+	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
 //	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C");
-	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
+//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
 
 //	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
-//	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
-	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV"); DoubleE.push_back(4.461);
+	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
+//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV"); DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");

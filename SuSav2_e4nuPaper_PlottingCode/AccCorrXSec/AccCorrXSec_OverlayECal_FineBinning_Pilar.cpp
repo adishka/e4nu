@@ -62,7 +62,10 @@ void AccCorrXSec_OverlayECal_FineBinning_Pilar() {
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_SixSectors"); FSILabel.push_back("SuSav2");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_SixSectors"); FSILabel.push_back("G2018");
 
-	NameOfPlots.push_back("h1_Ecal_Reso"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]");
+	NameOfPlots.push_back("h1_Ecal_Reso"); 
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed"); 
+
+	LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]");
 	OutputPlotNames.push_back("ECalReso_FineBin");
 
 	std::vector<TH1D*> Plots;
@@ -105,13 +108,13 @@ void AccCorrXSec_OverlayECal_FineBinning_Pilar() {
 			for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
 				// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
-				double MaxHeight = 4.9;
+				double MaxHeight = 8.5;
 
 				// Loop over the nuclei
 
 				for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 10.3; }
+					if (nucleus[WhichNucleus] == "56Fe") { MaxHeight = 26; }
 
 					// ----------------------------------------------------------------------------
 
@@ -182,7 +185,7 @@ void AccCorrXSec_OverlayECal_FineBinning_Pilar() {
 
 						AbsoluteXSecScaling(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy]);
 						ReweightPlots(Plots[WhichFSIModel]);
-						//ApplyRange(Plots[WhichFSIModel],E[WhichEnergy],NameOfPlots[WhichPlot]);
+						ApplyRange(Plots[WhichFSIModel],E[WhichEnergy],NameOfPlots[WhichPlot]);
 
 						Plots[WhichFSIModel]->SetLineWidth(1);
 						Plots[WhichFSIModel]->GetYaxis()->SetTitle(DoubleAccCorrXSecTitle);
@@ -331,7 +334,7 @@ void AccCorrXSec_OverlayECal_FineBinning_Pilar() {
 
 							DataPlot = Plots[WhichFSIModel];
 
-							DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+							//DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
 							DataPlot->SetMarkerStyle(20); 
 							DataPlot->SetMarkerSize(2.); 

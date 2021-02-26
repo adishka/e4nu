@@ -28,8 +28,8 @@ void QE_Q0_Q3_Neutrinos() {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
-	TString Interaction = "CCinclMEC";
-//	TString Interaction = "EM+MEC";
+//	TString Interaction = "CCinclMEC";
+	TString Interaction = "EM+MEC";
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -54,9 +54,13 @@ void QE_Q0_Q3_Neutrinos() {
 //	E.push_back("2261"); LabelE.push_back(" @ E = 2.261 GeV");
 //	E.push_back("4461"); LabelE.push_back(" @ E = 4.461 GeV");
 
-	Tunes.push_back("GTEST19_10b_00_000"); TuneLabels.push_back("SuSav2");
-	Tunes.push_back("G18_10a_02_11a"); TuneLabels.push_back("G2018");
-	Tunes.push_back("G00_00a_00_000"); TuneLabels.push_back("G18_02a");
+	Tunes.push_back("GTEST19_10b_00_000"); TuneLabels.push_back("RMF");
+	Tunes.push_back("G18_10a_02_11a"); TuneLabels.push_back("LFG");
+	Tunes.push_back("G00_00a_00_000"); TuneLabels.push_back("RFG");
+
+//	Tunes.push_back("GTEST19_10b_00_000"); TuneLabels.push_back("SuSav2");
+//	Tunes.push_back("G18_10a_02_11a"); TuneLabels.push_back("G2018");
+//	Tunes.push_back("G00_00a_00_000"); TuneLabels.push_back("G18_02a");
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -83,7 +87,8 @@ void QE_Q0_Q3_Neutrinos() {
 			for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
 				TString PlotName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]; 
-				TCanvas* PlotCanvas = new TCanvas(PlotName, PlotName, 205,34,2024,768);
+//				TCanvas* PlotCanvas = new TCanvas(PlotName, PlotName, 205,34,2024,768);
+				TCanvas* PlotCanvas = new TCanvas(PlotName, PlotName, 205,34,2024,600);
 
 				// ---------------------------------------------------------------------------------------------------------------------------
 
@@ -117,6 +122,7 @@ void QE_Q0_Q3_Neutrinos() {
 //				TString myTitle = LabelsOfSamples[WhichNucleus] + " " +LabelE[WhichEnergy] + ", " + TuneLabels[WhichTune];
 //				title->DrawLatex(0.05,0.3,myTitle); // title / nucleus / energy
 				TString myTitle = "QE Neutrino Scattering";
+				if (Interaction == "EM+MEC") { myTitle = "QE Electron Scattering"; }
 				title->DrawLatex(0.14,0.2,myTitle); // title / nucleus / energy
 
 				// ---------------------------------------------------------------------------------------------------------------------------
@@ -130,7 +136,7 @@ void QE_Q0_Q3_Neutrinos() {
 					if (WhichTune == 2)  { pad3->cd(); pad3->SetLeftMargin(0.0); pad3->SetRightMargin(0.21); }
 
 
-					TString PathToFiles = "./myFiles/";
+					TString PathToFiles = "./myFiles/save/";
 					TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+Tunes[WhichTune]+"_"+Interaction+".root";
 					TFile* FileSample = TFile::Open(FileName);
 

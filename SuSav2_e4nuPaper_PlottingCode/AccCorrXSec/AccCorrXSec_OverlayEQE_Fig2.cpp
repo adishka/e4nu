@@ -78,8 +78,8 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 	xBCut.push_back("NoxBCut");
 
-//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
-	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
+//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data");
 
@@ -395,17 +395,22 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 					legGenieBlackLine->SetNColumns(1); 
 					legGenieBlackLine->SetTextSize(TextSize-0.03); 
-					legGenieBlackLine->Draw(); 
 
 					legGenieBreak->SetTextSize(TextSize-0.03);
 					//legGenieBreak->AddEntry(Plots[2],"G2018","l");					
-					legGenieBreak->Draw();
 
 					legG2018->SetBorderSize(0);
 					legG2018->SetTextFont(FontStyle);
 					legG2018->SetTextSize(TextSize-0.03);
-					legG2018->AddEntry(Plots[2],"G2018","l");					
-					legG2018->Draw();
+					legG2018->AddEntry(Plots[2],"G2018","l");	
+
+					if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
+
+						legGenieBlackLine->Draw(); 				
+						legGenieBreak->Draw();
+						legG2018->Draw();
+
+					}
 
 					TLatex* myNucleus = new TLatex();
 					myNucleus->SetTextFont(FontStyle);
@@ -454,33 +459,42 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 	double Xmin = 0, Xmax = 0, Ymin = 0, Ymax = 0;
 
+	double LabelOffset = -0.075;
+
 	// ---------------------------------------
 		
 	if (E[WhichEnergy] == "1_161") { 
 
-		Xmin = 0.565; Xmax = 1.105; 
-		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.45; }
+		PadNDCXmin = 0.2,PadNDCXmax = 0.77;
+		PadNDCYmin = 0.4,PadNDCYmax = 0.8;
+		Xmin = 0.565; Xmax = 1.03; 
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.001; Ymax = 0.35; }
 
 	}
 
 		
 	if (E[WhichEnergy] == "2_261") { 
 
-		Xmin = 0.7; Xmax = 2.1; 
-		if (nucleus[WhichNucleus] == "4He") { Ymin = 0.0; Ymax = 0.07; }
-		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.19; }
-		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.0; Ymax = 0.79; }
+		PadNDCXmin = 0.175,PadNDCXmax = 0.86;
+		PadNDCYmin = 0.35,PadNDCYmax = 0.75;
+		Xmin = 0.8; Xmax = 2.1; 
+		if (nucleus[WhichNucleus] == "4He") { Ymin = 0.0001; Ymax = 0.09; LabelOffset = -0.03; }
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.001; Ymax = 0.27; }
+		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.001; Ymax = 1.1; }
 
 	}
 
 	if (E[WhichEnergy] == "4_461") { 
 
-		Xmin = 1.6; Xmax = 4.3; 
-		if (nucleus[WhichNucleus] == "4He") { Ymin = 0.0; Ymax = 0.02; }
-		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.049; }
-		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.0; Ymax = 0.17; }
+		PadNDCXmin = 0.15,PadNDCXmax = 0.92;
+		PadNDCYmin = 0.4,PadNDCYmax = 0.8;
+		Xmin = 1.6; Xmax = 4.25; 
+		if (nucleus[WhichNucleus] == "4He") { Ymin = 0.0001; Ymax = 0.035;  LabelOffset = -0.03; }
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0001; Ymax = 0.099; LabelOffset = -0.03; }
+		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.0001; Ymax = 0.35; }
 
 	}
+
 
 	// ---------------------------------------
 
@@ -510,13 +524,13 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 	Leftline->SetLineWidth(2);
 	Leftline->SetLineColor(kBlack);
 	Leftline->SetLineStyle(9);
-	Leftline->Draw();
+	//Leftline->Draw();
 
 	TLine* Rightline = new TLine(XminRightLine,YminRightLine,XmaxRightLine,YmaxLeftLine);
 	Rightline->SetLineWidth(2);
 	Rightline->SetLineColor(kBlack);
 	Rightline->SetLineStyle(9);
-	Rightline->Draw();
+	//Rightline->Draw();
 
 	// ---------------------------------------
 
@@ -543,6 +557,8 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 	frame->GetYaxis()->SetNdivisions(6);
 	frame->GetYaxis()->SetLabelSize(0.1);
 	frame->GetYaxis()->SetLabelFont(FontStyle);
+	frame->GetYaxis()->SetTickLength(-0.02);
+	frame->GetYaxis()->SetLabelOffset(LabelOffset);
 
 	DataPlotClone->GetYaxis()->SetNdivisions(4);
 	DataPlotClone->GetYaxis()->SetLabelOffset(0.1);

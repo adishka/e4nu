@@ -980,6 +980,8 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 
 	int NBins = OverallClone->GetXaxis()->GetNbins();
 
+	double AccCorrTolerance = 30;
+
 	for (int WhichBin = 0; WhichBin < NBins; WhichBin++) {
 
 		double AccCorr = 0.;
@@ -993,13 +995,13 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 			AccCorr = Average->GetBinContent(WhichBin + 1);
 
 			// Sanity checks for acceptance corrections 
-			if (AccCorr < 0 || AccCorr >30) { 
+			if (AccCorr < 0 || AccCorr > AccCorrTolerance) { 
 
 				double CorrectionSuSav2Bin = CorrectionSuSav2->GetBinContent(WhichBin + 1); 
 				double CorrectionG2018Bin = CorrectionG2018->GetBinContent(WhichBin + 1); 
 				
-				if (CorrectionSuSav2Bin > 0 && CorrectionSuSav2Bin < 30) { AccCorr = CorrectionSuSav2Bin; } 
-				else if (CorrectionG2018Bin > 0 && CorrectionG2018Bin < 30) { AccCorr = CorrectionG2018Bin; }
+				if (CorrectionSuSav2Bin > 0 && CorrectionSuSav2Bin < AccCorrTolerance) { AccCorr = CorrectionSuSav2Bin; } 
+				else if (CorrectionG2018Bin > 0 && CorrectionG2018Bin < AccCorrTolerance) { AccCorr = CorrectionG2018Bin; }
 				else { AccCorr = 0.; } 
 
 			}
@@ -1009,7 +1011,6 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 			NewBinContent = h->GetBinContent(WhichBin + 1) * AccCorr * RadCorr;
 			NewBinError = h->GetBinError(WhichBin + 1) * AccCorr * RadCorr;
 
-//cout << "h->GetBinCenter(WhichBin + 1) = " << h->GetBinCenter(WhichBin + 1) << endl;
 //cout << "AccCorr = " << AccCorr << endl;
 //cout << "h->GetBinContent(WhichBin + 1) = " << h->GetBinContent(WhichBin + 1) << "   NewBinContent = " << NewBinContent << endl;
 //cout << "h->GetBinError(WhichBin + 1) = " << h->GetBinError(WhichBin + 1) << "   NewBinError = " << NewBinError << endl << endl;
@@ -1032,7 +1033,7 @@ std::vector<TH1D*> PlotsOffset; PlotsOffset.clear();
 std::vector<TString> FSIModelOffset; FSIModelOffset.clear();
 
 FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); // main reco plots for unfolding uncertainty with smearing
-FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); // main plots for unfolding uncertainty with smearing
+FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing"); // main plots for unfolding uncertainty with smearing
 FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset 
 FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset
 
@@ -1044,9 +1045,9 @@ if (
 ) {
 
 	FSIModelOffset[0] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc";
-	FSIModelOffset[1] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
+	FSIModelOffset[1] = "SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Smearing";
 	FSIModelOffset[2] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithFidAcc";
-	FSIModelOffset[3] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Offset";
+	FSIModelOffset[3] = "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Smearing";
 
 }
 
@@ -1114,7 +1115,7 @@ if (E == "4_461") { DoubleE = 4.461; reso = 0.06; }
 
 double sum = 0; int nbins = 0;
 
-if (string(name).find("epRecoEnergy_slice") != std::string::npos) {
+if (string(name).find("epRecoEnergy_slice") != std::string::npos || name == "h1_Ecal_Reso" || name == "h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed" ) {
 
 	// Loop over the bins and take the average of the bins around the peak
 

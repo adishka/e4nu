@@ -329,17 +329,18 @@ void OverlayEQE_Fig2() {
 
 					legGenieBlackLine->SetNColumns(1); 
 					legGenieBlackLine->SetTextSize(TextSize-0.03); 
-					legGenieBlackLine->Draw(); 
 
 					legGenieBreak->SetTextSize(TextSize-0.03);
 					//legGenieBreak->AddEntry(Plots[2],"G2018","l");					
-					legGenieBreak->Draw();
 
 					legG2018->SetBorderSize(0);
 					legG2018->SetTextFont(FontStyle);
 					legG2018->SetTextSize(TextSize-0.03);
-					legG2018->AddEntry(Plots[2],"G2018","l");					
-					legG2018->Draw();
+					legG2018->AddEntry(Plots[2],"G2018","l");
+
+//					legGenieBlackLine->Draw(); 
+//					legGenieBreak->Draw();					
+//					legG2018->Draw();
 
 					TLatex* myNucleus = new TLatex();
 					myNucleus->SetTextFont(FontStyle);
@@ -372,7 +373,7 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 
 	// ---------------------------------------
 
-	double PadNDCXmin = 0.45,PadNDCXmax = 0.85, PadNDCYmin = 0.4,PadNDCYmax = 0.75;
+	double PadNDCXmin = 0.35,PadNDCXmax = 0.75, PadNDCYmin = 0.3,PadNDCYmax = 0.65;
 	double PadLeftMargin = 0.105, PadRightMargin = 0.05, PadBottomMargin = 0.1;
 
 	double Xmin = 0, Xmax = 0, Ymin = 0, Ymax = 0;
@@ -381,28 +382,33 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 		
 	if (E[WhichEnergy] == "1_161") { 
 
-		PadNDCXmin = 0.4;PadNDCXmax = 0.8;
-		Xmin = 0.565; Xmax = 1.105; 
-		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 2.8; }
+		PadNDCXmin = 0.2,PadNDCXmax = 0.77;
+		PadNDCYmin = 0.4,PadNDCYmax = 0.8;
+		Xmin = 0.565; Xmax = 1.03; 
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.01; Ymax = 1.7; }
 
 	}
 
 		
 	if (E[WhichEnergy] == "2_261") { 
 
-		Xmin = 0.7; Xmax = 2.1; 
-		if (nucleus[WhichNucleus] == "4He") { Ymin = 0.0; Ymax = 0.8; }
-		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.9; }
-		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.0; Ymax = 0.9; }
+		PadNDCXmin = 0.175,PadNDCXmax = 0.86;
+		PadNDCYmin = 0.35,PadNDCYmax = 0.75;
+		Xmin = 0.8; Xmax = 2.1; 
+		if (nucleus[WhichNucleus] == "4He") { Ymin = 0.01; Ymax = 0.79; }
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.01; Ymax = 0.87; }
+		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.01; Ymax = 0.89; }
 
 	}
 
 	if (E[WhichEnergy] == "4_461") { 
 
-		Xmin = 1.6; Xmax = 4.3; 
-		if (nucleus[WhichNucleus] == "4He") { Ymin = 0.0; Ymax = 0.57; }
-		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.0; Ymax = 0.49; }
-		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.0; Ymax = 0.7; }
+		PadNDCXmin = 0.15,PadNDCXmax = 0.92;
+		PadNDCYmin = 0.4,PadNDCYmax = 0.8;
+		Xmin = 1.6; Xmax = 4.25; 
+		if (nucleus[WhichNucleus] == "4He") { Ymin = 0.01; Ymax = 0.49; }
+		if (nucleus[WhichNucleus] == "12C") { Ymin = 0.01; Ymax = 0.49; }
+		if (nucleus[WhichNucleus] == "56Fe") { Ymin = 0.01; Ymax = 0.49; }
 
 	}
 
@@ -434,13 +440,13 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 	Leftline->SetLineWidth(2);
 	Leftline->SetLineColor(kBlack);
 	Leftline->SetLineStyle(9);
-	Leftline->Draw();
+	//Leftline->Draw();
 
 	TLine* Rightline = new TLine(XminRightLine,YminRightLine,XmaxRightLine,YmaxLeftLine);
 	Rightline->SetLineWidth(2);
 	Rightline->SetLineColor(kBlack);
 	Rightline->SetLineStyle(9);
-	Rightline->Draw();
+	//Rightline->Draw();
 
 	// ---------------------------------------
 
@@ -467,6 +473,8 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 	frame->GetYaxis()->SetNdivisions(6);
 	frame->GetYaxis()->SetLabelSize(0.1);
 	frame->GetYaxis()->SetLabelFont(FontStyle);
+	frame->GetYaxis()->SetTickLength(-0.02);
+	frame->GetYaxis()->SetLabelOffset(-0.075);
 
 	DataPlotClone->GetYaxis()->SetNdivisions(4);
 	DataPlotClone->GetYaxis()->SetLabelOffset(0.1);

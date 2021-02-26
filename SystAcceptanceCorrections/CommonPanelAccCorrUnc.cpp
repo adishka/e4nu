@@ -185,6 +185,7 @@ void CommonPanelAccCorrUnc() {
 
 	TString Var = "epRecoEnergy_slice_0";
 //	TString Var = "h_Erec_subtruct_piplpimi_noprot_3pi";
+
 //	TString Var = "MissMomentum";
 //	TString Var = "DeltaAlphaT_Int_0";
 //	TString Var = "DeltaPhiT_Int_0";
@@ -400,11 +401,13 @@ void CommonPanelAccCorrUnc() {
 		XLabel->SetTextFont(FontStyle); 
 		XLabel->SetTextColor(kBlack); 
 		XLabel->SetTextSize(9.2*TextSize);
-		XLabel->DrawLatexNDC(0.4,0.5,"(e,e'p)_{1p0#pi} E_{cal} [GeV]"); 
+		if (Var == "epRecoEnergy_slice_0") { XLabel->DrawLatexNDC(0.4,0.5,"(e,e'p)_{1p0#pi} E_{cal} [GeV]"); }
+		if (Var == "h_Erec_subtruct_piplpimi_noprot_3pi") { XLabel->DrawLatexNDC(0.4,0.5,"(e,e')_{0#pi} E_{QE} [GeV]"); }
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
-		PlotCanvas->SaveAs("PanelAccCorrUnc_"+CanvasName+".pdf");
+		if (Var == "epRecoEnergy_slice_0") { PlotCanvas->SaveAs("ECal_PanelAccCorrUnc_"+CanvasName+".pdf"); }
+		if (Var == "h_Erec_subtruct_piplpimi_noprot_3pi") { PlotCanvas->SaveAs("EQE_PanelAccCorrUnc_"+CanvasName+".pdf"); }
 
 	} // End of the loop over the xB kinematics
 

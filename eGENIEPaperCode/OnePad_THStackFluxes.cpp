@@ -60,13 +60,14 @@ void OnePad_THStackFluxes() {
 //	E.push_back("4461"); LabelE.push_back(" @ E = 4.461 GeV");
 
 	E.push_back("BNBFlux"); LabelE.push_back(" BNB Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-39} #frac{cm^{2}}{GeV Ar}#right]");
-	E.push_back("DUNEFlux"); LabelE.push_back(" DUNE Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-39} #frac{cm^{2}}{GeV Ar}#right]");
-	E.push_back("NOvAFlux"); LabelE.push_back(" NOvA Flux");  YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-39} #frac{cm^{2}}{GeV CH2}#right]");
-	E.push_back("T2KFlux"); LabelE.push_back(" T2K Flux");  YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-39} #frac{cm^{2}}{GeV CH}#right]");			
+//	E.push_back("DUNEFlux"); LabelE.push_back(" DUNE Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-39} #frac{cm^{2}}{GeV Ar}#right]");
+//	E.push_back("NOvAFlux"); LabelE.push_back(" NOvA Flux");  YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-39} #frac{cm^{2}}{GeV CH2}#right]");
+//	E.push_back("T2KFlux"); LabelE.push_back(" T2K Flux");  YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-39} #frac{cm^{2}}{GeV CH}#right]");			
 
-	FSIModel.push_back("GTEST19_10b_00_000_CCinclMEC");FSILabel.push_back("SuSav2");
+//	FSIModel.push_back("GTEST19_10b_00_000_CCinclMEC");FSILabel.push_back("SuSav2");
 	FSIModel.push_back("G18_10a_02_11a_CCinclMEC");FSILabel.push_back("G2018");
-	FSIModel.push_back("G18_02a_00_000_CCinclMEC");FSILabel.push_back("G18_02a");	
+//	FSIModel.push_back("G18_02a_00_000_CCinclMEC");FSILabel.push_back("G18_02a");	
+	FSIModel.push_back("G18_10a_02_11a_EM+MEC");FSILabel.push_back("G2018");
 
 //	FSIModel.push_back("GTEST19_10b_00_000_EM+MEC");FSILabel.push_back("e SuSav2");
 //	FSIModel.push_back("G18_10a_02_11a_EM+MEC");FSILabel.push_back("e G2018");
@@ -74,6 +75,74 @@ void OnePad_THStackFluxes() {
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
 	NameOfPlots.push_back("EvPlot"); XLabelOfPlots.push_back("E_{#nu} [GeV]"); OutputPlotNames.push_back("EvPlot");
+
+	// --------------------------------------------------------------------------------------------------------------------------------	
+
+	// 10^{-38} cm^2 / nucleus
+
+	static std::map<TString,double> cc_GENIEXSec =
+	{
+		{ "BNB_GTEST19_10b_00_000", 0.321417},
+		{ "BNB_G18_10a_02_11a", 0.273469},
+		{ "BNB_G18_02a_00_000", 0.30599},
+		{ "DUNE_GTEST19_10b_00_000", 0.860894},
+		{ "DUNE_G18_10a_02_11a", 0.778348},
+		{ "DUNE_G18_02a_00_000", 0.833582},
+		{ "Nova_GTEST19_10b_00_000", 0.31159240},
+		{ "Nova_G18_10a_02_11a", 0.27670760},
+		{ "Nova_G18_02a_00_000", 0.30358940},
+		{ "T2K_GTEST19_10b_00_000", 0.92115570},
+		{ "T2K_G18_10a_02_11a", 0.75945490},
+		{ "T2K_G18_02a_00_000", 0.90182870},
+	};
+
+	static std::map<TString,double> cc_GENIEEvents =
+	{
+		{ "BNB_GTEST19_10b_00_000", 3800000},
+		{ "BNB_G18_10a_02_11a", 2400000},
+		{ "BNB_G18_02a_00_000", 4000000},
+		{ "DUNE_GTEST19_10b_00_000", 3400000},
+		{ "DUNE_G18_10a_02_11a", 4000000},
+		{ "DUNE_G18_02a_00_000", 4000000},
+		{ "Nova_GTEST19_10b_00_000", 4000000},
+		{ "Nova_G18_10a_02_11a", 4000000},
+		{ "Nova_G18_02a_00_000", 3800000},
+		{ "T2K_GTEST19_10b_00_000", 3800000},
+		{ "T2K_G18_10a_02_11a", 4000000},
+		{ "T2K_G18_02a_00_000", 4000000},
+	};
+
+	static std::map<TString,double> em_GENIEXSec =
+	{
+		{ "BNB_GTEST19_10b_00_000", 0.},
+		{ "BNB_G18_10a_02_11a", 1.35883e+10},
+		{ "BNB_G18_02a_00_000", 0.},
+		{ "DUNE_GTEST19_10b_00_000", 0.},
+		{ "DUNE_G18_10a_02_11a", 0.},
+		{ "DUNE_G18_02a_00_000", 0.},
+		{ "Nova_GTEST19_10b_00_000", 0.},
+		{ "Nova_G18_10a_02_11a", 0.},
+		{ "Nova_G18_02a_00_000", 0.},
+		{ "T2K_GTEST19_10b_00_000", 0.},
+		{ "T2K_G18_10a_02_11a", 0.},
+		{ "T2K_G18_02a_00_000", 0.},
+	};
+
+	static std::map<TString,double> em_GENIEEvents =
+	{
+		{ "BNB_GTEST19_10b_00_000", 0},
+		{ "BNB_G18_10a_02_11a", 5000000},
+		{ "BNB_G18_02a_00_000", 0},
+		{ "DUNE_GTEST19_10b_00_000", 0},
+		{ "DUNE_G18_10a_02_11a", 0},
+		{ "DUNE_G18_02a_00_000", 0},
+		{ "Nova_GTEST19_10b_00_000", 0},
+		{ "Nova_G18_10a_02_11a", 0},
+		{ "Nova_G18_02a_00_000", 0},
+		{ "T2K_GTEST19_10b_00_000", 0},
+		{ "T2K_G18_10a_02_11a", 0},
+		{ "T2K_G18_02a_00_000", 0},
+	};
 
 	// --------------------------------------------------------------------------------------------------------------------------------	
 
@@ -107,7 +176,7 @@ void OnePad_THStackFluxes() {
 				TPad* pad2 = nullptr;
 				TPad* pad3 = nullptr;
 
-				if (NFSIModels == 2) {
+				if (NFSIModels == 2 ) {
 
 					pad1 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0,0,0.5,1., 21); 
 					pad1->SetFillColor(kWhite); pad1->Draw();
@@ -147,7 +216,7 @@ void OnePad_THStackFluxes() {
 					// The files are located under 
 					// scp apapadop@geniegpvm02.fnal.gov:/genie/app/users/apapadop/True1p0piElectronNeutrinoComparisons/myFiles/*Flux*.root ./myFiles/
 
-					TString PathToFiles = "myFiles/";
+					TString PathToFiles = "myFiles/save/";
 					TFile* FileSample = TFile::Open(PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+".root");
 
 					TH1D* Plots[NBreakDown];
@@ -167,6 +236,10 @@ void OnePad_THStackFluxes() {
 							{ Weight = cc_GENIEXSec["BNB_G18_10a_02_11a"] / cc_GENIEEvents["BNB_G18_10a_02_11a"]; }
 						if ( E[WhichEnergy] == "BNBFlux" && FSIModel[WhichFSIModel] == "G18_02a_00_000_CCinclMEC" ) 
 							{ Weight = cc_GENIEXSec["BNB_G18_10a_02_11a"] / cc_GENIEEvents["BNB_G18_02a_00_000"]; }
+
+						if ( E[WhichEnergy] == "BNBFlux" && FSIModel[WhichFSIModel] == "G18_10a_02_11a_EM+MEC" ) 
+							{ Weight = em_GENIEXSec["BNB_G18_10a_02_11a"] / em_GENIEEvents["BNB_G18_10a_02_11a"]; }
+
 
 						if ( E[WhichEnergy] == "DUNEFlux" && FSIModel[WhichFSIModel] == "GTEST19_10b_00_000_CCinclMEC" ) 
 							{ Weight = cc_GENIEXSec["DUNE_GTEST19_10b_00_000"] / cc_GENIEEvents["DUNE_GTEST19_10b_00_000"]; }
@@ -190,7 +263,7 @@ void OnePad_THStackFluxes() {
 							{ Weight = cc_GENIEXSec["T2K_G18_10a_02_11a"] / cc_GENIEEvents["T2K_G18_02a_00_000"]; }
 
 						//std::cout << "XSec = " << GENIEXSec["ub_G18_10a_02_11a"] << ",  Events = " << GENIEEvents["uB_G18_10a_02_11a"] << std::endl;
-						//std::cout << "XSec Weight = " << Weight << std::endl;
+						std::cout << "XSec Weight = " << Weight << std::endl;
 						Reweight(Plots[WhichInteraction],10*Weight); // that explains the 10^-39 cm^2 units
 
 						Plots[WhichInteraction]->GetXaxis()->CenterTitle();
@@ -224,7 +297,8 @@ void OnePad_THStackFluxes() {
 
 						Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.15,9.);
 						//Plots[WhichInteraction]->GetYaxis()->SetRangeUser(0.,9*TMath::Power(10.,5.));
-						Plots[WhichInteraction]->GetYaxis()->SetRangeUser(0.,3.1);
+						if (FSIModel[WhichFSIModel] == "G18_10a_02_11a_CCinclMEC") { Plots[WhichInteraction]->GetYaxis()->SetRangeUser(0.,3.1); }
+						else { Plots[WhichInteraction]->GetYaxis()->SetRangeUser(0.,1.6e9); }
 						
 						if (E[WhichEnergy] == "BNBFlux") { Plots[WhichInteraction]->GetXaxis()->SetRangeUser(0.2,2.7); }
 						if (E[WhichEnergy] == "DUNEFlux") { 
