@@ -19,3 +19,5 @@ for mm in mms:
         for j in range(h.GetNbinsY()):
             output.write("%.5f\t"%h.GetBinContent(i+1,j+1));
         output.write("\n");
+
+print("\nDone!\n")

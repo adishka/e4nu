@@ -510,9 +510,23 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
+//	else if (Sample == "G18_02c NoRad") { 
+
+//		SF = ( G18_02cGenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+//					ConversionFactorCm2ToMicroBarn / (NoRadG18_02cNumberEvents[std::make_pair(Nucleus, E)] ) );
+
+//	}
+
+//	else if (Sample == "G18_02d NoRad") { 
+
+//		SF = ( G18_02dGenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+//					ConversionFactorCm2ToMicroBarn / (NoRadG18_02dNumberEvents[std::make_pair(Nucleus, E)] ) );
+
+//	}
+
 	else {
 
-		std::cout << "Craaaaaaaaaaaaaaap !!!!!!!!! What is the SF in AbsoluteXSecScaling for " << h->GetName() << "???????????????" << std::endl;
+		std::cout << "Craaaaaaaaaaaaaaap !!!!!!!!! What is the SF in AbsoluteXSecScaling for " << h->GetName() << "in " << Sample << "???????????????" << std::endl;
 
 	}		
 

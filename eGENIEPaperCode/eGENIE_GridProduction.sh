@@ -1,5 +1,6 @@
 
-export GenieRelease=v3_00_06_WithSuSav2
+#export GenieRelease=v3_00_06_WithSuSav2
+export GenieRelease=v3_2
 
 ###################################################################################################################################################################
 
@@ -61,27 +62,93 @@ export GenieRelease=v3_00_06_WithSuSav2
 
 	# NOvA
 
+. ../submit_genie_cc_G00_00a_CH2_NOvAFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G00_00a_CH2_NOvAFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G00_00a_CH2_NOvAFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_CCinclMEC_G00_00a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC_Flux_NOvA_ND_2017.root flux_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/CH2_NOvAFlux/G00_00a/ origin/master
+
+. ../submit_genie_cc_G18_02a_CH2_NOvAFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_02a_CH2_NOvAFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_02a_CH2_NOvAFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_CCinclMEC_G18_02a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC_Flux_NOvA_ND_2017.root flux_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/CH2_NOvAFlux/G18_02a/ origin/master
+
+. ../submit_genie_cc_G18_10a_CH2_NOvAFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_CH2_NOvAFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_10a_CH2_NOvAFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_CCinclMEC_G18_10a_02_11a.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC_Flux_NOvA_ND_2017.root flux_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/CH2_NOvAFlux/G2018/ origin/master
+
+. ../submit_genie_cc_GTEST19_10b_CH2_NOvAFlux_Q2_0_0_nuGENIE.sh 50 apapadop_GTEST19_10b_CH2_NOvAFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_GTEST19_10b_CH2_NOvAFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_CCinclMEC_GTEST19_10b_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC_Flux_NOvA_ND_2017.root flux_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/CH2_NOvAFlux/SuSav2/ origin/master
 
 	# T2K
+
+. ../submit_genie_cc_G00_00a_CH_T2KFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G00_00a_CH_T2KFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G00_00a_CH_T2KFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_CCinclMEC_G00_00a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/t2kflux_2016_plus250kA.root enu_nd280_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/CH_T2KFlux/G00_00a/ origin/master
+
+. ../submit_genie_cc_G18_02a_CH_T2KFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_02a_CH_T2KFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_02a_CH_T2KFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_CCinclMEC_G18_02a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/t2kflux_2016_plus250kA.root enu_nd280_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/CH_T2KFlux/G18_02a/ origin/master
+
+. ../submit_genie_cc_G18_10a_CH_T2KFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_CH_T2KFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_10a_CH_T2KFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_CCinclMEC_G18_10a_02_11a.xml /pnfs/genie/persistent/users/apapadop/Grid/t2kflux_2016_plus250kA.root enu_nd280_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/CH_T2KFlux/G2018/ origin/master
+
+. ../submit_genie_cc_GTEST19_10b_CH_T2KFlux_Q2_0_0_nuGENIE.sh 50 apapadop_GTEST19_10b_CH_T2KFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_GTEST19_10b_CH_T2KFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_CCinclMEC_GTEST19_10b_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/t2kflux_2016_plus250kA.root enu_nd280_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/CH_T2KFlux/SuSav2/ origin/master
 
 
 	# BNB
 
-. ../submit_genie_cc_G00_00a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G00_00a_40Ar_BNBFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G00_00a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/v3_0_6_WithSuSav2/argon40_spline_CCinclMEC_G00_00a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_BNBFlux/G00_00a/ origin/master
+. ../submit_genie_cc_G00_00a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G00_00a_40Ar_BNBFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G00_00a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/argon40_spline_CCinclMEC_G00_00a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_BNBFlux/G00_00a/ origin/master
 
-. ../submit_genie_cc_G18_02a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_02a_40Ar_BNBFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_02a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/v3_2/carbon12_spline_CCinclMEC_G18_02a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_BNBFlux/G18_02a/ origin/master
+. ../submit_genie_cc_G18_02a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_02a_40Ar_BNBFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_02a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/argon40_spline_CCinclMEC_G18_02a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_BNBFlux/G18_02a/ origin/master
 
-. ../submit_genie_cc_G18_10a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_40Ar_BNBFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_10a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/v3_2/carbon12_spline_CCinclMEC_G18_10a_02_11a.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_BNBFlux/G2018/ origin/master
+. ../submit_genie_cc_G18_10a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_40Ar_BNBFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_10a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/argon40_spline_CCinclMEC_G18_10a_02_11a.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_BNBFlux/G2018/ origin/master
 
-. ../submit_genie_cc_GTEST19_10b_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_40Ar_BNBFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_GTEST19_10b_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/v3_2/carbon12_spline_CCinclMEC_GTEST19_10b_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_BNBFlux/SuSav2/ origin/master
+. ../submit_genie_cc_GTEST19_10b_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_40Ar_BNBFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_GTEST19_10b_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/argon40_spline_CCinclMEC_GTEST19_10b_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_BNBFlux/SuSav2/ origin/master
 
 	# DUNE
 
+	. ../submit_genie_cc_G00_00a_40Ar_DUNEFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G00_00a_40Ar_DUNEFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G00_00a_40Ar_DUNEFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/argon40_spline_CCinclMEC_G00_00a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC-dune-ND-file.root numu_flux /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_DUNEFlux/G00_00a/ origin/master
+
+	. ../submit_genie_cc_G18_02a_40Ar_DUNEFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_02a_40Ar_DUNEFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_02a_40Ar_DUNEFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/argon40_spline_CCinclMEC_G18_02a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC-dune-ND-file.root numu_flux /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_DUNEFlux/G18_02a/ origin/master
+
+	. ../submit_genie_cc_G18_10a_40Ar_DUNEFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_40Ar_DUNEFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_10a_40Ar_DUNEFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/argon40_spline_CCinclMEC_G18_10a_02_11a.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC-dune-ND-file.root numu_flux /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_DUNEFlux/G2018/ origin/master
+
+	. ../submit_genie_cc_GTEST19_10b_40Ar_DUNEFlux_Q2_0_0_nuGENIE.sh 50 apapadop_GTEST19_10b_40Ar_DUNEFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_GTEST19_10b_40Ar_DUNEFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/argon40_spline_CCinclMEC_GTEST19_10b_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC-dune-ND-file.root numu_flux /pnfs/genie/scratch/users/apapadop/nuGENIE_grid/40Ar_DUNEFlux/SuSav2/ origin/master
+
+###################################################################################################################################################################
+
+
 # Q2 > 0.02
 
-./submit_genie_cc_G00_00a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G00_00a_40Ar_BNBFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G00_00a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/v3_0_6_WithSuSav2/argon40_spline_CCinclMEC_G00_00a_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/40Ar_BNBFlux/G00_00a/ origin/master_Q2_0_02
+	# NOvA
+
+	. ../submit_genie_cc_G00_00a_CH2_NOvAFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G00_00a_CH2_NOvAFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G00_00a_CH2_NOvAFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/CH_spline_CCinclMEC_G00_00a_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC_Flux_NOvA_ND_2017.root flux_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/CH2_NOvAFlux/G00_00a/ origin/master_Q2_0_02
+
+	. ../submit_genie_cc_G18_02a_CH2_NOvAFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_02a_CH2_NOvAFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_02a_CH2_NOvAFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/CH_spline_CCinclMEC_G18_02a_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC_Flux_NOvA_ND_2017.root flux_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/CH2_NOvAFlux/G18_02a/ origin/master_Q2_0_02
+
+. ../submit_genie_cc_G18_10a_CH2_NOvAFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_CH2_NOvAFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_10a_CH2_NOvAFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/CH_spline_CCinclMEC_G18_10a_02_11a_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC_Flux_NOvA_ND_2017.root flux_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/CH2_NOvAFlux/G2018/ origin/master_Q2_0_02
+
+. ../submit_genie_cc_GTEST19_10b_CH2_NOvAFlux_Q2_0_0_nuGENIE.sh 50 apapadop_GTEST19_10b_CH2_NOvAFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_GTEST19_10b_CH2_NOvAFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/CH_spline_CCinclMEC_GTEST19_10b_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC_Flux_NOvA_ND_2017.root flux_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/CH2_NOvAFlux/SuSav2/ origin/master_Q2_0_02
 
 
+	# T2K
+
+. ../submit_genie_cc_G00_00a_CH_T2KFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G00_00a_CH_T2KFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G00_00a_CH_T2KFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/CH_spline_CCinclMEC_G00_00a_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/t2kflux_2016_plus250kA.root enu_nd280_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/CH_T2KFlux/G00_00a/ origin/master_Q2_0_02
+
+. ../submit_genie_cc_G18_02a_CH_T2KFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_02a_CH_T2KFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_02a_CH_T2KFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/CH_spline_CCinclMEC_G18_02a_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/t2kflux_2016_plus250kA.root enu_nd280_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/CH_T2KFlux/G18_02a/ origin/master_Q2_0_02
+
+. ../submit_genie_cc_G18_10a_CH_T2KFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_CH_T2KFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_10a_CH_T2KFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/CH_spline_CCinclMEC_G18_10a_02_11a_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/t2kflux_2016_plus250kA.root enu_nd280_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/CH_T2KFlux/G2018/ origin/master_Q2_0_02
+
+. ../submit_genie_cc_GTEST19_10b_CH_T2KFlux_Q2_0_0_nuGENIE.sh 50 apapadop_GTEST19_10b_CH_T2KFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_GTEST19_10b_CH_T2KFlux_Q2_0_0_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/CH_spline_CCinclMEC_GTEST19_10b_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/t2kflux_2016_plus250kA.root enu_nd280_numu /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/CH_T2KFlux/SuSav2/ origin/master_Q2_0_02
+
+
+	# BNB
+
+	. ../submit_genie_cc_G00_00a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G00_00a_40Ar_BNBFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G00_00a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/argon40_spline_CCinclMEC_G00_00a_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/40Ar_BNBFlux/G00_00a/ origin/master_Q2_0_02
+
+	. ../submit_genie_cc_G18_02a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_02a_40Ar_BNBFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_02a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/argon40_spline_CCinclMEC_G18_02a_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/40Ar_BNBFlux/G18_02a/ origin/master_Q2_0_02
+
+
+	. ../submit_genie_cc_G18_10a_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_40Ar_BNBFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_10a_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/argon40_spline_CCinclMEC_G18_10a_02_11a_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/40Ar_BNBFlux/G2018/ origin/master_Q2_0_02
+
+	. ../submit_genie_cc_GTEST19_10b_40Ar_BNBFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_40Ar_BNBFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_GTEST19_10b_40Ar_BNBFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/argon40_spline_CCinclMEC_GTEST19_10b_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/MCC9_FluxHist_volTPCActive.root  hEnumu_cv /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/40Ar_BNBFlux/SuSav2/ origin/master_Q2_0_02
+
+
+	# DUNE
+
+	. ../submit_genie_cc_G00_00a_40Ar_DUNEFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G00_00a_40Ar_DUNEFlux_nuGENIE /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G00_00a_40Ar_DUNEFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/argon40_spline_CCinclMEC_G00_00a_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC-dune-ND-file.root numu_flux /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/40Ar_DUNEFlux/G00_00a/ origin/master_Q2_0_02
+
+	. ../submit_genie_cc_G18_02a_40Ar_DUNEFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_02a_40Ar_DUNEFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_02a_40Ar_DUNEFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/argon40_spline_CCinclMEC_G18_02a_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC-dune-ND-file.root numu_flux /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/40Ar_DUNEFlux/G18_02a/ origin/master_Q2_0_02
+
+	. ../submit_genie_cc_G18_10a_40Ar_DUNEFlux_Q2_0_0_nuGENIE.sh 50 apapadop_G18_10a_40Ar_DUNEFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_G18_10a_40Ar_DUNEFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/argon40_spline_CCinclMEC_G18_10a_02_11a_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC-dune-ND-file.root numu_flux /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/40Ar_DUNEFlux/G2018/ origin/master_Q2_0_02
+
+	. ../submit_genie_cc_GTEST19_10b_40Ar_DUNEFlux_Q2_0_0_nuGENIE.sh 50 apapadop_GTEST19_10b_40Ar_DUNEFlux_nuGENIE_Q2_0_02 /pnfs/genie/persistent/users/apapadop/Grid/args_cc_GTEST19_10b_40Ar_DUNEFlux_Q2_0_0_NoRad_nuGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_02/${GenieRelease}/argon40_spline_CCinclMEC_GTEST19_10b_00_000_Q2_0_02.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC-dune-ND-file.root numu_flux /pnfs/genie/scratch/users/apapadop/nuGENIE_grid_Q2_0_02/40Ar_DUNEFlux/SuSav2/ origin/master_Q2_0_02
 
 ###################################################################################################################################################################
 ###################################################################################################################################################################
@@ -91,21 +158,20 @@ export GenieRelease=v3_00_06_WithSuSav2
 
 	# NOvA
 
-. ../submit_genie_em_G2018_CH2_NOvAFlux_Q2_0_02_NoRad_eGENIE.sh 50 apapadop_G2018_CH2_NOvAFlux_NoRad /pnfs/genie/persistent/users/apapadop/Grid/args_em_G2018_CH2_NOvAFlux_Q2_0_02_NoRad_eGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_EMPlusMEC_G18_10a_02_11a.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC_Flux_NOvA_ND_2017.root flux_numu /pnfs/genie/scratch/users/apapadop/eGENIE_grid/CH2_NOvAFlux/G2018/ origin/master
+. ../submit_genie_em_G00_00a_CH2_NOvAFlux_Q2_0_02_NoRad_eGENIE.sh 50 apapadop_G00_00a_CH2_NOvAFlux_NoRad /pnfs/genie/persistent/users/apapadop/Grid/args_em_G00_00a_CH2_NOvAFlux_Q2_0_02_NoRad_eGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_EMPlusMEC_G00_00a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC_Flux_NOvA_ND_2017.root flux_numu /pnfs/genie/scratch/users/apapadop/eGENIE_grid/CH2_NOvAFlux/G00_00a/ origin/master
 
 . ../submit_genie_em_G18_02a_CH2_NOvAFlux_Q2_0_02_NoRad_eGENIE.sh 50 apapadop_G18_02a_CH2_NOvAFlux_NoRad /pnfs/genie/persistent/users/apapadop/Grid/args_em_G18_02a_CH2_NOvAFlux_Q2_0_02_NoRad_eGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_EMPlusMEC_G18_02a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC_Flux_NOvA_ND_2017.root flux_numu /pnfs/genie/scratch/users/apapadop/eGENIE_grid/CH2_NOvAFlux/G18_02a/ origin/master
 
-. ../submit_genie_em_G00_00a_CH2_NOvAFlux_Q2_0_02_NoRad_eGENIE.sh 50 apapadop_G00_00a_CH2_NOvAFlux_NoRad /pnfs/genie/persistent/users/apapadop/Grid/args_em_G00_00a_CH2_NOvAFlux_Q2_0_02_NoRad_eGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_EMPlusMEC_G00_00a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC_Flux_NOvA_ND_2017.root flux_numu /pnfs/genie/scratch/users/apapadop/eGENIE_grid/CH2_NOvAFlux/G00_00a/ origin/master
+. ../submit_genie_em_G2018_CH2_NOvAFlux_Q2_0_02_NoRad_eGENIE.sh 50 apapadop_G2018_CH2_NOvAFlux_NoRad /pnfs/genie/persistent/users/apapadop/Grid/args_em_G2018_CH2_NOvAFlux_Q2_0_02_NoRad_eGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_EMPlusMEC_G18_10a_02_11a.xml /pnfs/genie/persistent/users/apapadop/Grid/FHC_Flux_NOvA_ND_2017.root flux_numu /pnfs/genie/scratch/users/apapadop/eGENIE_grid/CH2_NOvAFlux/G2018/ origin/master
 
 
 	# T2K
 
-
-. ../submit_genie_em_G2018_CH_T2KFlux_Q2_0_02_NoRad_eGENIE.sh 50 apapadop_G2018_CH_T2KFlux_NoRad /pnfs/genie/persistent/users/apapadop/Grid/args_em_G2018_CH_T2KFlux_Q2_0_02_NoRad_eGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_EMPlusMEC_G18_10a_02_11a.xml /pnfs/genie/persistent/users/apapadop/Grid/t2kflux_2016_plus250kA.root enu_nd280_numu /pnfs/genie/scratch/users/apapadop/eGENIE_grid/CH_T2KFlux/G2018/ origin/master
+. ../submit_genie_em_G00_00a_CH_T2KFlux_Q2_0_02_NoRad_eGENIE.sh 50 apapadop_G00_00a_CH_T2KFlux_NoRad /pnfs/genie/persistent/users/apapadop/Grid/args_em_G00_00a_CH_T2KFlux_Q2_0_02_NoRad_eGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_EMPlusMEC_G00_00a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/t2kflux_2016_plus250kA.root enu_nd280_numu /pnfs/genie/scratch/users/apapadop/eGENIE_grid/CH_T2KFlux/G00_00a/ origin/master
 
 . ../submit_genie_em_G18_02a_CH_T2KFlux_Q2_0_02_NoRad_eGENIE.sh 50 apapadop_G18_02a_CH_T2KFlux_NoRad /pnfs/genie/persistent/users/apapadop/Grid/args_em_G18_02a_CH_T2KFlux_Q2_0_02_NoRad_eGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_EMPlusMEC_G18_02a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/t2kflux_2016_plus250kA.root enu_nd280_numu /pnfs/genie/scratch/users/apapadop/eGENIE_grid/CH_T2KFlux/G18_02a/ origin/master
 
-. ../submit_genie_em_G00_00a_CH_T2KFlux_Q2_0_02_NoRad_eGENIE.sh 50 apapadop_G00_00a_CH_T2KFlux_NoRad /pnfs/genie/persistent/users/apapadop/Grid/args_em_G00_00a_CH_T2KFlux_Q2_0_02_NoRad_eGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_EMPlusMEC_G00_00a_00_000.xml /pnfs/genie/persistent/users/apapadop/Grid/t2kflux_2016_plus250kA.root enu_nd280_numu /pnfs/genie/scratch/users/apapadop/eGENIE_grid/CH_T2KFlux/G00_00a/ origin/master
+. ../submit_genie_em_G2018_CH_T2KFlux_Q2_0_02_NoRad_eGENIE.sh 50 apapadop_G2018_CH_T2KFlux_NoRad /pnfs/genie/persistent/users/apapadop/Grid/args_em_G2018_CH_T2KFlux_Q2_0_02_NoRad_eGENIE.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/CH_spline_EMPlusMEC_G18_10a_02_11a.xml /pnfs/genie/persistent/users/apapadop/Grid/t2kflux_2016_plus250kA.root enu_nd280_numu /pnfs/genie/scratch/users/apapadop/eGENIE_grid/CH_T2KFlux/G2018/ origin/master
 
 
 	# BNB

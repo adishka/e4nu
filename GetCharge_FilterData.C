@@ -1065,7 +1065,7 @@ void GetCharge_FilterData::Loop()
 
 		// Extra layer of fiducials for electrons
 
-		double theta_min = myElectronFit->Eval(el_mom1.Mag());
+		double theta_min = myElectronFit->Eval(el_mom1.Mag()); // in deg
 		if (el_theta < theta_min) { continue; }
 
 		ElectronFid_Counter++;

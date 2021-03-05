@@ -45,7 +45,36 @@ void flux_avg_tot_cc_xsec(const std::string& flux_filename,
 
   TFile spline_file( spline_filename.c_str(), "read" );
   TGraph* spline_graph = nullptr;
-  spline_file.GetObject("nu_mu_Ar40/tot_cc", spline_graph); // CC inclusive
+
+//  spline_file.GetObject("nu_mu_Ar40/tot_cc", spline_graph); // CC inclusive
+
+	// --------------------------------------------------------------------------------------------
+
+	// CC inclusive
+
+	if ( string(spline_filename).find("CCinclMEC") != std::string::npos && string(spline_filename).find("argon") != std::string::npos) 
+		{ spline_file.GetObject("nu_mu_Ar40/tot_cc", spline_graph); }
+
+	if ( string(spline_filename).find("CCinclMEC") != std::string::npos && string(spline_filename).find("hydrogen1") != std::string::npos) 
+		{ spline_file.GetObject("nu_mu_H1/tot_cc", spline_graph); }
+
+	if ( string(spline_filename).find("CCinclMEC") != std::string::npos && string(spline_filename).find("carbon12") != std::string::npos) 
+		{ spline_file.GetObject("nu_mu_C12/tot_cc", spline_graph); }
+
+	// --------------------------------------------------------------------------------------------
+
+	// EM inclusive
+
+	if ( string(spline_filename).find("EM+MEC") != std::string::npos && string(spline_filename).find("argon") != std::string::npos) 
+		{ spline_file.GetObject("e-_Ar40/tot_em", spline_graph); }
+
+	if ( string(spline_filename).find("EM+MEC") != std::string::npos && string(spline_filename).find("hydrogen1") != std::string::npos) 
+		{ spline_file.GetObject("e-_H1/tot_em", spline_graph); }
+
+	if ( string(spline_filename).find("EM+MEC") != std::string::npos && string(spline_filename).find("carbon12") != std::string::npos) 
+		{ spline_file.GetObject("e-_C12/tot_em", spline_graph); }
+
+	// --------------------------------------------------------------------------------------------
 
   double totalXSecAvg = flux_averaged_total_xsec(*flux_hist, *spline_graph);
 

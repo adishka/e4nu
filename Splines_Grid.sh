@@ -56,6 +56,8 @@ for nucleus in "${Nuclei[@]}";
 
 # Splines for Pilar (nu_e / nu_tau / anti_nu_mu / anti_nu_e / anti_nu_tau x G2018/SuSav2) # nu_mu has been produced above
 
+./cc_nu_mu_submit_splines_G18_10a_02_11a_12C.sh cc_nu_mu_apapadop_G18_10a_02_11a_12C /pnfs/genie/persistent/users/apapadop/Grid/cc_nu_mu_args_spline_G18_10a_02_11a_12C.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/ origin/master
+
 ./cc_nu_e_submit_splines_G18_10a_02_11a_12C.sh cc_nu_e_apapadop_G18_10a_02_11a_12C /pnfs/genie/persistent/users/apapadop/Grid/cc_nu_e_args_spline_G18_10a_02_11a_12C.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/ origin/master
 
 ./cc_nu_tau_submit_splines_G18_10a_02_11a_12C.sh cc_nu_tau_apapadop_G18_10a_02_11a_12C /pnfs/genie/persistent/users/apapadop/Grid/cc_nu_tau_args_spline_G18_10a_02_11a_12C.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/ origin/master
@@ -66,6 +68,8 @@ for nucleus in "${Nuclei[@]}";
 
 ./cc_anti_nu_tau_submit_splines_G18_10a_02_11a_12C.sh cc_anti_nu_tau_apapadop_G18_10a_02_11a_12C /pnfs/genie/persistent/users/apapadop/Grid/cc_anti_nu_tau_args_spline_G18_10a_02_11a_12C.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/ origin/master
 
+
+./cc_nu_mu_submit_splines_GTEST19_10b_00_000_12C.sh cc_nu_mu_apapadop_GTEST19_10b_00_000_12C /pnfs/genie/persistent/users/apapadop/Grid/cc_nu_mu_args_spline_GTEST19_10b_00_000_12C.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/ origin/master
 
 ./cc_nu_e_submit_splines_GTEST19_10b_00_000_12C.sh cc_nu_e_apapadop_GTEST19_10b_00_000_12C /pnfs/genie/persistent/users/apapadop/Grid/cc_nu_e_args_spline_GTEST19_10b_00_000_12C.txt /pnfs/genie/persistent/users/apapadop/mySplines/master/${GenieRelease}/ origin/master
 
@@ -88,8 +92,16 @@ for nucleus in "${Nuclei[@]}";
 
 ###############################################################################################################################################################################################
 
-# default nu mu (CC + NC nu mu) Q2 > 0.1
+# default & NC nu mu (CC + NC nu mu) Q2 > 0.1
 
 ./default_nu_mu_submit_splines_G18_10a_02_11a_12C.sh default_nu_mu_apapadop_G18_10a_02_11a_12C /pnfs/genie/persistent/users/apapadop/Grid/default_nu_mu_args_spline_G18_10a_02_11a_12C.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_1/${GenieRelease}/ origin/master_Q2_0_1
 
+./default_nu_mu_submit_splines_GTEST19_10b_00_000_12C.sh default_nu_mu_apapadop_GTEST19_10b_00_000_12C /pnfs/genie/persistent/users/apapadop/Grid/default_nu_mu_args_spline_GTEST19_10b_00_000_12C.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_1/${GenieRelease}/ origin/master_Q2_0_1
 
+./nc_nu_mu_submit_splines_G18_10a_02_11a_12C.sh nc_nu_mu_apapadop_G18_10a_02_11a_12C /pnfs/genie/persistent/users/apapadop/Grid/nc_nu_mu_args_spline_G18_10a_02_11a_12C.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_1/${GenieRelease}/ origin/master_Q2_0_1
+
+./nc_nu_mu_submit_splines_GTEST19_10b_00_000_12C.sh nc_nu_mu_apapadop_GTEST19_10b_00_000_12C /pnfs/genie/persistent/users/apapadop/Grid/nc_nu_mu_args_spline_GTEST19_10b_00_000_12C.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_1/${GenieRelease}/ origin/master_Q2_0_1
+
+./ncmec_nu_mu_submit_splines_G18_10a_02_11a_12C.sh ncmec_nu_mu_apapadop_G18_10a_02_11a_12C /pnfs/genie/persistent/users/apapadop/Grid/ncmec_nu_mu_args_spline_G18_10a_02_11a_12C.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_1/${GenieRelease}/ origin/master_Q2_0_1
+
+./ncmec_nu_mu_submit_splines_GTEST19_10b_00_000_12C.sh ncmec_nu_mu_apapadop_GTEST19_10b_00_000_12C /pnfs/genie/persistent/users/apapadop/Grid/ncmec_nu_mu_args_spline_GTEST19_10b_00_000_12C.txt /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_1/${GenieRelease}/ origin/master_Q2_0_1

@@ -95,10 +95,34 @@ void treeProducer_simulation::Loop() {
 	// -------------------------------------------------------------------------------
 
 	TH1D* Q2Plot = new TH1D("Q2Plot",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
+	TH1D* UnweightedQ2Plot = new TH1D("UnweightedQ2Plot",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
 	TH1D* Q2Plot_OneProton = new TH1D("Q2Plot_OneProton",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
+	TH1D* UnweightedQ2Plot_OneProton = new TH1D("UnweightedQ2Plot_OneProton",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
+	TH1D* QEQ2Plot_OneProton = new TH1D("QEQ2Plot_OneProton",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
+	TH1D* UnweightedQEQ2Plot_OneProton = new TH1D("UnweightedQEQ2Plot_OneProton",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
+	TH1D* MECQ2Plot_OneProton = new TH1D("MECQ2Plot_OneProton",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
+	TH1D* UnweightedMECQ2Plot_OneProton = new TH1D("UnweightedMECQ2Plot_OneProton",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
+	TH1D* RESQ2Plot_OneProton = new TH1D("RESQ2Plot_OneProton",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
+	TH1D* UnweightedRESQ2Plot_OneProton = new TH1D("UnweightedRESQ2Plot_OneProton",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
+	TH1D* DISQ2Plot_OneProton = new TH1D("DISQ2Plot_OneProton",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
+	TH1D* UnweightedDISQ2Plot_OneProton = new TH1D("UnweightedDISQ2Plot_OneProton",TitleQ2,NBinsQ2,MinQ2,MaxQ2);
+
 	TH1D* xBPlot = new TH1D("xBPlot",TitlexB,NBinsxB,MinxB,MaxxB);
+
 	TH1D* nuPlot = new TH1D("nuPlot",Titlenu,NBinsnu,Minnu,Maxnu);
+	TH1D* UnweightednuPlot = new TH1D("UnweightednuPlot",Titlenu,NBinsnu,Minnu,Maxnu);
 	TH1D* nuPlot_OneProton = new TH1D("nuPlot_OneProton",Titlenu,NBinsnu,Minnu,Maxnu);
+	TH1D* UnweightednuPlot_OneProton = new TH1D("UnweightednuPlot_OneProton",Titlenu,NBinsnu,Minnu,Maxnu);
+	TH1D* QEnuPlot_OneProton = new TH1D("QEnuPlot_OneProton",Titlenu,NBinsnu,Minnu,Maxnu);
+	TH1D* UnweightedQEnuPlot_OneProton = new TH1D("UnweightedQEnuPlot_OneProton",Titlenu,NBinsnu,Minnu,Maxnu);
+	TH1D* MECnuPlot_OneProton = new TH1D("MECnuPlot_OneProton",Titlenu,NBinsnu,Minnu,Maxnu);
+	TH1D* UnweightedMECnuPlot_OneProton = new TH1D("UnweightedMECnuPlot_OneProton",Titlenu,NBinsnu,Minnu,Maxnu);
+	TH1D* RESnuPlot_OneProton = new TH1D("RESnuPlot_OneProton",Titlenu,NBinsnu,Minnu,Maxnu);
+	TH1D* UnweightedRESnuPlot_OneProton = new TH1D("UnweightedRESnuPlot_OneProton",Titlenu,NBinsnu,Minnu,Maxnu);
+	TH1D* DISnuPlot_OneProton = new TH1D("DISnuPlot_OneProton",Titlenu,NBinsnu,Minnu,Maxnu);
+	TH1D* UnweightedDISnuPlot_OneProton = new TH1D("UnweightedDISnuPlot_OneProton",Titlenu,NBinsnu,Minnu,Maxnu);
+
+
 	TH1D* WPlot = new TH1D("WPlot",TitleW,NBinsW,MinW,MaxW);
 	TH1D* PionMultiPlot = new TH1D("PionMultiPlot",TitlePionMulti,NBinsPionMulti,MinPionMulti,MaxPionMulti);
 	TH1D* PionMultiQEPlot = new TH1D("PionMultiQEPlot",TitlePionMulti,NBinsPionMulti,MinPionMulti,MaxPionMulti);
@@ -124,6 +148,8 @@ void treeProducer_simulation::Loop() {
 	TH2D* EpVsMissMomentumPlot = new TH2D("EpVsMissMomentumPlot",TitleProtonEnergyVsMissMomentum,NBinsPmiss,MinPmiss,MaxPmiss,NBinsEp,MinEp,MaxEp);
 	TH2D* Q2VsMissMomentumPlot = new TH2D("Q2VsMissMomentumPlot",TitleQ2VsMissMomentum,NBinsPmiss,MinPmiss,MaxPmiss,NBinsQ2,MinQ2,MaxQ2);
 
+	// -------------------------------------------------------------------------------------
+
 	TH1D* DeltaPhiTPlot = new TH1D("DeltaPhiTPlot",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
 	TH1D* DeltaAlphaTPlot = new TH1D("DeltaAlphaTPlot",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
 	TH1D* MissMomentumPlot = new TH1D("MissMomentumPlot",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
@@ -132,9 +158,23 @@ void treeProducer_simulation::Loop() {
 	TH1D* QEDeltaAlphaTPlot_OneProton = new TH1D("QEDeltaAlphaTPlot_OneProton",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
 	TH1D* QEMissMomentumPlot_OneProton = new TH1D("QEMissMomentumPlot_OneProton",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
 
+	TH1D* MECDeltaPhiTPlot_OneProton = new TH1D("MECDeltaPhiTPlot_OneProton",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
+	TH1D* MECDeltaAlphaTPlot_OneProton = new TH1D("MECDeltaAlphaTPlot_OneProton",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
+	TH1D* MECMissMomentumPlot_OneProton = new TH1D("MECMissMomentumPlot_OneProton",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
+
+	TH1D* RESDeltaPhiTPlot_OneProton = new TH1D("RESDeltaPhiTPlot_OneProton",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
+	TH1D* RESDeltaAlphaTPlot_OneProton = new TH1D("RESDeltaAlphaTPlot_OneProton",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
+	TH1D* RESMissMomentumPlot_OneProton = new TH1D("RESMissMomentumPlot_OneProton",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
+
+	TH1D* DISDeltaPhiTPlot_OneProton = new TH1D("DISDeltaPhiTPlot_OneProton",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
+	TH1D* DISDeltaAlphaTPlot_OneProton = new TH1D("DISDeltaAlphaTPlot_OneProton",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
+	TH1D* DISMissMomentumPlot_OneProton = new TH1D("DISMissMomentumPlot_OneProton",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
+
 	TH1D* DeltaPhiTPlot_OneProton = new TH1D("DeltaPhiT_OneProtonPlot",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
 	TH1D* DeltaAlphaTPlot_OneProton = new TH1D("DeltaAlphaT_OneProtonPlot",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
 	TH1D* MissMomentumPlot_OneProton = new TH1D("MissMomentum_OneProtonPlot",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
+
+	// -------------------------------------------------------------------------------------
 
 	TH1D* DeltaPhiTPlot_VectorSum = new TH1D("DeltaPhiT_VectorSumPlot",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
 	TH1D* DeltaAlphaTPlot_VectorSum = new TH1D("DeltaAlphaT_VectorSumPlot",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
@@ -193,6 +233,13 @@ void treeProducer_simulation::Loop() {
 
 	TH2D* QE_Q0_Q3_Plot = new TH2D("QE_Q0_Q3_Plot",";q_{3} [GeV/c];q_{0} [GeV]",200,0,2.,200,0.,2.);
 	TH2D* MEC_Q0_Q3_Plot = new TH2D("MEC_Q0_Q3_Plot",";q_{3} [GeV/c];q_{0} [GeV]",200,0,2.,200,0.,2.);
+	TH2D* RES_Q0_Q3_Plot = new TH2D("RES_Q0_Q3_Plot",";q_{3} [GeV/c];q_{0} [GeV]",200,0,2.,200,0.,2.);
+	TH2D* DIS_Q0_Q3_Plot = new TH2D("DIS_Q0_Q3_Plot",";q_{3} [GeV/c];q_{0} [GeV]",200,0,2.,200,0.,2.);
+
+	TH2D* UnweightedQE_Q0_Q3_Plot = new TH2D("UnweightedQE_Q0_Q3_Plot",";q_{3} [GeV/c];q_{0} [GeV]",200,0,2.,200,0.,2.);
+	TH2D* UnweightedMEC_Q0_Q3_Plot = new TH2D("UnweightedMEC_Q0_Q3_Plot",";q_{3} [GeV/c];q_{0} [GeV]",200,0,2.,200,0.,2.);
+	TH2D* UnweightedRES_Q0_Q3_Plot = new TH2D("UnweightedRES_Q0_Q3_Plot",";q_{3} [GeV/c];q_{0} [GeV]",200,0,2.,200,0.,2.);
+	TH2D* UnweightedDIS_Q0_Q3_Plot = new TH2D("UnweightedDIS_Q0_Q3_Plot",";q_{3} [GeV/c];q_{0} [GeV]",200,0,2.,200,0.,2.);
 
 	// -------------------------------------------------------------------------------------------------------------
 
@@ -325,6 +372,8 @@ void treeProducer_simulation::Loop() {
 
 		Q2Plot->Fill(Q2,Weight);
 		nuPlot->Fill(nu,Weight);
+		UnweightedQ2Plot->Fill(Q2);
+		UnweightednuPlot->Fill(nu);
 		WPlot->Fill(W,Weight);
 		xBPlot->Fill(x,Weight);
 
@@ -342,8 +391,10 @@ void treeProducer_simulation::Loop() {
 		Q2VsWPlot->Fill(W,Q2,Weight);
 		Q2VsnuPlot->Fill(nu,Q2,Weight);
 
-		if (qel == 1) { QE_Q0_Q3_Plot->Fill(q3,nu,Weight); }
-		if (mec == 1) { MEC_Q0_Q3_Plot->Fill(q3,nu,Weight); }
+		if (qel == 1) { QE_Q0_Q3_Plot->Fill(q3,nu,Weight); UnweightedQE_Q0_Q3_Plot->Fill(q3,nu); }
+		if (mec == 1) { MEC_Q0_Q3_Plot->Fill(q3,nu,Weight); UnweightedMEC_Q0_Q3_Plot->Fill(q3,nu); }
+		if (res == 1) { RES_Q0_Q3_Plot->Fill(q3,nu,Weight); UnweightedRES_Q0_Q3_Plot->Fill(q3,nu); }
+		if (dis == 1) { DIS_Q0_Q3_Plot->Fill(q3,nu,Weight); UnweightedDIS_Q0_Q3_Plot->Fill(q3,nu); }
 
 		// -------------------------------------------------------------------------------------
 
@@ -447,15 +498,66 @@ void treeProducer_simulation::Loop() {
 			Q2Plot_OneProton->Fill(Q2,Weight);
 			nuPlot_OneProton->Fill(nu,Weight);
 
+			UnweightedQ2Plot_OneProton->Fill(Q2);
+			UnweightednuPlot_OneProton->Fill(nu);
+
 			DeltaPhiTPlot_OneProton->Fill(DeltaPhiT,Weight);
 			DeltaAlphaTPlot_OneProton->Fill(DeltaAlphaT,Weight);
 			MissMomentumPlot_OneProton->Fill(MissMomentumTMag,Weight);
 
 			if (qel) {
 
+				QEnuPlot_OneProton->Fill(nu,Weight);
+				UnweightedQEnuPlot_OneProton->Fill(nu);
+
+				QEQ2Plot_OneProton->Fill(Q2,Weight);
+				UnweightedQEQ2Plot_OneProton->Fill(Q2);
+
 				QEDeltaPhiTPlot_OneProton->Fill(DeltaPhiT,Weight);
 				QEDeltaAlphaTPlot_OneProton->Fill(DeltaAlphaT,Weight);
 				QEMissMomentumPlot_OneProton->Fill(MissMomentumTMag,Weight);
+
+			}
+
+			if (mec) {
+
+				MECnuPlot_OneProton->Fill(nu,Weight);
+				UnweightedMECnuPlot_OneProton->Fill(nu);
+
+				MECQ2Plot_OneProton->Fill(Q2,Weight);
+				UnweightedMECQ2Plot_OneProton->Fill(Q2);
+
+				MECDeltaPhiTPlot_OneProton->Fill(DeltaPhiT,Weight);
+				MECDeltaAlphaTPlot_OneProton->Fill(DeltaAlphaT,Weight);
+				MECMissMomentumPlot_OneProton->Fill(MissMomentumTMag,Weight);
+
+			}
+
+			if (res) {
+
+				RESnuPlot_OneProton->Fill(nu,Weight);
+				UnweightedRESnuPlot_OneProton->Fill(nu);
+
+				RESQ2Plot_OneProton->Fill(Q2,Weight);
+				UnweightedRESQ2Plot_OneProton->Fill(Q2);
+
+				RESDeltaPhiTPlot_OneProton->Fill(DeltaPhiT,Weight);
+				RESDeltaAlphaTPlot_OneProton->Fill(DeltaAlphaT,Weight);
+				RESMissMomentumPlot_OneProton->Fill(MissMomentumTMag,Weight);
+
+			}
+
+			if (dis) {
+
+				DISnuPlot_OneProton->Fill(nu,Weight);
+				UnweightedDISnuPlot_OneProton->Fill(nu);
+
+				DISQ2Plot_OneProton->Fill(Q2,Weight);
+				UnweightedDISQ2Plot_OneProton->Fill(Q2);
+
+				DISDeltaPhiTPlot_OneProton->Fill(DeltaPhiT,Weight);
+				DISDeltaAlphaTPlot_OneProton->Fill(DeltaAlphaT,Weight);
+				DISMissMomentumPlot_OneProton->Fill(MissMomentumTMag,Weight);
 
 			}
 

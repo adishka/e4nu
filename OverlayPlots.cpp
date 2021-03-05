@@ -128,7 +128,7 @@ void OverlayPlots() {
 
 //	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data (failure)"); DirNames.push_back("Data");
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Data (Florian's rethrow)"); DirNames.push_back("Data");
-//	FSIModel.push_back("Pinned_Data_NewFiducials_SixSectors"); FSILabel.push_back("Data (New map)"); DirNames.push_back("Data_New_Fiducials");
+	FSIModel.push_back("Pinned_Data_NewFiducials_SixSectors"); FSILabel.push_back("Data (New map)"); DirNames.push_back("Data_New_Fiducials");
 
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Playground"); FSILabel.push_back("Genie Playground");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Offset"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
@@ -143,11 +143,13 @@ void OverlayPlots() {
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc_Test"); FSILabel.push_back("SuSav2 Reco 0pi / No Maps");  DirNames.push_back("SuSav2_Reco_0pi");
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("SuSav2 Reco 0pi");  DirNames.push_back("SuSav2_Reco_0pi");
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("SuSav2 True 0pi");  DirNames.push_back("SuSav2_True_0pi");
+//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc"); FSILabel.push_back("SuSav2 Reco 0pi");  DirNames.push_back("SuSav2_Reco_0pi");
+//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("SuSav2 True 0pi");  DirNames.push_back("SuSav2_True_0pi");
 
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2 (Default)");  DirNames.push_back("SuSav2_Truth_NoRadCorr");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Test"); FSILabel.push_back("SuSav2 (Test)");  DirNames.push_back("SuSav2_Truth_NoRadCorr_Test");
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (e4v No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2 (Ext Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad adi_radcorr)");  DirNames.push_back("SuSav2_Truth_RadCorr");
@@ -227,7 +229,7 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("h1_xbjkCal_weight"); LabelOfPlots.push_back("Reconstructed x_{B}"); OutputPlotNames.push_back("xBCal");
 //	NameOfPlots.push_back("h1_nuCal_weight"); LabelOfPlots.push_back("Reconstructed Energy Transfer [GeV]"); OutputPlotNames.push_back("nuCal");
 //	NameOfPlots.push_back("h1_WvarCal_weight"); LabelOfPlots.push_back("Reconstructed W [GeV / c^{2})]"); OutputPlotNames.push_back("WCal");
-	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h1_EQE_FullyInclusive"); LabelOfPlots.push_back("(e,e') E^{QE} [GeV]");  OutputPlotNames.push_back("FullyInclusiveeRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h1_W_weight_ThetaSlice_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} W [GeV]");  OutputPlotNames.push_back("h1_Wvar_weight");
 //	NameOfPlots.push_back("h1_E_rec"); LabelOfPlots.push_back("(e,e') E^{QE} [GeV]");  OutputPlotNames.push_back("FullyInclusiveeRecoEnergy_slice_0");

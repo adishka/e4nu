@@ -219,7 +219,7 @@ void getMatrix() {
 
 			}
 
-			hie->Scale(1./hie->Integral()); // Adi, same question here, if xsecs vs weighted events 
+			hie->Scale(1./hie->Integral()); // here we need the area normalization
 			hies.push_back(hie);
 
 		}

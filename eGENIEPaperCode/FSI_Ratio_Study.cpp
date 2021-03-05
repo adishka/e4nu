@@ -74,19 +74,38 @@ void FSI_Ratio_Study() {
 
 	// Must be introduced in pairs (FSI / NoFSI)
 
-	std::vector<TString> FSIModel;std::vector<TString> FSILabel; 
+	std::vector<TString> FSIModel;std::vector<TString> FSILabel; std::vector<TString> RatioLabel; 
 
-	FSIModel.push_back("GTEST19_10b_00_000_CCinclMEC");FSILabel.push_back("#nu w/  FSI"); Colors.push_back(kBlue-7); Styles.push_back(kSolid); 
-	NEvents.push_back(3000000); GenieXSec.push_back(14.616779);
+	FSIModel.push_back("GTEST19_10b_00_000_CCinclMEC_Q2_0_1_NoFSI"); NEvents.push_back(10000000); GenieXSec.push_back(14.616779);
+	FSIModel.push_back("GTEST19_10b_00_000_CCinclMEC_Q2_0_1"); NEvents.push_back(10000000); GenieXSec.push_back(14.616779);
+	FSIModel.push_back("GTEST19_10b_00_000_EM+MEC_Q2_0_1_NoFSI"); NEvents.push_back(9900000); GenieXSec.push_back(1.2896728e+09);
+	FSIModel.push_back("GTEST19_10b_00_000_EM+MEC_Q2_0_1"); NEvents.push_back(9900000); GenieXSec.push_back(1.2896728e+09);
 
-	FSIModel.push_back("GTEST19_10b_00_000_NoFSI_CCinclMEC");FSILabel.push_back("#nu w/o FSI"); Colors.push_back(kBlue-7); Styles.push_back(kDashed); 
-	NEvents.push_back(1000000); GenieXSec.push_back(14.616779);
+//	FSIModel.push_back("G18_10a_02_11a_CCinclMEC_Q2_0_1"); NEvents.push_back(10000000); GenieXSec.push_back(14.616779);
+//	FSIModel.push_back("G18_10a_02_11a_CCinclMEC_Q2_0_1_NoFSI"); NEvents.push_back(10000000); GenieXSec.push_back(14.616779);
+//	FSIModel.push_back("G18_10a_02_11a_EM+MEC_Q2_0_1"); NEvents.push_back(9600000); GenieXSec.push_back(1.2896728e+09);
+//	FSIModel.push_back("G18_10a_02_11a_EM+MEC_Q2_0_1_NoFSI"); NEvents.push_back(10000000); GenieXSec.push_back(1.2896728e+09);
 
-	FSIModel.push_back("GTEST19_10b_00_000_EM+MEC");FSILabel.push_back("e w/  FSI (x3 #upoint 10^{-7})"); Colors.push_back(kOrange+1); Styles.push_back(kSolid); 
-	NEvents.push_back(19600000); GenieXSec.push_back(1.2896728e+09);
+	FSILabel.push_back("#nu w/o FSI");
+	FSILabel.push_back("#nu w/  FSI"); 
+	FSILabel.push_back("e w/o FSI");
+	FSILabel.push_back("e w/  FSI");
 
-	FSIModel.push_back("GTEST19_10b_00_000_NoFSI_EM+MEC");FSILabel.push_back("e w/o FSI (x3 #upoint 10^{-7})"); Colors.push_back(kOrange+1); Styles.push_back(kDashed); 
-	NEvents.push_back(1000000); GenieXSec.push_back(1.2896728e+09);
+	RatioLabel.push_back("#nu"); 
+	RatioLabel.push_back("#nu");
+	RatioLabel.push_back("e");
+	RatioLabel.push_back("e");
+
+
+	Colors.push_back(kBlue-7); 
+	Colors.push_back(kBlue-7);
+	Colors.push_back(kOrange+1);
+	Colors.push_back(kOrange+1);
+
+	Styles.push_back(kDashed);
+	Styles.push_back(kSolid);
+	Styles.push_back(kDashed); 
+	Styles.push_back(kSolid);
 	
 	//FSIModel.push_back("G18_10a_02_11a_CCinclMEC");FSILabel.push_back("#nu G2018");
 	//FSIModel.push_back("G18_10a_02_11a_EM+MEC");FSILabel.push_back("e G2018");
@@ -96,6 +115,41 @@ void FSI_Ratio_Study() {
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	std::vector<TString> NameOfPlots;
+	std::vector<double> IntegralPlots;
+
+	IntegralPlots.push_back(1.);
+	IntegralPlots.push_back(1.);
+	IntegralPlots.push_back(1.);
+	IntegralPlots.push_back(1.);
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//	NameOfPlots.push_back("MissMomentum_OneProtonPlot"); 
+//	NameOfPlots.push_back("MissMomentum_OneProtonPlot"); 
+//	NameOfPlots.push_back("MissMomentum_OneProtonPlot"); 
+//	NameOfPlots.push_back("MissMomentum_OneProtonPlot"); 
+
+//	NameOfPlots.push_back("QEMissMomentumPlot_OneProton");
+//	NameOfPlots.push_back("QEMissMomentumPlot_OneProton");
+//	NameOfPlots.push_back("QEMissMomentumPlot_OneProton");
+//	NameOfPlots.push_back("QEMissMomentumPlot_OneProton");
+
+//	NameOfPlots.push_back("MECMissMomentumPlot_OneProton");
+//	NameOfPlots.push_back("MECMissMomentumPlot_OneProton");
+//	NameOfPlots.push_back("MECMissMomentumPlot_OneProton");
+//	NameOfPlots.push_back("MECMissMomentumPlot_OneProton");
+
+	NameOfPlots.push_back("RESMissMomentumPlot_OneProton");
+	NameOfPlots.push_back("RESMissMomentumPlot_OneProton");
+	NameOfPlots.push_back("RESMissMomentumPlot_OneProton");
+	NameOfPlots.push_back("RESMissMomentumPlot_OneProton");
+
+//	NameOfPlots.push_back("DISMissMomentumPlot_OneProton");
+//	NameOfPlots.push_back("DISMissMomentumPlot_OneProton");
+//	NameOfPlots.push_back("DISMissMomentumPlot_OneProton");
+//	NameOfPlots.push_back("DISMissMomentumPlot_OneProton");
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //	NameOfPlots.push_back("nu");
 //      NameOfPlots.push_back("Q2");
@@ -118,7 +172,7 @@ void FSI_Ratio_Study() {
 //	NameOfPlots.push_back("DeltaPhiT_VectorSum");
 
 //	NameOfPlots.push_back("QEMissMomentum_OneProton");                                                                                                                                            
-	NameOfPlots.push_back("MissMomentum_OneProton");                                                                                                                                            
+//	NameOfPlots.push_back("MissMomentum_OneProton");                                                                                                                                            
 //      NameOfPlots.push_back("DeltaAlphaT_OneProton");                                                                                                                                               
 //      NameOfPlots.push_back("DeltaPhiT_OneProton");
 
@@ -143,9 +197,9 @@ void FSI_Ratio_Study() {
 
 			// Loop over the plots
 
-			for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
+			//for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
-			        TString CanvasName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]; 
+			        TString CanvasName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]; 
 				TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768) ;
 
 				PlotCanvas->SetBottomMargin(0.14);
@@ -158,16 +212,20 @@ void FSI_Ratio_Study() {
 				leg->SetNColumns(1);
 				leg->SetMargin(0.15);
 
+				TLegend* legRatio = new TLegend(0.75,0.8,0.89,0.89);
+				legRatio->SetNColumns(2);
+				legRatio->SetMargin(0.15);
+
 				double max = -99.;
 
 				// Loop over the FSI Models
 				
 				for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-					TString PathToFiles = "myFiles/save/";
+					TString PathToFiles = "myFiles/";
 					TFile* FileSample = TFile::Open(PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+".root");
 
-					Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]+"Plot") ) );
+					Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichFSIModel]) ) );
 					
 					Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
 					Plots[WhichFSIModel]->SetLineStyle(Styles[WhichFSIModel]);
@@ -187,7 +245,8 @@ void FSI_Ratio_Study() {
 					Plots[WhichFSIModel]->GetYaxis()->SetTitleSize(TextSize);
 					Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(Ndivisions);
 					Plots[WhichFSIModel]->GetYaxis()->SetTitleOffset(1.2);
-					Plots[WhichFSIModel]->GetYaxis()->SetTitle("#frac{d#sigma}{dP_{T}} #left[#frac{10^{-38}}{GeV/c ^{12}C}#right]");
+//					Plots[WhichFSIModel]->GetYaxis()->SetTitle("#frac{d#sigma}{dP_{T}} #left[#frac{10^{-38}}{GeV/c ^{12}C}#right]");
+					Plots[WhichFSIModel]->GetYaxis()->SetTitle("Area Normalized");
 					Plots[WhichFSIModel]->GetYaxis()->CenterTitle();
 
 					TLegendEntry* l1 = leg->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel], "l");
@@ -195,11 +254,18 @@ void FSI_Ratio_Study() {
 
 					Plots[WhichFSIModel]->Rebin();
 				
-					double ExtraSF = 1.;
-					if (string(FSIModel[WhichFSIModel]).find("EM+MEC") != std::string::npos) { ExtraSF = 3*1E-7; }
-					double ScalingFactor = GenieXSec[WhichFSIModel] / NEvents[WhichFSIModel] * ExtraSF;
+					//double ExtraSF = 1.;
+					//if (string(FSIModel[WhichFSIModel]).find("EM+MEC") != std::string::npos) { ExtraSF = 3*1E-7; }
+//					double ScalingFactor = GenieXSec[WhichFSIModel] / NEvents[WhichFSIModel] * ExtraSF;
 
-					Reweight(Plots[WhichFSIModel]);
+					IntegralPlots[WhichFSIModel] = Plots[WhichFSIModel]->Integral();
+					int PlotIndex = std::floor(WhichFSIModel/2) == 0? 0:2;
+cout << "Plot Index = " << PlotIndex << endl;
+					double ScalingFactor = 1./IntegralPlots[PlotIndex];
+
+//					double ScalingFactor = 1.;
+
+					//Reweight(Plots[WhichFSIModel]);
 
 					Plots[WhichFSIModel]->Scale(ScalingFactor);
 
@@ -224,13 +290,14 @@ void FSI_Ratio_Study() {
 				latex->SetTextSize(0.07);			
 				//latex->DrawLatexNDC(0.2,0.4,LabelsOfSamples[WhichNucleus]+LabelE[WhichEnergy]);
 
-				PlotCanvas->SaveAs("myPlots/"+nucleus[WhichNucleus]+"_" +E[WhichEnergy]+"_" +NameOfPlots[WhichPlot]+"_SuSav2.pdf"); 
+				//PlotCanvas->SaveAs("myPlots/"+nucleus[WhichNucleus]+"_" +E[WhichEnergy]+"_" +NameOfPlots[WhichPlot]+"_SuSav2.pdf"); 
 
 				// ----------------------------------------------------------------------------------------------------------------------
 
 				// Ratio plot to quantify FSI effect on e/v
 
-			        TString RatioCanvasName = "Ratio_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]; 
+			        //TString RatioCanvasName = "Ratio_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]; 
+			        TString RatioCanvasName = "Ratio_"+nucleus[WhichNucleus]+"_"+E[WhichEnergy]; 
 				TCanvas* RatioPlotCanvas = new TCanvas(RatioCanvasName,RatioCanvasName,205,34,1024,768) ;
 
 				RatioPlotCanvas->SetBottomMargin(0.14);
@@ -253,20 +320,29 @@ void FSI_Ratio_Study() {
 
  				for (int WhichRatio = 0; WhichRatio < NRatios; WhichRatio ++) {
 
-					Ratios[WhichRatio]->GetYaxis()->SetRangeUser(0.,3.);
-					Ratios[WhichRatio]->GetYaxis()->SetTitle("FSI / No FSI");
+					Ratios[WhichRatio]->GetYaxis()->SetRangeUser(0.,4.);
+					Ratios[WhichRatio]->GetYaxis()->SetTitle("No FSI / FSI");
 					Ratios[WhichRatio]->GetYaxis()->SetTitleOffset(0.9);
 					Ratios[WhichRatio]->GetYaxis()->SetNdivisions(5);
 
-					Ratios[WhichRatio]->Draw("e hist same");
+					Ratios[WhichRatio]->SetLineStyle(kSolid);
+					Ratios[WhichRatio]->Draw("hist same");
+
+					TLegendEntry* l1 = legRatio->AddEntry(Ratios[WhichRatio],RatioLabel[2*WhichRatio], "l");
+					l1->SetTextColor(Colors[2*WhichRatio]);
 
 				}
 
-				RatioPlotCanvas->SaveAs("myPlots/Ratio_"+nucleus[WhichNucleus]+"_" +E[WhichEnergy]+"_" +NameOfPlots[WhichPlot]+"_SuSav2.pdf"); 
+				legRatio->SetBorderSize(0);
+				legRatio->SetTextFont(FontStyle);
+				legRatio->SetTextSize(0.07);			
+				legRatio->Draw();
+
+				//RatioPlotCanvas->SaveAs("myPlots/Ratio_"+nucleus[WhichNucleus]+"_" +E[WhichEnergy]+"_" +NameOfPlots[WhichPlot]+"_SuSav2.pdf"); 
 
 				// ----------------------------------------------------------------------------------------------------------------------
 
-			} // End of the loop over the plots
+			//} // End of the loop over the plots
 
 		} // End of the loop over the nuclei
 

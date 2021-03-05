@@ -29,7 +29,7 @@ void QE_Q0_Q3_Electrons() {
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
 //	TString Interaction = "CCinclMEC";
-	TString Interaction = "EM+MEC";
+	TString Interaction = "EM+MEC_Q2_0_1";
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -54,8 +54,9 @@ void QE_Q0_Q3_Electrons() {
 //	E.push_back("2261"); LabelE.push_back(" @ E = 2.261 GeV");
 //	E.push_back("4461"); LabelE.push_back(" @ E = 4.461 GeV");
 
-	Tunes.push_back("GTEST19_10b_00_000"); TuneLabels.push_back("SuSav2");
-	Tunes.push_back("G18_10a_02_11a"); TuneLabels.push_back("G2018");
+	Tunes.push_back("GTEST19_10b_00_000"); TuneLabels.push_back("RMF");
+	Tunes.push_back("G18_10a_02_11a"); TuneLabels.push_back("LFG");
+	Tunes.push_back("G18_02a_00_000"); TuneLabels.push_back("RFG");
 //	Tunes.push_back("G00_00a_00_000"); TuneLabels.push_back("G2000");
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -102,6 +103,7 @@ void QE_Q0_Q3_Electrons() {
 				pad2->SetFillColor(kWhite); pad2->Draw(); 
 				TPad* pad4 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPadFour,YMinPadFour,XMaxPadFour,YMaxPadFour,24); 
 				pad4->SetFillColor(kWhite); pad4->Draw();
+
 				pad1->SetBottomMargin(0.16);
 				pad2->SetBottomMargin(0.16);
 
@@ -124,9 +126,9 @@ void QE_Q0_Q3_Electrons() {
 
 						pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.15); 
 
-					} else { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.15); }
+					} else if (WhichTune == 1) { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.15); }
 
-					TString PathToFiles = "./myFiles/save/";
+					TString PathToFiles = "./myFiles/";
 					TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+Tunes[WhichTune]+"_"+Interaction+".root";
 					TFile* FileSample = TFile::Open(FileName);
 

@@ -55,13 +55,13 @@ void eGENIE_Q0_Q3() {
 //	E.push_back("2261"); LabelE.push_back(" @ E = 2.261 GeV");
 //	E.push_back("4461"); LabelE.push_back(" @ E = 4.461 GeV");
 
-	Interaction.push_back("CCinclMEC"); FSILabel.push_back("#nu");
-	Interaction.push_back("EM+MEC"); FSILabel.push_back("e");
+	Interaction.push_back("CCinclMEC_Q2_0_1"); FSILabel.push_back("#nu");
+	Interaction.push_back("EM+MEC_Q2_0_1"); FSILabel.push_back("e");
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
-	NameOfPlots.push_back("QE_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("QE");
-//	NameOfPlots.push_back("MEC_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("MEC");
+//	NameOfPlots.push_back("QE_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("QE");
+	NameOfPlots.push_back("MEC_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("MEC");
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------
 

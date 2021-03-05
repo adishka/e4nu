@@ -43,7 +43,7 @@ void AccCorrXSec_OverlayECal_FineBinning_Pilar() {
 	std::vector<int> Colors;
 
 	nucleus.push_back("12C");
-	nucleus.push_back("56Fe");
+//	nucleus.push_back("56Fe");
 
 	E.push_back("1_161"); DoubleE.push_back(1.161);
 	E.push_back("2_261"); DoubleE.push_back(2.261);	
@@ -181,11 +181,11 @@ void AccCorrXSec_OverlayECal_FineBinning_Pilar() {
 						//                 apply systematics due to rotations et al
 						//                 apply acceptance systematics using sector-by -sector uncertainties
 
-						//UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
+						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
 
-						AbsoluteXSecScaling(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy]);
-						ReweightPlots(Plots[WhichFSIModel]);
-						ApplyRange(Plots[WhichFSIModel],E[WhichEnergy],NameOfPlots[WhichPlot]);
+						//AbsoluteXSecScaling(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy]);
+						//ReweightPlots(Plots[WhichFSIModel]);
+						//ApplyRange(Plots[WhichFSIModel],E[WhichEnergy],NameOfPlots[WhichPlot]);
 
 						Plots[WhichFSIModel]->SetLineWidth(1);
 						Plots[WhichFSIModel]->GetYaxis()->SetTitle(DoubleAccCorrXSecTitle);
@@ -334,7 +334,7 @@ void AccCorrXSec_OverlayECal_FineBinning_Pilar() {
 
 							DataPlot = Plots[WhichFSIModel];
 
-							//DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
+							DataPlot = AcceptanceCorrection(Plots[WhichFSIModel],"SuSav2", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
 							DataPlot->SetMarkerStyle(20); 
 							DataPlot->SetMarkerSize(2.); 

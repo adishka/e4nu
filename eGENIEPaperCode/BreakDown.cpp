@@ -16,39 +16,10 @@
 #include <string>
 #include <sstream>
 
+#include "eGENIE_Constants.h"
+#include "eGENIE_Functions.cpp"
+
 using namespace std;
-
-void PrettyPlot(TH1D* h, int color) {
-
-	int FontStyle = 132;
-
-	h->GetXaxis()->CenterTitle();
-	h->GetXaxis()->SetNdivisions(10);
-	h->GetXaxis()->SetTitleFont(FontStyle);
-	h->GetXaxis()->SetLabelFont(FontStyle);
-
-	h->GetYaxis()->CenterTitle();
-	h->GetYaxis()->SetNdivisions(10);
-	h->GetYaxis()->SetTitleFont(FontStyle);
-	h->GetYaxis()->SetLabelFont(FontStyle);
-	h->GetYaxis()->SetTitle("Arbitrary Units");
-
-	h->SetLineColor(color);
-	h->SetLineWidth(3);
-	h->Draw("c hist same");	
-
-}
-
-// ----------------------------------------------------------------------------------------------------------------
-
-TString ToString(int num) {
-
-	std::ostringstream start;
-	start << num;
-	string start1 = start.str();
-	return start1;
-
-}
 
 // ----------------------------------------------------------------------------------------------------------------
 
@@ -58,9 +29,6 @@ void BreakDown(TString Nucleus, TString Energy, TString Tune, TString Interactio
 
 	gStyle->SetOptStat(0);
 	TH1D::SetDefaultSumw2();
-	int FontStyle = 132;
-	const std::vector<int> Colors{610,410,kRed+1,kBlue,kGreen+3};
-	const std::vector<TString> Labels{"QE","MEC","RES","DIS","COH"};
 
 	// ------------------------------------------------------------------------
 
@@ -76,18 +44,20 @@ void BreakDown(TString Nucleus, TString Energy, TString Tune, TString Interactio
 
 	// ------------------------------------------------------------------------
 
-	int NInteractions = 5; // QE, MEC, RES, DIS, COH
+	int NInteractions = ProcessLabel.size(); // QE, MEC, RES, DIS, COH
 	TH1D* Plots[NInteractions];
 
 	// ------------------------------------------------------------------------
 
 	TString canName = Nucleus+"_"+Energy+"_"+Tune+"_"+Interaction+PlotName;
 	TCanvas* can = new TCanvas(canName,canName,205,34,1024,768);
-	can->cd();
+	can->cd();	
+	//can->SetBottomMargin(0.15);
+	//can->SetLeftMargin(0.15);
 
 	// ------------------------------------------------------------------------
 
-	TLegend* leg = new TLegend(0.5,0.6,0.8,0.85);
+	TLegend* leg = new TLegend(0.4,0.6,0.75,0.85);
 
 	// ------------------------------------------------------------------------
 
@@ -99,9 +69,9 @@ void BreakDown(TString Nucleus, TString Energy, TString Tune, TString Interactio
 
 	for (int WhichInteraction = 0; WhichInteraction < NInteractions; WhichInteraction++) {
 
-		Plots[WhichInteraction] = (TH1D*)(FileSample->Get(PlotName+"_BreakDown_"+ToString(WhichInteraction)));
+		Plots[WhichInteraction] = (TH1D*)(FileSample->Get(PlotName+"_BreakDown_"+ToStringInt(WhichInteraction)));
 		PrettyPlot(Plots[WhichInteraction],Colors[WhichInteraction]);
-		leg->AddEntry(Plots[WhichInteraction],Labels[WhichInteraction],"l");
+		leg->AddEntry(Plots[WhichInteraction],ProcessLabel[WhichInteraction],"l");
 		
 
 	}

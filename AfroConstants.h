@@ -146,6 +146,7 @@
 
 		{ "SuSav2_NoRadCorr_LFGM", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc", "SuSav2 NoRad" },
+		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Test", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing", "SuSav2 NoRad" },
 		{ "SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing_Offset", "SuSav2 NoRad" },
@@ -242,6 +243,16 @@
 		{ "G2018_MasterRad_Truth0pi_WithFidAcc_Offset", "G2018 Master Rad" },
 		{ "G2018_MasterRad_Truth_WithoutFidAcc_Offset", "G2018 Master Rad" },
 		{ "G2018_MasterRad_Truth0pi_WithoutFidAcc_Offset", "G2018 Master Rad" },
+
+		// ------------------------------------------------------------------------------------------------------
+
+		{ "GTEST18_02c_NoRadCorr_LFGM_Truth_WithFidAcc", "GTEST18_02c NoRad" },
+
+		// ------------------------------------------------------------------------------------------------------
+
+		{ "GTEST18_02d_NoRadCorr_LFGM_Truth_WithFidAcc", "GTEST18_02d NoRad" },
+
+		// ------------------------------------------------------------------------------------------------------
 
 
 
@@ -656,6 +667,70 @@
 		{ std::make_pair("56Fe", "2_261"), 45700000 }, // Q2 > 0.4
 		{ std::make_pair("56Fe", "4_461"), 46000000 } // Q2 > 0.8
 
+	};
+
+	//  ------------------------------------------------------------------------------
+
+	// No Rad GTEST18_02c GENIE number events 
+
+	static std::map<std::pair<TString,TString>,double> NoRadGTEST18_02cNumberEvents =
+	{
+
+		// master branch production
+		{ std::make_pair("4He", "2_261"),  0 }, // Q2 > 0.02
+		{ std::make_pair("4He", "4_461"),  0 }, // Q2 > 0.02
+		{ std::make_pair("12C", "1_161"),  0 }, // Q2 > 0.02
+		{ std::make_pair("12C", "2_261"),  0 }, // Q2 > 0.02
+		{ std::make_pair("12C", "4_461"),  0 }, // Q2 > 0.02
+		{ std::make_pair("56Fe", "2_261"), 0 }, // Q2 > 0.02
+		{ std::make_pair("56Fe", "4_461"), 0 } // Q2 > 0.02
+	};
+
+	// GTEST18_02c GENIE spline xsec // 10^{-38} cm^2
+
+	static std::map<std::pair<TString,TString>,double> GTEST18_02cGenieXSec =
+	{
+		{ std::make_pair("1H", "1_161"),  0 }, // Q2 > 0.02
+		{ std::make_pair("1H", "2_261"),  0 }, // Q2 > 0.02
+		{ std::make_pair("1H", "4_461"),  0 }, // Q2 > 0.02
+		{ std::make_pair("4He", "2_261"), 0 }, // Q2 > 0.02
+		{ std::make_pair("4He", "4_461"), 0 }, // Q2 > 0.02
+		{ std::make_pair("12C", "1_161"),  0 }, // Q2 > 0.02
+		{ std::make_pair("12C", "2_261"), 0 }, // Q2 > 0.02
+		{ std::make_pair("12C", "4_461"), 0 }, // Q2 > 0.02
+		{ std::make_pair("56Fe", "2_261"),0  }, // Q2 > 0.02
+		{ std::make_pair("56Fe", "4_461"), 0 } // Q2 > 0.02
+	};
+
+	// No Rad GTEST18_02d GENIE number events 
+
+	static std::map<std::pair<TString,TString>,double> NoRadGTEST18_02dNumberEvents =
+	{
+
+		// master branch production
+		{ std::make_pair("4He", "2_261"),  0 }, // Q2 > 0.02
+		{ std::make_pair("4He", "4_461"),  0 }, // Q2 > 0.02
+		{ std::make_pair("12C", "1_161"),  0 }, // Q2 > 0.02
+		{ std::make_pair("12C", "2_261"),  0 }, // Q2 > 0.02
+		{ std::make_pair("12C", "4_461"),  0 }, // Q2 > 0.02
+		{ std::make_pair("56Fe", "2_261"), 0 }, // Q2 > 0.02
+		{ std::make_pair("56Fe", "4_461"), 0 } // Q2 > 0.02
+	};
+
+	// GTEST18_02d GENIE spline xsec // 10^{-38} cm^2
+
+	static std::map<std::pair<TString,TString>,double> GTEST18_02dGenieXSec =
+	{
+		{ std::make_pair("1H", "1_161"),  0 }, // Q2 > 0.02
+		{ std::make_pair("1H", "2_261"),  0 }, // Q2 > 0.02
+		{ std::make_pair("1H", "4_461"),  0 }, // Q2 > 0.02
+		{ std::make_pair("4He", "2_261"), 0 }, // Q2 > 0.02
+		{ std::make_pair("4He", "4_461"), 0 }, // Q2 > 0.02
+		{ std::make_pair("12C", "1_161"),  0 }, // Q2 > 0.02
+		{ std::make_pair("12C", "2_261"), 0 }, // Q2 > 0.02
+		{ std::make_pair("12C", "4_461"), 0 }, // Q2 > 0.02
+		{ std::make_pair("56Fe", "2_261"),0  }, // Q2 > 0.02
+		{ std::make_pair("56Fe", "4_461"), 0 } // Q2 > 0.02
 	};
 
 

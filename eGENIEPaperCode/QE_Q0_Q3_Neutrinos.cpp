@@ -28,8 +28,8 @@ void QE_Q0_Q3_Neutrinos() {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
-//	TString Interaction = "CCinclMEC";
-	TString Interaction = "EM+MEC";
+	TString Interaction = "CCinclMEC_Q2_0_1";
+//	TString Interaction = "EM+MEC";
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -54,9 +54,10 @@ void QE_Q0_Q3_Neutrinos() {
 //	E.push_back("2261"); LabelE.push_back(" @ E = 2.261 GeV");
 //	E.push_back("4461"); LabelE.push_back(" @ E = 4.461 GeV");
 
-	Tunes.push_back("GTEST19_10b_00_000"); TuneLabels.push_back("RMF");
-	Tunes.push_back("G18_10a_02_11a"); TuneLabels.push_back("LFG");
-	Tunes.push_back("G00_00a_00_000"); TuneLabels.push_back("RFG");
+	Tunes.push_back("GTEST19_10b_00_000_CCinclMEC_Q2_0_1"); TuneLabels.push_back("#splitline{SuSav2}{RMF}");
+	Tunes.push_back("G18_10a_02_11a_CCinclMEC_Q2_0_1"); TuneLabels.push_back("#splitline{G2018}{Nieves}");
+	Tunes.push_back("G18_02a_00_000_CCinclMEC_Q2_0_1"); TuneLabels.push_back("#splitline{G18_02a}{Lwellyn-Smith}");
+//	Tunes.push_back("G00_00a_00_000"); TuneLabels.push_back("RFG");
 
 //	Tunes.push_back("GTEST19_10b_00_000"); TuneLabels.push_back("SuSav2");
 //	Tunes.push_back("G18_10a_02_11a"); TuneLabels.push_back("G2018");
@@ -88,15 +89,16 @@ void QE_Q0_Q3_Neutrinos() {
 
 				TString PlotName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]; 
 //				TCanvas* PlotCanvas = new TCanvas(PlotName, PlotName, 205,34,2024,768);
-				TCanvas* PlotCanvas = new TCanvas(PlotName, PlotName, 205,34,2024,600);
+				TCanvas* PlotCanvas = new TCanvas(PlotName, PlotName, 205,34,2024,820);
 
 				// ---------------------------------------------------------------------------------------------------------------------------
 
 				// Dimensions of TPads (pad2 will be deleted at the very end for the Ereco plots)
 
-				double XMinPadOne = 0., XMaxPadOne = 0.35, YMinPadOne = 0., YMaxPadOne = 1.;
-				double XMinPadTwo = 0.35, XMaxPadTwo = 0.64, YMinPadTwo = 0., YMaxPadTwo = YMaxPadOne;
-				double XMinPadThree = 0.64, XMaxPadThree = 1., YMinPadThree = 0., YMaxPadThree = YMaxPadOne;
+				double XMinPadOne = 0., XMaxPadOne = 0.37, YMinPadOne = 0., YMaxPadOne = 1.;
+				double XMinPadTwo = 0.37, XMaxPadTwo = 0.7, YMinPadTwo = 0., YMaxPadTwo = YMaxPadOne;
+				double XMinPadThree = 0.7, XMaxPadThree = 1., YMinPadThree = 0., YMaxPadThree = YMaxPadOne;
+
 				double XMinPadFour = 0.3, XMaxPadFour = 0.85, YMinPadFour = 0.91, YMaxPadFour = 1.;
 
 				// ---------------------------------------------------------------------------------------------------------------------------
@@ -109,9 +111,11 @@ void QE_Q0_Q3_Neutrinos() {
 				pad3->SetFillColor(kWhite); pad3->Draw(); 
 				TPad* pad4 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPadFour,YMinPadFour,XMaxPadFour,YMaxPadFour,24); 
 				pad4->SetFillColor(kWhite); pad4->Draw();
-				pad1->SetBottomMargin(0.16);
-				pad2->SetBottomMargin(0.16);
-				pad3->SetBottomMargin(0.16);
+
+//				pad1->SetBottomMargin(0.16);
+				pad1->SetBottomMargin(0.01);
+				pad2->SetBottomMargin(0.01);
+				pad3->SetBottomMargin(0.01);
 
 				pad4->cd();
 				TLatex *title = new TLatex(); 
@@ -121,8 +125,7 @@ void QE_Q0_Q3_Neutrinos() {
 				title->SetTextSize(0.8);
 //				TString myTitle = LabelsOfSamples[WhichNucleus] + " " +LabelE[WhichEnergy] + ", " + TuneLabels[WhichTune];
 //				title->DrawLatex(0.05,0.3,myTitle); // title / nucleus / energy
-				TString myTitle = "QE Neutrino Scattering";
-				if (Interaction == "EM+MEC") { myTitle = "QE Electron Scattering"; }
+				TString myTitle = "QE Scattering";
 				title->DrawLatex(0.14,0.2,myTitle); // title / nucleus / energy
 
 				// ---------------------------------------------------------------------------------------------------------------------------
@@ -133,11 +136,11 @@ void QE_Q0_Q3_Neutrinos() {
 						{ pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.21); pad1->SetTitle("");}
 					if (WhichTune == 1)  { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.0); }
 					
-					if (WhichTune == 2)  { pad3->cd(); pad3->SetLeftMargin(0.0); pad3->SetRightMargin(0.21); }
+					if (WhichTune == 2)  { pad3->cd(); pad3->SetLeftMargin(0.0); pad3->SetRightMargin(0.05); }
 
 
-					TString PathToFiles = "./myFiles/save/";
-					TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+Tunes[WhichTune]+"_"+Interaction+".root";
+					TString PathToFiles = "./myFiles/";
+					TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+Tunes[WhichTune]+".root";
 					TFile* FileSample = TFile::Open(FileName);
 
 					TH2D* Plots =  (TH2D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) ;
