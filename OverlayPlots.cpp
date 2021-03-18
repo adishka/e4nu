@@ -128,7 +128,7 @@ void OverlayPlots() {
 
 //	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data (failure)"); DirNames.push_back("Data");
 //	FSIModel.push_back("Pinned_Data_Final_SixSectors"); FSILabel.push_back("Data (Florian's rethrow)"); DirNames.push_back("Data");
-	FSIModel.push_back("Pinned_Data_NewFiducials_SixSectors"); FSILabel.push_back("Data (New map)"); DirNames.push_back("Data_New_Fiducials");
+//	FSIModel.push_back("Pinned_Data_NewFiducials_SixSectors"); FSILabel.push_back("Data (New map)"); DirNames.push_back("Data_New_Fiducials");
 
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Playground"); FSILabel.push_back("Genie Playground");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_Offset"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
@@ -147,13 +147,15 @@ void OverlayPlots() {
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("SuSav2 True 0pi");  DirNames.push_back("SuSav2_True_0pi");
 
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
-//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2 (Default)");  DirNames.push_back("SuSav2_Truth_NoRadCorr");
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Test"); FSILabel.push_back("SuSav2 (Test)");  DirNames.push_back("SuSav2_Truth_NoRadCorr_Test");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
+
+//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2 (Default)");  DirNames.push_back("SuSav2_Truth_NoRadCorr");
+//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Test"); FSILabel.push_back("SuSav2 (Test)");  DirNames.push_back("SuSav2_Truth_NoRadCorr_Test");
+
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (e4v No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2 (Ext Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad adi_radcorr)");  DirNames.push_back("SuSav2_Truth_RadCorr");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad adi)");  DirNames.push_back("SuSav2_Truth_RadCorr");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad adi)");  DirNames.push_back("SuSav2_Truth_RadCorr");
 
 //	FSIModel.push_back("SuSav2_MasterRad_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
@@ -214,7 +216,7 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("h1_Erec_p_bkgd_slice_sub2p1pi_2p_3"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_3");
 //	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_factor_fracfeed"); LabelOfPlots.push_back("E^{cal} Feeddown");  OutputPlotNames.push_back("EcalReso");
 //	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_factor_fracfeed"); LabelOfPlots.push_back("E^{QE} Feeddown"); OutputPlotNames.push_back("EQEReso");
-//	NameOfPlots.push_back("h1_el_mom_corr");  LabelOfPlots.push_back("P_{e} (GeV / c)"); OutputPlotNames.push_back("Pmu");
+	NameOfPlots.push_back("h1_el_mom_corr");  LabelOfPlots.push_back("P_{e} (GeV / c)"); OutputPlotNames.push_back("Pmu");
 //	NameOfPlots.push_back("h1_prot_mom"); LabelOfPlots.push_back("P_{p} (GeV / c)"); OutputPlotNames.push_back("Pp");
 //	NameOfPlots.push_back("h1_theta0"); LabelOfPlots.push_back("#theta_{0} (beam-reco angle) (degrees)"); OutputPlotNames.push_back("theta0");
 //	NameOfPlots.push_back("h1_Npi"); LabelOfPlots.push_back("#pi^{+/-} Multiplicity"); OutputPlotNames.push_back("PionMultiPlot");

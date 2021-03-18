@@ -243,13 +243,14 @@ treeProducer_simulation::treeProducer_simulation(TString Nucleus, TString Energy
   fInteraction = Interaction;
   fQ2_Thres = Q2_Thres;
 
-  TString TuneLabel = "SuSav2";
+  TString TuneLabel = fTune;
+  if (fTune == "GTEST19_10b_00_000") { TuneLabel = "SuSav2"; }
   if (fTune == "G18_10a_02_11a") { TuneLabel = "G2018"; }
   if (fTune == "G18_02a_00_000") { TuneLabel = "G18_02a"; }  
   if (fTune == "G00_00a_00_000") { TuneLabel = "G00_00a"; }
 
   TString particle = "Neutrinos";
-  if (fInteraction == "EM+MEC") { particle = "Electrons"; }
+  if (fInteraction == "EM+MEC" || fInteraction == "EM") { particle = "Electrons"; }
 
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.

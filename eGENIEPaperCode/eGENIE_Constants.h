@@ -29,7 +29,9 @@
 /*	const std::vector<int> AlternativeColors{kBlue-2,kCyan-2,kYellow+1,kRed+1};*/
 /*	const std::vector<int> AlternativeColors{kBlue-2,kCyan-2,kYellow+1,kRed+1};*/
 /*	const std::vector<int> AlternativeColors{kGreen+3,kYellow+1,kBlue-8,kGreen+2};*/
-	const std::vector<int> AlternativeColors{kRed+1,kYellow+1,kOrange+7,kRed-2};
+/*	const std::vector<int> AlternativeColors{kRed+1,kYellow+1,kOrange+7,kRed-2};*/
+//	const std::vector<int> AlternativeColors{kAzure+4,kYellow+1,kOrange+7,kOrange+2};
+	const std::vector<int> AlternativeColors{kBlue-9,kBlue-6,kBlue-2,kBlue+3};
 
 	std::vector<TString> ProcessLabel = {"QE","MEC","RES","DIS","COH"}; 
 
@@ -59,13 +61,17 @@
 		// 12C 1.161 GeV, Q2 > 0.1
 
 		{ "12C_1161_GTEST19_10b_00_000_EM+MEC_Q2_0_1", 1.2874608e+09},            
+		{ "12C_1161_GTEST19_10a_00_000_EM+MEC_Q2_0_1", 0.},            
+		{ "12C_1161_G18_10b_02_11a_EM+MEC_Q2_0_1", 0},                
 		{ "12C_1161_G18_10a_02_11a_EM+MEC_Q2_0_1", 1.1661458e+09},                
 		{ "12C_1161_G18_02a_00_000_EM+MEC_Q2_0_1", 1.1661458e+09},
 		{ "12C_1161_G00_00a_00_000_EM+MEC_Q2_0_1", 1.0616364e+09},     
 
-		{ "12C_1161_GTEST19_10b_00_000_CCinclMEC_Q2_0_1", 0}, 	      // waiting on grid
-		{ "12C_1161_G18_10a_02_11a_CCinclMEC_Q2_0_1", 0.},	      // waiting on grid
-		{ "12C_1161_G18_02a_00_000_CCinclMEC_Q2_0_1", 0.},	      // waiting on grid
+		{ "12C_1161_GTEST19_10b_00_000_CCinclMEC_Q2_0_1", 0}, 	      
+		{ "12C_1161_GTEST19_10a_00_000_CCinclMEC_Q2_0_1", 0}, 	      
+		{ "12C_1161_G18_10b_02_11a_CCinclMEC_Q2_0_1", 0.},	      
+		{ "12C_1161_G18_10a_02_11a_CCinclMEC_Q2_0_1", 0.},	      
+		{ "12C_1161_G18_02a_00_000_CCinclMEC_Q2_0_1", 0.},	      
 		{ "12C_1161_G00_00a_00_000_CCinclMEC_Q2_0_1", 12.247493},
 
 		// ------------------------------------------------------------
@@ -86,6 +92,25 @@
 		{ "40Ar_DUNEFlux_G18_10a_02_11a_CCinclMEC_Q2_0_02", 77.3762},
 		{ "40Ar_DUNEFlux_G18_02a_00_000_CCinclMEC_Q2_0_02", 82.7183},
 		{ "40Ar_DUNEFlux_G00_00a_00_000_CCinclMEC_Q2_0_02", 80.4881},
+
+		// ------------------------------------------------------------
+
+		// FD DUNE Flux Osc
+
+		{ "40Ar_FDDUNEOscFlux_GTEST19_10b_00_000_EM+MEC_Q2_0_0", 2.21805e+10},
+		{ "40Ar_FDDUNEOscFlux_G18_10a_02_11a_EM+MEC_Q2_0_0", 1.97228e+10},
+		{ "40Ar_FDDUNEOscFlux_G18_02a_00_000_EM+MEC_Q2_0_0", 1.98551e+10},
+		{ "40Ar_FDDUNEOscFlux_G00_00a_00_000_EM+MEC_Q2_0_0", 1.78926e+10},
+
+		{ "40Ar_FDDUNEOscFlux_GTEST19_10b_00_000_CCinclMEC_Q2_0_0", 86.4405},
+		{ "40Ar_FDDUNEOscFlux_G18_10a_02_11a_CCinclMEC_Q2_0_0", 77.842 },
+		{ "40Ar_FDDUNEOscFlux_G18_02a_00_000_CCinclMEC_Q2_0_0", 83.3917},
+		{ "40Ar_FDDUNEOscFlux_G00_00a_00_000_CCinclMEC_Q2_0_0", 81.3907},
+
+		{ "40Ar_FDDUNEOscFlux_GTEST19_10b_00_000_CCinclMEC_Q2_0_02", 85.687},
+		{ "40Ar_FDDUNEOscFlux_G18_10a_02_11a_CCinclMEC_Q2_0_02", 77.3762},
+		{ "40Ar_FDDUNEOscFlux_G18_02a_00_000_CCinclMEC_Q2_0_02", 82.7183},
+		{ "40Ar_FDDUNEOscFlux_G00_00a_00_000_CCinclMEC_Q2_0_02", 80.4881},
 
 		// ------------------------------------------------------------
 
@@ -213,7 +238,24 @@
 		{ "40Ar_DUNEFlux_GTEST19_10b_00_000_CCinclMEC_Q2_0_02", 3800000},
 		{ "40Ar_DUNEFlux_G18_10a_02_11a_CCinclMEC_Q2_0_02", 4800000},
 		{ "40Ar_DUNEFlux_G18_02a_00_000_CCinclMEC_Q2_0_02", 5000000},
-		{ "40Ar_DUNEFlux_G00_00a_00_000_CCinclMEC_Q2_0_02", 3800000},     
+		{ "40Ar_DUNEFlux_G00_00a_00_000_CCinclMEC_Q2_0_02", 3800000},
+
+		// ------------------------------------------------------------
+
+		{ "40Ar_FDDUNEOscFlux_GTEST19_10b_00_000_EM+MEC_Q2_0_0", 0},
+		{ "40Ar_FDDUNEOscFlux_G18_10a_02_11a_EM+MEC_Q2_0_0", 0},
+		{ "40Ar_FDDUNEOscFlux_G18_02a_00_000_EM+MEC_Q2_0_0", 0},
+		{ "40Ar_FDDUNEOscFlux_G00_00a_00_000_EM+MEC_Q2_0_0", 0},
+
+		{ "40Ar_FDDUNEOscFlux_GTEST19_10b_00_000_CCinclMEC_Q2_0_0", 4900000},
+		{ "40Ar_FDDUNEOscFlux_G18_10a_02_11a_CCinclMEC_Q2_0_0", 4800000},
+		{ "40Ar_FDDUNEOscFlux_G18_02a_00_000_CCinclMEC_Q2_0_0", 5000000},
+		{ "40Ar_FDDUNEOscFlux_G00_00a_00_000_CCinclMEC_Q2_0_0", 5000000},
+
+		{ "40Ar_FDDUNEOscFlux_GTEST19_10b_00_000_CCinclMEC_Q2_0_02", 0},
+		{ "40Ar_FDDUNEOscFlux_G18_10a_02_11a_CCinclMEC_Q2_0_02", 0},
+		{ "40Ar_FDDUNEOscFlux_G18_02a_00_000_CCinclMEC_Q2_0_02", 0},
+		{ "40Ar_FDDUNEOscFlux_G00_00a_00_000_CCinclMEC_Q2_0_02", 0},     
 
 		// ------------------------------------------------------------		   
 

@@ -108,7 +108,7 @@ void AccCorrXSec_OverlayECal_FineBinning_Pilar() {
 			for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
 				// In order to use y-axis ticks with common scale, constraint range between (0,MaxHeight)
-				double MaxHeight = 8.5;
+				double MaxHeight = 6;
 
 				// Loop over the nuclei
 

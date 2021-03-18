@@ -1,5 +1,57 @@
+export SplinePath=/pnfs/genie/persistent/users/apapadop/mySplines
+export ScratchPath=/pnfs/genie/scratch/users/apapadop
  
-export GenieRelease=v3_00_06_WithSuSav2
+#export GenieRelease=v3_00_06_WithSuSav2
+export GenieRelease=v3_2
+
+export NJOBS=700
+
+# NEED TO CHANGE PROCESSES TO EM INSTEAD OF EM+MEC
+
+# ./submit_samples.sh 4 test_apapadop_GTEST19_10b_EM_1GeV /pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_1/v3_2/save/carbon12_spline_EMPlusMEC_GTEST19_10b_00_000_Q2_0_1.xml /pnfs/genie/scratch/users/apapadop/eGENIE_grid/12C_1_161GeV/SuSav2/ origin/master_Q2_0_1 1.161 11 1000060120 GTEST19_10b_00_000 EM
+
+###############################################################################################################################################################################################
+
+declare -a Tunes=("GTEST19_10b_00_000" "G18_10a_02_11a")
+declare -a Nuclei=("1000020040" "1000060120" "1000260560")
+
+for tune in "${Tunes[@]}"; 
+
+	do
+
+	echo ""
+
+	for nucleus in "${Nuclei[@]}"; 
+
+		do
+
+		# No Rad
+
+		./submit_samples.sh ${NJOBS} apapadop_${tune}_${nucleus}_2261_NoRad ${SplinePath}/master_Q2_0_4/${GenieRelease}/11_${nucleus}_EM_${tune}_Q2_0_4.xml ${ScratchPath}/grid/NoRad/${nucleus}_2261GeV/${tune}/ origin/master_Q2_0_4 2.261 11 ${nucleus} ${tune} EM
+
+		./submit_samples.sh ${NJOBS} apapadop_${tune}_${nucleus}_4461_NoRad ${SplinePath}/master_Q2_0_8/${GenieRelease}/11_${nucleus}_EM_${tune}_Q2_0_8.xml ${ScratchPath}/grid/NoRad/${nucleus}_4461GeV/${tune}/ origin/master_Q2_0_8 4.461 11 ${nucleus} ${tune} EM
+
+		# Rad
+
+		./submit_samples.sh ${NJOBS} apapadop_${tune}_${nucleus}_2261_Rad ${SplinePath}/master_Q2_0_4/${GenieRelease}/11_${nucleus}_EM_${tune}_Q2_0_4.xml ${ScratchPath}/grid/Rad/${nucleus}_2261GeV/${tune}/ origin/adi_radcorr_Q2_0_4 2.261 11 ${nucleus} ${tune} EM
+
+		./submit_samples.sh ${NJOBS} apapadop_${tune}_${nucleus}_4461_Rad ${SplinePath}/master_Q2_0_8/${GenieRelease}/11_${nucleus}_EM_${tune}_Q2_0_8.xml ${ScratchPath}/grid/Rad/${nucleus}_4461GeV/${tune}/ origin/adi_radcorr_Q2_0_8 4.461 11 ${nucleus} ${tune} EM
+
+		done
+
+	done
+	echo ""
+
+	# No Rad
+	
+	./submit_samples.sh ${NJOBS} apapadop_${tune}_${nucleus}_1161_NoRad SplinePath/master_Q2_0_1/${GenieRelease}/11_${nucleus}_EM_${tune}_Q2_0_1.xml ${ScratchPath}/grid/NoRad/${nucleus}_1161GeV/${tune}/ origin/master_Q2_0_1 1.161 11 ${nucleus} ${tune} EM
+
+	# Rad
+	
+	./submit_samples.sh ${NJOBS} apapadop_${tune}_${nucleus}_1161_Rad SplinePath/master_Q2_0_1/${GenieRelease}/11_${nucleus}_EM_${tune}_Q2_0_1.xml ${ScratchPath}/grid/Rad/${nucleus}_1161GeV/${tune}/ origin/adi_radcorr_Q2_0_1 1.161 11 ${nucleus} ${tune} EM
+
+
+###############################################################################################################################################################################################
 
 # Rad
 

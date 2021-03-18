@@ -26,7 +26,7 @@
 
 using namespace std;
 
-void THStackFluxes() {
+void THStackFluxes_ThreePanel() {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------
 
@@ -54,7 +54,7 @@ void THStackFluxes() {
 //	nucleus.push_back("CH2"); LabelsOfSamples.push_back("CH2");
 	nucleus.push_back("40Ar"); LabelsOfSamples.push_back("^{40}Ar");
 
-	E.push_back("DUNEFlux"); LabelE.push_back("DUNE Near Detector Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-38} #frac{cm^{2}}{GeV Ar}#right]");
+//	E.push_back("DUNEFlux"); LabelE.push_back("DUNE Near Detector Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-38} #frac{cm^{2}}{GeV Ar}#right]");
 	E.push_back("FDDUNEOscFlux"); LabelE.push_back("Far Detector DUNE Oscillated Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-38} #frac{cm^{2}}{GeV Ar}#right]");
 
 //	E.push_back("BNBFlux"); LabelE.push_back(" BNB Flux"); YLabelOfPlots.push_back("#frac{d#sigma}{dE_{#nu}} #left[10^{-38} #frac{cm^{2}}{GeV Ar}#right]");
@@ -84,57 +84,66 @@ void THStackFluxes() {
 	int NFSIModels = FSIModel.size();
 	int NPlots = NameOfPlots.size();
 
-	// Loop over the nuclei
+	// Loop over the energies
 
-	for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
+	for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
 
-		// Loop over the plots
+		// Loop over the nuclei
 
-		for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
+		for (int WhichNucleus = 0; WhichNucleus < NNuclei; WhichNucleus ++) {
 
-			TString CanvasName = nucleus[WhichNucleus]+"_"+NameOfPlots[WhichPlot];
-//			TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,2624,768);
-			TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1400,768);
+			// Loop over the plots
 
-			// ---------------------------------------------------------------------------------------------------------------------------
+			for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
-			TPad* pad1 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.06,0.5,0.38,1.,21); pad1->SetFillColor(kWhite); pad1->Draw();
-			TPad* pad2 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.38,0.5,0.69,1,22); pad2->SetFillColor(kWhite); pad2->Draw();
-			TPad* pad3 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.69,0.5,1.,1,22); pad3->SetFillColor(kWhite); pad3->Draw();
+				TString CanvasName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot];
+				TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,2624,768);
 
-			TPad* pad4 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.06,0.,0.38,0.5,21); pad4->SetFillColor(kWhite); pad4->Draw();
-			TPad* pad5 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.38,0.,0.69,0.5,22); pad5->SetFillColor(kWhite); pad5->Draw();
-			TPad* pad6 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.69,0.,1.,0.5,22); pad6->SetFillColor(kWhite); pad6->Draw();
-					
-			pad1->SetTopMargin(0.18); pad1->SetBottomMargin(0.);
-			pad2->SetTopMargin(0.18); pad2->SetBottomMargin(0.);
-			pad3->SetTopMargin(0.18); pad3->SetBottomMargin(0.);
+				// ---------------------------------------------------------------------------------------------------------------------------
 
-			pad4->SetBottomMargin(0.18); pad4->SetTopMargin(0.);
-			pad5->SetBottomMargin(0.18); pad5->SetTopMargin(0.);
-			pad6->SetBottomMargin(0.18); pad6->SetTopMargin(0.);	
+				TPad* pad1 = nullptr;
+				TPad* pad2 = nullptr;
+				TPad* pad3 = nullptr;
 
-			// --------------------------------------------------------------------------------------------------
+				if (NFSIModels == 2) {
 
-			// Loop over the energies
+					pad1 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0,0,0.5,1., 21); 
+					pad1->SetFillColor(kWhite); pad1->Draw();
+					pad2 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.5,0,1.,1,22); 
+					pad2->SetFillColor(kWhite); pad2->Draw(); 
+					pad1->SetBottomMargin(0.18);
+					pad2->SetBottomMargin(0.18);
+				
+				}
+				
+				if (NFSIModels == 3) {
 
-			for (int WhichEnergy = 0; WhichEnergy < NEnergies; WhichEnergy ++) {
+					pad1 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.06,0,0.38,1.,21); 
+					pad1->SetFillColor(kWhite); pad1->Draw();
+					pad2 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.38,0,0.69,1,22); 
+					pad2->SetFillColor(kWhite); pad2->Draw(); 
+					pad3 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],0.69,0,1.,1,22); 
+					pad3->SetFillColor(kWhite); pad3->Draw(); 					
+					pad1->SetBottomMargin(0.18);
+					pad2->SetBottomMargin(0.18);
+					pad3->SetBottomMargin(0.18);					
+				
+				}				
+
+				// --------------------------------------------------------------------------------------------------
 
 				for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-					if (WhichFSIModel == 0 && WhichEnergy == 0) 
+					if (E[WhichEnergy] == "NOvAFlux" && WhichFSIModel == 0 && string(InteractionMode).find("EM+MEC") != std::string::npos) { continue; }
+					if (E[WhichEnergy] == "T2KFlux" && WhichFSIModel == 0 && string(InteractionMode).find("EM+MEC") != std::string::npos) { continue; }
+
+					if (WhichFSIModel == 0) 
 						{ pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.1); pad1->SetTitle("");}
-					if (WhichFSIModel == 1 && WhichEnergy == 0)  { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.0); }
+					if (WhichFSIModel == 1)  { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.0); }
 					
-					if (WhichFSIModel == 2 && WhichEnergy == 0)  { pad3->cd(); pad3->SetLeftMargin(0.0); pad3->SetRightMargin(0.04); }
+					if (WhichFSIModel == 2)  { pad3->cd(); pad3->SetLeftMargin(0.0); pad3->SetRightMargin(0.04); }
 
-					if (WhichFSIModel == 0 && WhichEnergy == 1) 
-						{ pad4->cd(); gStyle->SetTitleSize(TextSize,"t"); pad4->SetRightMargin(0.); pad4->SetLeftMargin(0.1); pad3->SetTitle("");}
-					if (WhichFSIModel == 1 && WhichEnergy == 1)  { pad5->cd(); pad5->SetLeftMargin(0.0); pad5->SetRightMargin(0.0); }
-					
-					if (WhichFSIModel == 2 && WhichEnergy == 1)  { pad6->cd(); pad6->SetLeftMargin(0.0); pad6->SetRightMargin(0.04); }
-
-					THStack* THStacks = new THStack(NameOfPlots[WhichPlot]+"_"+FSIModel[WhichFSIModel]+"_"+E[WhichEnergy],"");
+					THStack* THStacks = new THStack(NameOfPlots[WhichPlot]+"_"+FSIModel[WhichFSIModel],"");
 
 					TString PathToFiles = "myFiles/";
 					TFile* FileSample = TFile::Open(PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+".root");
@@ -154,21 +163,15 @@ void THStackFluxes() {
 					//std::cout << "XSec Weight = " << Weight << std::endl;
 					Reweight(Total,Weight);
 					
-					TLegend* leg = new TLegend(0.71,0.53,0.95,0.8);
-					if (WhichFSIModel == 1 && WhichEnergy == 0) { leg = new TLegend(0.67,0.53,0.91,0.8); }
-					if (WhichFSIModel == 2 && WhichEnergy == 0) { leg = new TLegend(0.65,0.53,0.91,0.8); }
-					if (WhichFSIModel == 0 && WhichEnergy == 1) { leg = new TLegend(0.71,0.71,0.95,0.98); }
-					if (WhichFSIModel == 1 && WhichEnergy == 1) { leg = new TLegend(0.67,0.71,0.91,0.98); }
-					if (WhichFSIModel == 2 && WhichEnergy == 1) { leg = new TLegend(0.65,0.71,0.91,0.98); }
+					TLegend* leg = new TLegend(0.69,0.61,0.95,0.88);
+					if (WhichFSIModel == 1) { leg = new TLegend(0.65,0.61,0.91,0.88); }
+					if (WhichFSIModel == 2) { leg = new TLegend(0.63,0.61,0.91,0.88); }
 					leg->SetNColumns(1);
 					leg->SetMargin(0.);
 
-					TLegend* legFrac = new TLegend(0.83,0.53,1.,0.8);
-					if (WhichFSIModel == 1 && WhichEnergy == 0) { legFrac = new TLegend(0.8,0.53,0.96,0.8); }
-					if (WhichFSIModel == 2 && WhichEnergy == 0) { legFrac = new TLegend(0.78,0.53,0.95,0.8); }
-					if (WhichFSIModel == 0 && WhichEnergy == 1) { legFrac = new TLegend(0.83,0.71,0.95,0.98); }
-					if (WhichFSIModel == 1 && WhichEnergy == 1) { legFrac = new TLegend(0.79,0.71,0.91,0.98); }
-					if (WhichFSIModel == 2 && WhichEnergy == 1) { legFrac = new TLegend(0.77,0.71,0.91,0.98); }
+					TLegend* legFrac = new TLegend(0.83,0.61,1.,0.88);
+					if (WhichFSIModel == 1) { legFrac = new TLegend(0.8,0.61,0.96,0.88); }
+					if (WhichFSIModel == 2) { legFrac = new TLegend(0.78,0.61,0.95,0.88); }
 					legFrac->SetNColumns(1);
 					legFrac->SetMargin(0.);
 
@@ -210,19 +213,29 @@ void THStackFluxes() {
 						Plots[WhichInteraction]->SetLineWidth(1);
 
 						double MinX = 0.25, MaxX = 9.;
-						double MinY = 0.001, MaxY = 31.;
+						double MinY = 0., MaxY = 31.;
 						
+						if (E[WhichEnergy] == "BNBFlux") { MinX = 0.2; MaxX = 2.7; }
 						if (E[WhichEnergy] == "DUNEFlux") { 
 							MinX = 0.3,MaxX = 5.3; 
-							MaxY = 36;
-							if (string(FSIModel[WhichFSIModel]).find("EM+MEC") != std::string::npos) { MaxY = 3.E8; }
+							MinY = 0.; MaxY = 39;
+							if (string(FSIModel[WhichFSIModel]).find("EM+MEC") != std::string::npos) { MinY = 0.; MaxY = 3.E8; }
 						}
 						if (E[WhichEnergy] == "FDDUNEOscFlux") { 
-							MinX = 0.3; MaxX = 5.3; MaxY = 63.;
-//							MinX = 0.3; MaxX = 2.5; MaxY = 66.;
-//							MinX = 2.7; MaxX = 5.3; MaxY = 29.;
+							MinX = 0.3; MaxX = 5.3; MinY = 0.; MaxY = 66.;
+//							MinX = 0.3; MaxX = 2.5; MinY = 0.; MaxY = 66.;
+//							MinX = 2.7; MaxX = 5.3; MinY = 0.; MaxY = 29.;
 
-							if (string(FSIModel[WhichFSIModel]).find("EM+MEC") != std::string::npos) { MaxX = 6.E8; }
+							if (string(FSIModel[WhichFSIModel]).find("EM+MEC") != std::string::npos) { MinY = 0.; MaxX = 6.E8; }
+						}
+
+						if (E[WhichEnergy] == "T2KFlux") { 
+							MinX = 0.3; MaxX = 5.3; MinY = 0.; MaxX = 13.;
+							if (string(FSIModel[WhichFSIModel]).find("EM+MEC") != std::string::npos) { MinY = 0.; MaxX = 0.9E8; }
+						}
+						if (E[WhichEnergy] == "NOvAFlux") { 
+							MinX = 0.6; MaxX = 4.9; MinY = 0.; MaxX = 21.;
+							if (string(FSIModel[WhichFSIModel]).find("EM+MEC") != std::string::npos) { MinY = 0.; MaxX = 1.3E8; }
 						}
 
 						Plots[WhichInteraction]->GetXaxis()->SetRangeUser(MinX,MaxX);
@@ -272,14 +285,12 @@ void THStackFluxes() {
 					sample->SetTextFont(FontStyle); 
 					sample->SetTextColor(kBlack); 
 					sample->SetTextSize(TextSize);
-
-					if (WhichEnergy == 0) {
-
-						if (WhichFSIModel == 0) { sample->DrawLatexNDC(0.15,0.75,FSILabel[WhichFSIModel]); }
-						else if (WhichFSIModel == 1) { sample->DrawLatexNDC(0.05,0.75,FSILabel[WhichFSIModel]); }
-						else if (WhichFSIModel == 2) { sample->DrawLatexNDC(0.05,0.75,FSILabel[WhichFSIModel]); }
-
+					if (WhichFSIModel == 0) { 
+					
+						sample->DrawLatexNDC(0.15,0.83,FSILabel[WhichFSIModel]); 
+					
 					}
+					else { sample->DrawLatexNDC(0.05,0.83,FSILabel[WhichFSIModel]); }
 					
 //					if (WhichFSIModel == 1) {
 //					
@@ -294,10 +305,6 @@ void THStackFluxes() {
 
 					gPad->RedrawAxis();
 
-					//delete PlotCanvas;
-
-				} // End of the loop over the FSI Models 
-
 					PlotCanvas->cd();
 					TPad* padTitle = new TPad("padTitle","padTitle",0.,0.,0.05,1., 21); 
 					padTitle->SetFillColor(kWhite); 
@@ -309,29 +316,33 @@ void THStackFluxes() {
 					latexYTitle.SetTextSize(6*TextSize);
 					latexYTitle.SetTextColor(kBlack);
 					latexYTitle.SetTextAngle(90);
-					latexYTitle.DrawLatexNDC(0.65,0.35,YLabelOfPlots[WhichEnergy]);
+					latexYTitle.DrawLatexNDC(0.66,0.2,YLabelOfPlots[WhichEnergy]);
+
+					//delete PlotCanvas;
+
+				} // End of the loop over the FSI Models 
 
 				PlotCanvas->cd();
-				TPad* pad7 = new TPad("Title","Title",0.,0.92,01,1,21); 
-				pad7->SetFillColor(kWhite); 
-				pad7->Draw();
-				pad7->cd();
+				TPad* pad4 = new TPad("Title","Title",0.,0.92,01,1,21); 
+				pad4->SetFillColor(kWhite); 
+				pad4->Draw();
+				pad4->cd();
 
 				TLatex *flux = new TLatex(); 
 				flux->SetTextFont(FontStyle); 
 				flux->SetTextColor(kBlack); 
 				flux->SetTextSize(14*TextSize);
-//				if (E[WhichEnergy] == "FDDUNEOscFlux") { flux->DrawLatexNDC(0.365,0.2,LabelE[WhichEnergy]); }
-//				if (E[WhichEnergy] == "DUNEFlux") { flux->DrawLatexNDC(0.41,0.2,LabelE[WhichEnergy]); }
+				if (E[WhichEnergy] == "FDDUNEOscFlux") { flux->DrawLatexNDC(0.365,0.2,LabelE[WhichEnergy]); }
+				if (E[WhichEnergy] == "DUNEFlux") { flux->DrawLatexNDC(0.41,0.2,LabelE[WhichEnergy]); }
+
+				PlotCanvas->SaveAs("myPlots/"+E[WhichEnergy]+"_"+InteractionMode+".pdf");
 
 				//delete PlotCanvas;
 
-			} // End of the loop over the energies
+			} // End of the loop over the plots
 
-			PlotCanvas->SaveAs("myPlots/DUNEPanel_"+InteractionMode+".pdf");
+		} // End of the loop over the nuclei
 
-		} // End of the loop over the plots
-
-	} // End of the loop over the nuclei
+	} // End of the loop over the energies
 
 } // End of the program

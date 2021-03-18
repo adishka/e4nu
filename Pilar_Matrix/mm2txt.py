@@ -17,7 +17,7 @@ for mm in mms:
     output = open("%s_%s.txt"%(mm,dataset),"w") 
     for i in range(h.GetNbinsX()):
         for j in range(h.GetNbinsY()):
-            output.write("%.5f\t"%h.GetBinContent(i+1,j+1));
+            output.write("%.5f\t"%h.GetBinContent(i+1,j+1)); # reads the true columns vertically
         output.write("\n");
 
 print("\nDone!\n")

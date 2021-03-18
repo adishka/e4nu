@@ -62,8 +62,8 @@ void treeProducer_simulation::Loop() {
 	int NBinsPmiss = 40; double MinPmiss = 0., MaxPmiss = 1.; TString TitlePmiss = ";P_{T} [GeV/c];";
 	int NBinsPionMulti = 4; double MinPionMulti = -0.5, MaxPionMulti = 3.5; TString TitlePionMulti = ";Pion Multiplicity;";
 	int NBinsReso = 30; double MinReso = -50., MaxReso = 10.; TString TitleReso = ";#frac{E^{cal} - E^{beam}}{E^{beam}} (%);";
-	int NBinsDeltaPhiT = 18; double MinDeltaPhiT = 0., MaxDeltaPhiT = 80.; TString TitleDeltaPhiT = ";#delta#phi_{T} (degrees);";
-	int NBinsDeltaAlphaT = 18; double MinDeltaAlphaT = 0., MaxDeltaAlphaT = 180.; TString TitleDeltaAlphaT = ";#delta#alpha_{T} (degrees);";
+	int NBinsDeltaPhiT = 18; double MinDeltaPhiT = 0., MaxDeltaPhiT = 80.; TString TitleDeltaPhiT = ";#delta#phi_{T} [deg];";
+	int NBinsDeltaAlphaT = 18; double MinDeltaAlphaT = 0., MaxDeltaAlphaT = 180.; TString TitleDeltaAlphaT = ";#delta#alpha_{T} [deg];";
 
 	TString TitleQ2Vsnu = ";Energy Transfer [GeV];Q^{2} [GeV^{2}/c^{2}];";
 	TString TitleQ2VsW = ";W [GeV/c^{2}];Q^{2} [GeV^{2}/c^{2}];";
@@ -72,25 +72,27 @@ void treeProducer_simulation::Loop() {
 
 	// Electron
 
-	int NBinsElectronEnergy = 40; double MinElectronEnergy = 0., MaxElectronEnergy = 1.2; TString TitleElectronEnergy = ";E_{e'} (GeV);";
-	int NBinsElectronPhi = 45; double MinElectronPhi = 0., MaxElectronPhi = 360.; TString TitleElectronPhi = ";#phi_{e'} (degrees);";
-	int NBinsElectronTheta = 15; double MinElectronTheta = 15., MaxElectronTheta = 53.; TString TitleElectronTheta = ";#theta_{e'} (degrees);";
-	int NBinsElectronCosTheta = 40; double MinElectronCosTheta = -1, MaxElectronCosTheta = 1.; TString TitleElectronCosTheta = ";cos(#theta_{e'});";
-	int NBinsElectronMom = 40; double MinElectronMom = 1.7, MaxElectronMom = 4.; TString TitleElectronMom = ";P_{e'} (GeV/c);";
+	int NBinsElectronEnergy = 40; double MinElectronEnergy = 0., MaxElectronEnergy = 1.2; TString TitleElectronEnergy = ";E_{e'} [GeV];";
+	int NBinsElectronPhi = 45; double MinElectronPhi = 0., MaxElectronPhi = 360.; TString TitleElectronPhi = ";#phi_{e'} [deg];";
+	int NBinsElectronTheta = 15; double MinElectronTheta = 15., MaxElectronTheta = 53.; TString TitleElectronTheta = ";#theta_{e'} [deg];";
+	int NBinsElectronCosTheta = 20; double MinElectronCosTheta = -1, MaxElectronCosTheta = 1.; TString TitleElectronCosTheta = ";cos(#theta_{e'});";
+	int NBinsElectronMom = 30; double MinElectronMom = 0.2, MaxElectronMom = 1.2; TString TitleElectronMom = ";P_{e'} [GeV/c];";
 
-	TString TitleElectronPhiVsTheta = ";#phi_{e'} (degrees);#theta_{e'} (degrees);";
+	TString TitleElectronPhiVsTheta = ";#phi_{e'} [deg];#theta_{e'} [deg];";
 
 	// -------------------------------------------------------------------------------
 	
 	// Proton
 
-	int NBinsEp = 40; double MinEp = 0.9, MaxEp = 2.2; TString TitleEp = ";E_{p} (GeV);";
-	int NBinsProtonPhi = 45; double MinProtonPhi = 0., MaxProtonPhi = 360.; TString TitleProtonPhi = ";#phi_{p} (degrees);";
-	int NBinsProtonTheta = 30; double MinProtonTheta = 10., MaxProtonTheta = 120.; TString TitleProtonTheta = ";#theta_{p} (degrees);";
+	int NBinsEp = 40; double MinEp = 0.9, MaxEp = 2.2;
+	int NBinsPp = 20; double MinPp = 0.2, MaxPp = 1.7; 
+	TString TitleEp = ";E_{p} [GeV];"; TString TitlePp = ";P_{p} [GeV/c];";
+	int NBinsProtonPhi = 45; double MinProtonPhi = 0., MaxProtonPhi = 360.; TString TitleProtonPhi = ";#phi_{p} [deg];";
+	int NBinsProtonTheta = 30; double MinProtonTheta = 10., MaxProtonTheta = 120.; TString TitleProtonTheta = ";#theta_{p} [deg];";
 	int NBinsProtonCosTheta = 40; double MinProtonCosTheta = -0.2, MaxProtonCosTheta = 1.; TString TitleProtonCosTheta = ";cos(#theta_{p});";
 
-	TString TitleProtonEnergyVsMissMomentum = ";P_{T} (GeV/c);E_{p} (GeV);";
-	TString TitleQ2VsMissMomentum = ";P_{T} (GeV/c);Q^{2} (GeV^{2}/c^{2});";
+	TString TitleProtonEnergyVsMissMomentum = ";P_{T} (GeV/c);E_{p} [GeV];";
+	TString TitleQ2VsMissMomentum = ";P_{T} (GeV/c);Q^{2} [GeV^{2}/c^{2}];";
 
 	// -------------------------------------------------------------------------------
 
@@ -134,8 +136,21 @@ void treeProducer_simulation::Loop() {
 	TH1D* ElectronEnergyPlot = new TH1D("ElectronEnergyPlot",TitleElectronEnergy,NBinsElectronEnergy,MinElectronEnergy,MaxElectronEnergy);
 	TH1D* ElectronPhiPlot = new TH1D("ElectronPhiPlot",TitleElectronPhi,NBinsElectronPhi,MinElectronPhi,MaxElectronPhi);
 	TH1D* ElectronThetaPlot = new TH1D("ElectronThetaPlot",TitleElectronTheta,NBinsElectronTheta,MinElectronTheta,MaxElectronTheta);
-	TH1D* ElectronCosThetaPlot = new TH1D("ElectronCosThetaPlot",TitleElectronCosTheta,NBinsElectronCosTheta,MinElectronCosTheta,MaxElectronCosTheta);
 	TH2D* ElectronPhiThetaPlot = new TH2D("ElectronPhiThetaPlot",TitleElectronPhiVsTheta,NBinsElectronPhi,MinElectronPhi,MaxElectronPhi,NBinsElectronTheta,MinElectronTheta,MaxElectronTheta);
+
+	TH1D* ElectronCosThetaPlot = new TH1D("ElectronCosThetaPlot",TitleElectronCosTheta,NBinsElectronCosTheta,MinElectronCosTheta,MaxElectronCosTheta);
+	TH1D* ElectronCosThetaPlot_OneProton = new TH1D("ElectronCosThetaPlot_OneProton",TitleElectronCosTheta,NBinsElectronCosTheta,MinElectronCosTheta,MaxElectronCosTheta);
+	TH1D* QEElectronCosThetaPlot_OneProton = new TH1D("QEElectronCosThetaPlot_OneProton",TitleElectronCosTheta,NBinsElectronCosTheta,MinElectronCosTheta,MaxElectronCosTheta);
+	TH1D* MECElectronCosThetaPlot_OneProton = new TH1D("MECElectronCosThetaPlot_OneProton",TitleElectronCosTheta,NBinsElectronCosTheta,MinElectronCosTheta,MaxElectronCosTheta);
+	TH1D* RESElectronCosThetaPlot_OneProton = new TH1D("RESElectronCosThetaPlot_OneProton",TitleElectronCosTheta,NBinsElectronCosTheta,MinElectronCosTheta,MaxElectronCosTheta);
+	TH1D* DISElectronCosThetaPlot_OneProton = new TH1D("DISElectronCosThetaPlot_OneProton",TitleElectronCosTheta,NBinsElectronCosTheta,MinElectronCosTheta,MaxElectronCosTheta);
+
+	TH1D* ElectronMomentumPlot = new TH1D("ElectronMomentumPlot",TitleElectronMom,NBinsElectronMom,MinElectronMom,MaxElectronMom);
+	TH1D* ElectronMomentumPlot_OneProton = new TH1D("ElectronMomentumPlot_OneProton",TitleElectronMom,NBinsElectronMom,MinElectronMom,MaxElectronMom);
+	TH1D* QEElectronMomentumPlot_OneProton = new TH1D("QEElectronMomentumPlot_OneProton",TitleElectronMom,NBinsElectronMom,MinElectronMom,MaxElectronMom);
+	TH1D* MECElectronMomentumPlot_OneProton = new TH1D("MECElectronMomentumPlot_OneProton",TitleElectronMom,NBinsElectronMom,MinElectronMom,MaxElectronMom);
+	TH1D* RESElectronMomentumPlot_OneProton = new TH1D("RESElectronMomentumPlot_OneProton",TitleElectronMom,NBinsElectronMom,MinElectronMom,MaxElectronMom);
+	TH1D* DISElectronMomentumPlot_OneProton = new TH1D("DISElectronMomentumPlot_OneProton",TitleElectronMom,NBinsElectronMom,MinElectronMom,MaxElectronMom);
 
 	// Proton
 
@@ -144,6 +159,18 @@ void treeProducer_simulation::Loop() {
 	TH1D* ProtonThetaPlot = new TH1D("ProtonThetaPlot",TitleProtonTheta,NBinsProtonTheta,MinProtonTheta,MaxProtonTheta);
 	TH1D* ProtonCosThetaPlot = new TH1D("ProtonCosThetaPlot",TitleProtonCosTheta,NBinsProtonCosTheta,MinProtonCosTheta,MaxProtonCosTheta);
 	TH1D* EcalResoPlot = new TH1D("EcalResoPlot",TitleReso,NBinsReso,MinReso,MaxReso);
+
+	TH1D* ProtonCosThetaPlot_OneProton = new TH1D("ProtonCosThetaPlot_OneProton",TitleProtonCosTheta,NBinsProtonCosTheta,MinProtonCosTheta,MaxProtonCosTheta);
+	TH1D* QEProtonCosThetaPlot_OneProton = new TH1D("QEProtonCosThetaPlot_OneProton",TitleProtonCosTheta,NBinsProtonCosTheta,MinProtonCosTheta,MaxProtonCosTheta);
+	TH1D* MECProtonCosThetaPlot_OneProton = new TH1D("MECProtonCosThetaPlot_OneProton",TitleProtonCosTheta,NBinsProtonCosTheta,MinProtonCosTheta,MaxProtonCosTheta);
+	TH1D* RESProtonCosThetaPlot_OneProton = new TH1D("RESProtonCosThetaPlot_OneProton",TitleProtonCosTheta,NBinsProtonCosTheta,MinProtonCosTheta,MaxProtonCosTheta);
+	TH1D* DISProtonCosThetaPlot_OneProton = new TH1D("DISProtonCosThetaPlot_OneProton",TitleProtonCosTheta,NBinsProtonCosTheta,MinProtonCosTheta,MaxProtonCosTheta);
+
+	TH1D* ProtonMomentumPlot_OneProton = new TH1D("ProtonMomentumPlot_OneProton",TitlePp,NBinsPp,MinPp,MaxPp);
+	TH1D* QEProtonMomentumPlot_OneProton = new TH1D("QEProtonMomentumPlot_OneProton",TitlePp,NBinsPp,MinPp,MaxPp);
+	TH1D* MECProtonMomentumPlot_OneProton = new TH1D("MECProtonMomentumPlot_OneProton",TitlePp,NBinsPp,MinPp,MaxPp);
+	TH1D* RESProtonMomentumPlot_OneProton = new TH1D("RESProtonMomentumPlot_OneProton",TitlePp,NBinsPp,MinPp,MaxPp);
+	TH1D* DISProtonMomentumPlot_OneProton = new TH1D("DISProtonMomentumPlot_OneProton",TitlePp,NBinsPp,MinPp,MaxPp);
 
 	TH2D* EpVsMissMomentumPlot = new TH2D("EpVsMissMomentumPlot",TitleProtonEnergyVsMissMomentum,NBinsPmiss,MinPmiss,MaxPmiss,NBinsEp,MinEp,MaxEp);
 	TH2D* Q2VsMissMomentumPlot = new TH2D("Q2VsMissMomentumPlot",TitleQ2VsMissMomentum,NBinsPmiss,MinPmiss,MaxPmiss,NBinsQ2,MinQ2,MaxQ2);
@@ -182,7 +209,7 @@ void treeProducer_simulation::Loop() {
 
 	// -------------------------------------------------------------------------------------
 
-	int NBreakDown = 5;
+	int NBreakDown = 5; // All, QE, MEC, RES, DIS, COH
 
 	TH1D* DeltaPhiTPlot_BreakDown[NBreakDown];
 	TH1D* DeltaAlphaTPlot_BreakDown[NBreakDown];
@@ -260,6 +287,8 @@ void treeProducer_simulation::Loop() {
 	int countEvents = 0; Long64_t nbytes = 0, nb = 0;
 
 	// -------------------------------------------------------------------------------------------------------------
+
+	if (nentries > 90000000) { nentries = 90000000; }
 
 	for (Long64_t jentry=0; jentry<nentries;jentry++) {
 
@@ -355,7 +384,7 @@ void treeProducer_simulation::Loop() {
 		// -------------------------------------------------------------------------------------------------------
 
 		double Weight = 1.;
-		if (fInteraction == "EM+MEC") { Weight = Q2*Q2; }
+		if (fInteraction == "EM+MEC" || fInteraction == "EM") { Weight = Q2*Q2; }
 
         	if (fabs(Weight) != Weight) continue;
 
@@ -383,6 +412,7 @@ void treeProducer_simulation::Loop() {
 		ElectronCosThetaPlot->Fill(ElectronCosTheta,Weight);
 		ElectronPhiPlot->Fill(ElectronPhi,Weight);
 		ElectronEnergyPlot->Fill(El,Weight);
+		ElectronMomentumPlot->Fill(pl,Weight);
 
 		ElectronPhiThetaPlot->Fill(ElectronPhi,ElectronTheta,Weight);
 
@@ -497,9 +527,14 @@ void treeProducer_simulation::Loop() {
 
 			Q2Plot_OneProton->Fill(Q2,Weight);
 			nuPlot_OneProton->Fill(nu,Weight);
+			ElectronMomentumPlot_OneProton->Fill(pl,Weight);
+			ElectronCosThetaPlot_OneProton->Fill(ElectronCosTheta,Weight);	
 
 			UnweightedQ2Plot_OneProton->Fill(Q2);
 			UnweightednuPlot_OneProton->Fill(nu);
+
+			ProtonMomentumPlot_OneProton->Fill(ProtonMom,Weight);
+			ProtonCosThetaPlot_OneProton->Fill(ProtonCosTheta,Weight);	
 
 			DeltaPhiTPlot_OneProton->Fill(DeltaPhiT,Weight);
 			DeltaAlphaTPlot_OneProton->Fill(DeltaAlphaT,Weight);
@@ -509,9 +544,14 @@ void treeProducer_simulation::Loop() {
 
 				QEnuPlot_OneProton->Fill(nu,Weight);
 				UnweightedQEnuPlot_OneProton->Fill(nu);
+				QEElectronMomentumPlot_OneProton->Fill(ElectronMom,Weight);
+				QEElectronCosThetaPlot_OneProton->Fill(ElectronCosTheta,Weight);	
 
 				QEQ2Plot_OneProton->Fill(Q2,Weight);
 				UnweightedQEQ2Plot_OneProton->Fill(Q2);
+
+				QEProtonMomentumPlot_OneProton->Fill(ProtonMom,Weight);
+				QEProtonCosThetaPlot_OneProton->Fill(ProtonCosTheta,Weight);
 
 				QEDeltaPhiTPlot_OneProton->Fill(DeltaPhiT,Weight);
 				QEDeltaAlphaTPlot_OneProton->Fill(DeltaAlphaT,Weight);
@@ -523,9 +563,14 @@ void treeProducer_simulation::Loop() {
 
 				MECnuPlot_OneProton->Fill(nu,Weight);
 				UnweightedMECnuPlot_OneProton->Fill(nu);
+				MECElectronMomentumPlot_OneProton->Fill(ElectronMom,Weight);
+				MECElectronCosThetaPlot_OneProton->Fill(ElectronCosTheta,Weight);
 
 				MECQ2Plot_OneProton->Fill(Q2,Weight);
 				UnweightedMECQ2Plot_OneProton->Fill(Q2);
+
+				MECProtonMomentumPlot_OneProton->Fill(ProtonMom,Weight);
+				MECProtonCosThetaPlot_OneProton->Fill(ProtonCosTheta,Weight);
 
 				MECDeltaPhiTPlot_OneProton->Fill(DeltaPhiT,Weight);
 				MECDeltaAlphaTPlot_OneProton->Fill(DeltaAlphaT,Weight);
@@ -537,9 +582,14 @@ void treeProducer_simulation::Loop() {
 
 				RESnuPlot_OneProton->Fill(nu,Weight);
 				UnweightedRESnuPlot_OneProton->Fill(nu);
+				RESElectronMomentumPlot_OneProton->Fill(ElectronMom,Weight);
+				RESElectronCosThetaPlot_OneProton->Fill(ElectronCosTheta,Weight);
 
 				RESQ2Plot_OneProton->Fill(Q2,Weight);
 				UnweightedRESQ2Plot_OneProton->Fill(Q2);
+
+				RESProtonMomentumPlot_OneProton->Fill(ProtonMom,Weight);
+				RESProtonCosThetaPlot_OneProton->Fill(ProtonCosTheta,Weight);
 
 				RESDeltaPhiTPlot_OneProton->Fill(DeltaPhiT,Weight);
 				RESDeltaAlphaTPlot_OneProton->Fill(DeltaAlphaT,Weight);
@@ -551,9 +601,14 @@ void treeProducer_simulation::Loop() {
 
 				DISnuPlot_OneProton->Fill(nu,Weight);
 				UnweightedDISnuPlot_OneProton->Fill(nu);
+				DISElectronMomentumPlot_OneProton->Fill(ElectronMom,Weight);
+				DISElectronCosThetaPlot_OneProton->Fill(ElectronCosTheta,Weight);
 
 				DISQ2Plot_OneProton->Fill(Q2,Weight);
 				UnweightedDISQ2Plot_OneProton->Fill(Q2);
+
+				DISProtonMomentumPlot_OneProton->Fill(ProtonMom,Weight);
+				DISProtonCosThetaPlot_OneProton->Fill(ProtonCosTheta,Weight);
 
 				DISDeltaPhiTPlot_OneProton->Fill(DeltaPhiT,Weight);
 				DISDeltaAlphaTPlot_OneProton->Fill(DeltaAlphaT,Weight);

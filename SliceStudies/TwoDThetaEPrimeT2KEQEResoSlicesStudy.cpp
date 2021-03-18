@@ -75,12 +75,12 @@ void PrettyPlot(TH1D* h){
 		h->GetXaxis()->SetLabelSize(0.);
 		h->GetXaxis()->SetTitleFont(TextFont);		
 		h->GetXaxis()->SetLabelFont(TextFont);
-		h->GetXaxis()->SetNdivisions(4);
+		h->GetXaxis()->SetNdivisions(6);
 
 		h->GetYaxis()->CenterTitle();		
 		h->GetYaxis()->SetTitle("");
 		h->GetYaxis()->SetTitleSize(TextSize);
-		h->GetYaxis()->SetLabelSize(2*TextSize);
+		h->GetYaxis()->SetLabelSize(TextSize);
 		h->GetYaxis()->SetTitleFont(TextFont);		
 		h->GetYaxis()->SetLabelFont(TextFont);
 		h->GetYaxis()->SetNdivisions(5);
@@ -90,7 +90,7 @@ void PrettyPlot(TH1D* h){
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void TwoDThetaEPrimeEcalSlicesStudy() {
+void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 
 	// ----------------------------------------------------------------------------------------------------------------
 	
@@ -101,16 +101,15 @@ void TwoDThetaEPrimeEcalSlicesStudy() {
 	double GlobalMax = 19.;
 
 	int FontStyle = 132;
-	double TextSize = 0.08;
 
 	// ---------------------------------------------------------------------------------------------------------------
 
 	std::vector<TString> NucleusString; NucleusString.clear();
 	std::vector<TString> NucleusLatex; NucleusLatex.clear();
 
-	NucleusString.push_back("4He"); NucleusLatex.push_back("^{4}He");
+//	NucleusString.push_back("4He"); NucleusLatex.push_back("^{4}He");
 	NucleusString.push_back("12C"); NucleusLatex.push_back("^{12}C");
-	NucleusString.push_back("56Fe"); NucleusLatex.push_back("^{56}Fe");
+//	NucleusString.push_back("56Fe"); NucleusLatex.push_back("^{56}Fe");
 
 	const int NNuclei = NucleusString.size();
 
@@ -124,8 +123,8 @@ void TwoDThetaEPrimeEcalSlicesStudy() {
 		std::vector<double> EnergyDouble; EnergyDouble.clear();
 
 		EnergyString.push_back("1_161"); EnergyDouble.push_back(1.161);
-		EnergyString.push_back("2_261"); EnergyDouble.push_back(2.261);
-		EnergyString.push_back("4_461"); EnergyDouble.push_back(4.461);
+//		EnergyString.push_back("2_261"); EnergyDouble.push_back(2.261);
+//		EnergyString.push_back("4_461"); EnergyDouble.push_back(4.461);
 
 		const int NEnergies = EnergyString.size();
 
@@ -145,7 +144,7 @@ void TwoDThetaEPrimeEcalSlicesStudy() {
 
 			// SuSav2 ECal in EePrime and ThetaPrime Slices 		
 
-			double MinCosTheta2D = 0.87, MaxCosTheta2D = 0.99; int CosThetaSlices2D = 3;	
+			double MinCosTheta2D = 0.6, MaxCosTheta2D = 0.99; int CosThetaSlices2D = 3;	
 
 			if(EnergyDouble[WhichEnergy]>1. && EnergyDouble[WhichEnergy]<2.) { MaxCosTheta2D = 0.96; }
 			if(EnergyDouble[WhichEnergy]>2. && EnergyDouble[WhichEnergy]<3.) { MaxCosTheta2D = 0.96; }
@@ -166,7 +165,7 @@ void TwoDThetaEPrimeEcalSlicesStudy() {
 
 			// ---------------------------------------------------------------------------------------------------------------
 
-			if(EnergyDouble[WhichEnergy]>1. && EnergyDouble[WhichEnergy]<2.) { MinEePrime2D = 0.6; MaxEePrime2D = 1.2; }
+			if(EnergyDouble[WhichEnergy]>1. && EnergyDouble[WhichEnergy]<2.) { MinEePrime2D = 0.5; MaxEePrime2D = 1.1; }
 			if(EnergyDouble[WhichEnergy]>2. && EnergyDouble[WhichEnergy]<3.) { MinEePrime2D = 1.3; MaxEePrime2D = 2.2; }
 			if(EnergyDouble[WhichEnergy]>4. && EnergyDouble[WhichEnergy]<5.) { MinEePrime2D = 2.5; MaxEePrime2D = 4.; }
 
@@ -176,9 +175,9 @@ void TwoDThetaEPrimeEcalSlicesStudy() {
 
 			TFile* file_Data = TFile::Open("../../myFiles/"+EnergyString[WhichEnergy]+"/Pinned_Data_Final/NoxBCut/"+\
 							NucleusString[WhichNucleus]+"_"+EnergyString[WhichEnergy]+"_Pinned_Data_Final_Plots_FSI_em.root","readonly");
-			TFile* file_SuSav2 = TFile::Open("../../myFiles/"+EnergyString[WhichEnergy]+"/SuSav2_RadCorr_LFGM/NoxBCut/"+\
+			//TFile* file_SuSav2 = TFile::Open("../../myFiles/"+EnergyString[WhichEnergy]+"/SuSav2_RadCorr_LFGM/NoxBCut/"+\
 							 NucleusString[WhichNucleus]+"_"+EnergyString[WhichEnergy]+"_SuSav2_RadCorr_LFGM_Plots_FSI_em.root","readonly");	
-			TFile* file_G2018 = TFile::Open("../../myFiles/"+EnergyString[WhichEnergy]+"/hA2018_Final_RadCorr_LFGM/NoxBCut/"+\
+			//TFile* file_G2018 = TFile::Open("../../myFiles/"+EnergyString[WhichEnergy]+"/hA2018_Final_RadCorr_LFGM/NoxBCut/"+\
 							 NucleusString[WhichNucleus]+"_"+EnergyString[WhichEnergy]+"_hA2018_Final_RadCorr_LFGM_Plots_FSI_em.root","readonly");	
 
 			TString CanvasName = NucleusString[WhichNucleus]+"_"+EnergyString[WhichEnergy]+"_SuSav2Canvas_ECal_EePrimeAndCosThetaSlices_2D";
@@ -226,50 +225,50 @@ void TwoDThetaEPrimeEcalSlicesStudy() {
 					if (WhichEePrimeSlice2D == EePrimeSlices2D-1 ) { pad->SetRightMargin(0.03); }
 					pad->SetFrameBorderSize(10);
 
-					TH1D* h1_ECal_G2018 = (TH1D*)file_G2018->Get(Form("h1_ECal_InEePrime_%d_To_%d_InCosTheta_%d_To_%d_Slices",\
-										WhichEePrimeSlice2D,WhichEePrimeSlice2D+1,WhichCosThetaSlice2D,WhichCosThetaSlice2D+1));
+//					TH1D* h1_ECal_G2018 = (TH1D*)file_G2018->Get(Form("h1_ECal_InEePrime_%d_To_%d_InCosTheta_%d_To_%d_Slices",\
+//										WhichEePrimeSlice2D,WhichEePrimeSlice2D+1,WhichCosThetaSlice2D,WhichCosThetaSlice2D+1));
 
-					TH1D* h1_ECal_SuSav2 = (TH1D*)file_SuSav2->Get(Form("h1_ECal_InEePrime_%d_To_%d_InCosTheta_%d_To_%d_Slices",\
-										WhichEePrimeSlice2D,WhichEePrimeSlice2D+1,WhichCosThetaSlice2D,WhichCosThetaSlice2D+1));
+//					TH1D* h1_ECal_SuSav2 = (TH1D*)file_SuSav2->Get(Form("h1_ECal_InEePrime_%d_To_%d_InCosTheta_%d_To_%d_Slices",\
+//										WhichEePrimeSlice2D,WhichEePrimeSlice2D+1,WhichCosThetaSlice2D,WhichCosThetaSlice2D+1));
 
-					TH1D* h1_ECal_Data = (TH1D*)file_Data->Get(Form("h1_ECal_InEePrime_%d_To_%d_InCosTheta_%d_To_%d_Slices",\
+					TH1D* h1_T2KEQEReso_Data = (TH1D*)file_Data->Get(Form("h1_T2KEQEReso_Int_0_InEePrime_%d_To_%d_InCosTheta_%d_To_%d_Slices",\
 										WhichEePrimeSlice2D,WhichEePrimeSlice2D+1,WhichCosThetaSlice2D,WhichCosThetaSlice2D+1));
 					
 
 					double LowRange = -1., HighRange = -1.;
 
-					if (EnergyDouble[WhichEnergy] == 1.161) { LowRange = 0.55; HighRange = 1.29; }
+					if (EnergyDouble[WhichEnergy] == 1.161) { LowRange = -0.7; HighRange = 0.49; }
 					if (EnergyDouble[WhichEnergy] == 2.261) { LowRange = 0.67; HighRange = 2.4; }
 					if (EnergyDouble[WhichEnergy] == 4.461) { LowRange = 1.5; HighRange = 4.6; }
 
-					h1_ECal_Data->GetXaxis()->SetRangeUser(LowRange,HighRange);
+					h1_T2KEQEReso_Data->GetXaxis()->SetRangeUser(LowRange,HighRange);
 
-					PrettyPlot(h1_ECal_Data);
-					h1_ECal_Data->SetLineColor(kBlack);
-					h1_ECal_Data->SetMarkerColor(kBlack);
-					h1_ECal_Data->SetMarkerStyle(20);
-					h1_ECal_Data->SetMarkerSize(1.2);
-					h1_ECal_Data->GetYaxis()->SetRangeUser(0.01,GlobalMax);	
+					PrettyPlot(h1_T2KEQEReso_Data);
+					h1_T2KEQEReso_Data->SetLineColor(kBlack);
+					h1_T2KEQEReso_Data->SetMarkerColor(kBlack);
+					h1_T2KEQEReso_Data->SetMarkerStyle(20);
+					h1_T2KEQEReso_Data->SetMarkerSize(1.2);
+					h1_T2KEQEReso_Data->GetYaxis()->SetRangeUser(0.01,GlobalMax);	
 
 					if (WhichCosThetaSlice2D == CosThetaSlices2D-1 ) {
 
-						h1_ECal_Data->GetXaxis()->SetLabelSize(2*TextSize);
+						h1_T2KEQEReso_Data->GetXaxis()->SetLabelSize(TextSize);
 
 					}	
 
-					if (EnergyString[WhichEnergy] == "2_261") { h1_ECal_Data->GetXaxis()->SetRangeUser(0.5,2.5); }
+					if (EnergyString[WhichEnergy] == "2_261") { h1_T2KEQEReso_Data->GetXaxis()->SetRangeUser(0.5,2.5); }
 										
-					h1_ECal_Data->Draw("e same");
+					h1_T2KEQEReso_Data->Draw("e same");
 					
-					PrettyPlot(h1_ECal_SuSav2);
-					h1_ECal_SuSav2->SetLineColor(kBlack);
-					h1_ECal_SuSav2->SetLineStyle(kSolid);
-					h1_ECal_SuSav2->Draw("hist C same");
+//					PrettyPlot(h1_ECal_SuSav2);
+//					h1_ECal_SuSav2->SetLineColor(kBlack);
+//					h1_ECal_SuSav2->SetLineStyle(kSolid);
+//					h1_ECal_SuSav2->Draw("hist C same");
 
-					PrettyPlot(h1_ECal_G2018);
-					h1_ECal_G2018->SetLineColor(kBlack);
-					h1_ECal_G2018->SetLineStyle(kDashed);
-					h1_ECal_G2018->Draw("hist C same");
+//					PrettyPlot(h1_ECal_G2018);
+//					h1_ECal_G2018->SetLineColor(kBlack);
+//					h1_ECal_G2018->SetLineStyle(kDashed);
+//					h1_ECal_G2018->Draw("hist C same");
 
 					// -------------------------------------------------------------------------------------------------------------
 
@@ -278,8 +277,8 @@ void TwoDThetaEPrimeEcalSlicesStudy() {
 					legSuSav2_Slice->SetTextFont(TextFont);
 					legSuSav2_Slice->SetTextSize(1.2*TextSize);	
 
-					legSuSav2_Slice->AddEntry(h1_ECal_Data,ToString(MinEePrimeSlice2D)+ " < E_{e'} < " + ToString(MaxEePrimeSlice2D)+" GeV","");				
-					legSuSav2_Slice->AddEntry(h1_ECal_SuSav2,ToString(MinCosThetaSlice2D)+ " < cos(#theta_{e'}) < " + ToString(MaxCosThetaSlice2D),"");
+					legSuSav2_Slice->AddEntry(h1_T2KEQEReso_Data,ToString(MinEePrimeSlice2D)+ " < E_{e'} < " + ToString(MaxEePrimeSlice2D)+" GeV","");
+					legSuSav2_Slice->AddEntry(h1_T2KEQEReso_Data,ToString(MinCosThetaSlice2D)+ " < cos(#theta_{e'}) < " + ToString(MaxCosThetaSlice2D),"");
 
 					legSuSav2_Slice->Draw();
 
@@ -292,9 +291,9 @@ void TwoDThetaEPrimeEcalSlicesStudy() {
 						legSuSav2_EePrimeAndCosThetaSlices->SetTextFont(TextFont);
 						legSuSav2_EePrimeAndCosThetaSlices->SetTextSize(1.5*TextSize);	
 
-						legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_ECal_Data,"Data","lep");				
-						legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_ECal_SuSav2,"SuSav2","l");
-						legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_ECal_G2018,"G2018","l");
+						legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_T2KEQEReso_Data,"Data","lep");				
+						//legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_ECal_SuSav2,"SuSav2","l");
+						//legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_ECal_G2018,"G2018","l");
 
 						legSuSav2_EePrimeAndCosThetaSlices->Draw();	
 
@@ -345,11 +344,11 @@ void TwoDThetaEPrimeEcalSlicesStudy() {
 			latexpadEcal.SetTextFont(FontStyle);
 			latexpadEcal.SetTextSize(9*TextSize);
 			latexpadEcal.SetTextColor(kBlack);
-			latexpadEcal.DrawLatexNDC(0.1,0.4,"(e,e'p)_{1p0#pi} E^{cal} [GeV]");
+			latexpadEcal.DrawLatexNDC(0.1,0.4,"(e,e')_{0#pi} E_{QE} [GeV]");
 			
 			// ----------------------------------------------------------------------------------------------------------------	
 
-			SuSav2Canvas_ECal_EePrimeAndThetaSlices->SaveAs("./myPlots/"+CanvasName+".pdf");
+			//SuSav2Canvas_ECal_EePrimeAndThetaSlices->SaveAs("./myPlots/"+CanvasName+".pdf");
 
 			// ----------------------------------------------------------------------------------------------------------------
 

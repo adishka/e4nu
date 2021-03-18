@@ -299,6 +299,9 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 								BreakDownPlots[j-1]->Draw("C hist same");
 
+								int fraction = (int)(BreakDownPlots[j-1]->Integral() / Plots[WhichFSIModel]->Integral() * 100.);
+								cout << "Interaction " << j << " fraction = " << fraction << endl; 
+
 							} // end of the look over the GENIE break down
 
 						} // End of the SuSav2 if statement for breakdown

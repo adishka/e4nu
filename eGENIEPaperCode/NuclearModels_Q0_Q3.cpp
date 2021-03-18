@@ -16,20 +16,18 @@
 #include <string>
 #include <vector>
 
+#include "eGENIE_Constants.h"
+
 using namespace std;
 
-void QE_Q0_Q3_Neutrinos() {
-
-	gStyle->SetOptStat(0);	
-
-	int Ndivisions = 4;
-	int FontStyle = 132;
-	double TextSize = 0.07;
+void NuclearModels_Q0_Q3() {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
-	TString Interaction = "CCinclMEC_Q2_0_1";
-//	TString Interaction = "EM+MEC";
+	gStyle->SetOptStat(0);	
+
+	int FontStyle = 132;
+	double TextSize = 0.07;
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -46,22 +44,17 @@ void QE_Q0_Q3_Neutrinos() {
 	std::vector<TString> Tunes;
 	std::vector<TString> TuneLabels;  
 
-//	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
 	nucleus.push_back("C12"); LabelsOfSamples.push_back("^{12}C");
-//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
 
 	E.push_back("1161"); LabelE.push_back(" @ E = 1.161 GeV");
-//	E.push_back("2261"); LabelE.push_back(" @ E = 2.261 GeV");
-//	E.push_back("4461"); LabelE.push_back(" @ E = 4.461 GeV");
 
-	Tunes.push_back("GTEST19_10b_00_000_CCinclMEC_Q2_0_1"); TuneLabels.push_back("#splitline{SuSav2}{RMF}");
-	Tunes.push_back("G18_10a_02_11a_CCinclMEC_Q2_0_1"); TuneLabels.push_back("#splitline{G2018}{Nieves}");
-	Tunes.push_back("G18_02a_00_000_CCinclMEC_Q2_0_1"); TuneLabels.push_back("#splitline{G18_02a}{Lwellyn-Smith}");
-//	Tunes.push_back("G00_00a_00_000"); TuneLabels.push_back("RFG");
+	Tunes.push_back("GTEST19_10b_00_000_CCinclMEC_Q2_0_1"); TuneLabels.push_back("#splitline{#nu SuSav2}{Relativistic MF}");
+	Tunes.push_back("G18_10a_02_11a_CCinclMEC_Q2_0_1"); TuneLabels.push_back("#splitline{#nu Nieves}{Local FG}");
+	Tunes.push_back("G18_02a_00_000_CCinclMEC_Q2_0_1"); TuneLabels.push_back("#splitline{#nu Lwellyn-Smith}{Relativistic FG}");
 
-//	Tunes.push_back("GTEST19_10b_00_000"); TuneLabels.push_back("SuSav2");
-//	Tunes.push_back("G18_10a_02_11a"); TuneLabels.push_back("G2018");
-//	Tunes.push_back("G00_00a_00_000"); TuneLabels.push_back("G18_02a");
+	Tunes.push_back("GTEST19_10b_00_000_EM+MEC_Q2_0_1"); TuneLabels.push_back("#splitline{e SuSav2}{Relativistic MF}");
+	Tunes.push_back("G18_10a_02_11a_EM+MEC_Q2_0_1"); TuneLabels.push_back("#splitline{e Rosenbluth}{Local FG}");
+	Tunes.push_back("G18_02a_00_000_EM+MEC_Q2_0_1"); TuneLabels.push_back("#splitline{e Rosenbluth}{Relativistic FG}");
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -88,18 +81,29 @@ void QE_Q0_Q3_Neutrinos() {
 			for (int WhichPlot = 0; WhichPlot < NPlots; WhichPlot ++) {
 
 				TString PlotName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+NameOfPlots[WhichPlot]; 
-//				TCanvas* PlotCanvas = new TCanvas(PlotName, PlotName, 205,34,2024,768);
-				TCanvas* PlotCanvas = new TCanvas(PlotName, PlotName, 205,34,2024,820);
+//				TCanvas* PlotCanvas = new TCanvas(PlotName, PlotName, 205,34,2024,820);
+				TCanvas* PlotCanvas = new TCanvas(PlotName, PlotName, 205,34,1424,820);
+
+
+				TLatex *title = new TLatex(); 
+				title->SetNDC();
+				title->SetTextFont(FontStyle); 
+				title->SetTextColor(kBlack); 
+				title->SetTextSize(0.1);
+//				TString myTitle = LabelsOfSamples[WhichNucleus] + " " +LabelE[WhichEnergy] + ", " + TuneLabels[WhichTune];
+//				title->DrawLatex(0.05,0.3,myTitle); // title / nucleus / energy
+				TString myTitle = "QE Scattering";
+//				title->DrawLatex(0.14,0.9,myTitle); // title / nucleus / energy
 
 				// ---------------------------------------------------------------------------------------------------------------------------
 
-				// Dimensions of TPads (pad2 will be deleted at the very end for the Ereco plots)
+				double XMinPadOne = 0., XMaxPadOne = 0.37, YMinPadOne = 0.5, YMaxPadOne = 1.;
+				double XMinPadTwo = 0.37, XMaxPadTwo = 0.68, YMinPadTwo = 0.5, YMaxPadTwo = YMaxPadOne;
+				double XMinPadThree = 0.68, XMaxPadThree = 1., YMinPadThree = 0.5, YMaxPadThree = YMaxPadOne;
 
-				double XMinPadOne = 0., XMaxPadOne = 0.37, YMinPadOne = 0., YMaxPadOne = 1.;
-				double XMinPadTwo = 0.37, XMaxPadTwo = 0.7, YMinPadTwo = 0., YMaxPadTwo = YMaxPadOne;
-				double XMinPadThree = 0.7, XMaxPadThree = 1., YMinPadThree = 0., YMaxPadThree = YMaxPadOne;
-
-				double XMinPadFour = 0.3, XMaxPadFour = 0.85, YMinPadFour = 0.91, YMaxPadFour = 1.;
+				double XMinPadFour = 0., XMaxPadFour = 0.37, YMinPadFour = 0.0, YMaxPadFour = 0.5;
+				double XMinPadFive = 0.37, XMaxPadFive = 0.68, YMinPadFive = 0.0, YMaxPadFive = 0.5;
+				double XMinPadSix = 0.68, XMaxPadSix = 1., YMinPadSix = 0., YMaxPadSix = 0.5;
 
 				// ---------------------------------------------------------------------------------------------------------------------------
 
@@ -111,32 +115,42 @@ void QE_Q0_Q3_Neutrinos() {
 				pad3->SetFillColor(kWhite); pad3->Draw(); 
 				TPad* pad4 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPadFour,YMinPadFour,XMaxPadFour,YMaxPadFour,24); 
 				pad4->SetFillColor(kWhite); pad4->Draw();
+				TPad* pad5 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPadFive,YMinPadFive,XMaxPadFive,YMaxPadFive,24); 
+				pad5->SetFillColor(kWhite); pad5->Draw();
+				TPad* pad6 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPadSix,YMinPadSix,XMaxPadSix,YMaxPadSix,24); 
+				pad6->SetFillColor(kWhite); pad6->Draw();
 
-//				pad1->SetBottomMargin(0.16);
-				pad1->SetBottomMargin(0.01);
-				pad2->SetBottomMargin(0.01);
-				pad3->SetBottomMargin(0.01);
+				pad1->SetBottomMargin(0.0);
+				pad2->SetBottomMargin(0.0);
+				pad3->SetBottomMargin(0.0);
 
-				pad4->cd();
-				TLatex *title = new TLatex(); 
-				title->SetNDC();
-				title->SetTextFont(FontStyle); 
-				title->SetTextColor(kBlack); 
-				title->SetTextSize(0.8);
-//				TString myTitle = LabelsOfSamples[WhichNucleus] + " " +LabelE[WhichEnergy] + ", " + TuneLabels[WhichTune];
-//				title->DrawLatex(0.05,0.3,myTitle); // title / nucleus / energy
-				TString myTitle = "QE Scattering";
-				title->DrawLatex(0.14,0.2,myTitle); // title / nucleus / energy
+				pad1->SetTopMargin(0.16);
+				pad2->SetTopMargin(0.16);
+				pad3->SetTopMargin(0.16);
+
+				pad4->SetTopMargin(0.0);
+				pad5->SetTopMargin(0.0);
+				pad6->SetTopMargin(0.0);
+
+				pad4->SetBottomMargin(0.16);
+				pad5->SetBottomMargin(0.16);
+				pad6->SetBottomMargin(0.16);
 
 				// ---------------------------------------------------------------------------------------------------------------------------
 
 				for (int WhichTune = 0; WhichTune < NTunes; WhichTune ++) {
 
 					if (WhichTune == 0) 
-						{ pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.21); pad1->SetTitle("");}
-					if (WhichTune == 1)  { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.0); }
+						{ pad1->cd(); gStyle->SetTitleSize(TextSize,"t"); pad1->SetRightMargin(0.); pad1->SetLeftMargin(0.17); pad1->SetTitle("");}
+					else if (WhichTune == 1)  { pad2->cd(); pad2->SetLeftMargin(0.0); pad2->SetRightMargin(0.0); }
 					
-					if (WhichTune == 2)  { pad3->cd(); pad3->SetLeftMargin(0.0); pad3->SetRightMargin(0.05); }
+					else if (WhichTune == 2)  { pad3->cd(); pad3->SetLeftMargin(0.0); pad3->SetRightMargin(0.05); }
+
+					else if (WhichTune == 3)  { pad4->cd(); pad4->SetRightMargin(0.); pad4->SetLeftMargin(0.17); }
+
+					else if (WhichTune == 4)  { pad5->cd(); pad5->SetRightMargin(0.); pad5->SetLeftMargin(0.); }
+
+					else if (WhichTune == 5)  { pad6->cd(); pad6->SetRightMargin(0.05); pad6->SetLeftMargin(0.0); }
 
 
 					TString PathToFiles = "./myFiles/";
@@ -163,16 +177,17 @@ void QE_Q0_Q3_Neutrinos() {
 					Plots->GetYaxis()->SetTitleFont(FontStyle);
 
 					Plots->GetYaxis()->SetLabelSize(TextSize);
-					if (WhichTune == 1) { 
-						Plots->GetXaxis()->SetLabelSize(TextSize+0.02); 
-						Plots->GetXaxis()->SetLabelOffset(-0.01); 
 
-						Plots->GetXaxis()->SetTitleSize(TextSize+0.02); 
-						Plots->GetXaxis()->SetTitleOffset(0.78); 
-					}
+//					if (WhichTune == 1) { 
+//						Plots->GetXaxis()->SetLabelSize(TextSize+0.02); 
+//						Plots->GetXaxis()->SetLabelOffset(-0.01); 
+
+//						Plots->GetXaxis()->SetTitleSize(TextSize+0.02); 
+//						Plots->GetXaxis()->SetTitleOffset(0.78); 
+//					}
 
 					Plots->GetYaxis()->SetTitleSize(TextSize);
-					Plots->GetYaxis()->SetTitleOffset(1.35);
+					Plots->GetYaxis()->SetTitleOffset(1.2);
 					Plots->GetYaxis()->SetTitle(YLabelOfPlots[WhichPlot]);
 
 					// --------------------------------------------------------------------------------------------------------------------------
@@ -180,7 +195,7 @@ void QE_Q0_Q3_Neutrinos() {
 					// Rebinning & Ranges
 
 					Plots->GetXaxis()->SetRangeUser(0.25,1.7);
-					Plots->GetYaxis()->SetRangeUser(-0.05,1.15);
+					Plots->GetYaxis()->SetRangeUser(0.01,1.15);
 
 //					Plots->GetZaxis()->SetRangeUser(1.,Plots->GetMaximum());
 					double XMin =-99.,XMax =-99.;
@@ -204,16 +219,16 @@ void QE_Q0_Q3_Neutrinos() {
 					Plots->Draw("colt");
 					PlotCanvas->Update();
 
-					if (WhichTune == 0) { 
+//					if (WhichTune == 0) { 
 
-						TLatex *titleChannel = new TLatex(); 
-						titleChannel->SetNDC();
-						titleChannel->SetTextFont(FontStyle); 
-						titleChannel->SetTextColor(kBlack); 
-						titleChannel->SetTextSize(TextSize);
-						//titleChannel->DrawLatex(0.2,0.8,Channel[WhichPlot]);
+//						TLatex *titleChannel = new TLatex(); 
+//						titleChannel->SetNDC();
+//						titleChannel->SetTextFont(FontStyle); 
+//						titleChannel->SetTextColor(kBlack); 
+//						titleChannel->SetTextSize(TextSize);
+//						//titleChannel->DrawLatex(0.2,0.8,Channel[WhichPlot]);
 
-					}
+//					}
 
 
 					TLatex *titleParticle = new TLatex(); 
@@ -221,10 +236,14 @@ void QE_Q0_Q3_Neutrinos() {
 					titleParticle->SetTextFont(FontStyle); 
 					titleParticle->SetTextColor(kBlack); 
 					titleParticle->SetTextSize(TextSize);
-					if (WhichTune == 1) { titleParticle->SetTextSize(TextSize+0.02); }
+					//if (WhichTune == 1) { titleParticle->SetTextSize(TextSize+0.02); }
 
-					if (WhichTune == 0) { titleParticle->DrawLatex(0.3,0.8,TuneLabels[WhichTune]); }
-					else { titleParticle->DrawLatex(0.09,0.8,TuneLabels[WhichTune]); }
+					if (WhichTune == 0) { titleParticle->DrawLatex(0.25,0.75,TuneLabels[WhichTune]); }
+					else if (WhichTune == 1) { titleParticle->DrawLatex(0.09,0.75,TuneLabels[WhichTune]); /*title->DrawLatex(0.27,0.9,myTitle);*/ }
+					else if (WhichTune == 2) { titleParticle->DrawLatex(0.09,0.74,TuneLabels[WhichTune]); }
+					else if (WhichTune == 3) { titleParticle->DrawLatex(0.25,0.9,TuneLabels[WhichTune]); }
+					else if (WhichTune == 4) { titleParticle->DrawLatex(0.09,0.9,TuneLabels[WhichTune]); }
+					else if (WhichTune == 5) { titleParticle->DrawLatex(0.09,0.9,TuneLabels[WhichTune]); }
 
 					// ----------------------------------------------------------------------------------------------------------------
 
@@ -232,7 +251,7 @@ void QE_Q0_Q3_Neutrinos() {
 
 				} // End of the loop over the FSI Models 
 
-				PlotCanvas->SaveAs("myPlots/QE_Q0_Q3_Neutrino_"+PlotName+".pdf");
+				PlotCanvas->SaveAs("myPlots/NuclearModels_"+PlotName+".pdf");
 
 				//delete PlotCanvas;
 
