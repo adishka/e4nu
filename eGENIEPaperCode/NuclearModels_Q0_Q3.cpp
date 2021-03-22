@@ -50,7 +50,7 @@ void NuclearModels_Q0_Q3() {
 
 	Tunes.push_back("GTEST19_10b_00_000_CCinclMEC_Q2_0_1"); TuneLabels.push_back("#splitline{#nu SuSav2}{Relativistic MF}");
 	Tunes.push_back("G18_10a_02_11a_CCinclMEC_Q2_0_1"); TuneLabels.push_back("#splitline{#nu Nieves}{Local FG}");
-	Tunes.push_back("G18_02a_00_000_CCinclMEC_Q2_0_1"); TuneLabels.push_back("#splitline{#nu Lwellyn-Smith}{Relativistic FG}");
+	Tunes.push_back("G18_02a_00_000_CCinclMEC_Q2_0_1"); TuneLabels.push_back("#splitline{#nu Llewellyn-Smith}{Relativistic FG}");
 
 	Tunes.push_back("GTEST19_10b_00_000_EM+MEC_Q2_0_1"); TuneLabels.push_back("#splitline{e SuSav2}{Relativistic MF}");
 	Tunes.push_back("G18_10a_02_11a_EM+MEC_Q2_0_1"); TuneLabels.push_back("#splitline{e Rosenbluth}{Local FG}");
@@ -58,8 +58,9 @@ void NuclearModels_Q0_Q3() {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
-	NameOfPlots.push_back("QE_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("QE");
+//	NameOfPlots.push_back("QE_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("QE");
 //	NameOfPlots.push_back("MEC_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("MEC");
+	NameOfPlots.push_back("QE_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("#omega [GeV]"); Channel.push_back("QE");
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------
 

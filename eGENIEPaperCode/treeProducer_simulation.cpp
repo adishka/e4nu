@@ -16,6 +16,9 @@
 #include <vector>
 #include <iterator>
 
+#include "eGENIE_Constants.h"
+#include "eGENIE_Functions.cpp"
+
 using namespace std;
 
 TString ToString(int num) {
@@ -284,6 +287,39 @@ void treeProducer_simulation::Loop() {
 
 	// -------------------------------------------------------------------------------------------------------------
 
+	TH1D* ElectronMomentumArray_OneProton[InteractionLabel.size()+1][ProcessLabel.size()+1];
+	TH1D* ElectronCosThetaArray_OneProton[InteractionLabel.size()+1][ProcessLabel.size()+1];
+	TH1D* ProtonMomentumArray_OneProton[InteractionLabel.size()+1][ProcessLabel.size()+1];
+	TH1D* ProtonCosThetaArray_OneProton[InteractionLabel.size()+1][ProcessLabel.size()+1];
+
+	TH1D* MissMomentumArray_OneProton[InteractionLabel.size()+1][ProcessLabel.size()+1];
+	TH1D* DeltaAlphaTArray_OneProton[InteractionLabel.size()+1][ProcessLabel.size()+1];
+	TH1D* DeltaPhiTArray_OneProton[InteractionLabel.size()+1][ProcessLabel.size()+1];
+
+	for (int WhichInteraction = 0; WhichInteraction < int(InteractionLabel.size()+1); WhichInteraction++) {
+
+		for (int WhichProcess = 0; WhichProcess < int(ProcessLabel.size()+1); WhichProcess++) {
+
+			ElectronMomentumArray_OneProton[WhichInteraction][WhichProcess] = new TH1D("ElectronMomentumArray_Int_"+InteractionMap[WhichInteraction]+"_Proc_"+ProcessMap[WhichProcess]+"_OneProton",TitleElectronMom,NBinsElectronMom,MinElectronMom,MaxElectronMom);
+
+			ElectronCosThetaArray_OneProton[WhichInteraction][WhichProcess] = new TH1D("ElectronCosThetaArray_Int_"+InteractionMap[WhichInteraction]+"_Proc_"+ProcessMap[WhichProcess]+"_OneProton",TitleElectronCosTheta,NBinsElectronCosTheta,MinElectronCosTheta,MaxElectronCosTheta);
+
+			ProtonMomentumArray_OneProton[WhichInteraction][WhichProcess] = new TH1D("ProtonMomentumArray_Int_"+InteractionMap[WhichInteraction]+"_Proc_"+ProcessMap[WhichProcess]+"_OneProton",TitlePp,NBinsPp,MinPp,MaxPp);
+
+			ProtonCosThetaArray_OneProton[WhichInteraction][WhichProcess] = new TH1D("ProtonCosThetaArray_Int_"+InteractionMap[WhichInteraction]+"_Proc_"+ProcessMap[WhichProcess]+"_OneProton",TitleProtonCosTheta,NBinsProtonCosTheta,MinProtonCosTheta,MaxProtonCosTheta);
+
+			MissMomentumArray_OneProton[WhichInteraction][WhichProcess] = new TH1D("MissMomentumArray_Int_"+InteractionMap[WhichInteraction]+"_Proc_"+ProcessMap[WhichProcess]+"_OneProton",TitlePmiss,NBinsPmiss,MinPmiss,MaxPmiss);
+
+			DeltaAlphaTArray_OneProton[WhichInteraction][WhichProcess] = new TH1D("DeltaAlphaTArray_Int_"+InteractionMap[WhichInteraction]+"_Proc_"+ProcessMap[WhichProcess]+"_OneProton",TitleDeltaAlphaT,NBinsDeltaAlphaT,MinDeltaAlphaT,MaxDeltaAlphaT);
+
+			DeltaPhiTArray_OneProton[WhichInteraction][WhichProcess] = new TH1D("DeltaPhiTArray_Int_"+InteractionMap[WhichInteraction]+"_Proc_"+ProcessMap[WhichProcess]+"_OneProton",TitleDeltaPhiT,NBinsDeltaPhiT,MinDeltaPhiT,MaxDeltaPhiT);
+
+		}
+
+	}
+
+	// -------------------------------------------------------------------------------------------------------------
+
 	int countEvents = 0; Long64_t nbytes = 0, nb = 0;
 
 	// -------------------------------------------------------------------------------------------------------------
@@ -301,6 +337,8 @@ void treeProducer_simulation::Loop() {
 
 		// ------------------------------------------------------------------------------------------
 
+		// For Ev breakdown plot
+
 		int Interaction = -99;
 		if (qel == 1) { Interaction = 0; }
 		else if (mec == 1) { Interaction = 1; }
@@ -308,6 +346,20 @@ void treeProducer_simulation::Loop() {
 		else if (dis == 1) { Interaction = 3; }
 		else if (coh == 1) { Interaction = 4; }
 		else { continue; }
+
+		// For FSI Study
+
+		int FSIInteraction = -99;
+		if (em == 1) { FSIInteraction = 1; }
+		else if (cc == 1) { FSIInteraction = 2; }
+		else if (nc == 1) { FSIInteraction = 3; }
+
+		int FSIProcess = -99;
+		if (qel == 1) { FSIProcess = 1; }
+		else if (mec == 1) { FSIProcess = 2; }
+		else if (res == 1) { FSIProcess = 3; }
+		else if (dis == 1) { FSIProcess = 4; }
+		else if (coh == 1) { FSIProcess = 5; }
 
 		// ------------------------------------------------------------------------------------------
 
@@ -525,6 +577,40 @@ void treeProducer_simulation::Loop() {
 
 		if (ProtonTagging == 1) {
 
+			// All interactions, all processes
+
+			ElectronMomentumArray_OneProton[0][0]->Fill(pl,Weight);
+			ElectronCosThetaArray_OneProton[0][0]->Fill(ElectronCosTheta,Weight);
+
+			ProtonMomentumArray_OneProton[0][0]->Fill(ProtonMom,Weight);
+			ProtonCosThetaArray_OneProton[0][0]->Fill(ProtonCosTheta,Weight);
+
+			MissMomentumArray_OneProton[0][0]->Fill(MissMomentumTMag,Weight);
+			DeltaAlphaTArray_OneProton[0][0]->Fill(DeltaAlphaT,Weight);
+			DeltaPhiTArray_OneProton[0][0]->Fill(DeltaPhiT,Weight);
+			
+			if (FSIProcess > 0) {
+
+				ElectronMomentumArray_OneProton[0][FSIProcess]->Fill(pl,Weight);
+				ElectronCosThetaArray_OneProton[0][FSIProcess]->Fill(ElectronCosTheta,Weight);
+				ProtonMomentumArray_OneProton[0][FSIProcess]->Fill(ProtonMom,Weight);
+				ProtonCosThetaArray_OneProton[0][FSIProcess]->Fill(ProtonCosTheta,Weight);
+				MissMomentumArray_OneProton[0][FSIProcess]->Fill(MissMomentumTMag,Weight);
+				DeltaAlphaTArray_OneProton[0][FSIProcess]->Fill(DeltaAlphaT,Weight);
+				DeltaPhiTArray_OneProton[0][FSIProcess]->Fill(DeltaPhiT,Weight);
+
+				ElectronMomentumArray_OneProton[FSIInteraction][FSIProcess]->Fill(pl,Weight);
+				ElectronCosThetaArray_OneProton[FSIInteraction][FSIProcess]->Fill(ElectronCosTheta,Weight);
+				ProtonMomentumArray_OneProton[FSIInteraction][FSIProcess]->Fill(ProtonMom,Weight);
+				ProtonCosThetaArray_OneProton[FSIInteraction][FSIProcess]->Fill(ProtonCosTheta,Weight);
+				MissMomentumArray_OneProton[FSIInteraction][FSIProcess]->Fill(MissMomentumTMag,Weight);
+				DeltaAlphaTArray_OneProton[FSIInteraction][FSIProcess]->Fill(DeltaAlphaT,Weight);
+				DeltaPhiTArray_OneProton[FSIInteraction][FSIProcess]->Fill(DeltaPhiT,Weight);
+
+			}
+
+			// --------------------------------------------------------------------------------------
+
 			Q2Plot_OneProton->Fill(Q2,Weight);
 			nuPlot_OneProton->Fill(nu,Weight);
 			ElectronMomentumPlot_OneProton->Fill(pl,Weight);
@@ -623,13 +709,6 @@ void treeProducer_simulation::Loop() {
 		}
 
 		// ----------------------------------------------------------------------------------------------
-
-		// Define the missing momentum bin
-		/*
-		if (MissMomentumTMag < 0.2) MissMomentumBin = 1;
-		if (MissMomentumTMag > 0.2 && MissMomentumTMag < 0.4) MissMomentumBin = 2;
-		if (MissMomentumTMag > 0.4) MissMomentumBin = 3;
-		*/
 
 		// Reconstructed Energy Plots
 

@@ -61,7 +61,8 @@ void MEC_Q0_Q3() {
 	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
 //	NameOfPlots.push_back("QE_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("QE");
-	NameOfPlots.push_back("MEC_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("#splitline{MEC}{SuSav2}");
+//	NameOfPlots.push_back("MEC_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("q_{0} [GeV]"); Channel.push_back("#splitline{MEC}{SuSav2}");
+	NameOfPlots.push_back("MEC_Q0_Q3_Plot"); XLabelOfPlots.push_back("q_{3} [GeV/c]"); YLabelOfPlots.push_back("#omega [GeV]"); Channel.push_back("#splitline{MEC}{SuSav2}");
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -5,7 +5,10 @@ datasets = ["Data","SuSav2","G2018"]
 #mms = ["", "ShiftedFeeddowns"]
 #mms = ["SuSav2_NoRadCorr_LFGM_Plots_FSI_em"]
 #mms = ["CSMigrationMatrices"]
-mms = ["MigrationMatrices"]
+
+mms = ["MigrationMatrices_XSec"]
+#mms = ["MigrationMatrices_NormYield"]
+#mms = ["MigrationMatrices_AreaNorm"]
 
 for mm in mms:
   for dataset in datasets:

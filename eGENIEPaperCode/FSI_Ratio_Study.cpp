@@ -132,8 +132,17 @@ void FSI_Ratio_Study() {
 //				FSIModel.push_back(Config[WhichConfig]+"_EM+MEC_Q2_0_1_NoFSI"); FSILabel.push_back("e w/o FSI"); RatioLabel.push_back("e");
 //				FSIModel.push_back(Config[WhichConfig]+"_EM+MEC_Q2_0_1"); FSILabel.push_back("e w/  FSI"); RatioLabel.push_back("e");
 
-				FSIModel.push_back(Config[WhichConfig]+"_Default_Q2_0_1_NoFSI"); FSILabel.push_back("#nu_{#mu} CC+NC w/o FSI"); RatioLabel.push_back("#nu_{#mu} CC+NC");
-				FSIModel.push_back(Config[WhichConfig]+"_Default_Q2_0_1"); FSILabel.push_back("#nu_{#mu} CC+NC w/  FSI"); RatioLabel.push_back("#nu_{#mu} CC+NC");
+//				// v1 report doc
+//			
+//				FSIModel.push_back(Config[WhichConfig]+"_Default_Q2_0_1_NoFSI"); FSILabel.push_back("#nu_{#mu} CC+NC w/o FSI"); RatioLabel.push_back("#nu_{#mu} CC+NC");
+//				FSIModel.push_back(Config[WhichConfig]+"_Default_Q2_0_1"); FSILabel.push_back("#nu_{#mu} CC+NC w/  FSI"); RatioLabel.push_back("#nu_{#mu} CC+NC");
+//				FSIModel.push_back(Config[WhichConfig]+"_EM_Q2_0_1_NoFSI"); FSILabel.push_back("e w/o FSI"); RatioLabel.push_back("e");
+//				FSIModel.push_back(Config[WhichConfig]+"_EM_Q2_0_1"); FSILabel.push_back("e w/  FSI"); RatioLabel.push_back("e");
+
+				// v2 report doc
+			
+				FSIModel.push_back(Config[WhichConfig]+"_Default_Q2_0_1_NoFSI"); FSILabel.push_back("#nu_{#mu} NC w/o FSI"); RatioLabel.push_back("#nu_{#mu} NC");
+				FSIModel.push_back(Config[WhichConfig]+"_Default_Q2_0_1"); FSILabel.push_back("#nu_{#mu} NC w/  FSI"); RatioLabel.push_back("#nu_{#mu} NC");
 				FSIModel.push_back(Config[WhichConfig]+"_EM_Q2_0_1_NoFSI"); FSILabel.push_back("e w/o FSI"); RatioLabel.push_back("e");
 				FSIModel.push_back(Config[WhichConfig]+"_EM_Q2_0_1"); FSILabel.push_back("e w/  FSI"); RatioLabel.push_back("e");
 
@@ -151,10 +160,19 @@ void FSI_Ratio_Study() {
 
 						NameOfPlots.clear();
 
-						NameOfPlots.push_back(InteractionChannel[WhichIntChannel]+Vars[WhichVar]+"Plot_OneProton");
-						NameOfPlots.push_back(InteractionChannel[WhichIntChannel]+Vars[WhichVar]+"Plot_OneProton");
-						NameOfPlots.push_back(InteractionChannel[WhichIntChannel]+Vars[WhichVar]+"Plot_OneProton");
-						NameOfPlots.push_back(InteractionChannel[WhichIntChannel]+Vars[WhichVar]+"Plot_OneProton");
+//						// v1 report doc
+
+//						NameOfPlots.push_back(InteractionChannel[WhichIntChannel]+Vars[WhichVar]+"Plot_OneProton");
+//						NameOfPlots.push_back(InteractionChannel[WhichIntChannel]+Vars[WhichVar]+"Plot_OneProton");
+//						NameOfPlots.push_back(InteractionChannel[WhichIntChannel]+Vars[WhichVar]+"Plot_OneProton");
+//						NameOfPlots.push_back(InteractionChannel[WhichIntChannel]+Vars[WhichVar]+"Plot_OneProton");
+
+						// v2 report doc
+
+						NameOfPlots.push_back(Vars[WhichVar]+"Array_Int_NC_Proc_"+InteractionChannel[WhichIntChannel]+"_OneProton");
+						NameOfPlots.push_back(Vars[WhichVar]+"Array_Int_NC_Proc_"+InteractionChannel[WhichIntChannel]+"_OneProton");
+						NameOfPlots.push_back(Vars[WhichVar]+"Array_Int_EM_Proc_"+InteractionChannel[WhichIntChannel]+"_OneProton");
+						NameOfPlots.push_back(Vars[WhichVar]+"Array_Int_EM_Proc_"+InteractionChannel[WhichIntChannel]+"_OneProton");
 
 						// --------------------------------------------------------------------------------------------------------------------------------------------------
 

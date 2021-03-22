@@ -49,7 +49,14 @@ void getMatrix() {
 
 	// -----------------------------------------------------------------------------------------------------------------------
 
+//	XSec
 	string inputFile = "/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/e4nu/SuSav2_e4nuPaper_PlottingCode/AccCorrXSec/myXSec/FineBin_ECalReso_AccCorr_XSec_NoxBCut.root";
+
+//	Normalized Yield
+//	string inputFile = "/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/e4nu/SuSav2_e4nuPaper_PlottingCode/AbsXSecNorm/myXSec/FineBin_ECalReso_NormYield_NoxBCut.root";
+
+//	Area Normalized
+//	string inputFile = "/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/e4nu/SuSav2_e4nuPaper_PlottingCode/AreaNormalized/myXSec/FineBin_ECalReso_AreaNorm_NoxBCut.root";
 
 	// -----------------------------------------------------------------------------------------------------------------------
 

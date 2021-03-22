@@ -34,6 +34,29 @@
 	const std::vector<int> AlternativeColors{kBlue-9,kBlue-6,kBlue-2,kBlue+3};
 
 	std::vector<TString> ProcessLabel = {"QE","MEC","RES","DIS","COH"}; 
+	std::vector<TString> InteractionLabel = {"EM","CC","NC"}; 
+
+	static std::map<int,TString> ProcessMap =
+	{
+
+		{ 0,"All"},
+		{ 1,"QE"},
+		{ 2,"MEC"},
+		{ 3,"RES"},
+		{ 4,"DIS"},
+		{ 5,"COH"}, 
+
+	};
+
+	static std::map<int,TString> InteractionMap =
+	{
+
+		{ 0,"All"},
+		{ 1,"EM"},
+		{ 2,"CC"},
+		{ 3,"NC"}, 
+
+	};
 
 	//  ------------------------------------------------------------------------------
 

@@ -105,6 +105,12 @@ export JobsFixAngle=200
 
 #		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000060120_0_56GeV_eGENIE ${SplinePath}/master/${GenieRelease}/11_1000060120_EM_${tune}.xml ${ScratchPath}/eGENIE_grid/1000060120_0_56GeV/${tune}/ origin/master 0.56 11 1000060120 ${tune} EM
 
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000060120_0_519GeV_eGENIE ${SplinePath}/master/${GenieRelease}/11_1000060120_EM_${tune}.xml ${ScratchPath}/eGENIE_grid/1000060120_0_519GeV/${tune}/ origin/master 0.519 11 1000060120 ${tune} EM
+
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000060120_0_62GeV_eGENIE ${SplinePath}/master/${GenieRelease}/11_1000060120_EM_${tune}.xml ${ScratchPath}/eGENIE_grid/1000060120_0_620GeV/${tune}/ origin/master 0.62 11 1000060120 ${tune} EM
+
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000060120_0_56GeV_eGENIE ${SplinePath}/master/${GenieRelease}/11_1000060120_EM_${tune}.xml ${ScratchPath}/eGENIE_grid/1000060120_0_680GeV/${tune}/ origin/master 0.68 11 1000060120 ${tune} EM
+
 #		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000060120_0_961GeV_eGENIE ${SplinePath}/master/${GenieRelease}/11_1000060120_EM_${tune}.xml ${ScratchPath}/eGENIE_grid/1000060120_0_961GeV/${tune}/ origin/master 0.961 11 1000060120 ${tune} EM
 
 #		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000060120_1_299GeV_eGENIE ${SplinePath}/master/${GenieRelease}/11_1000060120_EM_${tune}.xml ${ScratchPath}/eGENIE_grid/1000060120_1_299GeV/${tune}/ origin/master 1.299 11 1000060120 ${tune} EM
@@ -115,13 +121,42 @@ export JobsFixAngle=200
 
 #		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000060120_3_595GeV_eGENIE ${SplinePath}/master_Q2_0_1/${GenieRelease}/11_1000060120_EM_${tune}_Q2_0_1.xml ${ScratchPath}/eGENIE_grid/1000060120_3_595GeV/${tune}/ origin/master_Q2_0_1 3.595 11 1000060120 ${tune} EM
 
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000060120_5_766GeV_eGENIE ${SplinePath}/master_Q2_0_8/${GenieRelease}/11_1000060120_EM_${tune}_Q2_0_8.xml ${ScratchPath}/eGENIE_grid/1000060120_5_766GeV/${tune}/ origin/master_Q2_0_8 5.766 11 1000060120 ${tune} EM
+
+
+
 #		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000180400_2_222GeV_eGENIE ${SplinePath}/master_Q2_0_1/${GenieRelease}/11_1000180400_EM_${tune}_Q2_0_1.xml ${ScratchPath}/eGENIE_grid/1000180400_2_222GeV/${tune}/ origin/master_Q2_0_1 2.222 11 1000180400 ${tune} EM
+
+
+
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000130270_2_222GeV_eGENIE ${SplinePath}/master_Q2_0_4/${GenieRelease}/11_1000130270_EM_${tune}_Q2_0_4.xml ${ScratchPath}/eGENIE_grid/1000130270_2_222GeV/${tune}/ origin/master_Q2_0_4 2.222 11 1000130270 ${tune} EM
+
+
+
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000220480_2_222GeV_eGENIE ${SplinePath}/master_Q2_0_4/${GenieRelease}/11_1000220480_EM_${tune}_Q2_0_4.xml ${ScratchPath}/eGENIE_grid/1000220480_2_222GeV/${tune}/ origin/master_Q2_0_4 2.222 11 1000220480 ${tune} EM
+
+
 
 #		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000260560_0_56GeV_eGENIE ${SplinePath}/master/${GenieRelease}/11_1000260560_EM_${tune}.xml ${ScratchPath}/eGENIE_grid/1000260560_0_56GeV/${tune}/ origin/master 0.56 11 1000260560 ${tune} EM
 
 #		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000260560_0_961GeV_eGENIE ${SplinePath}/master/${GenieRelease}/11_1000260560_EM_${tune}.xml ${ScratchPath}/eGENIE_grid/1000260560_0_961GeV/${tune}/ origin/master 0.961 11 1000260560 ${tune} EM
 
 #		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000260560_1_299GeV_eGENIE ${SplinePath}/master/${GenieRelease}/11_1000260560_EM_${tune}.xml ${ScratchPath}/eGENIE_grid/1000260560_1_299GeV/${tune}/ origin/master 1.299 11 1000260560 ${tune} EM
+
+
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000010010_5_500GeV_eGENIE ${SplinePath}/master_Q2_0_8/${GenieRelease}/11_1000010010_EM_${tune}_Q2_0_8.xml ${ScratchPath}/eGENIE_grid/1000010010_5_500GeV/${tune}/ origin/master_Q2_0_8 5.5 11 1000010010 ${tune} EM
+
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000010010_3_245GeV_eGENIE ${SplinePath}/master_Q2_0_4/${GenieRelease}/11_1000010010_EM_${tune}_Q2_0_4.xml ${ScratchPath}/eGENIE_grid/1000010010_3_245GeV/${tune}/ origin/master_Q2_0_4 3.245 11 1000010010 ${tune} EM
+
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000010010_2_445GeV_eGENIE ${SplinePath}/master_Q2_0_1/${GenieRelease}/11_1000010010_EM_${tune}_Q2_0_1.xml ${ScratchPath}/eGENIE_grid/1000010010_2_445GeV/${tune}/ origin/master_Q2_0_1 2.445 11 1000010010 ${tune} EM
+
+
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000010020_5_500GeV_eGENIE ${SplinePath}/master_Q2_0_8/${GenieRelease}/11_1000010020_EM_${tune}_Q2_0_8.xml ${ScratchPath}/eGENIE_grid/1000010020_5_500GeV/${tune}/ origin/master_Q2_0_8 5.5 11 1000010020 ${tune} EM
+
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000010020_3_245GeV_eGENIE ${SplinePath}/master_Q2_0_4/${GenieRelease}/11_1000010020_EM_${tune}_Q2_0_4.xml ${ScratchPath}/eGENIE_grid/1000010020_3_245GeV/${tune}/ origin/master_Q2_0_4 3.245 11 1000010020 ${tune} EM
+
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000010020_2_445GeV_eGENIE ${SplinePath}/master_Q2_0_1/${GenieRelease}/11_1000010020_EM_${tune}_Q2_0_1.xml ${ScratchPath}/eGENIE_grid/1000010020_2_445GeV/${tune}/ origin/master_Q2_0_1 2.445 11 1000010020 ${tune} EM
+
 
 #	done
 #	echo ""

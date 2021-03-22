@@ -1010,6 +1010,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 	double T2KCosThetaStep2D = (T2KMaxCosTheta2D - T2KMinCosTheta2D) / T2KCosThetaSlices2D;
 	TH1F *h1_T2KEQEReso_InEePrimeAndCosThetaSlices[NInt][T2KEePrimeSlices2D][T2KCosThetaSlices2D];
+	TH2D *h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[NInt][T2KEePrimeSlices2D][T2KCosThetaSlices2D];
 
 	for (int T2KWhichEePrimeSlice2D = 0 ; T2KWhichEePrimeSlice2D < T2KEePrimeSlices2D; T2KWhichEePrimeSlice2D++ ) {
 
@@ -1018,6 +1019,8 @@ void genie_analysis::Loop(Int_t choice) {
 			for (int WhichInt = 0; WhichInt < NInt; WhichInt++) {
 
 				h1_T2KEQEReso_InEePrimeAndCosThetaSlices[WhichInt][T2KWhichEePrimeSlice2D][T2KWhichCosThetaSlice2D] = new TH1F(Form("h1_T2KEQEReso_Int_%d_InEePrime_%d_To_%d_InCosTheta_%d_To_%d_Slices",WhichInt,T2KWhichEePrimeSlice2D,T2KWhichEePrimeSlice2D+1,T2KWhichCosThetaSlice2D,T2KWhichCosThetaSlice2D+1),";(e,e')_{0#pi} E_{QE} Reso",T2KNBins,T2KMinEQEReso,T2KMaxEQEReso);
+
+				h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[WhichInt][T2KWhichEePrimeSlice2D][T2KWhichCosThetaSlice2D] = new TH2D(Form("h1_T2K_Q0VsQ3_Int_%d_InEePrime_%d_To_%d_InCosTheta_%d_To_%d_Slices",WhichInt,T2KWhichEePrimeSlice2D,T2KWhichEePrimeSlice2D+1,T2KWhichCosThetaSlice2D,T2KWhichCosThetaSlice2D+1),";(e,e')_{0#pi} q_{0} [GeV];(e,e')_{0#pi} q_{3} [GeV]",400,0,4,400,0,6);
 		
 			}			
 
@@ -4646,6 +4649,9 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_T2KEQEReso_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,WeightIncl);
 				if (Interaction > -1) { h1_T2KEQEReso_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,WeightIncl); }
 
+				h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,WeightIncl);
+				if (Interaction > -1) { h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,WeightIncl); }
+
 			}
 
 		}
@@ -4717,6 +4723,9 @@ void genie_analysis::Loop(Int_t choice) {
 
 				h1_T2KEQEReso_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,-P_undet*histoweight);
 				if (Interaction > -1) { h1_T2KEQEReso_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,-P_undet*histoweight); }
+
+				h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,-P_undet*histoweight);
+				if (Interaction > -1) { h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,-P_undet*histoweight); }
 
 			}
 
@@ -4796,6 +4805,9 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_T2KEQEReso_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(-P_0pi)*histoweight);
 				if (Interaction > -1) { h1_T2KEQEReso_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(-P_0pi)*histoweight); }
 
+				h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(-P_0pi)*histoweight);
+				if (Interaction > -1) { h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(-P_0pi)*histoweight); }
+
 			}
 
 			//----------------------------- e- ,2pi->1pi->0pi (+)  -----------------------------------------
@@ -4817,6 +4829,9 @@ void genie_analysis::Loop(Int_t choice) {
 
 					h1_T2KEQEReso_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(P_1pi[k])*histoweight);
 					if (Interaction > -1) { h1_T2KEQEReso_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(P_1pi[k])*histoweight); }
+
+					h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(P_1pi[k])*histoweight);
+					if (Interaction > -1) { h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(P_1pi[k])*histoweight); }
 
 				}
 
@@ -4904,6 +4919,9 @@ void genie_analysis::Loop(Int_t choice) {
 				h1_T2KEQEReso_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(-P_0pi)*histoweight);
 				if (Interaction > -1) { h1_T2KEQEReso_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(-P_0pi)*histoweight); }
 
+				h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(-P_0pi)*histoweight);
+				if (Interaction > -1) { h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(-P_0pi)*histoweight); }
+
 			}
 
 			for(int h = 0; h < N_3pi; h++){ //loop over three pions
@@ -4925,6 +4943,9 @@ void genie_analysis::Loop(Int_t choice) {
 					h1_T2KEQEReso_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(P_1pi[h])*histoweight);
 					if (Interaction > -1) { h1_T2KEQEReso_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(P_1pi[h])*histoweight); }
 
+					h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(P_1pi[h])*histoweight);
+					if (Interaction > -1) { h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(P_1pi[h])*histoweight); }
+
 				}
 
 				//---------------------------3pi->2pi->0pi----------------------------------------------
@@ -4943,6 +4964,9 @@ void genie_analysis::Loop(Int_t choice) {
 
 					h1_T2KEQEReso_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(P_320pi[h])*histoweight);
 					if (Interaction > -1) { h1_T2KEQEReso_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(P_320pi[h])*histoweight); }
+
+					h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(P_320pi[h])*histoweight);
+					if (Interaction > -1) { h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(P_320pi[h])*histoweight); }
 
 				}
 
@@ -4964,6 +4988,9 @@ void genie_analysis::Loop(Int_t choice) {
 
 						h1_T2KEQEReso_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(-P_3210pi[h][g])*histoweight);
 						if (Interaction > -1) { h1_T2KEQEReso_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(-P_3210pi[h][g])*histoweight); }
+
+						h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(-P_3210pi[h][g])*histoweight);
+						if (Interaction > -1) { h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(-P_3210pi[h][g])*histoweight); }
 
 					}
 
@@ -5056,6 +5083,9 @@ void genie_analysis::Loop(Int_t choice) {
 
 				h1_T2KEQEReso_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(-P_0pi+P_410pi+P_420pi-P_4210pi+P_430pi-P_4310pi-P_4320pi+P_43210pi)*histoweight);
 				if (Interaction > -1) { h1_T2KEQEReso_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(EQE_Reso,(-P_0pi+P_410pi+P_420pi-P_4210pi+P_430pi-P_4310pi-P_4320pi+P_43210pi)*histoweight); }
+
+				h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[0][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(-P_0pi+P_410pi+P_420pi-P_4210pi+P_430pi-P_4310pi-P_4320pi+P_43210pi)*histoweight);
+				if (Interaction > -1) { h2_T2K_Q0VsQ3_InEePrimeAndCosThetaSlices[Interaction][T2KEePrimeSlice2D][T2KCosThetaSlice2D]->Fill(nu,reco_Q2,(-P_0pi+P_410pi+P_420pi-P_4210pi+P_430pi-P_4310pi-P_4320pi+P_43210pi)*histoweight); }
 
 			}
 
