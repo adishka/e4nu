@@ -225,8 +225,8 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 					if (WhichEePrimeSlice2D == EePrimeSlices2D-1 ) { pad->SetRightMargin(0.03); }
 					pad->SetFrameBorderSize(10);
 
-//					TH1D* h1_ECal_G2018 = (TH1D*)file_G2018->Get(Form("h1_ECal_InEePrime_%d_To_%d_InCosTheta_%d_To_%d_Slices",\
-//										WhichEePrimeSlice2D,WhichEePrimeSlice2D+1,WhichCosThetaSlice2D,WhichCosThetaSlice2D+1));
+					TH1D* h1_T2KEQEReso_G2018 = (TH1D*)file_G2018->Get(Form("h1_ECal_InEePrime_%d_To_%d_InCosTheta_%d_To_%d_Slices",\
+										WhichEePrimeSlice2D,WhichEePrimeSlice2D+1,WhichCosThetaSlice2D,WhichCosThetaSlice2D+1));
 
 					TH1D* h1_T2KEQEReso_SuSav2 = (TH1D*)file_SuSav2->Get(Form("h1_T2KEQEReso_Int_0_InEePrime_%d_To_%d_InCosTheta_%d_To_%d_Slices",\
 										WhichEePrimeSlice2D,WhichEePrimeSlice2D+1,WhichCosThetaSlice2D,WhichCosThetaSlice2D+1));
@@ -309,10 +309,10 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 					h1_T2KEQEReso_SuSav2_DIS->SetLineStyle(kSolid);
 					h1_T2KEQEReso_SuSav2_DIS->Draw("hist C same");
 
-//					PrettyPlot(h1_ECal_G2018);
-//					h1_ECal_G2018->SetLineColor(kBlack);
-//					h1_ECal_G2018->SetLineStyle(kDashed);
-//					h1_ECal_G2018->Draw("hist C same");
+					PrettyPlot(h1_T2KEQEReso_G2018);
+					h1_T2KEQEReso_G2018->SetLineColor(kBlack);
+					h1_T2KEQEReso_G2018->SetLineStyle(kDashed);
+					h1_T2KEQEReso_G2018->Draw("hist C same");
 
 					// -------------------------------------------------------------------------------------------------------------
 
@@ -337,7 +337,7 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 
 						legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_T2KEQEReso_Data,"Data","lep");				
 						//legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_T2KEQEReso_SuSav2,"SuSav2","l");
-						//legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_ECal_G2018,"G2018","l");
+						//legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_T2KEQEReso_G2018,"G2018","l");
 
 						legSuSav2_EePrimeAndCosThetaSlices->Draw();	
 
