@@ -120,6 +120,21 @@ void OverlayXSec() {
 
 	// ---------------------------------------------------------------------------------------------
 
+	// G2018 GENIE Out-Of-The-Box @ E = 1.161 GEV & theta = 37.5 deg
+
+	TFile* G2018_GenieBoxFile = TFile::Open("G2018_GenieOutOfTheBox_12C_DoubleDiff_E_1_161GeV_theta_37_5_FineBin.root");
+	TGraph* G2018_GenieBoxPlot = (TGraph*)G2018_GenieBoxFile->Get("Simulation");
+//	G2018_GenieBoxPlot->Rebin();
+//	G2018_GenieBoxPlot->Scale(0.5);
+
+	G2018_GenieBoxPlot->SetLineColor(kGreen+2);
+	G2018_GenieBoxPlot->SetLineStyle(kDashed);
+	G2018_GenieBoxPlot->SetLineWidth(2);
+
+	G2018_GenieBoxPlot->Draw("c same");
+
+	// ---------------------------------------------------------------------------------------------
+
 	// SuSav2 GENIE Out-Of-The-Box @ E = 1.299 GEV & theta = 37.5 deg
 
 	TFile* GenieBoxFile1299 = TFile::Open("C12_E_1_299_theta_37_5.root");
@@ -179,6 +194,7 @@ void OverlayXSec() {
 
 	Datae4vPlot->Scale(1./0.0067); // sr: solid angle for 24 < phi < 36 && 36 < theta < 39 
 	Datae4vPlot->Scale(1000); // Conversion from ub to nb
+	Datae4vPlot->SetMarkerStyle(4);
 	Datae4vPlot->Draw("e1x0 same");
 
 	// ---------------------------------------------------------------------------------------------
@@ -282,5 +298,7 @@ void OverlayXSec() {
 	Latex1161->DrawLatexNDC(0.7,0.57,"#splitline{e4#nu 36^{o}-39^{o}}{1.161 GeV}");
 
 	// ---------------------------------------------------------------------------------------------
+
+	PlotCanvas->SaveAs("DataXSec_Inclusive_Validation.pdf");
 
 } // End of the program

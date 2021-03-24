@@ -264,6 +264,17 @@ TString ToStringInt(int num) {
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 
+TString ToStringDouble(double num) {
+
+	std::ostringstream start;
+	start << num;
+	string start1 = start.str();
+	return start1;
+
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
 void PrettyDoubleXSecPlot(TH1D* h) {
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -526,7 +537,7 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	else {
 
-		std::cout << "Craaaaaaaaaaaaaaap !!!!!!!!! What is the SF in AbsoluteXSecScaling for " << h->GetName() << "in " << Sample << "???????????????" << std::endl;
+		std::cout << "Craaaaaaaaaaaaaaap !!!!!!!!! What is the SF in AbsoluteXSecScaling for " << h->GetName() << " in " << Sample << "???????????????" << std::endl;
 
 	}		
 
@@ -656,6 +667,12 @@ void ApplyRebinningTProfile(TProfile* h, TString Energy, TString PlotVar) {
 	} else if (string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
 
 	} else if (
+		string(PlotVar).find("T2KEQEReso") != std::string::npos
+	) {
+
+		for (int i = 0; i < 2; i++) { h->Rebin();} 
+
+	} else if (
 		string(PlotVar).find("EQEReso") != std::string::npos || 
 		string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ||
 		string(PlotVar).find("h_Erec_subtruct_piplpimi_noprot_frac_feed") != std::string::npos
@@ -678,6 +695,10 @@ void ApplyRebinningTProfile(TProfile* h, TString Energy, TString PlotVar) {
 		for (int i = 0; i < 1; i++) { h->Rebin();} 
 
 	} else if (string(PlotVar).find("Wvar") != std::string::npos || string(PlotVar).find("W_") != std::string::npos ) {
+
+		for (int i = 0; i < 1; i++) { h->Rebin();} 
+
+	} else if (string(PlotVar).find("T2KEQEReso") != std::string::npos || string(PlotVar).find("W_") != std::string::npos ) {
 
 		for (int i = 0; i < 1; i++) { h->Rebin();} 
 
@@ -704,6 +725,12 @@ void ApplyRebinning(TH1D* h, TString Energy, TString PlotVar) {
 	} else if (string(PlotVar).find("EcalReso") != std::string::npos || string(PlotVar).find("ECalReso") != std::string::npos || string(PlotVar).find("h_Etot_subtruct_piplpimi_factor_fracfeed") != std::string::npos ) {
 
 	} else if (
+		string(PlotVar).find("T2KEQEReso") != std::string::npos
+	) {
+
+		for (int i = 0; i < 2; i++) { h->Rebin();}
+
+	} else if (
 		string(PlotVar).find("EQEReso") != std::string::npos || 
 		string(PlotVar).find("h_Erec_subtruct_piplpimi_factor_fracfeed") != std::string::npos ||
 		string(PlotVar).find("h_Erec_subtruct_piplpimi_noprot_frac_feed") != std::string::npos
@@ -728,7 +755,7 @@ void ApplyRebinning(TH1D* h, TString Energy, TString PlotVar) {
 
 	} else if (string(PlotVar).find("Wvar") != std::string::npos || string(PlotVar).find("W_") != std::string::npos ) {
 
-		for (int i = 0; i < 1; i++) { h->Rebin();} 
+		for (int i = 0; i < 2; i++) { h->Rebin();} 
 
 	}
 
@@ -761,6 +788,15 @@ void ApplyRange(TH1D* h, TString Energy, TString PlotVar) {
 		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(-0.7,0.06); }
 		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(-0.7,0.06); }
 		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(-0.7,0.03); }
+
+	} else if (
+		string(PlotVar).find("T2KEQEReso") != std::string::npos
+		) {
+
+		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(-0.75,0.35); }
+		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(-0.69,0.21); }
+		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(-0.75,0.21); }
+
 
 	} else if (
 		string(PlotVar).find("EQEReso") != std::string::npos || 
@@ -1026,6 +1062,7 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 			NewBinError = h->GetBinError(WhichBin + 1) * AccCorr * RadCorr;
 
 //cout << "AccCorr = " << AccCorr << endl;
+//cout << "RadCorr = " << RadCorr << endl;
 //cout << "h->GetBinContent(WhichBin + 1) = " << h->GetBinContent(WhichBin + 1) << "   NewBinContent = " << NewBinContent << endl;
 //cout << "h->GetBinError(WhichBin + 1) = " << h->GetBinError(WhichBin + 1) << "   NewBinError = " << NewBinError << endl << endl;
 
@@ -1046,10 +1083,10 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 std::vector<TH1D*> PlotsOffset; PlotsOffset.clear();
 std::vector<TString> FSIModelOffset; FSIModelOffset.clear();
 
-FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); // main reco plots for unfolding uncertainty with smearing
-FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing"); // main plots for unfolding uncertainty with smearing
-FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset 
-FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing_Offset"); // alternative model plots for acceptance correction uncertainty with smearing & offset
+FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"+Extension); // main reco plots for unfolding uncertainty with smearing
+FSIModelOffset.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing"+Extension); // main plots for unfolding uncertainty with smearing
+FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc_Offset"+Extension); // alternative model plots for acceptance correction uncertainty with smearing & offset 
+FSIModelOffset.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Smearing_Offset"+Extension); // alternative model plots for acceptance correction uncertainty with smearing & offset
 
 if (
 	name == "h_Erec_subtruct_piplpimi_noprot_3pi" || 

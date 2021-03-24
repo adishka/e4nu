@@ -96,10 +96,10 @@ declare -a TunesFixAngle=("GTEST19_10b_00_000" "G18_10a_02_11a")
 
 export JobsFixAngle=200
 
-#for tune in "${TunesFixAngle[@]}"; 
+for tune in "${TunesFixAngle[@]}"; 
 
-#	do
-#	echo ""
+	do
+	echo ""
 
 #		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000060120_0_24GeV_eGENIE ${SplinePath}/master/${GenieRelease}/11_1000060120_EM_${tune}.xml ${ScratchPath}/eGENIE_grid/1000060120_0_24GeV/${tune}/ origin/master 0.24 11 1000060120 ${tune} EM
 
@@ -151,15 +151,15 @@ export JobsFixAngle=200
 #		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000010010_2_445GeV_eGENIE ${SplinePath}/master_Q2_0_1/${GenieRelease}/11_1000010010_EM_${tune}_Q2_0_1.xml ${ScratchPath}/eGENIE_grid/1000010010_2_445GeV/${tune}/ origin/master_Q2_0_1 2.445 11 1000010010 ${tune} EM
 
 
-#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000010020_5_500GeV_eGENIE ${SplinePath}/master_Q2_0_8/${GenieRelease}/11_1000010020_EM_${tune}_Q2_0_8.xml ${ScratchPath}/eGENIE_grid/1000010020_5_500GeV/${tune}/ origin/master_Q2_0_8 5.5 11 1000010020 ${tune} EM
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000010020_5_5GeV_eGENIE ${SplinePath}/master_Q2_0_8/${GenieRelease}/11_1000010020_EM_${tune}_Q2_0_8.xml ${ScratchPath}/eGENIE_grid/1000010020_5_500GeV/${tune}/ origin/master_Q2_0_8 5.5 11 1000010020 ${tune} EM
 
-#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000010020_3_245GeV_eGENIE ${SplinePath}/master_Q2_0_4/${GenieRelease}/11_1000010020_EM_${tune}_Q2_0_4.xml ${ScratchPath}/eGENIE_grid/1000010020_3_245GeV/${tune}/ origin/master_Q2_0_4 3.245 11 1000010020 ${tune} EM
+#		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000010020_3_188GeV_eGENIE ${SplinePath}/master_Q2_0_4/${GenieRelease}/11_1000010020_EM_${tune}_Q2_0_4.xml ${ScratchPath}/eGENIE_grid/1000010020_3_188GeV/${tune}/ origin/master_Q2_0_4 3.188 11 1000010020 ${tune} EM
 
 #		./submit_samples.sh ${JobsFixAngle} apapadop_${tune}_1000010020_2_445GeV_eGENIE ${SplinePath}/master_Q2_0_1/${GenieRelease}/11_1000010020_EM_${tune}_Q2_0_1.xml ${ScratchPath}/eGENIE_grid/1000010020_2_445GeV/${tune}/ origin/master_Q2_0_1 2.445 11 1000010020 ${tune} EM
 
 
-#	done
-#	echo ""
+	done
+	echo ""
 
 ###################################################################################################################################################################
 

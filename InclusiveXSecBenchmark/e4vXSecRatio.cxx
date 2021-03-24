@@ -144,7 +144,7 @@ void e4vXSecRatio() {
 
 	TF1 *myfunc = new TF1("myfunc","pol10",0.05,0.75);
 // 10th order polynomial using the finely binned plot // Include
-	GenieBoxPlotFineBin->Fit(myfunc); // Include
+	GenieBoxPlotFineBin->Fit(myfunc,"Q"); // Include
 	myfunc->Draw("same"); // Include
 
 	// ---------------------------------------------------------------------------------------------
@@ -158,7 +158,7 @@ void e4vXSecRatio() {
 	AccCorrDatae4vPlot->SetMarkerColor(kYellow+1);
 	AccCorrDatae4vPlot->SetMarkerStyle(20);
 
-// Cross section corrected for radiation effects
+// Cross section corrected for radiation & detector acceptance effects
 	AccCorrDatae4vPlot->Draw("e1x0 same"); // Include
 //	AccCorrDatae4vPlot->Draw("hist p same"); // Include
 
