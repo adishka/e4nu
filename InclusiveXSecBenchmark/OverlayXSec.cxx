@@ -26,21 +26,11 @@ using namespace std;
 #include "../AfroConstants.h"
 #include "../myFunctions.cpp"
 
-//TString ToString(double num) {
-
-//	std::ostringstream start;
-//	start << num;
-//	string start1 = start.str();
-//	return start1;
-//}
-
 void OverlayXSec() {
 
 	int FontStyle = 132;
 	double TextSize = 0.07;
 	TGaxis::SetMaxDigits(3);
-//	TGaxis::SetExponentOffset(-0.1, 1., "y");
-//	TGaxis::SetExponentOffset(-0.05, 0., "y");
 
 	gStyle->SetTitleSize(TextSize-0.02,"t");
 	gStyle->SetTitleFont(FontStyle,"t");
@@ -55,7 +45,7 @@ void OverlayXSec() {
 
 	// ---------------------------------------------------------------------------------------------
 
-	// Saclay Data E = 1.299 GeV
+	// SLAC Data E = 1.299 GeV
 
 	TFile* DataFile = TFile::Open("eQEupdated.root");
 	TTree* qent = (TTree*)(DataFile->Get("qent"));
@@ -91,7 +81,7 @@ void OverlayXSec() {
 
 	// ---------------------------------------------------------------------------------------------
 
-	// Saclay Data E = 0.961 GeV
+	// SLAC Data E = 0.961 GeV
 
 	int nLow = qent->Draw("v:xsec:xsec_err","Z==6 && A == 12 && E == 0.961 && theta == 37.5","goff");
 	TGraphErrors *DataGraphLow = new TGraphErrors(nLow,qent->GetV1(),qent->GetV2(),0,qent->GetV3());
@@ -109,14 +99,12 @@ void OverlayXSec() {
 //	TH1D* GenieBoxPlot = (TH1D*)GenieBoxFile->Get("v_distribution");
 
 	TFile* GenieBoxFile = TFile::Open("GenieOutOfTheBox_12C_DoubleDiff_E_1_161GeV_theta_37_5_FineBin.root");
-	TH1D* GenieBoxPlot = (TH1D*)GenieBoxFile->Get("h");
-	GenieBoxPlot->Rebin();
-	GenieBoxPlot->Scale(0.5);
+	TGraph* GenieBoxPlot = (TGraph*)GenieBoxFile->Get("Simulation");
 
 	GenieBoxPlot->SetLineColor(kGreen+2);
 	GenieBoxPlot->SetLineWidth(2);
 
-	GenieBoxPlot->Draw("c hist same");
+	GenieBoxPlot->Draw("c same");
 
 	// ---------------------------------------------------------------------------------------------
 
@@ -165,23 +153,41 @@ void OverlayXSec() {
 
 	// ---------------------------------------------------------------------------------------------
 
-	// SuSav2 e4v
+	// SuSav2 e4v // Sanity check
 
-//	TFile* GenieFile = TFile::Open("/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/1_161/SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_XSec/NoxBCut/12C_1_161_SuSav2_RadCorr_LFGM_Truth_WithoutFidAcc_XSec_Plots_FSI_em.root");
+	TFile* GenieFile = TFile::Open("/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/1_161/SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec/NoxBCut/12C_1_161_SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec_Plots_FSI_em.root");
 
-//	TH1D* GeniePlot = (TH1D*)GenieFile->Get(PlotName);
-//	UniversalE4vFunction(GeniePlot,"SuSav2","12C","1_161",PlotName);
+	TH1D* GeniePlot = (TH1D*)GenieFile->Get(PlotName);
+	GeniePlot->Rebin();
+	UniversalE4vFunction(GeniePlot,"SuSav2 NoRad","12C","1_161",PlotName);
 
-//	GeniePlot->SetLineColor(kBlue);
-//	GeniePlot->SetLineWidth(2);
+	GeniePlot->SetLineColor(kBlue);
+	GeniePlot->SetLineWidth(2);
 
-//	GeniePlot->Scale(1./0.00667); // sr -> solid angle for 36 < theta < 39 & 24 < phi < 36 
-//	GeniePlot->Scale(1000); // Conversion from ub to nb
-//	GeniePlot->Draw("c hist same");
+	GeniePlot->Scale(1./0.00667); // sr -> solid angle for 36 < theta < 39 & 24 < phi < 36 
+	GeniePlot->Scale(1000); // Conversion from ub to nb
+	//GeniePlot->Draw("c hist same");
 
 	// ---------------------------------------------------------------------------------------------
 
-	// Data e4v
+	// G2018 e4v // Sanity check
+
+	TFile* G2018GenieFile = TFile::Open("/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/1_161/hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec/NoxBCut/12C_1_161_hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec_Plots_FSI_em.root");
+
+	TH1D* G2018GeniePlot = (TH1D*)G2018GenieFile->Get(PlotName);
+	G2018GeniePlot->Rebin();
+	UniversalE4vFunction(G2018GeniePlot,"G2018 NoRad","12C","1_161",PlotName);
+
+	G2018GeniePlot->SetLineColor(kMagenta);
+	G2018GeniePlot->SetLineWidth(2);
+
+	G2018GeniePlot->Scale(1./0.00667); // sr -> solid angle for 36 < theta < 39 & 24 < phi < 36 
+	G2018GeniePlot->Scale(1000); // Conversion from ub to nb
+	//G2018GeniePlot->Draw("c hist same");
+
+	// ---------------------------------------------------------------------------------------------
+
+	// Uncorrected Data e4v
 
 	TFile* Datae4vFile = TFile::Open("/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/1_161/Pinned_Data_Final_XSec/NoxBCut/12C_1_161_Pinned_Data_Final_XSec_Plots_FSI_em.root");
 
@@ -196,6 +202,19 @@ void OverlayXSec() {
 	Datae4vPlot->Scale(1000); // Conversion from ub to nb
 	Datae4vPlot->SetMarkerStyle(4);
 	Datae4vPlot->Draw("e1x0 same");
+
+	// ---------------------------------------------------------------------------------------------
+
+	// Corrected Data e4v
+
+	TFile* CorrectedDatae4vFile = TFile::Open("e4v_C12_E_1_161_theta_37_5.root");
+
+	TH1D* CorrectedDatae4vPlot = (TH1D*)CorrectedDatae4vFile->Get("Correctede4vData"); // already extracted xsec in e4vXSecRatio.cxx solid angle for 24 < phi < 36 && 36 < theta < 39 
+
+	CorrectedDatae4vPlot->SetLineColor(kGreen+2);
+	CorrectedDatae4vPlot->SetMarkerColor(kGreen+2);
+	CorrectedDatae4vPlot->SetMarkerStyle(20);
+	CorrectedDatae4vPlot->Draw("e1x0 same");
 
 	// ---------------------------------------------------------------------------------------------
 

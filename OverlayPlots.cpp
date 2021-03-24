@@ -149,7 +149,7 @@ void OverlayPlots() {
 
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
 	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
-//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc_XSec"); FSILabel.push_back("SuSav2 (No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec"); FSILabel.push_back("SuSav2 (No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
 
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2 (Default)");  DirNames.push_back("SuSav2_Truth_NoRadCorr");
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Test"); FSILabel.push_back("SuSav2 (Test)");  DirNames.push_back("SuSav2_Truth_NoRadCorr_Test");
@@ -166,7 +166,8 @@ void OverlayPlots() {
 
 //	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("G2018 (No Rad master)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 //	FSIModel.push_back("G2018_MasterNoRad"); FSILabel.push_back("G2018 (No Rad master+adi_radcorr)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
-////	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("G2018 (1p0pi No Rad)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("G2018 (1p0pi No Rad)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec"); FSILabel.push_back("G2018 (1p0pi No Rad)");  DirNames.push_back("hA2018_Truth_NoRadCorr");
 ////	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("G2018 (Ext Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
 //	FSIModel.push_back("hA2018_Final_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("G2018 (Rad adi_radcorr)");  DirNames.push_back("hA2018_Truth_RadCorr");
 
@@ -243,6 +244,8 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("CosDeltaPhiElectronPhotonAboveThreshold"); LabelOfPlots.push_back("cos(#Delta#phi_{e',#gamma})");  OutputPlotNames.push_back("CosDeltaPhiElectronPhotonAboveThreshold");
 //	NameOfPlots.push_back("h1_E_tot_cut2"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{Cal} Before Subtraction [GeV]");  OutputPlotNames.push_back("h1_E_tot_cut2");
 //	NameOfPlots.push_back("h1_PiPlus_Momentum"); LabelOfPlots.push_back("P_{#pi^{+}} [GeV/c]"); OutputPlotNames.push_back("PiPlus_Momentum");
+//	NameOfPlots.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0"); LabelOfPlots.push_back("(e,e') #omega [GeV]"); OutputPlotNames.push_back("Omega_Inclusive");
+
 
 //	NameOfPlots.push_back("h1_ECal_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_0");
 //	NameOfPlots.push_back("h1_ECal_InSector_1"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_1");

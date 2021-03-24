@@ -74,15 +74,15 @@ void QuickInclusiveComparison() {
 	TString Nucleus = "";
 	int Z = 6, A = 12;
 
-//	xsec_file.push_back("/genie/app/users/apapadop/master_Q2_0_1/mySplines/v3_00_06_WithSuSav2/xsec_carbon12_spline_EMPlusMEC_GTEST19_10b_00_000.root");
 	xsec_file.push_back("/pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_1/v3_2/xsec_11_1000060120_EM_G18_10a_02_11a_Q2_0_1.root");
+//	xsec_file.push_back("/pnfs/genie/persistent/users/apapadop/mySplines/master_Q2_0_1/v3_2/xsec_11_1000060120_EM_GTEST19_10b_00_000_Q2_0_1.root");
 		
 	vector <TFile*> SimulationFile;
 	SimulationFile.clear();
 
 	vector <TString> xsec_Eventfile;
-//	xsec_Eventfile.push_back("/pnfs/genie/persistent/users/apapadop/e4v_SuSav2/Exclusive/electrons/C12_1161GeV/apapadop_SuSav2_C12_1161GeV.root");	
 	xsec_Eventfile.push_back("/pnfs/genie/persistent/users/apapadop/e4v_G2018/Exclusive/electrons/C12_1161GeV/apapadop_G2018_C12_1161GeV_master.root");	
+//	xsec_Eventfile.push_back("/pnfs/genie/persistent/users/apapadop/e4v_SuSav2/Exclusive/electrons/C12_1161GeV/apapadop_SuSav2_C12_1161GeV_master.root");	
 
 	// ---------------------------------------------------------------------------------------------
 
@@ -95,7 +95,7 @@ void QuickInclusiveComparison() {
 
 	// Constants
 
-	int NBins = 50;
+	int NBins = 30;
 
 	double ThetaCut = 1.5; // degrees
 //	double ThetaCut = 2.; // degrees

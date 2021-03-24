@@ -1294,7 +1294,7 @@ void genie_analysis::Loop(Int_t choice) {
 		//Wght and e_acc_ratio is 1 for CLAS data
 		//double Mott_cross_sec = ( pow(fine_struc_const,2.)*(cos(el_theta)+1))/(2*pow(El,2.)*pow((1-cos(el_theta)),2.));
 
-		double reco_q3 = -(V4_el-V4_beam).Rho();
+		double reco_q3 = (V4_el-V4_beam).Rho();
 		double reco_Q2 = -(V4_el-V4_beam).Mag2();
 		double Q4 = reco_Q2 * reco_Q2;
 		double Mott_cross_sec = (1./Q4) * XSecScale;

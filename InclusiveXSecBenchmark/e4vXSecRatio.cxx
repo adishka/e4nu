@@ -27,14 +27,6 @@ using namespace std;
 #include "../AfroConstants.h"
 #include "../myFunctions.cpp"
 
-//TString ToString(double num) {
-
-//	std::ostringstream start;
-//	start << num;
-//	string start1 = start.str();
-//	return start1;
-//}
-
 void e4vXSecRatio() {
 
 	TH1D::SetDefaultSumw2();
@@ -42,8 +34,6 @@ void e4vXSecRatio() {
 	int FontStyle = 132;
 	double TextSize = 0.07;
 	TGaxis::SetMaxDigits(3);
-//	TGaxis::SetExponentOffset(-0.1, 1., "y");
-//	TGaxis::SetExponentOffset(-0.05, 0., "y");
 
 	gStyle->SetTitleSize(TextSize-0.02,"t");
 	gStyle->SetTitleFont(FontStyle,"t");
@@ -66,7 +56,7 @@ void e4vXSecRatio() {
 
 	// ---------------------------------------------------------------------------------------------
 
-	// Data e4v
+	// Data e4v (uncorrected)
 
 	TFile* Datae4vFile = TFile::Open("/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/1_161/Pinned_Data_Final_XSec/NoxBCut/12C_1_161_Pinned_Data_Final_XSec_Plots_FSI_em.root");
 
@@ -127,9 +117,9 @@ void e4vXSecRatio() {
 
 	// ---------------------------------------------------------------------------------------------
 
-	// SuSav2 GENIE Out-Of-The-Box @ E = 1.161 GEV & theta = 37.5 deg & fine binning 
+	// SuSav2 GENIE Out-Of-The-Box @ E = 1.161 GEV & theta = 37.5 deg & fine binning to perform the fitting
 
-	TFile* GenieBoxFileFineBin = TFile::Open("GenieOutOfTheBox_12C_DoubleDiff_E_1_161GeV_theta_37_5_FineBin.root");
+	TFile* GenieBoxFileFineBin = TFile::Open("GenieOutOfTheBox_12C_DoubleDiff_E_1_161GeV_theta_37_5_FineBin_save.root");
 
 	TH1D* GenieBoxPlotFineBin = (TH1D*)GenieBoxFileFineBin->Get("h");
 
@@ -149,7 +139,7 @@ void e4vXSecRatio() {
 
 	// ---------------------------------------------------------------------------------------------
 
-	// Corrected e4v data to truth (corrected for radiation effects)
+	// Corrected e4v data to truth (corrected for radiation && detector acceptance effects)
 
 	TH1D* AccCorrDatae4vPlot = AcceptanceCorrection(Datae4vPlot,"SuSav2","12C","1_161",PlotName,"NoxBCut","_XSec");
 	PlotCanvas->cd();
@@ -164,7 +154,7 @@ void e4vXSecRatio() {
 
 	// ---------------------------------------------------------------------------------------------
 
-//	// GENIE prediction with veeeeeeeeeeery fine binning
+	// GENIE prediction with veeeeeeeeeeery fine binning
 
 //	TFile* GenieFile = TFile::Open("/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/1_161/SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec/NoxBCut/12C_1_161_SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec_Plots_FSI_em.root");
 //	TH1D* GENIEFineBin = (TH1D*)(GenieFile->Get(PlotName)); 
@@ -184,7 +174,7 @@ void e4vXSecRatio() {
 	// ---------------------------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------------------------
 
-	// Data Average vs bin center
+	// Data Average vs bin center for bin centered xsec extraction
 
 	TFile* TProfileFileData = TFile::Open("/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/1_161/Pinned_Data_Final_XSec/NoxBCut/12C_1_161_Pinned_Data_Final_XSec_Plots_FSI_em.root");
 	TProfile* profData = (TProfile*)(TProfileFileData->Get("TProf_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0")); 
@@ -214,32 +204,32 @@ void e4vXSecRatio() {
 	// ---------------------------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------------------------
 
-	// SuSav2 NoRad Average vs bin center
+	// SuSav2 NoRad Average vs bin center // NOT to be used, use the Data Average vs Bin Center
 
-	TFile* TProfileFileSuSav2NoRad = TFile::Open("/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/1_161/SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec/NoxBCut/12C_1_161_SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec_Plots_FSI_em.root");
-	TProfile* profSuSav2NoRad = (TProfile*)(TProfileFileSuSav2NoRad->Get("TProf_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0")); 
+//	TFile* TProfileFileSuSav2NoRad = TFile::Open("/home/afroditi/Dropbox/PhD/myCode/30th_Refactorization/myFiles/1_161/SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec/NoxBCut/12C_1_161_SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec_Plots_FSI_em.root");
+//	TProfile* profSuSav2NoRad = (TProfile*)(TProfileFileSuSav2NoRad->Get("TProf_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0")); 
 
-	ApplyRebinningTProfile(profSuSav2NoRad,"1_161",PlotName); // make sure that we have the same binning as in data // Include
+//	ApplyRebinningTProfile(profSuSav2NoRad,"1_161",PlotName); // make sure that we have the same binning as in data // Include
 
-	// ---------------------------------------------------------------------------------------------
+//	// ---------------------------------------------------------------------------------------------
 
-//	TString CanvasNameProfSuSav2NoRad = "ProfCanvasSuSav2NoRad";
-//	TCanvas* PlotCanvasProfSuSav2NoRad = new TCanvas(CanvasNameProfSuSav2NoRad,CanvasNameProfSuSav2NoRad,205,34,1024,768);
+////	TString CanvasNameProfSuSav2NoRad = "ProfCanvasSuSav2NoRad";
+////	TCanvas* PlotCanvasProfSuSav2NoRad = new TCanvas(CanvasNameProfSuSav2NoRad,CanvasNameProfSuSav2NoRad,205,34,1024,768);
 
-//	profSuSav2NoRad->GetXaxis()->SetRangeUser(0.05,0.75);
-//	profSuSav2NoRad->GetXaxis()->SetTitle("Energy Transfer [GeV] Bin Center");
-//	profSuSav2NoRad->GetYaxis()->SetRangeUser(0.05,0.75);
-//	profSuSav2NoRad->GetYaxis()->SetTitle("Energy Transfer [GeV] Average");
+////	profSuSav2NoRad->GetXaxis()->SetRangeUser(0.05,0.75);
+////	profSuSav2NoRad->GetXaxis()->SetTitle("Energy Transfer [GeV] Bin Center");
+////	profSuSav2NoRad->GetYaxis()->SetRangeUser(0.05,0.75);
+////	profSuSav2NoRad->GetYaxis()->SetTitle("Energy Transfer [GeV] Average");
 
-	profSuSav2NoRad->SetMarkerStyle(20);
-	profSuSav2NoRad->SetMarkerSize(2.);
-//	profSuSav2NoRad->SetMarkerColor(kBlack);
-profSuSav2NoRad->SetMarkerColor(kBlue);
-PlotCanvasProfData->cd();
-	profSuSav2NoRad->Draw("hist p same");
-//	TF1* fSuSav2NoRad = new TF1("fSuSav2NoRad","x",0,0.75);
-//	fSuSav2NoRad->SetLineColor(kRed);
-//	fSuSav2NoRad->Draw("same");
+//	profSuSav2NoRad->SetMarkerStyle(20);
+//	profSuSav2NoRad->SetMarkerSize(2.);
+////	profSuSav2NoRad->SetMarkerColor(kBlack);
+//profSuSav2NoRad->SetMarkerColor(kBlue);
+//PlotCanvasProfData->cd();
+//	profSuSav2NoRad->Draw("hist p same");
+////	TF1* fSuSav2NoRad = new TF1("fSuSav2NoRad","x",0,0.75);
+////	fSuSav2NoRad->SetLineColor(kRed);
+////	fSuSav2NoRad->Draw("same");
 
 	PlotCanvas->cd();
 
@@ -248,36 +238,36 @@ PlotCanvasProfData->cd();
 
 	// Data Average vs bin center for electron theta angle
 
-	TProfile* profDataTheta = (TProfile*)(TProfileFileData->Get("TProf_Theta_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0")); 
+//	TProfile* profDataTheta = (TProfile*)(TProfileFileData->Get("TProf_Theta_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0")); 
 
-	for (int i = 0; i < 3; i++) { profDataTheta->Rebin(); }
+//	for (int i = 0; i < 3; i++) { profDataTheta->Rebin(); }
 
-	// ---------------------------------------------------------------------------------------------
+//	// ---------------------------------------------------------------------------------------------
 
-	TString CanvasNameProfDataTheta = "ProfCanvasDataTheta";
-	TCanvas* PlotCanvasProfDataTheta = new TCanvas(CanvasNameProfDataTheta,CanvasNameProfDataTheta,205,34,1024,768);
+//	TString CanvasNameProfDataTheta = "ProfCanvasDataTheta";
+//	TCanvas* PlotCanvasProfDataTheta = new TCanvas(CanvasNameProfDataTheta,CanvasNameProfDataTheta,205,34,1024,768);
 
-	profDataTheta->GetXaxis()->SetTitle("#theta [deg] Bin Center");
-	profDataTheta->GetYaxis()->SetTitle("#theta [deg] Average");
+//	profDataTheta->GetXaxis()->SetTitle("#theta [deg] Bin Center");
+//	profDataTheta->GetYaxis()->SetTitle("#theta [deg] Average");
 
-	profDataTheta->SetMarkerStyle(20);
-	profDataTheta->SetMarkerSize(2.);
-	profDataTheta->SetMarkerColor(kBlack);
-	profDataTheta->Draw("hist p");
-	TF1* fDataTheta = new TF1("fDataTheta","x",36,39);
-	fDataTheta->SetLineColor(kRed);
-	fDataTheta->Draw("same");
+//	profDataTheta->SetMarkerStyle(20);
+//	profDataTheta->SetMarkerSize(2.);
+//	profDataTheta->SetMarkerColor(kBlack);
+//	profDataTheta->Draw("hist p");
+//	TF1* fDataTheta = new TF1("fDataTheta","x",36,39);
+//	fDataTheta->SetLineColor(kRed);
+//	fDataTheta->Draw("same");
 
-	PlotCanvas->cd();
+//	PlotCanvas->cd();
 
-	// ---------------------------------------------------------------------------------------------
-	// ---------------------------------------------------------------------------------------------
+//	// ---------------------------------------------------------------------------------------------
+//	// ---------------------------------------------------------------------------------------------
 
-	// SuSav2 NoRad Average vs bin center
+//	// SuSav2 NoRad Average vs bin center
 
-	TProfile* profSuSav2NoRadTheta = (TProfile*)(TProfileFileSuSav2NoRad->Get("TProf_Theta_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0")); 
+//	TProfile* profSuSav2NoRadTheta = (TProfile*)(TProfileFileSuSav2NoRad->Get("TProf_Theta_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0")); 
 
-	for (int j = 0; j < 3; j++) { profSuSav2NoRadTheta->Rebin(); }
+//	for (int j = 0; j < 3; j++) { profSuSav2NoRadTheta->Rebin(); }
 
 	// ---------------------------------------------------------------------------------------------
 
@@ -289,12 +279,12 @@ PlotCanvasProfData->cd();
 //	profSuSav2NoRad->GetYaxis()->SetRangeUser(0.05,0.75);
 //	profSuSav2NoRad->GetYaxis()->SetTitle("Energy Transfer [GeV] Average");
 
-	profSuSav2NoRadTheta->SetMarkerStyle(20);
-	profSuSav2NoRadTheta->SetMarkerSize(2.);
-//	profSuSav2NoRadTheta->SetMarkerColor(kBlack);
-profSuSav2NoRadTheta->SetMarkerColor(kBlue);
-PlotCanvasProfDataTheta->cd();
-	profSuSav2NoRadTheta->Draw("hist p same");
+//	profSuSav2NoRadTheta->SetMarkerStyle(20);
+//	profSuSav2NoRadTheta->SetMarkerSize(2.);
+////	profSuSav2NoRadTheta->SetMarkerColor(kBlack);
+//profSuSav2NoRadTheta->SetMarkerColor(kBlue);
+//PlotCanvasProfDataTheta->cd();
+//	profSuSav2NoRadTheta->Draw("hist p same");
 
 	PlotCanvas->cd();
 
@@ -312,15 +302,18 @@ PlotCanvasProfDataTheta->cd();
 //		double BinCenter = prof->GetBinCenter(WhichBin + 1);
 //		double BinAverage = prof->GetBinContent(WhichBin + 1);
 
-		double BinCenter = myfunc->Eval(profSuSav2NoRad->GetBinCenter(WhichBin + 1));
-		double BinAverage = myfunc->Eval(profSuSav2NoRad->GetBinContent(WhichBin + 1));
+//		double BinCenter = myfunc->Eval(profSuSav2NoRad->GetBinCenter(WhichBin + 1));
+//		double BinAverage = myfunc->Eval(profSuSav2NoRad->GetBinContent(WhichBin + 1));
+
+		double BinCenter = myfunc->Eval(profData->GetBinCenter(WhichBin + 1));
+		double BinAverage = myfunc->Eval(profData->GetBinContent(WhichBin + 1));
 
 		double CorrFactor = BinCenter / BinAverage;
 
 		double CurrentEntry = AccCorrDatae4vPlot->GetBinContent(WhichBin + 1);
 		double CurrentError = AccCorrDatae4vPlot->GetBinError(WhichBin + 1);
-		double NewEntry = CurrentEntry / CorrFactor;
-		double NewError = CurrentError / CorrFactor;
+		double NewEntry = CurrentEntry * CorrFactor;
+		double NewError = CurrentError * CorrFactor;
 
 		BinCentCorrDatae4vPlot->SetBinContent(WhichBin+1,NewEntry);
 		BinCentCorrDatae4vPlot->SetBinError(WhichBin+1,NewError);
@@ -337,6 +330,9 @@ PlotCanvasProfDataTheta->cd();
 // Final cross section, corrected for radiation & bin centering effects // Include
 //	BinCentCorrDatae4vPlot->Draw("e1x0 same");
 	BinCentCorrDatae4vPlot->Draw("hist p same");
+
+	TFile* Correctede4vDataFile = TFile::Open("e4v_C12_E_1_161_theta_37_5.root","recreate");
+	BinCentCorrDatae4vPlot->Write("Correctede4vData");
 
 	// ---------------------------------------------------------------------------------------------
 
