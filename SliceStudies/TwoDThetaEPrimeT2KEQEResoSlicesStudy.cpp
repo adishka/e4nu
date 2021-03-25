@@ -21,13 +21,11 @@ using namespace std;
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void PrettyPlot(TH1D* h, TString DataSetLabel, TString nucleus, TString E, TString name){
+void PrettyPlot(TH1D* h, TString DataSetLabel, TString nucleus, TString E, TString name, double SF = 1) {
 
 		UniversalE4vFunction(h,DataSetLabel,nucleus,E,name);
 
-		if (string(DataSetLabel).find("Data") != std::string::npos) { h = AcceptanceCorrection(h,"SuSav2", nucleus,E,name,"NoxBCut"); }
-
-
+		h->Scale(SF);
 		h->SetLineWidth(3);
 
 		h->GetXaxis()->CenterTitle();
@@ -137,7 +135,7 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 
 			TString CanvasName = NucleusString[WhichNucleus]+"_"+EnergyString[WhichEnergy]+"_T2KEQEResoCanvas_EePrimeAndCosThetaSlices_2D";
 
-			TCanvas* SuSav2Canvas_ECal_EePrimeAndThetaSlices = new TCanvas(CanvasName,CanvasName,205,34,1300,1300);
+			TCanvas* SuSav2Canvas_ECal_EePrimeAndThetaSlices = new TCanvas(CanvasName,CanvasName,205,34,1400,1300);
 
 			for (int WhichCosThetaSlice2D = 0 ; WhichCosThetaSlice2D < CosThetaSlices2D; WhichCosThetaSlice2D++ ) {		
 
@@ -145,6 +143,16 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 				double MaxCosThetaSlice2D = (MinCosTheta2D+(WhichCosThetaSlice2D+1)*CosThetaStep2D);
 
 				for (int WhichEePrimeSlice2D = 0 ; WhichEePrimeSlice2D < EePrimeSlices2D; WhichEePrimeSlice2D++ ) {
+
+					// ---------------------------------------------------------------------------------------------------------------
+
+					double SF = 1.;
+
+					if (WhichCosThetaSlice2D == 0 && WhichEePrimeSlice2D == 2 ) { SF = 7.; }
+					if (WhichCosThetaSlice2D == 2 && WhichEePrimeSlice2D == 0 ) { SF = 6.; }
+					if (WhichCosThetaSlice2D == 2 && WhichEePrimeSlice2D == 1 ) { SF = 4.; }
+
+					// ---------------------------------------------------------------------------------------------------------------
 
 					double MinEePrimeSlice2D = (MinEePrime2D+WhichEePrimeSlice2D*EePrimeStep2D);
 					double MaxEePrimeSlice2D = (MinEePrime2D+(WhichEePrimeSlice2D+1)*EePrimeStep2D);
@@ -199,60 +207,66 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 
 					TH1D* h1_T2KEQEReso_Data = (TH1D*)file_Data->Get(NamePlot);
 
-					PrettyPlot(h1_T2KEQEReso_Data,"Pinned Data",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot);
+					PrettyPlot(h1_T2KEQEReso_Data,"Pinned Data",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
 
-					h1_T2KEQEReso_Data->SetLineColor(kBlack);
-					h1_T2KEQEReso_Data->SetMarkerColor(kBlack);
-					h1_T2KEQEReso_Data->SetMarkerStyle(20);
-					h1_T2KEQEReso_Data->SetMarkerSize(1.2);
-					h1_T2KEQEReso_Data->GetYaxis()->SetRangeUser(0.01,GlobalMax);	
+					TH1D* DataPlot = AcceptanceCorrection(h1_T2KEQEReso_Data,"SuSav2",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,"NoxBCut");
 
-					if (WhichCosThetaSlice2D == 0) { h1_T2KEQEReso_Data->GetYaxis()->SetRangeUser(0.0001,0.24); }
-					if (WhichCosThetaSlice2D == 1) { h1_T2KEQEReso_Data->GetYaxis()->SetRangeUser(0.0001,0.29); }
-					if (WhichCosThetaSlice2D == 2) { h1_T2KEQEReso_Data->GetYaxis()->SetRangeUser(0.0001,0.69); }
+					DataPlot->SetLineColor(kBlack);
+					DataPlot->SetMarkerColor(kBlack);
+					DataPlot->SetMarkerStyle(20);
+					DataPlot->SetMarkerSize(1.2);
+					DataPlot->GetYaxis()->SetRangeUser(0.01,GlobalMax);	
+
+					if (WhichCosThetaSlice2D == 0) { DataPlot->GetYaxis()->SetRangeUser(0.0001,0.26); }
+					if (WhichCosThetaSlice2D == 1) { DataPlot->GetYaxis()->SetRangeUser(0.0001,0.34); }
+					if (WhichCosThetaSlice2D == 2) { DataPlot->GetYaxis()->SetRangeUser(0.0001,0.79); }
 
 					if (WhichCosThetaSlice2D == CosThetaSlices2D-1 ) {
 
-						h1_T2KEQEReso_Data->GetXaxis()->SetLabelSize(0.1);
+						DataPlot->GetXaxis()->SetLabelSize(0.1);
 
 					}	
 
-					if (EnergyString[WhichEnergy] == "2_261") { h1_T2KEQEReso_Data->GetXaxis()->SetRangeUser(0.5,2.5); }
+					if (EnergyString[WhichEnergy] == "2_261") { DataPlot->GetXaxis()->SetRangeUser(0.5,2.5); }
 										
-					h1_T2KEQEReso_Data->Draw("e same");
+					//h1_T2KEQEReso_Data->Draw("e same");
 
 					// --------------------------------------------------------------------------------------------------------
 
-					PrettyPlot(h1_T2KEQEReso_SuSav2,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot);
+					PrettyPlot(h1_T2KEQEReso_SuSav2,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
 					h1_T2KEQEReso_SuSav2->SetLineColor(kBlack);
 					h1_T2KEQEReso_SuSav2->SetLineStyle(kSolid);
-					h1_T2KEQEReso_SuSav2->Draw("hist C same");
 
-					PrettyPlot(h1_T2KEQEReso_SuSav2_QE,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot);
+					PrettyPlot(h1_T2KEQEReso_SuSav2_QE,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
 					h1_T2KEQEReso_SuSav2_QE->SetLineColor(kBlue+1);
 					h1_T2KEQEReso_SuSav2_QE->SetLineStyle(kSolid);
-					h1_T2KEQEReso_SuSav2_QE->Draw("hist C same");
 
-					PrettyPlot(h1_T2KEQEReso_SuSav2_MEC,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot);
+					PrettyPlot(h1_T2KEQEReso_SuSav2_MEC,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
 					h1_T2KEQEReso_SuSav2_MEC->SetLineColor(kRed-3);
 					h1_T2KEQEReso_SuSav2_MEC->SetLineStyle(kSolid);
-					h1_T2KEQEReso_SuSav2_MEC->Draw("hist C same");
 
-					PrettyPlot(h1_T2KEQEReso_SuSav2_RES,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot);
+					PrettyPlot(h1_T2KEQEReso_SuSav2_RES,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
 					h1_T2KEQEReso_SuSav2_RES->SetLineColor(kGreen+1);
 					h1_T2KEQEReso_SuSav2_RES->SetLineStyle(kSolid);
-					h1_T2KEQEReso_SuSav2_RES->Draw("hist C same");
 
-					PrettyPlot(h1_T2KEQEReso_SuSav2_DIS,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot);
+					PrettyPlot(h1_T2KEQEReso_SuSav2_DIS,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
 					h1_T2KEQEReso_SuSav2_DIS->SetLineColor(kOrange+1);
 					h1_T2KEQEReso_SuSav2_DIS->SetLineStyle(kSolid);
-					h1_T2KEQEReso_SuSav2_DIS->Draw("hist C same");
 
 					// --------------------------------------------------------------------------------------------------------
 
-					PrettyPlot(h1_T2KEQEReso_G2018,"G2018 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot);
+					PrettyPlot(h1_T2KEQEReso_G2018,"G2018 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
 					h1_T2KEQEReso_G2018->SetLineColor(kBlack);
 					h1_T2KEQEReso_G2018->SetLineStyle(kDashed);
+
+					// -------------------------------------------------------------------------------------------------------------
+
+					DataPlot->Draw("e same");
+					h1_T2KEQEReso_SuSav2->Draw("hist C same");
+					h1_T2KEQEReso_SuSav2_QE->Draw("hist C same");
+					h1_T2KEQEReso_SuSav2_MEC->Draw("hist C same");
+					h1_T2KEQEReso_SuSav2_RES->Draw("hist C same");
+					h1_T2KEQEReso_SuSav2_DIS->Draw("hist C same");
 					h1_T2KEQEReso_G2018->Draw("hist C same");
 
 					// -------------------------------------------------------------------------------------------------------------
@@ -265,41 +279,49 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 					legSuSav2_Slice->SetTextFont(FontStyle);
 					legSuSav2_Slice->SetTextSize(1.3*TextSize);	
 
-					legSuSav2_Slice->AddEntry(h1_T2KEQEReso_Data,ToStringDouble(MinEePrimeSlice2D)+ " < E_{e'} < " + ToStringDouble(MaxEePrimeSlice2D)+" GeV","");
-					legSuSav2_Slice->AddEntry(h1_T2KEQEReso_Data,ToStringDouble(MinCosThetaSlice2D)+ " < cos(#theta_{e'}) < " + ToStringDouble(MaxCosThetaSlice2D),"");
+					legSuSav2_Slice->AddEntry(DataPlot,ToStringDouble(MinEePrimeSlice2D)+ " < E_{e'} < " + ToStringDouble(MaxEePrimeSlice2D)+" GeV","");
+					legSuSav2_Slice->AddEntry(DataPlot,ToStringDouble(MinCosThetaSlice2D)+ " < cos(#theta_{e'}) < " + ToStringDouble(MaxCosThetaSlice2D),"");
 
 					legSuSav2_Slice->Draw();
 
 					// -------------------------------------------------------------------------------------------------------------
 
-					if (WhichCosThetaSlice2D == 1 && WhichEePrimeSlice2D ==1 ) {
+					if (SF != 1. ) {
 
-						TLegend* legSuSav2_EePrimeAndCosThetaSlices = new TLegend(0.1,0.2,0.35,0.6);
+						TLatex latexSF;
+						latexSF.SetTextFont(FontStyle);
+						latexSF.SetTextSize(1.5*TextSize);
+						latexSF.DrawLatexNDC(0.25,0.45,"x"+ToStringDouble(SF));
+
+					}
+
+					// -------------------------------------------------------------------------------------------------------------
+
+					if (WhichCosThetaSlice2D == 1 && WhichEePrimeSlice2D == 0 ) {
+
+						TLegend* legSuSav2_EePrimeAndCosThetaSlices = new TLegend(0.6,0.16,0.85,0.74);
 						legSuSav2_EePrimeAndCosThetaSlices->SetBorderSize(0);
 						legSuSav2_EePrimeAndCosThetaSlices->SetTextFont(FontStyle);
 						legSuSav2_EePrimeAndCosThetaSlices->SetTextSize(1.5*TextSize);	
 
-						legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_T2KEQEReso_Data,"Data","lep");				
-						//legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_T2KEQEReso_SuSav2,"SuSav2","l");
-						//legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_T2KEQEReso_G2018,"G2018","l");
+						legSuSav2_EePrimeAndCosThetaSlices->AddEntry(DataPlot,"Data","lep");
+						legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_T2KEQEReso_G2018,"G2018","l");				
+						legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_T2KEQEReso_SuSav2,"SuSav2","l");
+						legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_T2KEQEReso_SuSav2_QE,"QE","l");
+						legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_T2KEQEReso_SuSav2_MEC,"MEC","l");
+						legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_T2KEQEReso_SuSav2_RES,"RES","l");
+						legSuSav2_EePrimeAndCosThetaSlices->AddEntry(h1_T2KEQEReso_SuSav2_DIS,"DIS","l");
 
 						legSuSav2_EePrimeAndCosThetaSlices->Draw();	
 
 						TLatex latexnucleus;
 						latexnucleus.SetTextFont(FontStyle);
 						latexnucleus.SetTextSize(1.5*TextSize);
-						latexnucleus.DrawLatexNDC(0.55,0.35,NucleusLatex[WhichNucleus]);
+						latexnucleus.DrawLatexNDC(0.85,0.85,NucleusLatex[WhichNucleus]);
 
 					}
 
 
-
-
-
-					TLine* line = new TLine(EnergyDouble[WhichEnergy],0.01,EnergyDouble[WhichEnergy],GlobalMax);
-					line->SetLineWidth(3);
-					line->SetLineStyle(5);
-					line->Draw();
 
 				} // End of the loop over the cos theta slices
 

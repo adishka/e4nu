@@ -123,7 +123,7 @@ void OverlayPlots() {
 
 	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(kCyan); BreakDownColors.push_back(kGreen+1); BreakDownColors.push_back(kMagenta);
 
-	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
+//	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Data"); DirNames.push_back("Data");
 //	FSIModel.push_back("Pinned_Data_Final_XSec"); FSILabel.push_back("Data"); DirNames.push_back("Data");
 //	FSIModel.push_back("MikhailCook_Data"); FSILabel.push_back("Data (Mikhail)"); DirNames.push_back("Data");
 
@@ -148,8 +148,8 @@ void OverlayPlots() {
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc"); FSILabel.push_back("SuSav2 True 0pi");  DirNames.push_back("SuSav2_True_0pi");
 
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
-//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec"); FSILabel.push_back("SuSav2 (No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec"); FSILabel.push_back("SuSav2 (No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
 
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2 (Default)");  DirNames.push_back("SuSav2_Truth_NoRadCorr");
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Test"); FSILabel.push_back("SuSav2 (Test)");  DirNames.push_back("SuSav2_Truth_NoRadCorr_Test");
@@ -157,8 +157,8 @@ void OverlayPlots() {
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (e4v No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM"); FSILabel.push_back("SuSav2 (Ext Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad adi_radcorr)");  DirNames.push_back("SuSav2_Truth_RadCorr");
-	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
-//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger_XSec"); FSILabel.push_back("SuSav2 (Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
+//	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
+	FSIModel.push_back("SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger_XSec"); FSILabel.push_back("SuSav2 (Rad)");  DirNames.push_back("SuSav2_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_RadCorr_LFGM_UpdatedSchwinger"); FSILabel.push_back("SuSav2 (Rad adi)");  DirNames.push_back("SuSav2_Truth_RadCorr");
 
 //	FSIModel.push_back("SuSav2_MasterRad_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
@@ -244,7 +244,7 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("CosDeltaPhiElectronPhotonAboveThreshold"); LabelOfPlots.push_back("cos(#Delta#phi_{e',#gamma})");  OutputPlotNames.push_back("CosDeltaPhiElectronPhotonAboveThreshold");
 //	NameOfPlots.push_back("h1_E_tot_cut2"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{Cal} Before Subtraction [GeV]");  OutputPlotNames.push_back("h1_E_tot_cut2");
 //	NameOfPlots.push_back("h1_PiPlus_Momentum"); LabelOfPlots.push_back("P_{#pi^{+}} [GeV/c]"); OutputPlotNames.push_back("PiPlus_Momentum");
-//	NameOfPlots.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0"); LabelOfPlots.push_back("(e,e') #omega [GeV]"); OutputPlotNames.push_back("Omega_Inclusive");
+	NameOfPlots.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0"); LabelOfPlots.push_back("(e,e') #omega [GeV]"); OutputPlotNames.push_back("Omega_Inclusive");
 
 
 //	NameOfPlots.push_back("h1_ECal_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_0");

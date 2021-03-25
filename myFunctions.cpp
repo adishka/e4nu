@@ -793,7 +793,7 @@ void ApplyRange(TH1D* h, TString Energy, TString PlotVar) {
 		string(PlotVar).find("T2KEQEReso") != std::string::npos
 		) {
 
-		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(-0.75,0.35); }
+		if (Energy == "1_161") { h->GetXaxis()->SetRangeUser(-0.75,0.39); }
 		if (Energy == "2_261") { h->GetXaxis()->SetRangeUser(-0.69,0.21); }
 		if (Energy == "4_461") { h->GetXaxis()->SetRangeUser(-0.75,0.21); }
 
@@ -1137,7 +1137,7 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 		PlotsOffset.push_back( (TH1D*)( FileSampleOffset->Get(name) ) );
 
 		UniversalE4vFunction(PlotsOffset[WhichFSIModel],FSIModelsToLabels[FSIModelOffset[WhichFSIModel]],nucleus,E,name);
-cout << "hello after" << endl;
+
 		// --------------------------------------------------------------------------------------
 
 	}

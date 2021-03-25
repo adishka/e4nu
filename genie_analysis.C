@@ -112,7 +112,7 @@ void genie_analysis::Loop(Int_t choice) {
 	int NDeltaAlphaTBins = 36; double DeltaAlphaTMin = 0.; double DeltaAlphaTMax = 180.;
 	int NDeltaPhiTBins = 36; double DeltaPhiTMin = 0.; double DeltaPhiTMax = 180.;
 
-	const int NInt = 6; // All Interactions = 0, QE = 1, MEC = 2, RES = 3, DIS = 4
+	const int NInt = 6; // All Interactions = 0, QE = 1, MEC = 2, RES = 3, DIS = 4, COH = 5
 
 	// ---------------------------------------------------------------------------------------------------------------
 
@@ -442,6 +442,7 @@ void genie_analysis::Loop(Int_t choice) {
 	TH1F *h1_EQE_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[NSectors];
 	TH1F *h1_EQE_FullyInclusive_NoQ4Weight_xBCut_Theta_Slice_InSector[NSectors];
 	TH1F *h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[NSectors];
+	TH1F *h1_InteractionBreakDown_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[NInt][NSectors];
 	TH1F *h1_Omega_FullyInclusive_NoQ4Weight_xBCut_Theta_Slice_InSector[NSectors];
 	TH1F *h1_EePrime_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[NSectors];
 	TH1F *h1_EePrime_FullyInclusive_NoQ4Weight_xBCut_Theta_Slice_InSector[NSectors];
@@ -459,6 +460,12 @@ void genie_analysis::Loop(Int_t choice) {
 		h1_EQE_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[WhichSector]  = new TH1F("h1_EQE_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_"+TString(std::to_string(WhichSector)),"",6000,0.,6.);
 
 		h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[WhichSector]  = new TH1F("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_"+TString(std::to_string(WhichSector)),"",6000,0.,6.);
+
+		for (int WhichInt = 1; WhichInt < NInt; WhichInt++) {
+
+			h1_InteractionBreakDown_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[WhichInt][WhichSector]  = new TH1F("h1_"+TString(std::to_string(WhichInt))+"_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_"+TString(std::to_string(WhichSector)),"",6000,0.,6.);
+
+		}
 
 		TProf_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[WhichSector]  = new TProfile("TProf_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_"+TString(std::to_string(WhichSector)),"",6000,0.,6.);
 
@@ -1166,6 +1173,21 @@ void genie_analysis::Loop(Int_t choice) {
 		std::string StoreEnergy = fbeam_en;
 		if (UsePhiThetaBand) { StoreEnergy = ""; }
 
+		// -------------------------------------------------------------------------------------------------------------------------
+
+		// For GENIE samples, identify the interaction type
+
+		int Interaction = -1;
+
+		if (choice > 0) {
+
+			if (qel) { Interaction = 1; }
+			if (mec) { Interaction = 2; }
+			if (res) { Interaction = 3; }
+			if (dis) { Interaction = 4; }
+
+		}
+
 		// ---------------------------------------------------------------------------------------------------------------
 
 		if(jentry == 0){ //first entry to initialize TorusCurrent, Fiducials and Subtraction classes
@@ -1409,6 +1431,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 			h1_EQE_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(E_rec,WeightIncl/Q4);
 			h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(nu,WeightIncl/Q4);
+			h1_InteractionBreakDown_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[Interaction][ElectronSector]->Fill(nu,WeightIncl/Q4);
 			h1_EePrime_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(V4_el.E(),WeightIncl/Q4);
 
 			TProf_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector[ElectronSector]->Fill(nu,nu);
@@ -1891,21 +1914,6 @@ void genie_analysis::Loop(Int_t choice) {
 		//}
 
 		if (num_pipl == 0 && num_pimi == 0) { h1_EQE_FullyInclusive_IrregBins_NoPions->Fill(E_rec,WeightIncl); }
-
-		// -------------------------------------------------------------------------------------------------------------------------
-
-		// For GENIE samples, identify the interaction type
-
-		int Interaction = -1;
-
-		if (choice > 0) {
-
-			if (qel) { Interaction = 1; }
-			if (mec) { Interaction = 2; }
-			if (res) { Interaction = 3; }
-			if (dis) { Interaction = 4; }
-
-		}
 
 		// -----------------------------------------------------------------------------------------------------------------------------
 

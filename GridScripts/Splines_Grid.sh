@@ -9,7 +9,7 @@ declare -a Nuclei=("1000010010" "1000010020" "1000020030" "1000020040" "10000601
 #export GenieRelease=v3_0_6_WithSuSav2
 export GenieRelease=v3_2
 
-export UpperELim=10
+export UpperELim=20
 export SplinePath=/pnfs/genie/persistent/users/apapadop/mySplines
 
 ###############################################################################################################################################################################################

@@ -126,8 +126,8 @@ void Q0VsQ3_TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 
 			TFile* file = TFile::Open("../../myFiles/"+EnergyString[WhichEnergy]+"/Pinned_Data_Final/NoxBCut/"+\
 							NucleusString[WhichNucleus]+"_"+EnergyString[WhichEnergy]+"_Pinned_Data_Final_Plots_FSI_em.root","readonly");
-//			TFile* file = TFile::Open("../../myFiles/"+EnergyString[WhichEnergy]+"/SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc/NoxBCut/"+NucleusString[WhichNucleus]+"_"+EnergyString[WhichEnergy]+"_SuSav2_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Plots_FSI_em.root","readonly");	
-//			TFile* file = TFile::Open("../../myFiles/"+EnergyString[WhichEnergy]+"/hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc/NoxBCut/"+NucleusString[WhichNucleus]+"_"+EnergyString[WhichEnergy]+"_hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc_Plots_FSI_em.root","readonly");	
+//			TFile* file = TFile::Open("../../myFiles/"+EnergyString[WhichEnergy]+"/SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc/NoxBCut/"+NucleusString[WhichNucleus]+"_"+EnergyString[WhichEnergy]+"_SuSav2_NoRadCorr_LFGM_Truth0pi_WithFidAcc_Plots_FSI_em.root","readonly");	
+//			TFile* file = TFile::Open("../../myFiles/"+EnergyString[WhichEnergy]+"/hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithFidAcc/NoxBCut/"+NucleusString[WhichNucleus]+"_"+EnergyString[WhichEnergy]+"_hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithFidAcc_Plots_FSI_em.root","readonly");	
 
 			TString CanvasName = NucleusString[WhichNucleus]+"_"+EnergyString[WhichEnergy]+"_T2KQ0VsQ3Canvas_EePrimeAndCosThetaSlices_2D";
 
@@ -185,7 +185,9 @@ void Q0VsQ3_TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 
 					}	
 
-					if (EnergyString[WhichEnergy] == "2_261") { Q0VsQ3Plot->GetXaxis()->SetRangeUser(0.5,2.5); }
+					Q0VsQ3Plot->GetXaxis()->SetRangeUser(0.01,0.8);
+					Q0VsQ3Plot->GetYaxis()->SetRangeUser(0.41,1.1);
+					Q0VsQ3Plot->GetZaxis()->SetRangeUser(0.,Q0VsQ3Plot->GetMaximum());
 										
 					Q0VsQ3Plot->Draw("colt");
 
@@ -221,7 +223,7 @@ void Q0VsQ3_TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 			latexYTitlepadWeightedEventsPerGeV.SetTextSize(6.5*TextSize);
 			latexYTitlepadWeightedEventsPerGeV.SetTextColor(kBlack);
 			latexYTitlepadWeightedEventsPerGeV.SetTextAngle(90);
-			latexYTitlepadWeightedEventsPerGeV.DrawLatexNDC(0.5,0.44,"#frac{d#sigma}{dE_{QE}^{Reso}} [#mub]");
+			latexYTitlepadWeightedEventsPerGeV.DrawLatexNDC(0.5,0.44,"(e,e')_{0#pi} q_{3} [GeV]");
 
 			// ----------------------------------------------------------------------------------------------------------------	
 
@@ -235,7 +237,7 @@ void Q0VsQ3_TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 			latexpadEcal.SetTextFont(FontStyle);
 			latexpadEcal.SetTextSize(8*TextSize);
 			latexpadEcal.SetTextColor(kBlack);
-			latexpadEcal.DrawLatexNDC(0.26,0.5,"(e,e')_{0#pi} E_{QE} Reso");
+			latexpadEcal.DrawLatexNDC(0.26,0.5,"(e,e')_{0#pi} q_{0} [GeV]");
 			
 			// ----------------------------------------------------------------------------------------------------------------	
 
