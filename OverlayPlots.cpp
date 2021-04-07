@@ -71,7 +71,7 @@ void OverlayPlots() {
 	TGaxis::SetMaxDigits(3);
 //	TGaxis::SetExponentOffset(-0.1, 1., "y");
 
-	int Ndivisions = 4;
+	int Ndivisions = 8;
 	int LineWidth = 3;
 	int FontStyle = 132;
 	double TextSize = 0.08;
@@ -149,7 +149,7 @@ void OverlayPlots() {
 
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2 (No Rad master)");  DirNames.push_back("hA2018_Truth_RadCorr");
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc"); FSILabel.push_back("SuSav2 (No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_XSec"); FSILabel.push_back("SuSav2 (No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithFidAcc_XSec"); FSILabel.push_back("SuSav2 (No Rad)");  DirNames.push_back("hA2018_Truth_RadCorr");
 
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2 (Default)");  DirNames.push_back("SuSav2_Truth_NoRadCorr");
 //	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc_Test"); FSILabel.push_back("SuSav2 (Test)");  DirNames.push_back("SuSav2_Truth_NoRadCorr_Test");
@@ -245,6 +245,10 @@ void OverlayPlots() {
 //	NameOfPlots.push_back("h1_E_tot_cut2"); LabelOfPlots.push_back("(e,e')_{0#pi} E^{Cal} Before Subtraction [GeV]");  OutputPlotNames.push_back("h1_E_tot_cut2");
 //	NameOfPlots.push_back("h1_PiPlus_Momentum"); LabelOfPlots.push_back("P_{#pi^{+}} [GeV/c]"); OutputPlotNames.push_back("PiPlus_Momentum");
 	NameOfPlots.push_back("h1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0"); LabelOfPlots.push_back("(e,e') #omega [GeV]"); OutputPlotNames.push_back("Omega_Inclusive");
+	NameOfPlots.push_back("h1_1_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0"); LabelOfPlots.push_back("QE (e,e') #omega [GeV]"); OutputPlotNames.push_back("QE_Omega_Inclusive");
+	NameOfPlots.push_back("h1_2_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0"); LabelOfPlots.push_back("MEC (e,e') #omega [GeV]"); OutputPlotNames.push_back("MEC_Omega_Inclusive");
+	NameOfPlots.push_back("h1_3_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0"); LabelOfPlots.push_back("RES (e,e') #omega [GeV]"); OutputPlotNames.push_back("RES_Omega_Inclusive");
+	NameOfPlots.push_back("h1_4_Omega_FullyInclusive_NoQ4Weight_Theta_Slice_InSector_0"); LabelOfPlots.push_back("DIS (e,e') #omega [GeV]"); OutputPlotNames.push_back("DIS_Omega_Inclusive");
 
 
 //	NameOfPlots.push_back("h1_ECal_InSector_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E^{cal} [GeV]"); OutputPlotNames.push_back("h1_ECal_InSector_0");
@@ -315,8 +319,8 @@ void OverlayPlots() {
 //						NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed"
 //					   ) {
 
-						XMinPadOne = 0., XMaxPadOne = 1., YMinPadOne = 0.0, YMaxPadOne = 1.;
-						XMinPadTwo = 0., XMaxPadTwo = 1., YMinPadTwo = 0.0, YMaxPadTwo = 0.01;
+						XMinPadOne = 0., XMaxPadOne = 1., YMinPadOne = 0.2, YMaxPadOne = 1.;
+						XMinPadTwo = 0., XMaxPadTwo = 1., YMinPadTwo = 0.0, YMaxPadTwo = 0.2;
 //					} else {
 //						XMinPadOne = 0., XMaxPadOne = 1., YMinPadOne = 0.2, YMaxPadOne = 1.;
 //						XMinPadTwo = 0., XMaxPadTwo = 1., YMinPadTwo = 0., YMaxPadTwo = 0.2;
@@ -328,8 +332,10 @@ void OverlayPlots() {
 					pad1->SetFillColor(kWhite); pad1->Draw();
 					TPad* pad2 = new TPad(NameOfPlots[WhichPlot],NameOfPlots[WhichPlot],XMinPadTwo,YMinPadTwo,XMaxPadTwo,YMaxPadTwo,22); 
 					pad2->SetFillColor(kWhite); pad2->Draw(); 
+
 					pad1->SetTopMargin(0.1);
 					pad1->SetBottomMargin(0.19);
+
 					if (NameOfPlots[WhichPlot] == "h1_Nphot" || NameOfPlots[WhichPlot] == "h1_Nprot" /*||
 							 NameOfPlots[WhichPlot] == "h1_Npi"*/) { pad1->SetLeftMargin(0.12); }
 					else if (
@@ -341,6 +347,7 @@ void OverlayPlots() {
 						{ pad1->SetLeftMargin(0.11); }
 					else { pad1->SetLeftMargin(0.1); }
 					pad1->SetRightMargin(0.04);
+					pad2->SetRightMargin(0.04);
 
 					if (NameOfPlots[WhichPlot] == "h1_Nprot") {
 						pad1->SetRightMargin(0.0);
@@ -351,7 +358,7 @@ void OverlayPlots() {
 						pad1->SetRightMargin(0.12);
 					}
 
-					pad2->SetTopMargin(0.21);
+					pad2->SetTopMargin(0.1);
 					pad1->cd();
 
 					// ---------------------------------------------------------------------------------------
@@ -709,7 +716,7 @@ void OverlayPlots() {
 //						double ScalingFactor = 18E8 / Plots[WhichFSIModel]->GetMaximum();
 //						double ScalingFactor = 1.;
 						//Plots[WhichFSIModel]->Scale(ScalingFactor);
-cout << "FSIModelsToLabels[FSIModel[WhichFSIModel]] = " << FSIModelsToLabels[FSIModel[WhichFSIModel]] << endl;
+//cout << "FSIModelsToLabels[FSIModel[WhichFSIModel]] = " << FSIModelsToLabels[FSIModel[WhichFSIModel]] << endl;
 						UniversalE4vFunction(Plots[WhichFSIModel],FSIModelsToLabels[FSIModel[WhichFSIModel]],nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot]);
 
 						// -----------------------------------------------------------------------------------
@@ -1353,8 +1360,8 @@ cout << "FSIModelsToLabels[FSIModel[WhichFSIModel]] = " << FSIModelsToLabels[FSI
 						// Residual
 
 						Plots_Clones[WhichFSIModel]->GetYaxis()->SetTitleOffset(0.2);
-//						Plots_Clones[WhichFSIModel]->Add(Plots[0],-1);
-//						Plots_Clones[WhichFSIModel]->Divide(Plots[0]);
+						Plots_Clones[WhichFSIModel]->Add(Plots[0],-1);
+						Plots_Clones[WhichFSIModel]->Divide(Plots[0]); // 1st plot is reference point
 //						Plots_Clones[WhichFSIModel]->Scale(1./Plots[0]->Integral());
 //						Plots_Clones[WhichFSIModel]->GetYaxis()->SetTitle("#frac{MC-Data}{Integral}");			
 						Plots_Clones[WhichFSIModel]->GetYaxis()->SetTitleFont(FontStyle);
@@ -1364,13 +1371,13 @@ cout << "FSIModelsToLabels[FSIModel[WhichFSIModel]] = " << FSIModelsToLabels[FSI
 						Plots_Clones[WhichFSIModel]->GetYaxis()->SetTitleOffset(0.21);
 //						Plots_Clones[WhichFSIModel]->GetYaxis()->SetRangeUser(-0.03,0.03);
 
-						Plots_Clones[WhichFSIModel]->GetYaxis()->SetNdivisions(Ndivisions);
+						Plots_Clones[WhichFSIModel]->GetYaxis()->SetNdivisions(4);
 
 //						Plots_Clones[WhichFSIModel]->Draw("hist same");
 
 						if (NameOfPlots[WhichPlot] == "h1_Nphot" || NameOfPlots[WhichPlot] == "h1_Nprot" || NameOfPlots[WhichPlot] == "h1_Npi") { 
 							Plots_Clones[WhichFSIModel]->GetYaxis()->SetLabelOffset(0.005);
-							Plots_Clones[WhichFSIModel]->Divide(Plots[0]);
+							//Plots_Clones[WhichFSIModel]->Divide(Plots[0]);
 
 							Plots_Clones[WhichFSIModel]->GetYaxis()->SetNdivisions(3);
 							Plots_Clones[WhichFSIModel]->GetYaxis()->SetTitle("#frac{Genie}{Data}");	
@@ -1381,10 +1388,11 @@ cout << "FSIModelsToLabels[FSIModel[WhichFSIModel]] = " << FSIModelsToLabels[FSI
 
 							Plots_Clones[WhichFSIModel]->Draw("hist same");
 						} else { 
-							Plots_Clones[WhichFSIModel]->Add(Plots[0],-1);
-							Plots_Clones[WhichFSIModel]->Scale(1./Plots[0]->Integral());
-							Plots_Clones[WhichFSIModel]->GetYaxis()->SetTitle("#frac{Genie-Data}{Integral}");	
-							Plots_Clones[WhichFSIModel]->GetYaxis()->SetRangeUser(-0.03,0.03);		
+							//Plots_Clones[WhichFSIModel]->Add(Plots[0],-1);
+							//Plots_Clones[WhichFSIModel]->Scale(1./Plots[0]->Integral());
+//							Plots_Clones[WhichFSIModel]->GetYaxis()->SetTitle("#frac{Genie-Data}{Integral}");	
+							Plots_Clones[WhichFSIModel]->GetYaxis()->SetTitle("#frac{Rad-NoRad}{No Rad}");	
+							Plots_Clones[WhichFSIModel]->GetYaxis()->SetRangeUser(-0.2,0.2);		
 //							Plots_Clones[WhichFSIModel]->Draw("C hist same"); 
 							Plots_Clones[WhichFSIModel]->Draw("hist same"); 
 						}
@@ -1401,7 +1409,7 @@ cout << "FSIModelsToLabels[FSIModel[WhichFSIModel]] = " << FSIModelsToLabels[FSI
 //						NameOfPlots[WhichPlot] == "h_Etot_subtruct_piplpimi_factor_fracfeed" ||
 //						NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_factor_fracfeed"
 //					   ) { 
-					delete pad2;
+//					delete pad2;
 					//}
 
 					// -----------------------------------------------------------------------------------------------------------------------------------------

@@ -201,7 +201,7 @@ void OverlayXSec() {
 	Datae4vPlot->Scale(1./0.0067); // sr: solid angle for 24 < phi < 36 && 36 < theta < 39 
 	Datae4vPlot->Scale(1000); // Conversion from ub to nb
 	Datae4vPlot->SetMarkerStyle(4);
-	Datae4vPlot->Draw("e1x0 same");
+	//Datae4vPlot->Draw("e1x0 same");
 
 	// ---------------------------------------------------------------------------------------------
 
@@ -314,7 +314,7 @@ void OverlayXSec() {
 	Latex1161->SetTextSize(TextSize-0.01);
 	Latex1161->SetTextColor(kGreen+2);
 	Latex1161->SetTextAlign(12);  //centered
-	Latex1161->DrawLatexNDC(0.7,0.57,"#splitline{e4#nu 36^{o}-39^{o}}{1.161 GeV}");
+	Latex1161->DrawLatexNDC(0.7,0.57,"#splitline{e4#nu 37.5^{o}}{1.161 GeV}");
 
 	// ---------------------------------------------------------------------------------------------
 

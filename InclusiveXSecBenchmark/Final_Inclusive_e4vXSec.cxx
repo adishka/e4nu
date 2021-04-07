@@ -74,12 +74,13 @@ void Final_Inclusive_e4vXSec() {
 	CorrectedDatae4vPlot->GetYaxis()->SetTitleOffset(0.88);
 
 	CorrectedDatae4vPlot->GetXaxis()->SetRangeUser(0.08,0.72);
-	CorrectedDatae4vPlot->GetYaxis()->SetRangeUser(0,4.2); // Y axis in nb / sr / GeV
 
 	CorrectedDatae4vPlot->SetLineColor(kBlack);
 	CorrectedDatae4vPlot->SetMarkerColor(kBlack);
 	CorrectedDatae4vPlot->SetMarkerStyle(20);
 	CorrectedDatae4vPlot->Scale(0.001);// Conversion from nb to ub
+
+	CorrectedDatae4vPlot->GetYaxis()->SetRangeUser(0,4.4); // Y axis in nb / sr / GeV // was 4.2
 	CorrectedDatae4vPlot->Draw("e1x0 same");
 
 	// ---------------------------------------------------------------------------------------------
@@ -164,23 +165,23 @@ void Final_Inclusive_e4vXSec() {
 
 	// ---------------------------------------------------------------------------------------------
 
-	TLatex latexData;
-	latexData.SetTextFont(FontStyle);
-	latexData.SetTextSize(0.07);
-	latexData.SetTextColor(kBlack);
-	latexData.DrawLatexNDC(0.2,0.69,"Data");
+//	TLatex latexData;
+//	latexData.SetTextFont(FontStyle);
+//	latexData.SetTextSize(0.07);
+//	latexData.SetTextColor(kBlack);
+//	latexData.DrawLatexNDC(0.2,0.69,"Data");
 
-	TLatex latexG2018;
-	latexG2018.SetTextFont(FontStyle);
-	latexG2018.SetTextSize(0.07);
-	latexG2018.SetTextColor(kBlack);
-	latexG2018.DrawLatexNDC(0.29,0.41,"#it{G2018}");
+//	TLatex latexG2018;
+//	latexG2018.SetTextFont(FontStyle);
+//	latexG2018.SetTextSize(0.07);
+//	latexG2018.SetTextColor(kBlack);
+//	latexG2018.DrawLatexNDC(0.29,0.41,"#it{G2018}");
 
-	TLatex latexSuSav2;
-	latexSuSav2.SetTextFont(FontStyle);
-	latexSuSav2.SetTextSize(0.07);
-	latexSuSav2.SetTextColor(kBlack);
-	latexSuSav2.DrawLatexNDC(0.72,0.84,"SuSav2");
+//	TLatex latexSuSav2;
+//	latexSuSav2.SetTextFont(FontStyle);
+//	latexSuSav2.SetTextSize(0.07);
+//	latexSuSav2.SetTextColor(kBlack);
+//	latexSuSav2.DrawLatexNDC(0.72,0.84,"SuSav2");
 
 	TLatex latexSuSav2QE;
 	latexSuSav2QE.SetTextFont(FontStyle);
@@ -205,6 +206,18 @@ void Final_Inclusive_e4vXSec() {
 	latexSuSav2DIS.SetTextSize(0.07);
 	latexSuSav2DIS.SetTextColor(BreakDownColors[3]);
 	latexSuSav2DIS.DrawLatexNDC(0.7,0.28,"DIS");
+
+	TLegend* legGenie = new TLegend(0.17,0.72,0.31,0.89);
+	legGenie->SetNColumns(1);
+	legGenie->SetBorderSize(0);
+	legGenie->SetTextFont(FontStyle);
+	legGenie->SetTextSize(0.06);
+
+	legGenie->AddEntry(CorrectedDatae4vPlot,"Data","lep");
+	legGenie->AddEntry(GenieBoxPlot,"SuSav2","l");
+	legGenie->AddEntry(G2018_GenieBoxPlot,"G2018","l");
+
+	legGenie->Draw();
 
 	// ---------------------------------------------------------------------------------------------
 

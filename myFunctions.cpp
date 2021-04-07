@@ -716,7 +716,11 @@ void ApplyRebinning(TH1D* h, TString Energy, TString PlotVar) {
 
 	// -----------------------------------------------------------------------------------------------------------------------------
 
-	if (string(PlotVar).find("Omega") != std::string::npos) {
+	if (string(PlotVar).find("Omega_FullyInclusive") != std::string::npos) {
+
+		if (Energy == "1_161") { for (int i = 0; i < 5; i++) { h->Rebin(); } }
+
+	} else if (string(PlotVar).find("Omega") != std::string::npos) {
 
 		if (Energy == "1_161") { for (int i = 0; i < 5; i++) { h->Rebin(); } }
 		if (Energy == "2_261") { for (int i = 0; i < 5; i++) { h->Rebin(); } }
