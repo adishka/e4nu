@@ -111,6 +111,17 @@ void OverlayMultiplicities_FigExtData7() {
 //	TString RecoCalorimetry = "(e,e'p)";
 //	TString FSI = "FSI";
 
+	// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+	TString TxtName = "../AccCorrXSec/myXSec/Multiplicities.txt";
+	ofstream myTxtFile;
+	myTxtFile.open(TxtName);
+	myTxtFile << std::fixed << std::setprecision(3);
+	myTxtFile << "Multiplicities Ext Data Fig.3;" << endl << endl;
+	myTxtFile << "Bin #;Low bin edge; High bin edge;# Events;Uncertainty" << endl << endl;
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------------
+
 	// Loop over the xB kinematics
 
 	for (int WhichxBCut = 0; WhichxBCut < NxBCuts; WhichxBCut ++) {
@@ -127,16 +138,19 @@ void OverlayMultiplicities_FigExtData7() {
 									 nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+"Multiplicities"+"_"+xBCut[WhichxBCut],
 									 205,34,1024,768);
 
-				PlotCanvas->SetLeftMargin(0.13);
-				PlotCanvas->SetRightMargin(0.04);
-				PlotCanvas->SetBottomMargin(0.15);
-				PlotCanvas->SetTopMargin(0.01);
+//				PlotCanvas->SetLeftMargin(0.13);
+//				PlotCanvas->SetRightMargin(0.04);
+//				PlotCanvas->SetBottomMargin(0.15);
+//				PlotCanvas->SetTopMargin(0.01);
+
+				PlotCanvas->SetLeftMargin(0.18);
+				PlotCanvas->SetBottomMargin(0.17);
 
 				PlotCanvas->cd();
 
-				TLegend* leg = new TLegend(0.2,0.2,0.5,0.4);
+				TLegend* leg = new TLegend(0.2,0.2,0.6,0.4);
 				leg->SetNColumns(1);
-				leg->SetMargin(0.1);
+				leg->SetMargin(0.2);
 
 				// Loop over the plots
 
@@ -260,6 +274,35 @@ void OverlayMultiplicities_FigExtData7() {
 								}
 								gStyle->SetErrorX(0); 
 								Plots[WhichFSIModel]->Draw("e same"); 
+
+								// -----------------------------------------------------------------------------------------
+
+								int nbins = Plots[WhichFSIModel]->GetXaxis()->GetNbins();
+
+								double Min = -0.5, Max = 4.5;
+
+								int counter = 0;
+
+								for (int i = 0; i < nbins; i++) {
+
+									double BinContent = Plots[WhichFSIModel]->GetBinContent(i+1);
+									double BinError = Plots[WhichFSIModel]->GetBinError(i+1);
+									double BinLowEdge = Plots[WhichFSIModel]->GetBinLowEdge(i+1);			
+									double BinWidth = Plots[WhichFSIModel]->GetBinWidth(i+1);
+									double PreviousBinWidth = Plots[WhichFSIModel]->GetBinWidth(i);
+									double BinHighEdge = BinLowEdge + BinWidth;
+
+									if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
+										myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+										counter++;
+									}
+
+								}
+
+								myTxtFile << endl;
+
+								// -----------------------------------------------------------------------------------------
+
 							}
 							else { 
 
@@ -304,7 +347,7 @@ void OverlayMultiplicities_FigExtData7() {
 				latexGenie.SetTextFont(FontStyle);
 				latexGenie.SetTextColor(kBlue);
 				latexGenie.SetTextSize(TextSize);
-				latexGenie.DrawLatexNDC(0.5,0.5,"#pi^{#pm}");
+				latexGenie.DrawLatexNDC(0.5,0.45,"#pi^{#pm}");
 
 				// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -313,6 +356,13 @@ void OverlayMultiplicities_FigExtData7() {
 
 				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"+ext+nucleus[WhichNucleus]+"_" 
 					+E[WhichEnergy]+"_" +"Multiplicities.pdf");
+
+				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"+ext+nucleus[WhichNucleus]+"_" 
+					+E[WhichEnergy]+"_" +"Multiplicities.eps");
+
+				TFile* f = new TFile("Multiplicities.root","recreate");
+				gStyle->SetOptStat(0);	
+				PlotCanvas->Write();
 
 				//delete PlotCanvas;
 

@@ -90,7 +90,7 @@ echo
 echo
 echo "hello apapadop you are producing splines for" ${TUNE} ${EVENTGENLIST} ${TARGET}
 
-jobsub_submit -G genie --expected-lifetime=120h $PROD_OPTION \
+jobsub_submit -G genie --expected-lifetime=72h $PROD_OPTION \
   -d OUTPUT $OUTPUT_DIRECTORY \
   --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC,OFFSITE \
   file://${GRID_RESOURCES_DIR}/genie_splines_grid.sh $STEM $GIT_CHECKOUT ${PROBE} ${TARGET} ${UPPERENERGY} ${TUNE} ${EVENTGENLIST}  

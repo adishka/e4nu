@@ -75,6 +75,15 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 	int NFSIModels = FSIModel.size();
 	int NPlots = NameOfPlots.size();
 
+	// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+	TString TxtName = "myXSec/ECalSlices_XSecs.txt";
+	ofstream myTxtFile;
+	myTxtFile.open(TxtName);
+	myTxtFile << std::fixed << std::setprecision(3);
+	myTxtFile << "ECal Slices at 2.257 GeV Fig.3;" << endl << endl;
+	myTxtFile << "Bin #;Low bin edge; High bin edge;XSec [μbarn/GeV];XSec error [μbarn/GeV]" << endl << endl;
+
 	// ------------------------------------------------------------------------
 
 	// Loop over the xB kinematics
@@ -303,6 +312,46 @@ void AccCorrXSec_OverlayPmissFig3b_e4nuPaper() {
 							DataPlot->GetYaxis()->SetRangeUser(0.,height*DataPlot->GetMaximum());	
 							DataPlot->Draw("e same"); 
 
+							// --------------------------------------------------------------------------------------------------
+
+							int nbins = DataPlot->GetXaxis()->GetNbins();
+							double Min = 0.67, Max = 2.4;
+
+							if (NameOfPlots[WhichPlot] == "h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_1") { 
+								myTxtFile << "Pad (a)" << endl; 
+							}
+								
+							if (NameOfPlots[WhichPlot] == "h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_2") { 
+								myTxtFile << "Pad (b)" << endl; 
+							}
+
+							if (NameOfPlots[WhichPlot] == "h1_Etot_p_bkgd_slice_sub2p1pi_1p0pi_3") { 
+								myTxtFile << "Pad (c)" << endl; 
+							}
+
+							int counter = 0;
+
+							for (int i = 0; i < nbins; i++) {
+
+								double BinContent = DataPlot->GetBinContent(i+1);
+								double BinError = DataPlot->GetBinError(i+1);
+								double BinLowEdge = DataPlot->GetBinLowEdge(i+1);			
+								double BinWidth = DataPlot->GetBinWidth(i+1);
+								double PreviousBinWidth = DataPlot->GetBinWidth(i);
+								double BinHighEdge = BinLowEdge + BinWidth;
+
+								if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
+									myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+									counter++;
+								}
+
+							}
+
+							myTxtFile << endl;
+
+							// --------------------------------------------------------------------------------------------------
+
+
 //							TH1D* DataPlotG2018 = AcceptanceCorrection(Plots[WhichFSIModel],"hA2018_Final", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
 //							DataPlotG2018->SetMarkerStyle(20); 
@@ -513,6 +562,14 @@ if (OutputPlotNames[WhichPlot] == "epRecoEnergy_slice_1") {
 				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"
 					+E[WhichEnergy]+"/"+ext+"Fig3b_"+nucleus[WhichNucleus]+"_" 
 					+E[WhichEnergy]+"_SuSav2_AccCorrXSec.pdf");
+
+				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"
+					+E[WhichEnergy]+"/"+ext+"Fig3b_"+nucleus[WhichNucleus]+"_" 
+					+E[WhichEnergy]+"_SuSav2_AccCorrXSec.eps");
+
+				TFile* f = new TFile("Fig3b_ECal.root","recreate");
+				gStyle->SetOptStat(0);	
+				PlotCanvas->Write();
 
 				//delete PlotCanvas;
 

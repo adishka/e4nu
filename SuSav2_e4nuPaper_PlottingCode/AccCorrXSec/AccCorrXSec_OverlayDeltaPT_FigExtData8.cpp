@@ -74,6 +74,15 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 	int NFSIModels = FSIModel.size();
 	int NPlots = NameOfPlots.size();
 
+	// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+	TString TxtName = "myXSec/PTPanel_XSecs.txt";
+	ofstream myTxtFile;
+	myTxtFile.open(TxtName);
+	myTxtFile << std::fixed << std::setprecision(3);
+	myTxtFile << "PT Panel Ext Data Fig.5;" << endl << endl;
+	myTxtFile << "Bin #;Low bin edge; High bin edge;XSec [μbarn/GeV];XSec error [μbarn/GeV]" << endl << endl;
+
 	// ------------------------------------------------------------------------
 
 	// Loop over the xB kinematics
@@ -290,6 +299,52 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 
 							// -------------------------------------------------------------------------------------------
 
+							// Nature data release
+
+							int nbins = DataPlot->GetXaxis()->GetNbins();
+
+							double Min = 0., Max = 1.;
+
+							if (Energy[WhichEnergy] == 1.161) { myTxtFile << "Pad (a)" << endl; }
+
+							if (Energy[WhichEnergy] == 2.261) { 
+
+								TString PadName = "b";
+								if (nucleus[WhichNucleus] == "56Fe") { PadName = "d"; }
+								myTxtFile << "Pad ("+PadName+")" << endl; 
+
+							}
+
+							if (Energy[WhichEnergy] == 4.461) { 
+
+								TString PadName = "c";
+								if (nucleus[WhichNucleus] == "56Fe") { PadName = "e"; } 
+								myTxtFile << "Pad ("+PadName+"). Cross sections scaled by 4" << endl; 
+
+							}
+
+							int counter = 0;
+
+							for (int i = 0; i < nbins; i++) {
+
+								double BinContent = DataPlot->GetBinContent(i+1);
+								double BinError = DataPlot->GetBinError(i+1);
+								double BinLowEdge = DataPlot->GetBinLowEdge(i+1);			
+								double BinWidth = DataPlot->GetBinWidth(i+1);
+								double PreviousBinWidth = DataPlot->GetBinWidth(i);
+								double BinHighEdge = BinLowEdge + BinWidth;
+
+								if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
+									myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+									counter++;
+								}
+
+							}
+
+							myTxtFile << endl;
+
+							// -------------------------------------------------------------------------------------------
+
 						} else { 
 
 							Plots[WhichFSIModel]->SetLineStyle(Style[WhichFSIModel]);
@@ -453,6 +508,7 @@ void AccCorrXSec_OverlayDeltaPT_FigExtData8() {
 		if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
 		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"DeltaPT_FigExtData8_SuSav2_AccCorrXSec.pdf");
+		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"DeltaPT_FigExtData8_SuSav2_AccCorrXSec.eps");
 
 		//delete PlotCanvas;
 

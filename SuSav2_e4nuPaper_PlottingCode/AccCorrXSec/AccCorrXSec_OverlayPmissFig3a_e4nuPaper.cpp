@@ -66,6 +66,17 @@ void AccCorrXSec_OverlayPmissFig3a_e4nuPaper() {
 	int NFSIModels = FSIModel.size();
 	int NPlots = NameOfPlots.size();
 
+	// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+	TString TxtName = "myXSec/PT_XSecs.txt";
+	ofstream myTxtFile;
+	myTxtFile.open(TxtName);
+	myTxtFile << std::fixed << std::setprecision(3);
+	myTxtFile << "PT Fig.4;" << endl << endl;
+	myTxtFile << "Bin #;Low bin edge; High bin edge;XSec [μbarn/GeV];XSec error [μbarn/GeV]" << endl << endl;
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------------
+
 	// Loop over the xB kinematics
 
 	for (int WhichxBCut = 0; WhichxBCut < NxBCuts; WhichxBCut ++) {
@@ -243,6 +254,39 @@ void AccCorrXSec_OverlayPmissFig3a_e4nuPaper() {
 							DataPlot->GetYaxis()->SetRangeUser(0.,height*DataPlot->GetMaximum());	
 							DataPlot->Draw("e same"); 
 
+							// --------------------------------------------------------------------------------------------------
+
+							if (NameOfPlots[WhichPlot] == "MissMomentum") {
+
+								int nbins = DataPlot->GetXaxis()->GetNbins();
+
+								double Min = 0., Max = 1.;
+
+								int counter = 0;
+
+								for (int i = 0; i < nbins; i++) {
+
+									double BinContent = DataPlot->GetBinContent(i+1);
+									double BinError = DataPlot->GetBinError(i+1);
+									double BinLowEdge = DataPlot->GetBinLowEdge(i+1);			
+									double BinWidth = DataPlot->GetBinWidth(i+1);
+									double PreviousBinWidth = DataPlot->GetBinWidth(i);
+									double BinHighEdge = BinLowEdge + BinWidth;
+
+									if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
+										myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+										counter++;
+									}
+
+								}
+
+								myTxtFile << endl;
+
+							}
+
+							// --------------------------------------------------------------------------------------------------
+
+
 //							TH1D* DataPlotG2018 = AcceptanceCorrection(Plots[WhichFSIModel],"hA2018_Final", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
 //							DataPlotG2018->SetMarkerStyle(20); 
@@ -312,6 +356,14 @@ void AccCorrXSec_OverlayPmissFig3a_e4nuPaper() {
 					PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"
 						+ext+"Fig3a_"+nucleus[WhichNucleus]+"_" 
 						+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2_AccCorrXSec.pdf");
+
+					PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"
+						+ext+"Fig3a_"+nucleus[WhichNucleus]+"_" 
+						+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2_AccCorrXSec.eps");
+
+					TFile* f = new TFile("Fig3a_PT.root","recreate");
+					gStyle->SetOptStat(0);	
+					PlotCanvas->Write();
 
 					//delete PlotCanvas;
 

@@ -23,6 +23,43 @@ using namespace std;
 #include "../../myFunctions.cpp"
 #include "../../AfroConstants.h"
 
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+double IntegratedXSecError(TH1D* h, int Min = -1, int Max = -1) {
+
+	int NBinsX = h->GetXaxis()->GetNbins();
+
+	int MinBin = 1;
+	int MaxBin = NBinsX;
+
+	if ( !(MinBin == -1 && MaxBin == -1) ) {  
+
+		MinBin = Min;
+		MaxBin = Max;
+
+	}
+
+	double IntegratedXSecErrorSquared = 0;
+
+	for (int WhichXBin = 1; WhichXBin <= NBinsX; WhichXBin++) {
+
+		if (WhichXBin >= MinBin && WhichXBin <= MaxBin) {
+
+		double BinWidth = h->GetBinWidth(WhichXBin+1);
+		double BinError = h->GetBinError(WhichXBin+1);
+
+		IntegratedXSecErrorSquared += TMath::Power(BinError* BinWidth,2.);
+
+		}
+
+	}
+
+	double IntegratedXSecError = TMath::Sqrt(IntegratedXSecErrorSquared);
+
+	return IntegratedXSecError;
+
+}
+
 // ----------------------------------------------------------------------------------------------------------------
 
 void ExtDataTable1() {
@@ -44,19 +81,19 @@ void ExtDataTable1() {
 	std::vector<TString> LabelOfPlots;  
 	std::vector<TString> OutputPlotNames;
 
-	nucleus.push_back("4He");
+//	nucleus.push_back("4He");
 //	nucleus.push_back("12C");
-//	nucleus.push_back("56Fe");
+	nucleus.push_back("56Fe");
 
 //	E.push_back("1_161"); DoubleE.push_back(1.161);
-	E.push_back("2_261"); DoubleE.push_back(2.261);	
-//	E.push_back("4_461"); DoubleE.push_back(4.461);
+//	E.push_back("2_261"); DoubleE.push_back(2.261);	
+	E.push_back("4_461"); DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
 
 	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
-//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");	
-//	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
+	FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");	
+	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc_Offset"); FSILabel.push_back("G2018");  DirNames.push_back("hA2018_Truth_RadCorr");
 
 //	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 //	NameOfPlots.push_back("eRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
@@ -64,12 +101,12 @@ void ExtDataTable1() {
 //	NameOfPlots.push_back("h1_Ecal"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 //	NameOfPlots.push_back("h1_EQE"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eRecoEnergy_slice_0");
 
-	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
-	NameOfPlots.push_back("DeltaAlphaT_Int_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} #delta#alpha_{T} [GeV/c]"); OutputPlotNames.push_back("DeltaAlphaT_Int_0");
-	NameOfPlots.push_back("DeltaPhiT_Int_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} #delta#phi_{T} [GeV/c]"); OutputPlotNames.push_back("DeltaPhiT_Int_0");
+//	NameOfPlots.push_back("MissMomentum"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} P_{T} [GeV/c]"); OutputPlotNames.push_back("MissMomentum");
+//	NameOfPlots.push_back("DeltaAlphaT_Int_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} #delta#alpha_{T} [GeV/c]"); OutputPlotNames.push_back("DeltaAlphaT_Int_0");
+//	NameOfPlots.push_back("DeltaPhiT_Int_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} #delta#phi_{T} [GeV/c]"); OutputPlotNames.push_back("DeltaPhiT_Int_0");
 	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
-	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} Feeddown"); OutputPlotNames.push_back("EcalReso");
-	NameOfPlots.push_back("h1_Ecal_Reso"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} Feeddown"); OutputPlotNames.push_back("ECalReso_FineBin");
+//	NameOfPlots.push_back("h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} Feeddown"); OutputPlotNames.push_back("EcalReso");
+//	NameOfPlots.push_back("h1_Ecal_Reso"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} Feeddown"); OutputPlotNames.push_back("ECalReso_FineBin");
 
 //	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("eQE0pi_slice_0");
 //	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_frac_feed3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} Feeddown");  OutputPlotNames.push_back("eQE0piReso_slice_0");
@@ -229,7 +266,7 @@ void ExtDataTable1() {
 
 							// ------------------------------------------------------------------------------------------------------------
 
-							// Using hard coded enitegration limits
+							// Using hard coded integration limits
 //							double IntXSecRange = IntegratedXSec(Plots[WhichFSIModel],MinBin,MaxBin); 
 
 							double IntXSecRange = IntegratedXSec(Plots[WhichFSIModel],MinBin,MaxBin); 
@@ -241,10 +278,14 @@ void ExtDataTable1() {
 							// Fraction
 
 							int percentage = IntXSecRange / IntXSec * 100.;
+							double ErrorOnIntXSecRange = IntegratedXSecError(Plots[WhichFSIModel],MinBin,MaxBin);
+							double ErrorOnWholeXSecRange = IntegratedXSecError(Plots[WhichFSIModel]);
+							int ErrorOnRatio = percentage * TMath::Sqrt( TMath::Power(ErrorOnIntXSecRange/IntXSecRange,2.) + TMath::Power(ErrorOnWholeXSecRange/IntXSec,2.) );
 
 							if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0" && NPlots == 1) { 
 		
-								cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": fraction within range = " << percentage << endl;
+								cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": fraction within range = " << percentage;
+								cout << " +/- " << ErrorOnRatio << endl;
 
 							}
 
@@ -264,10 +305,12 @@ void ExtDataTable1() {
 							|| string(OutputPlotNames[WhichPlot]).find("h1_E") != std::string::npos) {
 
 								double sum = Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
+								double ErrorOnSum = IntegratedXSecError(Plots[WhichFSIModel],MinBin,MaxBin);
 
 								if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0" && NPlots == 1) { 
 
-									cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": sum within range = "<< round(sum,2) << endl << endl;
+									cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": sum within range = "<< round(sum,3);
+									cout << " +/- " << round(ErrorOnSum,3)  << endl << endl;
 
 								}
 
@@ -286,10 +329,12 @@ void ExtDataTable1() {
 							|| string(OutputPlotNames[WhichPlot]).find("h1_E") != std::string::npos) {
 
 								double sum = Plots[WhichFSIModel]->Integral(MinBin,MaxBin);
+								double ErrorOnSum = IntegratedXSecError(Plots[WhichFSIModel],MinBin,MaxBin);
 
 								if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0" && NPlots == 1) { 
 
-									cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": sum within range = " << round(sum,2) << endl << endl;
+									cout << FSILabel[WhichFSIModel] << "  " << LabelOfPlots[WhichPlot] << ": sum within range = " << round(sum,3);
+									cout << " +/- " << round(ErrorOnSum,3)  << endl << endl;
 
 								}
 

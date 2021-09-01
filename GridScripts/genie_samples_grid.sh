@@ -17,7 +17,8 @@ touch ${DUMMY_OUTPUT_FILE}
 
 # Get the source code for GENIE v3
 cd $CONDOR_DIR_INPUT
-source /cvmfs/fermilab.opensciencegrid.org/products/larsoft/setups
+#source /cvmfs/fermilab.opensciencegrid.org/products/larsoft/setups
+source /cvmfs/fermilab.opensciencegrid.org/products/genie/bootstrap_genie_ups.sh
 setup git v2_15_1
 
 #git clone https://github.com/GENIE-MC/Generator.git genie-build

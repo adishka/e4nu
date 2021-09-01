@@ -75,6 +75,14 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------
 
+	TString TxtName = "myXSec/ECalPanel_XSecs.txt";
+	ofstream myTxtFile;
+	myTxtFile.open(TxtName);
+	myTxtFile << std::fixed << std::setprecision(3);
+	myTxtFile << "ECal Panel Fig.3;" << endl << endl;
+	myTxtFile << "Bin #;Low bin edge; High bin edge;XSec [μbarn/GeV];XSec error [μbarn/GeV]" << endl << endl;
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Loop over the xB kinematics
 
@@ -334,6 +342,52 @@ void AccCorrXSec_OverlayECalFig4_e4nuPaper() {
 							DataPlot->SetMarkerColor(kBlack);
 							DataPlot->GetYaxis()->SetRangeUser(-0.02,height*DataPlot->GetMaximum());	
 							DataPlot->Draw("e same"); 
+
+							// --------------------------------------------------------------------------------------------------
+
+							if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
+
+								int nbins = DataPlot->GetXaxis()->GetNbins();
+
+								double Min = -99., Max = -99.;
+								if (E[WhichEnergy] == "1_161") { 
+									Min = 0.5; Max = 1.23; myTxtFile << "Pad (a). Cross sections scaled by 0.5" << endl; 
+								}
+								if (E[WhichEnergy] == "2_261") { 
+									TString PadName = "b";
+									if (nucleus[WhichNucleus] == "56Fe") { PadName = "d"; }
+									Min = 0.67; Max = 2.4; myTxtFile << "Pad ("+PadName+")" << endl; 
+								}
+								if (E[WhichEnergy] == "4_461") { 
+									Min = 1.5; Max = 4.6;
+									TString PadName = "c";
+									if (nucleus[WhichNucleus] == "56Fe") { PadName = "e"; } 
+									myTxtFile << "Pad ("+PadName+"). Cross sections scaled by 5" << endl; 
+								}
+
+								int counter = 0;
+
+								for (int i = 0; i < nbins; i++) {
+
+									double BinContent = DataPlot->GetBinContent(i+1);
+									double BinError = DataPlot->GetBinError(i+1);
+									double BinLowEdge = DataPlot->GetBinLowEdge(i+1);			
+									double BinWidth = DataPlot->GetBinWidth(i+1);
+									double PreviousBinWidth = DataPlot->GetBinWidth(i);
+									double BinHighEdge = BinLowEdge + BinWidth;
+
+									if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
+										myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+										counter++;
+									}
+
+								}
+
+								myTxtFile << endl;
+
+							}
+
+							// --------------------------------------------------------------------------------------------------
 
 //							TH1D* DataPlotG2018 = AcceptanceCorrection(Plots[WhichFSIModel],"hA2018_Final", nucleus[WhichNucleus],E[WhichEnergy],NameOfPlots[WhichPlot],xBCut[WhichxBCut]);
 
@@ -736,6 +790,7 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 		if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
 		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"ECal_Fig4_SuSav2_AccCorrXSec.pdf");
+		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"ECal_Fig4_SuSav2_AccCorrXSec.eps");
 
 		//delete PlotCanvas;
 

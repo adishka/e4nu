@@ -349,7 +349,7 @@ GetCharge_FilterData::GetCharge_FilterData(std::string a_target,std::string a_be
       // of trees.
       TChain * chain = new TChain("ch","GetCharge_FilterData");
 //      chain->Add(Form("/work/clas/clase2/Mariana/data/e2a_%s_%s_v1/*.root/h10", ftarget.c_str(), fbeam_en.c_str()));
-      if (ftarget == "4He") { chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s_full/HROOT/*.root/h10", fbeam_en.c_str(), ftarget.c_str())); }
+      if (ftarget == "4He" || ftarget == "3He") { chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s_full/HROOT/*.root/h10", fbeam_en.c_str(), ftarget.c_str())); }
       else { chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*.root/h10", fbeam_en.c_str(), ftarget.c_str())); }
 
 /*
@@ -360,6 +360,18 @@ GetCharge_FilterData::GetCharge_FilterData(std::string a_target,std::string a_be
       chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*18306*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
       chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*18307*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
       chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s/HROOT/*18335*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+*/
+
+/*
+      //3He @ 1.1 GeV & 750 low torus current
+      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s_full/HROOT/*18320*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s_full/HROOT/*18321*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s_full/HROOT/*18322*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s_full/HROOT/*18325*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s_full/HROOT/*18326*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s_full/HROOT/*18327*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+      chain->Add(Form("/lustre19/expphy/cache/clas/e2a/production/pass2/v1/%s/%s_full/HROOT/*18328*.root/h10", fbeam_en.c_str(), ftarget.c_str()));
+
 */
 
 

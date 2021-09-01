@@ -1181,7 +1181,7 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 
 	// Special case for Ecal
 	// To avoid the infinities around the peak
-	// We merge the bins around the peak
+	// We merge the (4) bins around the peak
 
 	double DoubleE = -99., reso = 0.;
 	if (E == "1_161") { DoubleE = 1.161; reso = 0.07; }

@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 	if( argc < 4 ){
 		cout<<"Please specify the target (3He, 56Fe, C12, 4He), the beam energy (2261 or 4461) and what you want to do (Create Plots = 0, Filter = 1, Filter & Get Charge = 2)"<<endl;
 		cout<<"================= Usage ==============="<<endl;
-		cout<<"./run_e2a_ep_neutrino6_united4_radphot.cc target beam_energy 0/1 (Create Plots = 0, Filter = 1)"<<endl;
+		cout<<"./e2a_ep.cc target beam_energy 0/1/2 (Create Plots = 0, Filter = 1, Filter & Get Charge = 2)"<<endl;
 		exit(1);
 	}
 

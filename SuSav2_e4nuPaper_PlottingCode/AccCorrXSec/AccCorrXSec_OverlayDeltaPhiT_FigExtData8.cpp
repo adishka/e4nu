@@ -74,6 +74,15 @@ void AccCorrXSec_OverlayDeltaPhiT_FigExtData8() {
 	int NFSIModels = FSIModel.size();
 	int NPlots = NameOfPlots.size();
 
+	// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+	TString TxtName = "myXSec/DeltaPhiTPanel_XSecs.txt";
+	ofstream myTxtFile;
+	myTxtFile.open(TxtName);
+	myTxtFile << std::fixed << std::setprecision(3);
+	myTxtFile << "DeltaPhiT Panel Ext Data Fig.6;" << endl << endl;
+	myTxtFile << "Bin #;Low bin edge; High bin edge;XSec [μbarn/GeV];XSec error [μbarn/GeV]" << endl << endl;
+
 	// ------------------------------------------------------------------------
 
 	// Loop over the xB kinematics
@@ -285,11 +294,57 @@ void AccCorrXSec_OverlayDeltaPhiT_FigExtData8() {
 							label->SetTextColor(kBlack);
 							label->SetTextSize(1.5*TextSize);
 
-							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 1.161) { label->DrawLatexNDC(0.82,0.87,"(a)"); }
-							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 2.261) { label->DrawLatexNDC(0.78,0.87,"(b)"); }
-							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 4.461) { label->DrawLatexNDC(0.78,0.87,"(c)"); }
-							if (nucleus[WhichNucleus] == "56Fe" && Energy[WhichEnergy] == 2.261) { label->DrawLatexNDC(0.78,0.87,"(d)"); }
-							if (nucleus[WhichNucleus] == "56Fe" && Energy[WhichEnergy] == 4.461) { label->DrawLatexNDC(0.78,0.87,"(e)"); }
+							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 1.161) { label->DrawLatexNDC(0.82,0.87,"(f)"); }
+							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 2.261) { label->DrawLatexNDC(0.78,0.87,"(g)"); }
+							if (nucleus[WhichNucleus] == "12C" && Energy[WhichEnergy] == 4.461) { label->DrawLatexNDC(0.78,0.87,"(h)"); }
+							if (nucleus[WhichNucleus] == "56Fe" && Energy[WhichEnergy] == 2.261) { label->DrawLatexNDC(0.78,0.87,"(i)"); }
+							if (nucleus[WhichNucleus] == "56Fe" && Energy[WhichEnergy] == 4.461) { label->DrawLatexNDC(0.78,0.87,"(j)"); }
+
+							// -------------------------------------------------------------------------------------------
+
+							// Nature data release
+
+							int nbins = DataPlot->GetXaxis()->GetNbins();
+
+							double Min = 0., Max = 180.;
+
+							if (Energy[WhichEnergy] == 1.161) { myTxtFile << "Pad (f)" << endl; }
+
+							if (Energy[WhichEnergy] == 2.261) { 
+
+								TString PadName = "g";
+								if (nucleus[WhichNucleus] == "56Fe") { PadName = "i"; }
+								myTxtFile << "Pad ("+PadName+")" << endl; 
+
+							}
+
+							if (Energy[WhichEnergy] == 4.461) { 
+
+								TString PadName = "h";
+								if (nucleus[WhichNucleus] == "56Fe") { PadName = "j"; } 
+								myTxtFile << "Pad ("+PadName+"). Cross sections scaled by 2" << endl; 
+
+							}
+
+							int counter = 0;
+
+							for (int i = 0; i < nbins; i++) {
+
+								double BinContent = DataPlot->GetBinContent(i+1);
+								double BinError = DataPlot->GetBinError(i+1);
+								double BinLowEdge = DataPlot->GetBinLowEdge(i+1);			
+								double BinWidth = DataPlot->GetBinWidth(i+1);
+								double PreviousBinWidth = DataPlot->GetBinWidth(i);
+								double BinHighEdge = BinLowEdge + BinWidth;
+
+								if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
+									myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+									counter++;
+								}
+
+							}
+
+							myTxtFile << endl;
 
 							// -------------------------------------------------------------------------------------------
 
@@ -342,7 +397,7 @@ void AccCorrXSec_OverlayDeltaPhiT_FigExtData8() {
 		TLatex latex1GeV;
 		latex1GeV.SetTextFont(FontStyle);
 		latex1GeV.SetTextSize(6*TextSize);
-		latex1GeV.DrawLatexNDC(0.03,0.45,"1.159 GeV");
+		//latex1GeV.DrawLatexNDC(0.03,0.45,"1.159 GeV");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -355,7 +410,7 @@ void AccCorrXSec_OverlayDeltaPhiT_FigExtData8() {
 		TLatex latex2GeV;
 		latex2GeV.SetTextFont(FontStyle);
 		latex2GeV.SetTextSize(6*TextSize);
-		latex2GeV.DrawLatexNDC(0.06,0.45,"2.257 GeV");
+		//latex2GeV.DrawLatexNDC(0.06,0.45,"2.257 GeV");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -368,7 +423,8 @@ void AccCorrXSec_OverlayDeltaPhiT_FigExtData8() {
 		TLatex latex4GeV;
 		latex4GeV.SetTextFont(FontStyle);
 		latex4GeV.SetTextSize(6*TextSize);
-		latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV (x2)");
+		//latex4GeV.DrawLatexNDC(0.11,0.45,"4.453 GeV (x2)");
+		latex4GeV.DrawLatexNDC(0.66,0.45,"(x2)");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -395,17 +451,17 @@ void AccCorrXSec_OverlayDeltaPhiT_FigExtData8() {
 
 		legGenieBlackLine->SetTextSize(2.*TextSize); 
 		legGenieBlackLine->SetBorderSize(0); 
-		legGenieBlackLine->Draw();
+		//legGenieBlackLine->Draw();
 
 		//legGenieBreak->AddEntry(Plots[2],"G2018", "l");
 		legGenieBreak->SetTextSize(2.*TextSize); 
 		legGenieBreak->SetBorderSize(0); 
-		legGenieBreak->Draw();
+		//legGenieBreak->Draw();
 
 		legG2018->AddEntry(Plots[2],"G2018", "l");
 		legG2018->SetTextSize(2.*TextSize); 
 		legG2018->SetBorderSize(0); 
-		legG2018->Draw();
+		//legG2018->Draw();
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -456,6 +512,11 @@ void AccCorrXSec_OverlayDeltaPhiT_FigExtData8() {
 		if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
 		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"DeltaPhiT_FigExtData8_SuSav2_AccCorrXSec.pdf");
+		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"DeltaPhiT_FigExtData8_SuSav2_AccCorrXSec.eps");
+
+		TFile* f = new TFile("ExtDataFig6_DeltaPhiT.root","recreate");
+		gStyle->SetOptStat(0);	
+		PlotCanvas->Write();
 
 		//delete PlotCanvas;
 

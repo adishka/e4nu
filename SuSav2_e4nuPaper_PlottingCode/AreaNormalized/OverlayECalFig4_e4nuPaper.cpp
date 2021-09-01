@@ -19,7 +19,7 @@ using namespace std;
 #include  "/home/afroditi/Dropbox/PhD/Secondary_Code/CenterAxisTitle.cpp"
 #include "/home/afroditi/Dropbox/PhD/Secondary_Code/SetOffsetAndSize.cpp"
 //#include "/home/afroditi/Dropbox/PhD/Secondary_Code/ToString.cpp"
-#include "/home/afroditi/Dropbox/PhD/Secondary_Code/myFunctions.cpp"
+#include "/home/afroditi/Dropbox/PhD/Secondary_Code/mySimFunctions.cpp"
 
 // ----------------------------------------------------------------------------------------------------------------
 
@@ -520,18 +520,18 @@ TLine* line = new TLine(0.95*DoubleE[WhichEnergy],0.,0.95*DoubleE[WhichEnergy],M
 					
 					// --------------------------------------------------------------------------------------				
 					
-					// Chi2 calculation
-					
-					int NBinsX = HighBin - LowBin +1;
-					int Chi2Double = Chi2(Plots[0],Plots[1],LowBin,HighBin);
-					
-					cout << endl << endl << nucleus[WhichNucleus] << "  " << E[WhichEnergy];
-					cout <<  " SuSav2 Chi2/ndof = " << Chi2Double << "/" << NBinsX << endl << endl;
-					
-					int G2018Chi2Double = Chi2(Plots[0],Plots[2],LowBin,HighBin);
-					
-					cout << nucleus[WhichNucleus] << "  " << E[WhichEnergy];
-					cout <<  " G2018 Chi2/ndof = " << G2018Chi2Double << "/" << NBinsX << endl << endl;					
+//					// Chi2 calculation
+//					
+//					int NBinsX = HighBin - LowBin +1;
+//					int Chi2Double = Chi2(Plots[0],Plots[1],LowBin,HighBin);
+//					
+//					cout << endl << endl << nucleus[WhichNucleus] << "  " << E[WhichEnergy];
+//					cout <<  " SuSav2 Chi2/ndof = " << Chi2Double << "/" << NBinsX << endl << endl;
+//					
+//					int G2018Chi2Double = Chi2(Plots[0],Plots[2],LowBin,HighBin);
+//					
+//					cout << nucleus[WhichNucleus] << "  " << E[WhichEnergy];
+//					cout <<  " G2018 Chi2/ndof = " << G2018Chi2Double << "/" << NBinsX << endl << endl;					
 
 					// ---------------------------------------------------------------------------------------------------------
 
@@ -756,7 +756,7 @@ TLine* line = new TLine(0.95*DoubleE[WhichEnergy],0.,0.95*DoubleE[WhichEnergy],M
 		TString ext = "";
 		if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
 
-		PlotCanvas->SaveAs("../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"Fig4"+WhatModelsAreIncluded+"_SuSav2.pdf");
+		PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+ext+"Fig4"+WhatModelsAreIncluded+"_SuSav2.pdf");
 
 		//delete PlotCanvas;
 

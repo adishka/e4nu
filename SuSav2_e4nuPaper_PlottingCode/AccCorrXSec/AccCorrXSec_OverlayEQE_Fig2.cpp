@@ -108,6 +108,15 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------
 
+	TString TxtName = "myXSec/EQEFig2_XSecs.txt";
+	ofstream myTxtFile;
+	myTxtFile.open(TxtName);
+	myTxtFile << std::fixed << std::setprecision(3);
+	myTxtFile << "EQE Fig.2;" << endl << endl;
+	myTxtFile << "Bin #;Low bin edge; High bin edge;XSec [μbarn/GeV];XSec error [μbarn/GeV]" << endl << endl;
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------------
+
 	// Loop over the xB kinematics
 
 	for (int WhichxBCut = 0; WhichxBCut < NxBCuts; WhichxBCut ++) {
@@ -343,6 +352,41 @@ void AccCorrXSec_OverlayEQE_Fig2() {
 							DataPlot->SetMarkerColor(kBlack);
 							DataPlot->GetYaxis()->SetRangeUser(-0.005*max,height*max);	
 							DataPlot->Draw("e same"); 
+
+							// --------------------------------------------------------------------------------------------------
+
+							if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
+
+								int nbins = DataPlot->GetXaxis()->GetNbins();
+
+								double Min = -99., Max = -99.;
+								if (E[WhichEnergy] == "1_161") { Min = 0.47; Max = 1.4;}
+								if (E[WhichEnergy] == "2_261") { Min = 0.7; Max = 2.6; }
+								if (E[WhichEnergy] == "4_461") { Min = 1.9; Max = 5.2; }
+
+								int counter = 0;
+
+								for (int i = 0; i < nbins; i++) {
+
+									double BinContent = DataPlot->GetBinContent(i+1);
+									double BinError = DataPlot->GetBinError(i+1);
+									double BinLowEdge = DataPlot->GetBinLowEdge(i+1);			
+									double PreviousBinWidth = DataPlot->GetBinWidth(i);
+									double BinWidth = DataPlot->GetBinWidth(i+1);
+									double BinHighEdge = BinLowEdge + BinWidth;
+
+									if (BinLowEdge > Min-(PreviousBinWidth) && BinLowEdge < Max) {
+										myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+										counter++;
+									}
+
+								}
+
+								myTxtFile << endl;
+
+							}
+
+							// --------------------------------------------------------------------------------------------------
 
 // --------------------------------------------------------					
 
@@ -590,6 +634,10 @@ if (NameOfPlots[WhichPlot] == "epRecoEnergy_slice_0") {
 					PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"
 						+E[WhichEnergy]+"/"+ext+nucleus[WhichNucleus]+"_" 
 						+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2_AccCorrXSec.pdf");
+
+					PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"
+						+E[WhichEnergy]+"/"+ext+nucleus[WhichNucleus]+"_" 
+						+E[WhichEnergy]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2_AccCorrXSec.eps");
 
 					//delete PlotCanvas;
 

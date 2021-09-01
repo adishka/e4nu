@@ -108,7 +108,7 @@ void CommonPanelRadCorr() {
 	std::vector<TString> nucleus; 
 	std::vector<TString> LabelsOfSamples; 
 	std::vector<TString> E;
-	std::vector<TString> LabelE; 
+	std::vector<double> DoubleE; 
 	std::vector<TString> FSIModel;
 	std::vector<TString> FSILabel; 
 	std::vector<TString> NameOfPlots;
@@ -118,9 +118,9 @@ void CommonPanelRadCorr() {
 	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");
 	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He");
 
-	E.push_back("1_161"); LabelE.push_back(", 1.1 GeV");
-	E.push_back("2_261"); LabelE.push_back(", 2.2 GeV");	
-	E.push_back("4_461"); LabelE.push_back(", 4.4 GeV");
+	E.push_back("1_161"); DoubleE.push_back(1.161);
+	E.push_back("2_261"); DoubleE.push_back(2.261);	
+	E.push_back("4_461"); DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
 //	xBCut.push_back("xBCut");
@@ -128,8 +128,8 @@ void CommonPanelRadCorr() {
 	FSIModel.push_back("SuSav2"); FSILabel.push_back("SuSav2");
 //	FSIModel.push_back("hA2018_Final"); FSILabel.push_back("G2018"); // Not to be used for acceptance correction
 
-//	TString Var = "epRecoEnergy_slice_0";
-	TString Var = "h_Erec_subtruct_piplpimi_noprot_3pi";
+	TString Var = "epRecoEnergy_slice_0";
+//	TString Var = "h_Erec_subtruct_piplpimi_noprot_3pi";
 //	TString Var = "MissMomentum";
 //	TString Var = "DeltaAlphaT_Int_0";
 //	TString Var = "DeltaPhiT_Int_0";
@@ -168,7 +168,8 @@ void CommonPanelRadCorr() {
 	for (int WhichxBCut = 0; WhichxBCut < NxBCuts; WhichxBCut ++) {
 
 		TString CanvasName = "CommonPanel_"+xBCut[WhichxBCut];
-		TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,2624,768);
+//		TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,2624,768);
+		TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,2624,600);
 
 		TPad* pad1 = new TPad(E[0],E[0],0.02,0,0.36,1.,21); 
 		pad1->SetFillColor(kWhite); pad1->Draw();
@@ -177,7 +178,11 @@ void CommonPanelRadCorr() {
 		pad2->SetFillColor(kWhite); pad2->Draw(); 
 		
 		TPad* pad3 = new TPad(E[2],E[2],0.68,0,1.,1,22); 
-		pad3->SetFillColor(kWhite); pad3->Draw(); 					
+		pad3->SetFillColor(kWhite); pad3->Draw(); 	
+
+		pad1->SetTopMargin(0.01);
+		pad2->SetTopMargin(0.01);
+		pad3->SetTopMargin(0.01);				
 		
 		pad1->SetBottomMargin(0.18);
 		pad2->SetBottomMargin(0.18);
@@ -267,6 +272,16 @@ void CommonPanelRadCorr() {
 
 			} // End of the loop over the nuclei
 
+			// -----------------------------------------------------------------------------------------------------------------------------------------
+
+			TLine* line = new TLine(DoubleE[WhichEnergy],0.5,DoubleE[WhichEnergy],1.5);
+			line->SetLineColor(kBlack);
+			line->SetLineStyle(kDashed);
+
+			line->Draw();
+
+			// -----------------------------------------------------------------------------------------------------------------------------------------
+
 		} // End of the loop over the energies
 
 		// ---------------------------------------
@@ -276,13 +291,20 @@ void CommonPanelRadCorr() {
 		sample12C->SetTextFont(FontStyle); 
 		sample12C->SetTextColor(kBlack); 
 		sample12C->SetTextSize(TextSize);
-		sample12C->DrawLatexNDC(0.45,0.54,"^{12}C");
+		//sample12C->DrawLatexNDC(0.45,0.54,"^{12}C");
 
 		TLatex *E1 = new TLatex(); 
 		E1->SetTextFont(FontStyle); 
 		E1->SetTextColor(kBlack); 
 		E1->SetTextSize(TextSize);
-		E1->DrawLatexNDC(0.23,0.8,"1.159 GeV"); 
+		//E1->DrawLatexNDC(0.23,0.8,"1.159 GeV"); 
+
+		TLatex* label = new TLatex();
+		label->SetTextFont(FontStyle);
+		label->SetTextColor(kBlack);
+		label->SetTextSize(TextSize);
+
+		label->DrawLatexNDC(0.8,0.9,"(g)");
 
 		// ---------------------------------------
 
@@ -294,19 +316,22 @@ void CommonPanelRadCorr() {
 		sample56Fe->SetTextFont(FontStyle); 
 		sample56Fe->SetTextColor(Colors[1]); 
 		sample56Fe->SetTextSize(TextSize);
-		sample56Fe->DrawLatexNDC(0.45,0.34,"^{56}Fe");
+		//sample56Fe->DrawLatexNDC(0.45,0.34,"^{56}Fe");
 
 		TLatex *sample4He = new TLatex(); 
 		sample4He->SetTextFont(FontStyle); 
 		sample4He->SetTextColor(Colors[2]); 
 		sample4He->SetTextSize(TextSize);
-		sample4He->DrawLatexNDC(0.35,0.48,"^{4}He");
+		//sample4He->DrawLatexNDC(0.35,0.48,"^{4}He");
 
 		TLatex *E2 = new TLatex(); 
 		E2->SetTextFont(FontStyle); 
 		E2->SetTextColor(kBlack); 
 		E2->SetTextSize(TextSize+0.006);
-		E2->DrawLatexNDC(0.1,0.8,"2.257 GeV"); 
+		//E2->DrawLatexNDC(0.1,0.8,"2.257 GeV"); 
+
+		label->SetTextSize(TextSize+0.006);
+		label->DrawLatexNDC(0.8,0.9,"(h)");
 
 		// ---------------------------------------
 
@@ -322,7 +347,9 @@ void CommonPanelRadCorr() {
 		E3->SetTextFont(FontStyle); 
 		E3->SetTextColor(kBlack); 
 		E3->SetTextSize(TextSize+0.006);
-		E3->DrawLatexNDC(0.1,0.8,"4.453 GeV"); 
+		//E3->DrawLatexNDC(0.1,0.8,"4.453 GeV"); 
+
+		label->DrawLatexNDC(0.8,0.9,"(i)");
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 		
@@ -340,8 +367,8 @@ void CommonPanelRadCorr() {
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
-		if (Var == "epRecoEnergy_slice_0") { PlotCanvas->SaveAs("ECal_PanelAccCorr_"+CanvasName+".pdf"); }
-		if (Var == "h_Erec_subtruct_piplpimi_noprot_3pi") { PlotCanvas->SaveAs("EQE_PanelAccCorr_"+CanvasName+".pdf"); }
+		if (Var == "epRecoEnergy_slice_0") { PlotCanvas->SaveAs("ECal_PanelRadCorr_"+CanvasName+".pdf"); }
+		if (Var == "h_Erec_subtruct_piplpimi_noprot_3pi") { PlotCanvas->SaveAs("EQE_PanelRadCorr_"+CanvasName+".pdf"); }
 
 	} // End of the loop over the xB kinematics
 

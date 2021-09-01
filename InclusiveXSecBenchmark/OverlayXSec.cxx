@@ -31,9 +31,19 @@ void OverlayXSec() {
 	int FontStyle = 132;
 	double TextSize = 0.07;
 	TGaxis::SetMaxDigits(3);
+	TGaxis::SetExponentOffset(-0.1, 1., "y");
 
 	gStyle->SetTitleSize(TextSize-0.02,"t");
 	gStyle->SetTitleFont(FontStyle,"t");
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+	TString TxtName = "../SuSav2_e4nuPaper_PlottingCode/AccCorrXSec/myXSec/InclusiveJLab_XSec.txt";
+	ofstream myTxtFile;
+	myTxtFile.open(TxtName);
+	myTxtFile << std::fixed << std::setprecision(3);
+	myTxtFile << "Inclusive JLab Cross Section Ext Data Fig.3;" << endl << endl;
+	myTxtFile << "Bin #;Low bin edge; High bin edge;XSec [μbarn/(sr GeV)];XSec error [μbarn/(sr GeV)]" << endl << endl;
 
 	// ---------------------------------------------------------------------------------------------
 
@@ -52,7 +62,8 @@ void OverlayXSec() {
 	int n = qent->Draw("v:xsec:xsec_err","Z==6 && A == 12 && E == 1.299 && theta == 37.5","goff");
 	TGraphErrors *DataGraph = new TGraphErrors(n,qent->GetV1(),qent->GetV2(),0,qent->GetV3());
 
-	DataGraph->SetTitle("(e,e') ^{12}C, #theta = 37.5^{o}");
+//	DataGraph->SetTitle("#theta = 37.5^{o}");
+	DataGraph->SetTitle("");
 
 	DataGraph->GetXaxis()->SetTitle("Energy Transfer [GeV]");
 	DataGraph->GetXaxis()->CenterTitle();
@@ -64,7 +75,7 @@ void OverlayXSec() {
 	DataGraph->GetXaxis()->SetTitleOffset(1.1);
 	DataGraph->GetXaxis()->SetLabelOffset(0.015);
 
-	DataGraph->GetYaxis()->SetTitle("#frac{d^{2}#sigma}{d#OmegadE_{e}} [#frac{nb}{sr GeV}]");
+	DataGraph->GetYaxis()->SetTitle("#frac{d^{2}#sigma}{d#OmegadE_{e}} #left[#frac{#mub}{sr GeV ^{12}C}#right]"); // keep in mind that the xsec is in nb, just hiding the 10^3
 	DataGraph->GetYaxis()->CenterTitle();
 	DataGraph->GetYaxis()->SetNdivisions(7);
 	DataGraph->GetYaxis()->SetLabelFont(FontStyle);
@@ -74,9 +85,11 @@ void OverlayXSec() {
 	DataGraph->GetYaxis()->SetTitleOffset(1.1);
 
 	DataGraph->GetXaxis()->SetRangeUser(0.0,0.85);
-	DataGraph->GetYaxis()->SetRangeUser(0,8000); // Y axis in nb / sr / GeV
+	DataGraph->GetYaxis()->SetRangeUser(0,7999); // Y axis in nb / sr / GeV
 
 	DataGraph->SetMarkerStyle(20);
+	DataGraph->SetMarkerColor(kBlue+1);
+	DataGraph->SetLineColor(kBlue+1);
 	DataGraph->Draw("AP");
 
 	// ---------------------------------------------------------------------------------------------
@@ -87,8 +100,8 @@ void OverlayXSec() {
 	TGraphErrors *DataGraphLow = new TGraphErrors(nLow,qent->GetV1(),qent->GetV2(),0,qent->GetV3());
 
 	DataGraphLow->SetMarkerStyle(20);
-	DataGraphLow->SetMarkerColor(kRed+1);
-	DataGraphLow->SetLineColor(kRed+1);
+	DataGraphLow->SetMarkerColor(kOrange+7);
+	DataGraphLow->SetLineColor(kOrange+7);
 	DataGraphLow->Draw("P");
 
 	// ---------------------------------------------------------------------------------------------
@@ -119,7 +132,7 @@ void OverlayXSec() {
 	G2018_GenieBoxPlot->SetLineStyle(kDashed);
 	G2018_GenieBoxPlot->SetLineWidth(2);
 
-	G2018_GenieBoxPlot->Draw("c same");
+//	G2018_GenieBoxPlot->Draw("c same"); 
 
 	// ---------------------------------------------------------------------------------------------
 
@@ -129,7 +142,8 @@ void OverlayXSec() {
 
 	TGraph* GenieBoxPlot1299 = (TGraph*)GenieBoxFile1299->Get("Simulation");
 
-	GenieBoxPlot1299->SetLineColor(kBlack);
+//	GenieBoxPlot1299->SetLineColor(kBlack);
+	GenieBoxPlot1299->SetLineColor(kBlue+1);
 	GenieBoxPlot1299->SetLineWidth(2);
 
 	GenieBoxPlot1299->Draw("c same");
@@ -142,7 +156,7 @@ void OverlayXSec() {
 
 	TGraph* GenieBoxPlot0961 = (TGraph*)GenieBoxFile0961->Get("Simulation");
 
-	GenieBoxPlot0961->SetLineColor(kRed+2);
+	GenieBoxPlot0961->SetLineColor(kOrange+7);
 	GenieBoxPlot0961->SetLineWidth(2);
 
 	GenieBoxPlot0961->Draw("c same");
@@ -161,7 +175,7 @@ void OverlayXSec() {
 	GeniePlot->Rebin();
 	UniversalE4vFunction(GeniePlot,"SuSav2 NoRad","12C","1_161",PlotName);
 
-	GeniePlot->SetLineColor(kBlue);
+	GeniePlot->SetLineColor(kBlue+1);
 	GeniePlot->SetLineWidth(2);
 
 	GeniePlot->Scale(1./0.00667); // sr -> solid angle for 36 < theta < 39 & 24 < phi < 36 
@@ -214,7 +228,35 @@ void OverlayXSec() {
 	CorrectedDatae4vPlot->SetLineColor(kGreen+2);
 	CorrectedDatae4vPlot->SetMarkerColor(kGreen+2);
 	CorrectedDatae4vPlot->SetMarkerStyle(20);
+	CorrectedDatae4vPlot->SetMarkerSize(1.);
+	CorrectedDatae4vPlot->SetLineWidth(1);
 	CorrectedDatae4vPlot->Draw("e1x0 same");
+
+	// ---------------------------------------------------------------------------------------------
+
+	// Nature Data Release
+
+	int nbins = CorrectedDatae4vPlot->GetXaxis()->GetNbins();
+
+	int counter = 0;
+
+	for (int i = 0; i < nbins; i++) {
+
+		double BinContent = CorrectedDatae4vPlot->GetBinContent(i+1) / 1000.; // nb to μb conversion
+		double BinError = CorrectedDatae4vPlot->GetBinError(i+1) / 1000.; // nb to μb conversion
+		double BinLowEdge = CorrectedDatae4vPlot->GetBinLowEdge(i+1);			
+		double BinWidth = CorrectedDatae4vPlot->GetBinWidth(i+1);
+		double PreviousBinWidth = CorrectedDatae4vPlot->GetBinWidth(i);
+		double BinHighEdge = BinLowEdge + BinWidth;
+
+		if (BinLowEdge > 0.07 && BinLowEdge < 0.73) {
+			myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+			counter++;
+		}
+
+	}
+
+	myTxtFile << endl;
 
 	// ---------------------------------------------------------------------------------------------
 
@@ -272,7 +314,7 @@ void OverlayXSec() {
 	leg->AddEntry(DataGraph,"1.299 GeV","");
 
 	TLegendEntry* lDataLow = leg->AddEntry(DataGraphLow,"0.961 GeV", "");
-	lDataLow->SetTextColor(kRed+1);
+	lDataLow->SetTextColor(kOrange+7);
 
 //	TLegendEntry* lGenie = leg->AddEntry(GeniePlot,"e4v GENIE E_{e} = 1.161 GeV, 24^{o} < #phi_{e'} < 36^{o}", "l");
 //	lGenie->SetTextColor(kBlue);
@@ -296,16 +338,17 @@ void OverlayXSec() {
 	TLatex* Latex1299 = new TLatex();
 	Latex1299->SetTextFont(FontStyle);
 	Latex1299->SetTextSize(TextSize-0.01);
-	Latex1299->SetTextColor(kBlack);
-	Latex1299->DrawLatexNDC(0.5,0.22,"SLAC 37.5^{o} 1.299 GeV");
+//	Latex1299->SetTextColor(kBlack);
+	Latex1299->SetTextColor(kBlue+1);
+	Latex1299->DrawLatexNDC(0.5,0.22,"SLAC 1.299 GeV");
 
 	// ---------------------------------------------------------------------------------------------
 
 	TLatex* Latex0961 = new TLatex();
 	Latex0961->SetTextFont(FontStyle);
 	Latex0961->SetTextSize(TextSize-0.01);
-	Latex0961->SetTextColor(kRed+2);
-	Latex0961->DrawLatexNDC(0.32,0.80,"SLAC 37.5^{o} 0.961 GeV");
+	Latex0961->SetTextColor(kOrange+7);
+	Latex0961->DrawLatexNDC(0.32,0.80,"SLAC 0.961 GeV");
 
 	// ---------------------------------------------------------------------------------------------
 
@@ -314,10 +357,28 @@ void OverlayXSec() {
 	Latex1161->SetTextSize(TextSize-0.01);
 	Latex1161->SetTextColor(kGreen+2);
 	Latex1161->SetTextAlign(12);  //centered
-	Latex1161->DrawLatexNDC(0.7,0.57,"#splitline{e4#nu 37.5^{o}}{1.161 GeV}");
+	Latex1161->DrawLatexNDC(0.7,0.57,"#splitline{JLab}{1.159 GeV}");
+
+	// ---------------------------------------------------------------------------------------------
+
+	// Scattering angle
+
+	TLatex* LatexAngle = new TLatex();
+	LatexAngle->SetTextFont(FontStyle);
+	LatexAngle->SetTextSize(TextSize-0.01);
+	LatexAngle->SetTextColor(kBlack);
+	LatexAngle->SetTextAlign(12);  //centered
+	LatexAngle->DrawLatexNDC(0.73,0.86,"#theta = 37.5^{o}");
 
 	// ---------------------------------------------------------------------------------------------
 
 	PlotCanvas->SaveAs("DataXSec_Inclusive_Validation.pdf");
+	PlotCanvas->SaveAs("DataXSec_Inclusive_Validation.eps");
+
+	TFile* f = new TFile("DataXSec_Inclusive_Validation.root","recreate");
+	gStyle->SetOptStat(0);	
+	TGaxis::SetMaxDigits(3);
+	TGaxis::SetExponentOffset(-0.1, 1., "y");
+	PlotCanvas->Write();
 
 } // End of the program

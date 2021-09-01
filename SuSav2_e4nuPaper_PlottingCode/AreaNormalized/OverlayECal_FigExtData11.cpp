@@ -9,6 +9,17 @@
 using namespace std;
 
 void OverlayECal_FigExtData11() {
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+	TString TxtName = "../AccCorrXSec/myXSec/UndetPionSub_XSecs.txt";
+	ofstream myTxtFile;
+	myTxtFile.open(TxtName);
+	myTxtFile << std::fixed << std::setprecision(3);
+	myTxtFile << "Undetected Pion Subtraction Ext Data Fig.7;" << endl << endl;
+	myTxtFile << "Bin #;Low bin edge; High bin edge;Weighted Events/GeV;Uncertainty" << endl << endl;
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------------
  
 	TString target = "56Fe";
 
@@ -17,6 +28,7 @@ void OverlayECal_FigExtData11() {
 	int N_E_bins;
 
 	TString version = "v3_0_6/";
+	double SizeMarker = 2.;
 
 	int FontStyle = 132;
 	double TextSize = 0.07;
@@ -158,10 +170,10 @@ void OverlayECal_FigExtData11() {
 	h1_Erec_1pi_e->SetMarkerStyle(20);
 	h1_Erec_2pi_e_weight->SetMarkerStyle(20);
 	h1_Erec_3pi_e_weight->SetMarkerStyle(20);
-	h1_Erec_1pi_e_weight->SetMarkerSize(1.2);
-	h1_Erec_1pi_e->SetMarkerSize(1.2);
-	h1_Erec_2pi_e_weight->SetMarkerSize(1.2);
-	h1_Erec_3pi_e_weight->SetMarkerSize(1.2);
+	h1_Erec_1pi_e_weight->SetMarkerSize(SizeMarker);
+	h1_Erec_1pi_e->SetMarkerSize(SizeMarker);
+	h1_Erec_2pi_e_weight->SetMarkerSize(SizeMarker);
+	h1_Erec_3pi_e_weight->SetMarkerSize(SizeMarker);
 	h1_Erec_1pi_e_weight->SetMarkerColor(46);
 	h1_Erec_1pi_e->SetMarkerColor(38);
 	h1_Erec_2pi_e_weight->SetMarkerColor(42);
@@ -169,10 +181,92 @@ void OverlayECal_FigExtData11() {
 
 	h1_Erec_1pi_e_weight->GetYaxis()->SetRangeUser(0.,1.1*h1_Erec_1pi_e->GetMaximum());
 	h1_Erec_1pi_e_weight->Draw("e");
+
+	// -------------------------------------------------------------------------------------------
+
+	// Nature data release
+
+	int nbins = h1_Erec_1pi_e_weight->GetXaxis()->GetNbins();
+
+	double Min = 1.8, Max = 5.1;
+	myTxtFile << "Pad (a)" << endl;
+
+	myTxtFile << "Undetected 1pi/gamma" << endl;
+
+	int counter = 0;
+
+	for (int i = 0; i < nbins; i++) {
+
+		double BinContent = h1_Erec_1pi_e_weight->GetBinContent(i+1);
+		double BinError = h1_Erec_1pi_e_weight->GetBinError(i+1);
+		double BinLowEdge = h1_Erec_1pi_e_weight->GetBinLowEdge(i+1);			
+		double BinWidth = h1_Erec_1pi_e_weight->GetBinWidth(i+1);
+		double PreviousBinWidth = h1_Erec_1pi_e_weight->GetBinWidth(i);
+		double BinHighEdge = BinLowEdge + BinWidth;
+
+		if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
+			myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+			counter++;
+		}
+
+	}
+
+	myTxtFile << endl;
+
+	// -------------------------------------------------------------------------------------------
+
 	h1_Erec_1pi_e->Draw("e same");
+
+	myTxtFile << "Detected 1pi/gamma" << endl;
+
+	counter = 0;
+
+	for (int i = 0; i < nbins; i++) {
+
+		double BinContent = h1_Erec_1pi_e->GetBinContent(i+1);
+		double BinError = h1_Erec_1pi_e->GetBinError(i+1);
+		double BinLowEdge = h1_Erec_1pi_e->GetBinLowEdge(i+1);			
+		double BinWidth = h1_Erec_1pi_e->GetBinWidth(i+1);
+		double PreviousBinWidth = h1_Erec_1pi_e->GetBinWidth(i);
+		double BinHighEdge = BinLowEdge + BinWidth;
+
+		if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
+			myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+			counter++;
+		}
+
+	}
+
+	myTxtFile << endl;
+
+	// -------------------------------------------------------------------------------------------
 
 	h1_Erec_2pi_e_weight->SetLineColor(42);
 	h1_Erec_2pi_e_weight->Draw("P e Same");
+
+	myTxtFile << "Undetected 2pi/gamma" << endl;
+
+	counter = 0;
+
+	for (int i = 0; i < nbins; i++) {
+
+		double BinContent = h1_Erec_2pi_e_weight->GetBinContent(i+1);
+		double BinError = h1_Erec_2pi_e_weight->GetBinError(i+1);
+		double BinLowEdge = h1_Erec_2pi_e_weight->GetBinLowEdge(i+1);			
+		double BinWidth = h1_Erec_2pi_e_weight->GetBinWidth(i+1);
+		double PreviousBinWidth = h1_Erec_2pi_e_weight->GetBinWidth(i);
+		double BinHighEdge = BinLowEdge + BinWidth;
+
+		if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
+			myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+			counter++;
+		}
+
+	}
+
+	myTxtFile << endl;
+
+	// -------------------------------------------------------------------------------------------
 
 	h1_Erec_3pi_e_weight->SetLineColor(28);
 	//h1_Erec_3pi_e_weight->Draw("P e Same");
@@ -183,13 +277,13 @@ void OverlayECal_FigExtData11() {
 	lat1->SetTextFont(FontStyle);
 	
 	lat1->SetTextColor(38);
-	lat1->DrawLatex(0.58, 0.85, "Detected 1 #pi^{#pm}/#gamma");
+	lat1->DrawLatex(0.56, 0.85, "Detected 1 #pi^{#pm}/#gamma");
 	lat1->SetTextSize(TextSize);
 	lat1->SetTextColor(46);
-	lat1->DrawLatex(0.58, 0.78, "Undetected 1#pi^{#pm}/#gamma (-)");
+	lat1->DrawLatex(0.56, 0.78, "Undetected 1#pi^{#pm}/#gamma (-)");
 	lat1->SetTextColor(42);
-	lat1->DrawLatex(0.58, 0.71, "Undetected 2#pi^{#pm}/#gamma (+)");
-	lat1->SetTextColor(28);
+	lat1->DrawLatex(0.56, 0.71, "Undetected 2#pi^{#pm}/#gamma (+)");
+	lat1->SetTextColor(26);
 	//lat1->DrawLatex(0.58, 0.64, "Undetected 3#pi^{#pm}/#gamma (+)");
 	lat1->SetTextColor(6);
 
@@ -199,7 +293,14 @@ void OverlayECal_FigExtData11() {
 	lat1->SetTextSize(TextSize);
 	lat1->DrawLatex(0.17, 0.85, "^{56}Fe");
 
+	TLatex *EQEOne = new TLatex(); 
+	EQEOne->SetTextFont(FontStyle); 
+	EQEOne->SetTextColor(kBlack); 
+	EQEOne->SetTextSize(TextSize);
+	EQEOne->DrawLatexNDC(0.91,0.89,"(a)");
+
 	c1->SaveAs("../../../myPlots/pdf/NoxBCut/"+version+target+"/FigExtData11_EQE_Inclusive_Subtractions_"+target+"_SuSav2.pdf");
+	c1->SaveAs("../../../myPlots/pdf/NoxBCut/"+version+target+"/FigExtData11_EQE_Inclusive_Subtractions_"+target+"_SuSav2.eps");
 
 	// -------------------------------------------------------------------------------------------
 
@@ -213,7 +314,7 @@ void OverlayECal_FigExtData11() {
 	h1_E_rec->SetMinimum(0);
 	h1_E_rec->UseCurrentStyle();
 	h1_E_rec->SetMarkerStyle(20);
-	h1_E_rec->SetMarkerSize(1.2);
+	h1_E_rec->SetMarkerSize(SizeMarker);
 	h1_E_rec->SetMarkerColor(38);
 	//h1_E_rec->SetMinimum(3*h1_Erec_3pi_e_weight->GetMinimum());
 
@@ -233,21 +334,96 @@ void OverlayECal_FigExtData11() {
 //	h1_E_rec->SetAxisRange(3*h1_Erec_3pi_e_weight->GetMinimum(),1.05*h1_E_rec->GetMaximum(),"Y");
 	h1_E_rec->SetAxisRange(0,1.17*h1_E_rec->GetMaximum(),"Y");
 	h1_E_rec->Draw("e");
+
+	// ---------------------------------------------------------------------
+
+	myTxtFile << "Pad (b)" << endl;
+	myTxtFile << "No cuts" << endl;
+
+	counter = 0;
+
+	for (int i = 0; i < nbins; i++) {
+
+		double BinContent = h1_E_rec->GetBinContent(i+1);
+		double BinError = h1_E_rec->GetBinError(i+1);
+		double BinLowEdge = h1_E_rec->GetBinLowEdge(i+1);			
+		double BinWidth = h1_E_rec->GetBinWidth(i+1);
+		double PreviousBinWidth = h1_E_rec->GetBinWidth(i);
+		double BinHighEdge = BinLowEdge + BinWidth;
+
+		if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
+			myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+			counter++;
+		}
+
+	}
+
+	myTxtFile << endl;
+
+	// ---------------------------------------------------------------------
 	
 	h1_Erec_0pi_e->SetAxisRange(xmin, xmax, "X"); 
 	h1_Erec_0pi_e->SetLineColor(46);
 	h1_Erec_0pi_e->GetXaxis()->SetTitleOffset(1.2);
 	h1_Erec_0pi_e->SetMarkerStyle(20);
-	h1_Erec_0pi_e->SetMarkerSize(1.2);
+	h1_Erec_0pi_e->SetMarkerSize(SizeMarker);
 	h1_Erec_0pi_e->SetMarkerColor(46);
 	h1_Erec_0pi_e->Draw("e same");
 
+	myTxtFile << "No detected pi/gamma" << endl;
+
+	counter = 0;
+
+	for (int i = 0; i < nbins; i++) {
+
+		double BinContent = h1_Erec_0pi_e->GetBinContent(i+1);
+		double BinError = h1_Erec_0pi_e->GetBinError(i+1);
+		double BinLowEdge = h1_Erec_0pi_e->GetBinLowEdge(i+1);			
+		double BinWidth = h1_Erec_0pi_e->GetBinWidth(i+1);
+		double PreviousBinWidth = h1_Erec_0pi_e->GetBinWidth(i);
+		double BinHighEdge = BinLowEdge + BinWidth;
+
+		if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
+			myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+			counter++;
+		}
+
+	}
+
+	myTxtFile << endl;
+
+	// ---------------------------------------------------------------------
+
 	h1_Erec_0pi_sub_e->SetLineColor(42);
 	h1_Erec_0pi_sub_e->SetMarkerStyle(20);
-	h1_Erec_0pi_sub_e->SetMarkerSize(1.2);
+	h1_Erec_0pi_sub_e->SetMarkerSize(SizeMarker);
 	h1_Erec_0pi_sub_e->SetMarkerColor(42);
 
 	h1_Erec_0pi_sub_e->Draw("e Same");
+
+	myTxtFile << "Subtract undetected pi/gamma" << endl;
+
+	counter = 0;
+
+	for (int i = 0; i < nbins; i++) {
+
+		double BinContent = h1_Erec_0pi_sub_e->GetBinContent(i+1);
+		double BinError = h1_Erec_0pi_sub_e->GetBinError(i+1);
+		double BinLowEdge = h1_Erec_0pi_sub_e->GetBinLowEdge(i+1);			
+		double BinWidth = h1_Erec_0pi_sub_e->GetBinWidth(i+1);
+		double PreviousBinWidth = h1_Erec_0pi_sub_e->GetBinWidth(i);
+		double BinHighEdge = BinLowEdge + BinWidth;
+
+		if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
+			myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+			counter++;
+		}
+
+	}
+
+	myTxtFile << endl;
+
+	// ---------------------------------------------------------------------
 
 	lat1->SetTextColor(38);
 	lat1->DrawLatex(0.51, 0.89, "No cuts");
@@ -263,6 +439,38 @@ void OverlayECal_FigExtData11() {
 	lat1->SetTextSize(TextSize);
 	lat1->DrawLatex(0.17, 0.85, "^{56}Fe");
 
+	TLatex *EQETwo = new TLatex(); 
+	EQETwo->SetTextFont(FontStyle); 
+	EQETwo->SetTextColor(kBlack); 
+	EQETwo->SetTextSize(TextSize);
+	EQETwo->DrawLatexNDC(0.91,0.89,"(b)");
+
 	c2->SaveAs("../../../myPlots/pdf/NoxBCut/"+version+target+"/FigExtData11_EQE_Exclusive_Subtractions_"+target+"_SuSav2.pdf");
- 
+	c2->SaveAs("../../../myPlots/pdf/NoxBCut/"+version+target+"/FigExtData11_EQE_Exclusive_Subtractions_"+target+"_SuSav2.eps");
+
+	// ---------------------------------------------------------------------
+
+	TCanvas *ctot = new TCanvas("ctot","",2048,768);
+	ctot->cd();
+
+	TPad* left = new TPad("left","left",0.,0.,0.5,1.,21);
+	left->SetFillColor(kWhite); 
+	left->Draw();
+	left->cd();
+
+	c1->DrawClonePad();
+
+	ctot->cd();
+	TPad* right = new TPad("right","right",0.5,0.,1.,1.,21);
+	right->SetFillColor(kWhite); 
+	right->Draw();
+	right->cd();
+
+	c2->DrawClonePad();
+
+	ctot->SaveAs("../../../myPlots/pdf/NoxBCut/"+version+target+"/Merged_FigExtData7_EQE_Exclusive_Subtractions_"+target+"_SuSav2.pdf");
+	ctot->SaveAs("../../../myPlots/pdf/NoxBCut/"+version+target+"/Merged_FigExtData7_EQE_Exclusive_Subtractions_"+target+"_SuSav2.eps");
+
+	// --------------------------------------------------------------------- 
+
 }

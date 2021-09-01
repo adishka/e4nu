@@ -71,9 +71,22 @@ void AccCorr_OverlayReso_FigExtData8() {
 
 	// -------------------------------------------------------------------------------------------------
 
-	vector< vector<int> > Colors{{kRed,kRed},{kGreen-3,kGreen-3},{kBlue,kBlue}};
+//	vector< vector<int> > Colors{{kRed,kRed},{kGreen-3,kGreen-3},{kBlue,kBlue}};
+	vector< vector<int> > Colors{{kOrange+7,kOrange+7},{kGreen-3,kGreen-3},{kBlue,kBlue}};
 	vector<int> LineStyle{2,11,1};
 	vector<int> MarkerStyle{22,21,20};
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+	TString TxtName = "myXSec/EnergyResoPanel_XSecs.txt";
+	ofstream myTxtFile;
+	myTxtFile.open(TxtName);
+	myTxtFile << std::fixed << std::setprecision(3);
+	myTxtFile << "Energy Resolution Panel Ext Data Fig.4;" << endl << endl;
+	myTxtFile << "Bin #;Low bin edge; High bin edge;XSec [μbarn/GeV];XSec error [μbarn/GeV]" << endl << endl;
+
+	TFile* f = new TFile("Resolutions.root","recreate");
+	gStyle->SetOptStat(0);	
 
 	// -------------------------------------------------------------------------------------------------
 
@@ -231,7 +244,8 @@ void AccCorr_OverlayReso_FigExtData8() {
 							label->SetTextSize(TextSize);
 
 							if (nucleus[WhichNucleus] == "12C" && E[WhichEnergy] == "1_161"
-							&& NameOfPlots[WhichPlot] =="h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed") { label->DrawLatexNDC(0.75,0.83,"(a)"); }
+							&& NameOfPlots[WhichPlot] =="h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed") 
+								{ label->DrawLatexNDC(0.75,0.83,"(a)"); }
 
 
 							if (nucleus[WhichNucleus] == "12C" && E[WhichEnergy] == "1_161" 
@@ -242,6 +256,48 @@ void AccCorr_OverlayReso_FigExtData8() {
 
 							if (nucleus[WhichNucleus] == "56Fe" && E[WhichEnergy] == "2_261"
 							&& NameOfPlots[WhichPlot] =="h_Erec_subtruct_piplpimi_noprot_frac_feed3pi") { label->DrawLatexNDC(0.75,0.83,"(d)"); }
+
+							// -------------------------------------------------------------------------------------------
+
+							// Nature Data Release
+
+							TString Label = "";
+
+							if (nucleus[WhichNucleus] == "12C" && NameOfPlots[WhichPlot] =="h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed") { Label = "(a)"; }
+							if (nucleus[WhichNucleus] == "12C" && NameOfPlots[WhichPlot] =="h_Erec_subtruct_piplpimi_noprot_frac_feed3pi") { Label = "(b)"; }
+							if (nucleus[WhichNucleus] == "56Fe" && NameOfPlots[WhichPlot] =="h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed") { Label = "(c)"; }
+							if (nucleus[WhichNucleus] == "56Fe" && NameOfPlots[WhichPlot] =="h_Erec_subtruct_piplpimi_noprot_frac_feed3pi") { Label = "(d)"; }
+
+							int nbins = Plots[WhichEnergy][WhichFSIModel]->GetXaxis()->GetNbins();
+							double Min = -99., Max = -99.;
+
+							if (NameOfPlots[WhichPlot] == "h_Etot_subtruct_piplpimi_2p1pi_1p0pi_fracfeed") { Min = -0.7; Max = 0.06; }
+							if (NameOfPlots[WhichPlot] == "h_Erec_subtruct_piplpimi_noprot_frac_feed3pi") { Min = -0.7; Max = 0.21; }
+
+							myTxtFile << nucleus[WhichNucleus] << " " << E[WhichEnergy] << " GeV pad " << Label << endl;
+							if (nucleus[WhichNucleus] == "56Fe" && E[WhichEnergy] == "4_461") {  
+								myTxtFile << "Cross sections scaled by 4" << endl;
+							}
+
+							int counter = 0;
+
+							for (int i = 0; i < nbins; i++) {
+
+								double BinContent = DataPlot->GetBinContent(i+1);
+								double BinError = DataPlot->GetBinError(i+1);
+								double BinLowEdge = DataPlot->GetBinLowEdge(i+1);			
+								double BinWidth = DataPlot->GetBinWidth(i+1);
+								double PreviousBinWidth = DataPlot->GetBinWidth(i);
+								double BinHighEdge = BinLowEdge + BinWidth;
+
+								if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
+									myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
+									counter++;
+								}
+
+							}
+
+							myTxtFile << endl;
 
 							// -------------------------------------------------------------------------------------------
 
@@ -300,6 +356,11 @@ void AccCorr_OverlayReso_FigExtData8() {
 				latexDG.DrawLatexNDC(0.2,0.855,"Data/SuSav2");
 
 				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/AccCorr_FeedDown_"+nucleus[WhichNucleus]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2.pdf");
+
+				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/AccCorr_FeedDown_"+nucleus[WhichNucleus]+"_" +OutputPlotNames[WhichPlot]+"_SuSav2.eps");
+
+				f->cd();
+				PlotCanvas->Write();
 
 			} // End of the loop over the plots
 
