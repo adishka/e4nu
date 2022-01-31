@@ -21,11 +21,11 @@ using namespace std;
 
 // ----------------------------------------------------------------------------------------------------------------
 
-void PrettyPlot(TH1D* h, TString DataSetLabel, TString nucleus, TString E, TString name, double SF = 1) {
+void PrettyPlot(TH1D* h, TString DataSetLabel, TString nucleus, TString E, TString name, double SF = 1, double RecipBinArea = 1.) {
 
 		UniversalE4vFunction(h,DataSetLabel,nucleus,E,name);
 
-		h->Scale(SF);
+		h->Scale(SF*RecipBinArea);
 		h->SetLineWidth(3);
 
 		h->GetXaxis()->CenterTitle();
@@ -55,7 +55,7 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 	
 	gStyle->SetOptStat(0);	
 	
-	double GlobalMax = 19.;
+	double GlobalMax = 190.;
 
 	// ---------------------------------------------------------------------------------------------------------------
 
@@ -141,6 +141,7 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 
 				double MinCosThetaSlice2D = (MinCosTheta2D+WhichCosThetaSlice2D*CosThetaStep2D);
 				double MaxCosThetaSlice2D = (MinCosTheta2D+(WhichCosThetaSlice2D+1)*CosThetaStep2D);
+				double DiffCosThetaSlice = MaxCosThetaSlice2D - MinCosThetaSlice2D;
 
 				for (int WhichEePrimeSlice2D = 0 ; WhichEePrimeSlice2D < EePrimeSlices2D; WhichEePrimeSlice2D++ ) {
 
@@ -156,6 +157,8 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 
 					double MinEePrimeSlice2D = (MinEePrime2D+WhichEePrimeSlice2D*EePrimeStep2D);
 					double MaxEePrimeSlice2D = (MinEePrime2D+(WhichEePrimeSlice2D+1)*EePrimeStep2D);
+					double DiffEePrimeSlice = MaxEePrimeSlice2D - MinEePrimeSlice2D;
+					double RecipBinArea = 1. / (DiffCosThetaSlice * DiffEePrimeSlice);
 
 					// ---------------------------------------------------------------------------------------------------------------
 
@@ -207,7 +210,7 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 
 					TH1D* h1_T2KEQEReso_Data = (TH1D*)file_Data->Get(NamePlot);
 
-					PrettyPlot(h1_T2KEQEReso_Data,"Pinned Data",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
+					PrettyPlot(h1_T2KEQEReso_Data,"Pinned Data",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF,RecipBinArea);
 
 					TH1D* DataPlot = AcceptanceCorrection(h1_T2KEQEReso_Data,"SuSav2",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,"NoxBCut");
 
@@ -217,9 +220,9 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 					DataPlot->SetMarkerSize(1.2);
 					DataPlot->GetYaxis()->SetRangeUser(0.01,GlobalMax);	
 
-					if (WhichCosThetaSlice2D == 0) { DataPlot->GetYaxis()->SetRangeUser(0.0001,0.26); }
-					if (WhichCosThetaSlice2D == 1) { DataPlot->GetYaxis()->SetRangeUser(0.0001,0.34); }
-					if (WhichCosThetaSlice2D == 2) { DataPlot->GetYaxis()->SetRangeUser(0.0001,0.79); }
+					if (WhichCosThetaSlice2D == 0) { DataPlot->GetYaxis()->SetRangeUser(0.0001,10.9); }
+					if (WhichCosThetaSlice2D == 1) { DataPlot->GetYaxis()->SetRangeUser(0.0001,13.9); }
+					if (WhichCosThetaSlice2D == 2) { DataPlot->GetYaxis()->SetRangeUser(0.0001,34.9); }
 
 					if (WhichCosThetaSlice2D == CosThetaSlices2D-1 ) {
 
@@ -233,29 +236,29 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 
 					// --------------------------------------------------------------------------------------------------------
 
-					PrettyPlot(h1_T2KEQEReso_SuSav2,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
+					PrettyPlot(h1_T2KEQEReso_SuSav2,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF,RecipBinArea);
 					h1_T2KEQEReso_SuSav2->SetLineColor(kBlack);
 					h1_T2KEQEReso_SuSav2->SetLineStyle(kSolid);
 
-					PrettyPlot(h1_T2KEQEReso_SuSav2_QE,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
+					PrettyPlot(h1_T2KEQEReso_SuSav2_QE,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF,RecipBinArea);
 					h1_T2KEQEReso_SuSav2_QE->SetLineColor(kBlue+1);
 					h1_T2KEQEReso_SuSav2_QE->SetLineStyle(kSolid);
 
-					PrettyPlot(h1_T2KEQEReso_SuSav2_MEC,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
+					PrettyPlot(h1_T2KEQEReso_SuSav2_MEC,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF,RecipBinArea);
 					h1_T2KEQEReso_SuSav2_MEC->SetLineColor(kRed-3);
 					h1_T2KEQEReso_SuSav2_MEC->SetLineStyle(kSolid);
 
-					PrettyPlot(h1_T2KEQEReso_SuSav2_RES,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
+					PrettyPlot(h1_T2KEQEReso_SuSav2_RES,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF,RecipBinArea);
 					h1_T2KEQEReso_SuSav2_RES->SetLineColor(kGreen+1);
 					h1_T2KEQEReso_SuSav2_RES->SetLineStyle(kSolid);
 
-					PrettyPlot(h1_T2KEQEReso_SuSav2_DIS,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
+					PrettyPlot(h1_T2KEQEReso_SuSav2_DIS,"SuSav2 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF,RecipBinArea);
 					h1_T2KEQEReso_SuSav2_DIS->SetLineColor(kOrange+1);
 					h1_T2KEQEReso_SuSav2_DIS->SetLineStyle(kSolid);
 
 					// --------------------------------------------------------------------------------------------------------
 
-					PrettyPlot(h1_T2KEQEReso_G2018,"G2018 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF);
+					PrettyPlot(h1_T2KEQEReso_G2018,"G2018 NoRad",NucleusString[WhichNucleus],EnergyString[WhichEnergy],NamePlot,SF,RecipBinArea);
 					h1_T2KEQEReso_G2018->SetLineColor(kBlack);
 					h1_T2KEQEReso_G2018->SetLineStyle(kDashed);
 
@@ -337,10 +340,10 @@ void TwoDThetaEPrimeT2KEQEResoSlicesStudy() {
 
 			TLatex latexYTitlepadWeightedEventsPerGeV;
 			latexYTitlepadWeightedEventsPerGeV.SetTextFont(FontStyle);
-			latexYTitlepadWeightedEventsPerGeV.SetTextSize(6.5*TextSize);
+			latexYTitlepadWeightedEventsPerGeV.SetTextSize(6.*TextSize);
 			latexYTitlepadWeightedEventsPerGeV.SetTextColor(kBlack);
 			latexYTitlepadWeightedEventsPerGeV.SetTextAngle(90);
-			latexYTitlepadWeightedEventsPerGeV.DrawLatexNDC(0.5,0.44,"#frac{d#sigma}{dE_{QE}^{Reso}} [#mub]");
+			latexYTitlepadWeightedEventsPerGeV.DrawLatexNDC(0.6,0.44,"#frac{d^{3}#sigma}{dE_{QE}^{Reso} dcos#theta_{e'} dE_{e'}} #left[#frac{#mub}{GeV^{2} ^{12}C}#right]");
 
 			// ----------------------------------------------------------------------------------------------------------------	
 

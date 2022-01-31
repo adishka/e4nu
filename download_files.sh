@@ -21,10 +21,6 @@ GENIELocalExtension=hA2018_Final_NoRadCorr_LFGM
 #GENIEOnlineExtension=SuSav2_Rad
 #GENIELocalExtension=SuSav2_RadCorr_LFGM_Truth_WithFidAcc_UpdatedSchwinger
 
-#Not to be used
-##GENIEOnlineExtension=G18_10a_02_11a_Rad
-##GENIELocalExtension=hA2018_Final_RadCorr_LFGM_Truth_WithFidAcc
-
 ##### Genie Samples
 
 echo "$LocalPath/1_161/${GENIELocalExtension}/$xB/12C_1_161_${GENIELocalExtension}_Plots_FSI_em.root"

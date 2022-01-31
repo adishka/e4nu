@@ -409,6 +409,19 @@ void genie_analysis::Loop(Int_t choice) {
 	TH1F *h1_Q2 = new TH1F("h1_Q2","",400,0,6);
 	TH1F *h1_el_theta = new TH1F("h1_el_theta","",200,0,180);
 	TH1F *h1_Nprot=new TH1F("h1_Nprot","",5,-0.5,4.5);
+
+	// Pion multiplicities for events with 0 protons
+	// NInt = 6
+	// 0 = all events, 1 = QE, 2 = MEC, 3 = RES, 4 = DIS, 5 = COH 
+
+	TH1F *h1_Npi_ZeroProt[NInt];
+
+	for (int WhichInt = 0; WhichInt < NInt; WhichInt++) {
+
+		h1_Npi_ZeroProt[WhichInt] = new TH1F("h1_Nprot_"+TString(std::to_string(WhichInt)),"",5,-0.5,4.5);
+
+	}
+
 	TH1F *h1_Nprot_NonZeroProt=new TH1F("h1_Nprot_NonZeroProt","",4,0.5,4.5);
 	TH1F *h1_Nphot=new TH1F("h1_Nphot","",10,-0.5,4.5);
 	TH1F *h1_Npiphot=new TH1F("h1_Npiphot","",10,-0.5,4.5);
@@ -1540,7 +1553,7 @@ void genie_analysis::Loop(Int_t choice) {
 				double ProtonCosTheta = -999.;
 				double ProtonMag = -999.;
 
-				if ( choice > 0 ) { //GENIE data
+				if ( choice > 0 ) { // GENIE
 
 					//Smearing of proton
 					double temp_smear_P = gRandom->Gaus(pf[i],reso_p*pf[i]);
@@ -1935,6 +1948,13 @@ void genie_analysis::Loop(Int_t choice) {
 
 		h1_Npi->Fill(num_pi);
 		h1_Nprot->Fill(num_p);
+
+		if (num_p == 0) {  
+
+			h1_Npi_ZeroProt[0]->Fill(num_pi);
+			if (Interaction > 0) { h1_Npi_ZeroProt[Interaction]->Fill(num_pi); }
+
+		}
 
 		if (num_p > 0) {
 
