@@ -414,11 +414,11 @@ void genie_analysis::Loop(Int_t choice) {
 	// NInt = 6
 	// 0 = all events, 1 = QE, 2 = MEC, 3 = RES, 4 = DIS, 5 = COH 
 
-	TH1F *h1_Npi_ZeroProt[NInt];
+	TH1F *h1_Npi_ZeroProton[NInt];
 
 	for (int WhichInt = 0; WhichInt < NInt; WhichInt++) {
 
-		h1_Npi_ZeroProt[WhichInt] = new TH1F("h1_Nprot_"+TString(std::to_string(WhichInt)),"",5,-0.5,4.5);
+		h1_Npi_ZeroProton[WhichInt] = new TH1F("h1_Npi_ZeroProton_"+TString(std::to_string(WhichInt)),"",5,-0.5,4.5);
 
 	}
 
@@ -1951,8 +1951,8 @@ void genie_analysis::Loop(Int_t choice) {
 
 		if (num_p == 0) {  
 
-			h1_Npi_ZeroProt[0]->Fill(num_pi);
-			if (Interaction > 0) { h1_Npi_ZeroProt[Interaction]->Fill(num_pi); }
+			h1_Npi_ZeroProton[0]->Fill(num_pi);
+			if (Interaction > 0) { h1_Npi_ZeroProton[Interaction]->Fill(num_pi); }
 
 		}
 
