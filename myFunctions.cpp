@@ -1098,7 +1098,7 @@ TH1D* AcceptanceCorrection(TH1D* h, TString ScaleToDataSet, TString nucleus, TSt
 
 	// --------------------------------------------------------------------------------------
 
-	// Obtain acceptance correction uncertainy using non radiative samples
+	// Obtain acceptance correction uncertainty using non radiative samples
 
 	// First, grab the files with smearing at truth level (_Truth_WithoutFidAcc_Offset), otherwise infinities at the edges 
 	// Second, grab the G2018 true 1p0pi files with offset (_Truth_WithFidAcc_Offset), otherwise infinities at the double ratio

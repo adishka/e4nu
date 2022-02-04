@@ -20,22 +20,6 @@ using namespace std;
 #include "/home/afroditi/Dropbox/PhD/Secondary_Code/SetOffsetAndSize.cpp"
 #include "/home/afroditi/Dropbox/PhD/Secondary_Code/ToString.cpp"
 
-//// ----------------------------------------------------------------------------------------------------------------
-
-//void ApplySystUnc(TH1D* h, double systunc) {
-
-//	double NBins = h->GetNbinsX(); 
-//				
-//	for (int i = 1; i <= NBins; i++) { 
-//					
-//		double error = h->GetBinError(i);
-//		double newerror = error * (1. + systunc);
-//		h->SetBinError(i,newerror);
-
-//	}
-
-//}
-
 // ----------------------------------------------------------------------------------------------------------------
 
 void ChargedPionMultiplicities_ZeroProton() {
@@ -49,52 +33,36 @@ void ChargedPionMultiplicities_ZeroProton() {
 	int LineWidth = 3;
 	int FontStyle = 132;
 	double TextSize = 0.08;
-	
-	TString version = "v3_0_6/";
-
-//	int NECalRebin = 1;
-
-	// From Mariana's analysis note
-
-//	double SystUnc1GeV = 0.02; // 2% syst uncertainty at 1.161 GeV
-//	double SystUnc2GeV = 0.021; // 2.1% syst uncertainty at 2.261 GeV
-//	double SystUnc4GeV = 0.047; // 4.7% syst uncertainty at 4.461 GeV
 
 	// ------------------------------------------------------------------------
 
 	std::vector<TString> xBCut; std::vector<TString> nucleus; std::vector<TString> JustNucleus; std::vector<TString> LabelsOfSamples; 
 	std::vector<TString> E; std::vector<double> DoubleE;
-	std::vector<TString> LabelE; std::vector<TString> FSIModel; std::vector<TString> DirNames;  std::vector<int> BreakDownColors;
+	std::vector<TString> LabelE; std::vector<TString> FSIModel; std::vector<TString> DirNames;
 	std::vector<TString> FSILabel; std::vector<TString> NameOfPlots; std::vector<TString> LabelOfPlots;  
 	std::vector<TString> OutputPlotNames; std::vector<TH1D*> BreakDownPlots;
 	std::vector<int> Colors;
 	std::vector<int> Style;
 
-//	nucleus.push_back("4He"); LabelsOfSamples.push_back("^{4}He"); JustNucleus.push_back("He");
 	nucleus.push_back("12C"); LabelsOfSamples.push_back("^{12}C"); JustNucleus.push_back("C");
-//	nucleus.push_back("56Fe"); LabelsOfSamples.push_back("^{56}Fe");  JustNucleus.push_back("Fe");
 
-//	E.push_back("1_161"); LabelE.push_back(" @ E = 1.161 GeV"); DoubleE.push_back(1.161);
 	E.push_back("2_261"); LabelE.push_back(" @ E = 2.261 GeV"); DoubleE.push_back(2.261);	
-//	E.push_back("4_461"); LabelE.push_back(" @ E = 4.461 GeV");  DoubleE.push_back(4.461);
 
 	xBCut.push_back("NoxBCut");
-//	xBCut.push_back("xBCut");
  
 	Colors.push_back(kBlack); Colors.push_back(kBlack); Colors.push_back(kBlue); Colors.push_back(kMagenta); Colors.push_back(kGreen); Colors.push_back(kOrange + 7);
 
 	Style.push_back(1); Style.push_back(1); Style.push_back(7); Style.push_back(3);
 
-	BreakDownColors.push_back(kBlue); BreakDownColors.push_back(kCyan); BreakDownColors.push_back(kGreen); BreakDownColors.push_back(kMagenta);
+	const std::vector<int> BreakDownColors{kBlue+1,kRed-3,kGreen+1,kOrange+1};
+	const std::vector<TString> GenieFSILabel{"QE","MEC","RES","DIS"};	
 
-	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Pinned Data");
-//	FSIModel.push_back("hA2018_Final_RadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");
+	FSIModel.push_back("Pinned_Data_Final"); FSILabel.push_back("Pinned Data"); DirNames.push_back("Data");
+	FSIModel.push_back("SuSav2"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2");
+//	FSIModel.push_back("hA2018"); FSILabel.push_back("Genie");  DirNames.push_back("G2018");	
 
-//	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
-	FSIModel.push_back("SuSav2_NoRadCorr_LFGM"); FSILabel.push_back("SuSav2");  DirNames.push_back("SuSav2_NoRadCorr");
-	FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM"); FSILabel.push_back("Genie");  DirNames.push_back("hA2018_Truth_NoRadCorr");	
-
-	NameOfPlots.push_back("h1_Npi_ZeroProton"); LabelOfPlots.push_back("Multiplicities"); OutputPlotNames.push_back("PionMultiPlot");
+	NameOfPlots.push_back("h1_Npi_ZeroProton_"); LabelOfPlots.push_back("#pi^{#pm} Multiplicities"); 
+	OutputPlotNames.push_back("ZeroProton_PionMultiPlot");
 
 	std::vector<TH1D*> Plots;
 
@@ -106,18 +74,6 @@ void ChargedPionMultiplicities_ZeroProton() {
 
 	TString WhatModelsAreIncluded = "";
 	for (int LoopOverFSIModels = 0 ; LoopOverFSIModels < NFSIModels ; LoopOverFSIModels ++) { WhatModelsAreIncluded += "_"+DirNames[LoopOverFSIModels]; };
-
-//	TString RecoCalorimetry = "(e,e'p)";
-//	TString FSI = "FSI";
-
-	// ---------------------------------------------------------------------------------------------------------------------------------------------
-
-	TString TxtName = "../AccCorrXSec/myXSec/Multiplicities.txt";
-	ofstream myTxtFile;
-	myTxtFile.open(TxtName);
-	myTxtFile << std::fixed << std::setprecision(3);
-	myTxtFile << "Multiplicities Ext Data Fig.3;" << endl << endl;
-	myTxtFile << "Bin #;Low bin edge; High bin edge;# Events;Uncertainty" << endl << endl;
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -137,17 +93,12 @@ void ChargedPionMultiplicities_ZeroProton() {
 									 nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+"Multiplicities"+"_"+xBCut[WhichxBCut],
 									 205,34,1024,768);
 
-//				PlotCanvas->SetLeftMargin(0.13);
-//				PlotCanvas->SetRightMargin(0.04);
-//				PlotCanvas->SetBottomMargin(0.15);
-//				PlotCanvas->SetTopMargin(0.01);
-
 				PlotCanvas->SetLeftMargin(0.18);
 				PlotCanvas->SetBottomMargin(0.17);
 
 				PlotCanvas->cd();
 
-				TLegend* leg = new TLegend(0.2,0.2,0.6,0.4);
+				TLegend* leg = new TLegend(0.7,0.65,0.89,0.89);
 				leg->SetNColumns(1);
 				leg->SetMargin(0.2);
 
@@ -166,14 +117,25 @@ void ChargedPionMultiplicities_ZeroProton() {
 
 					for (int WhichFSIModel = 0; WhichFSIModel < NFSIModels; WhichFSIModel ++) {
 
-						TString PathToFiles = "../../../myFiles/"+ E[WhichEnergy] + "/"+FSIModel[WhichFSIModel]+"/"+xBCut[WhichxBCut]+"/";
-						TString FileName = PathToFiles+nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
+						TString FileName = nucleus[WhichNucleus]+"_"+E[WhichEnergy]+"_"+FSIModel[WhichFSIModel]+"_Plots_FSI_em.root";
 						TFile* FileSample = TFile::Open(FileName);
 
-						Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]) ) );
+						Plots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot]+"0") ) );
 
 						Plots[WhichFSIModel]->SetLineColor(Colors[WhichFSIModel]);
 						CenterAxisTitle(Plots[WhichFSIModel]);
+
+						std::vector<TH1D*> TruePlots;
+
+						if ( !(string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) ) {
+
+							for (int i = 1; i < 6; i++) {
+
+								TruePlots.push_back( (TH1D*)( FileSample->Get(NameOfPlots[WhichPlot] + TString(std::to_string(i))) ) );
+
+							}
+
+						}
 
 						// --------------------------------------------------------------------------------------
 
@@ -211,25 +173,10 @@ void ChargedPionMultiplicities_ZeroProton() {
 						// --------------------------------------------------------------------------------------
 
 						// Scaling Factor
+						// Normalize things so that the 0-pion bin are at the same height
+						double ScalingFactor = ScalingFactor = double(Plots[0]->GetBinContent(1)) / double(Plots[WhichFSIModel]->GetBinContent(1) );
 
-//						double ScalingFactor = Plots[0]->Integral() / Plots[WhichFSIModel]->Integral();
-						double ScalingFactor = 1.;
-						if (NameOfPlots[WhichPlot] == "h1_Nprot") { ScalingFactor = double(Plots[0]->GetBinContent(2)) / double(Plots[WhichFSIModel]->GetBinContent(2) ); }
-
-						if (NameOfPlots[WhichPlot] == "h1_Npi") { ScalingFactor = double(Plots[0]->GetBinContent(1)) / double(Plots[WhichFSIModel]->GetBinContent(1) ); }
-
-						Plots[WhichFSIModel]->Scale(ScalingFactor);
-
-						// ----------------------------------------------------------------------------------
-
-						// Apply Systematic Uncertainties on Data Points
-
-//						double SystUnc = 0;
-//						if ( DoubleE[WhichEnergy] == 1.161 ) { SystUnc = SystUnc1GeV; }
-//						if ( DoubleE[WhichEnergy] == 2.261 ) { SystUnc = SystUnc2GeV; }
-//						if ( DoubleE[WhichEnergy] == 4.461 ) { SystUnc = SystUnc4GeV; }
-
-//						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { ApplySystUnc(Plots[WhichFSIModel], SystUnc); }
+						Plots[WhichFSIModel]->Scale(ScalingFactor);					
 
 						// ---------------------------------------------------------------------------------------------------
 
@@ -238,14 +185,12 @@ void ChargedPionMultiplicities_ZeroProton() {
 						double localmax = Plots[WhichFSIModel]->GetMaximum();
 						if (localmax > max) { max = localmax; }
 						double height = 1.05;
-						if ( xBCut[WhichxBCut] == "xBCut" ) { height = 1.1; }
-						//Plots[0]->GetYaxis()->SetRangeUser(0.,height*max);
 
-						double localmin = Plots[WhichFSIModel]->GetBinContent(Plots[WhichFSIModel]->FindBin(4)); // multiplicity 4 is the highest one in data
+						// multiplicity 4 is the highest one in data
+						double localmin = Plots[WhichFSIModel]->GetBinContent(Plots[WhichFSIModel]->FindBin(4));
 						if (localmin < min && localmin != 0) { min = localmin; }
 
 						TString XLabel = Plots[WhichFSIModel]->GetXaxis()->GetTitle();
-						//Plots[0]->GetXaxis()->SetTitle(XLabel);
 
 						Plots[WhichFSIModel]->GetXaxis()->SetNdivisions(5);
 						Plots[WhichFSIModel]->GetYaxis()->SetNdivisions(Ndivisions);
@@ -254,76 +199,40 @@ void ChargedPionMultiplicities_ZeroProton() {
 
 						// Multiplicity plots
 
-						if (NameOfPlots[WhichPlot] == "h1_Nphot" || NameOfPlots[WhichPlot] == "h1_Nprot" || NameOfPlots[WhichPlot] == "h1_Npi") {
+						Plots[WhichFSIModel]->GetYaxis()->SetLabelOffset(-0.004);
+						Plots[WhichFSIModel]->GetYaxis()->SetRangeUser(1E1,2*1E7);
+						PlotCanvas->SetLogy();
 
-							Plots[WhichFSIModel]->GetYaxis()->SetLabelOffset(-0.004);
-							//Plots[WhichFSIModel]->Rebin();
-							Plots[WhichFSIModel]->GetYaxis()->SetRangeUser(1E3,2*1E7);
-							PlotCanvas->SetLogy();
-
-							if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
+						if (string(FSILabel[WhichFSIModel]).find("Data") != std::string::npos) { 
 						 
-								Plots[WhichFSIModel]->SetMarkerSize(3.); 
-								if (NameOfPlots[WhichPlot] == "h1_Nprot") { 
-									Plots[WhichFSIModel]->SetMarkerColor(kBlack); Plots[WhichFSIModel]->SetMarkerStyle(20); }
-								else { 
-									Plots[WhichFSIModel]->SetLineColor(kBlue); 
-									Plots[WhichFSIModel]->SetMarkerColor(kBlue); 
-									Plots[WhichFSIModel]->SetMarkerStyle(24);
-								}
-								gStyle->SetErrorX(0); 
-								Plots[WhichFSIModel]->Draw("e same"); 
+							Plots[WhichFSIModel]->SetMarkerSize(3.); 
+							Plots[WhichFSIModel]->SetLineColor(kBlack); 
+							Plots[WhichFSIModel]->SetMarkerColor(kBlack); 
+							Plots[WhichFSIModel]->SetMarkerStyle(20);
+							gStyle->SetErrorX(0); 
+							Plots[WhichFSIModel]->Draw("e same"); 
 
-								// -----------------------------------------------------------------------------------------
+							leg->AddEntry(Plots[WhichFSIModel],DirNames[WhichFSIModel],"p");
 
-								int nbins = Plots[WhichFSIModel]->GetXaxis()->GetNbins();
+						} else {
 
-								double Min = -0.5, Max = 4.5;
+							Plots[WhichFSIModel]->Draw("hist same");
+							leg->AddEntry(Plots[WhichFSIModel],DirNames[WhichFSIModel],"l");	
 
-								int counter = 0;
+							for (int i = 0; i < 4; i++) {
 
-								for (int i = 0; i < nbins; i++) {
+								TruePlots[i]->Scale(ScalingFactor);
+								TruePlots[i]->SetLineColor( BreakDownColors.at(i) );
+								TruePlots[i]->SetLineWidth(LineWidth);
+								TruePlots[i]->Draw("hist same");
 
-									double BinContent = Plots[WhichFSIModel]->GetBinContent(i+1);
-									double BinError = Plots[WhichFSIModel]->GetBinError(i+1);
-									double BinLowEdge = Plots[WhichFSIModel]->GetBinLowEdge(i+1);			
-									double BinWidth = Plots[WhichFSIModel]->GetBinWidth(i+1);
-									double PreviousBinWidth = Plots[WhichFSIModel]->GetBinWidth(i);
-									double BinHighEdge = BinLowEdge + BinWidth;
+								leg->AddEntry(TruePlots[i],GenieFSILabel[i],"l");
 
-									if (BinLowEdge > Min-PreviousBinWidth && BinLowEdge < Max) {
-										myTxtFile << counter+1 << ";" << BinLowEdge << ";" << BinHighEdge << ";" << BinContent << ";" << BinError << endl;
-										counter++;
-									}
+							}													
 
-								}
+						}
 
-								myTxtFile << endl;
-
-								// -----------------------------------------------------------------------------------------
-
-							}
-							else { 
-
-								Plots[WhichFSIModel]->SetLineStyle(Style[WhichFSIModel]);
-								if (NameOfPlots[WhichPlot] == "h1_Nprot") { Plots[WhichFSIModel]->SetLineColor(kBlack); }
-								else { Plots[WhichFSIModel]->SetLineColor(kBlue); }
-								Plots[WhichFSIModel]->Draw("hist same"); 
-								gStyle->SetErrorX(0); 
-								Plots[0]->Draw("e same"); 
-							}
-						} 
-
-						// ----------------------------------------------------------------------------------------------------
-
-//						if ( FSILabel[WhichFSIModel] == "Data") { leg->AddEntry(Plots[WhichFSIModel]," /","p"); }
-//						else { 
-							if (NameOfPlots[WhichPlot] == "h1_Nprot" && FSILabel[WhichFSIModel] == "SuSav2") { leg->AddEntry(Plots[WhichFSIModel],"SuSav2","l"); }
-							if (NameOfPlots[WhichPlot] == "h1_Nprot" && FSILabel[WhichFSIModel] == "Genie") { leg->AddEntry(Plots[WhichFSIModel],"G2018","l"); }
-//							else { leg->AddEntry(Plots[WhichFSIModel]," #pi^{#pm}","l"); }
-//						}
-
-		                                // --------------------------------------------------------------------------------------------------
+		                // --------------------------------------------------------------------------------------------------
 
 					} // End of the loop over the FSI Models 
 
@@ -334,36 +243,19 @@ void ChargedPionMultiplicities_ZeroProton() {
 
 				leg->SetBorderSize(0);
 				leg->SetTextFont(FontStyle);
-				leg->SetTextSize(TextSize);
+				leg->SetTextSize(0.05);
 				leg->Draw();
 
 				TLatex latexData;
 				latexData.SetTextFont(FontStyle);
 				latexData.SetTextSize(TextSize);
-				latexData.DrawLatexNDC(0.65,0.7,"Protons");
-
-				TLatex latexGenie;
-				latexGenie.SetTextFont(FontStyle);
-				latexGenie.SetTextColor(kBlue);
-				latexGenie.SetTextSize(TextSize);
-				latexGenie.DrawLatexNDC(0.5,0.45,"#pi^{#pm}");
+				latexData.DrawLatexNDC(0.2,0.91,"0 Detected Protons");
 
 				// -----------------------------------------------------------------------------------------------------------------------------------------
 
-				TString ext = "";
-				if ( xBCut[WhichxBCut] == "xBCut" ) { ext = "xB_"; } 
+				PlotCanvas->SaveAs(nucleus[WhichNucleus]+"_" +E[WhichEnergy]+"_" +"ChargedPion_ZeroProton_Multiplicities.pdf");
 
-				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"+ext+nucleus[WhichNucleus]+"_" 
-					+E[WhichEnergy]+"_" +"Multiplicities.pdf");
-
-				PlotCanvas->SaveAs("../../../myPlots/pdf/"+xBCut[WhichxBCut]+"/"+version+nucleus[WhichNucleus]+"/"+E[WhichEnergy]+"/"+ext+nucleus[WhichNucleus]+"_" 
-					+E[WhichEnergy]+"_" +"Multiplicities.eps");
-
-				TFile* f = new TFile("Multiplicities.root","recreate");
-				gStyle->SetOptStat(0);	
-				PlotCanvas->Write();
-
-				//delete PlotCanvas;
+				delete PlotCanvas;
 
 				// -----------------------------------------------------------------------------------------------------------------------------------------
 
