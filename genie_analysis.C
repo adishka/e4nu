@@ -664,7 +664,7 @@ void genie_analysis::Loop(Int_t choice) {
 	TH2F *h2_PiMinus_Theta_Momentum = new TH2F("h2_PiMinus_Theta_Momentum",";P_{#pi^{-}} [GeV/c];#theta_{#pi^{-}}",6000,0.,6,360,0,360);
 
 	TH2F *h2_Gamma_Theta_Phi = new TH2F("h2_Gamma_Theta_Phi",";#phi_{#gamma} [GeV/c];#theta_{#gamma}",360,0.,360,360,0,360);
-	TH2F *h2_RelGammaElectron_Theta_Phi = new TH2F("h2_RelGammaElectron_Theta_Phi",";#Delta#phi_{#gamma,e'} [deg];#Delta#theta_{#gamma,e'} [deg]",360,0.,360,180,0,180);	
+	TH2F *h2_RelGammaElectron_Theta_Phi = new TH2F("h2_RelGammaElectron_Theta_Phi",";#Delta#phi_{#gamma,e'} [deg];#Delta#theta_{#gamma,e'} [deg]",360,-180.,180,120,0,120);	
 
 	TH2F *h2_Gamma_Theta_Momentum_FirstSector = new TH2F("h2_Gamma_Theta_Momentum_FirstSector",";P_{#gamma} [GeV/c];#theta_{#gamma}",6000,0.,6,360,0,360);
 	TH2F *h2_Gamma_Theta_Momentum_SecondSector = new TH2F("h2_Gamma_Theta_Momentum_SecondSector",";P_{#gamma} [GeV/c];#theta_{#gamma}",6000,0.,6,360,0,360);
@@ -1850,7 +1850,7 @@ void genie_analysis::Loop(Int_t choice) {
 				CosDeltaThetaElectronPhotonAboveThreshold->Fill( cos( V3_phot_angles.Angle(V3_el) ) );
 				CosDeltaPhiElectronPhotonAboveThreshold->Fill( cos( neut_phi_mod-el_phi_mod*TMath::Pi()/180. ) );
 
-				h2_RelGammaElectron_Theta_Phi->Fill(TMath::Abs(neut_phi_mod-el_phi_mod),V3_phot_angles.Angle(V3_el)*TMath::RadToDeg(),wght);
+				h2_RelGammaElectron_Theta_Phi->Fill(neut_phi_mod-el_phi_mod,V3_phot_angles.Angle(V3_el)*TMath::RadToDeg(),wght);
 
 				 // within 40 degrees in theta and 30 degrees in phi. Electron phi has already added 30 degree and between 0 to 360
 
