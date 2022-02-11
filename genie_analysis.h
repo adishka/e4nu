@@ -8,7 +8,6 @@
 #include <TLorentzVector.h>
 
 #include "Fiducial.h"
-#include "Subtraction.h"
 
 class genie_analysis {
 public :
@@ -18,9 +17,7 @@ public :
    std::string ftarget;    // The target name  // ------------------------------->>>>>>>>>>>>>Mariana
    std::string fbeam_en;   // The beam energy  // ------------------------------->>>>>>>>>>>>>Mariana
 
-   int N_tot;
    Fiducial   *fiducialcut;
-   Subtraction *rotation;
    int fTorusCurrent;
    int fchoice;
    std::string target_name;
@@ -218,7 +215,7 @@ public :
    TBranch        *b_sumKEf;   //!
    TBranch        *b_calresp0;   //!
 
-   genie_analysis(std::string, std::string, int, int ,TTree *tree=0);
+   genie_analysis(std::string, std::string, int ,TTree *tree=0);
    virtual ~genie_analysis();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -303,7 +300,7 @@ public :
 #endif
 #ifdef GENIE_ANALYSIS_C
 
-genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int number_rotations, int choice,TTree *tree) : fChain(0)
+genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int choice,TTree *tree) : fChain(0)
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
@@ -311,8 +308,6 @@ genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int n
 
 
      fiducialcut = new Fiducial();
-     rotation = new Subtraction();
-     N_tot = number_rotations;
      ftarget = a_target;
      fbeam_en = a_beam_en;
      fTorusCurrent = 0;

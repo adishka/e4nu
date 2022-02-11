@@ -229,7 +229,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 		// ---------------------------------------------------------------------------------------------------------------
 
-		if(jentry == 0){ // first entry to initialize TorusCurrent, Fiducials and Subtraction classes
+		if(jentry == 0){ // first entry to initialize TorusCurrent, Fiducials
 
 			//The TorusField has to be set before the Fiducialcut parameters are initialized
 			if(en_beam[fbeam_en]>1. && en_beam[fbeam_en]<2. ) //1.1 GeV, we are not using the 1.1 GeV data with 1500 current field
@@ -245,12 +245,8 @@ void genie_analysis::Loop(Int_t choice) {
 			fiducialcut->SetConstants(fTorusCurrent, target_name, en_beam);
 			fiducialcut->SetFiducialCutParameters(fbeam_en);
 			std::cout << " EventLoop: Finished setting up fiducial cut class " << std::endl;
-			rotation->InitSubtraction(StoreEnergy, target_name, bind_en, N_tot, fiducialcut);
-			std::cout << " EventLoop: Finished setting up rotation initialize " << std::endl;
-		}
 
-		//Resets q vector to (0,0,0)
-		rotation->ResetQVector();
+		}
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -358,10 +354,6 @@ void genie_analysis::Loop(Int_t choice) {
 		}
 
 		// ---------------------------------------------------------------------------------------------------------------------
-
-		//Set q vector for the following rotations for the subtraction procedure
-		rotation->SetQVector(V3_q);
-//		rotation->PrintQVector();
 
 		int ElectronSector = el_phi_mod / 60.;
 
