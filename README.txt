@@ -1,31 +1,13 @@
-# Runs to be used for the 1.1 GeV 12C 1500 samples
+git clone https://github.com/afropapp13/e4nu.git e4v_truth
+cd e4v_truth
+git checkout e4v_truth
 
-18294
-18297
-18298
-18306
-18307
-18335
+# Make sure that your file is structured following the gst genie format 
+# https://genie-docdb.pp.rl.ac.uk/DocDB/0000/000002/007/man.pdf (section 9.5.2.1)
 
-# ------------------------------------------------------
+# Once that structure is established, change the path to the input gst file in genie_analysis.h (line 350)
 
-When Mikhail's cook is gonna be ready
-
-1) make runnb private member of the class
-2) declare array with runs for each energy / target
-3) run (GetCharge_)FilterData for each run number 
-
-4) store output under "scratch" area
-   /lustre19/expphy/volatile/clas/clase2/apapadop
-
-5) merge them under "persistent" area
-   /w/hallb-scifs17exp/clas/claseg2/apapadop
+make clean;make
+./genie_analysis C12 2261 1
 
 
-export nucleus="56Fe"; export energy="2261"; 
-hadd /w/hallb-scifs17exp/clas/claseg2/apapadop/MikhailCook_genie_filtered_data_e2a_ep_${nucleus}_${energy}_neutrino6_united4_radphot_test_100M.root /lustre19/expphy/volatile/clas/clase2/apapadop/MikhailCook_RunNumber_*_genie_filtered_data_e2a_ep_${nucleus}_${energy}_neutrino6_united4_radphot_test_100M.root
-
-
-# Don't forget to pin the files or they will be deleted from cache 
-
-jcache pin /cache/clas/e2a/production/pass3/v1/4461/C12/HROOT/*.root -D 60
