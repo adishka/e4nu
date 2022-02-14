@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 {
 
 
-  if( argc < 5 ){
+  if( argc < 4 ){
     std::cout<<"Please specify the target (3He, 56Fe, C12, 4He), the beam energy (1161, 2261, 4461),"<< endl;
     std::cout << " the data type (CLAS data = 0, simulation = 1) "<<std::endl;
     std::cout<<"================= Usage ==============="<<std::endl;
@@ -24,7 +24,7 @@ int main(int argc, char **argv)
   int choice = atoi(argv[3]);
 
   if (choice != 1 && choice != 0) {
-    std::cout << "Unknown option for parameter 3. It should be either 0/1/2/3/4. The given value is " << choice << std::endl;
+    std::cout << "Unknown option for parameter 3. It should be either 0/1. The given value is " << choice << std::endl;
     return 0;
   }
 

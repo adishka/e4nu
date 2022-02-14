@@ -1,9 +1,8 @@
 #define GENIE_ANALYSIS_C
+
 #include "genie_analysis.h"
 #include "Constants.h"
-#include <TH2.h>
-#include <TStyle.h>
-#include <TCanvas.h>
+#include <TH3.h>
 #include <TH1D.h>
 #include <TFile.h>
 #include <TMath.h>
@@ -11,14 +10,13 @@
 #include <TVectorT.h>
 #include <TRandom3.h>
 #include <TF1.h>
-#include <TH3.h>
 
+#include <exception>
+#include <iostream>
+#include <fstream>
 #include <vector>
 #include <iomanip>
 #include <sstream>
-#include <iostream>
-#include <exception>
-#include <fstream>
 
 using namespace std;
 
@@ -30,7 +28,7 @@ using namespace std;
 void genie_analysis::Loop(Int_t choice) {
 
 	TH1D::SetDefaultSumw2();
-	TH2D::SetDefaultSumw2();
+	TH3D::SetDefaultSumw2();	
 
 	// ---------------------------------------------------------------------------------------------------------------
 
@@ -48,14 +46,13 @@ void genie_analysis::Loop(Int_t choice) {
 	// ---------------------------------------------------------------------------------------------------------------
 
 	//Choice = 0 is for analysis of CLAS data while choice = 1 is for the analysis of GENIE Simulation
-	if (choice != 1 && choice != 0) {
-		std::cout << "This parameter value is not implemented in genie_analysis::Loop(). It should be either 0 or 1. The given value is " << choice << std::endl;
+	if (choice != 4 && choice != 3 && choice != 2 && choice != 1 && choice != 0) {
+		std::cout << "This parameter value is not implemented in genie_analysis::Loop(). It should be 0/1/2/3/4. The given value is " << choice << std::endl;
 		std::exit(0);
 	}
 
 	std::map<std::string,double> bind_en;
 	std::map<std::string,double> target_mass;
-	std::map<std::string,double> residual_target_mass;
 	std::map<std::string, double> Ecal_offset; // that might not be necessary for simulation data
 
 	target_name = ftarget; //std string for target name
@@ -72,9 +69,7 @@ void genie_analysis::Loop(Int_t choice) {
 	en_beam_Eqe["4461"]=4.461;
 
 	if (fChain == 0) return;
-
 	Long64_t nentries = fChain->GetEntriesFast();
-	//nentries =8000000;
 
 	//Resolutions for Smearing for GENIE simulation data
 	double reso_p = 0.01; // smearing for the proton
@@ -135,12 +130,6 @@ void genie_analysis::Loop(Int_t choice) {
 	target_mass["56Fe"]= 26*m_prot+30*m_neut-Fe_bind_en;
 	target_mass["CH2"] = 6*m_prot+6*m_neut-C12_bind_en;
 
-	residual_target_mass["3He"] = m_prot+m_neut-D2_bind_en;
-	residual_target_mass["4He"] = m_prot+2*m_neut-H3_bind_en;
-	residual_target_mass["C12"] = 5*m_prot+6*m_neut-B_bind_en;
-	residual_target_mass["56Fe"]= 25*m_prot+30*m_neut-Mn_bind_en;
-	residual_target_mass["CH2"] = 25*m_prot+30*m_neut-Mn_bind_en;
-
 	// ----------------------------------------------------------------------------------------
 
 	gRandom = new TRandom3();
@@ -176,8 +165,8 @@ void genie_analysis::Loop(Int_t choice) {
 	TFile *file_out;
 	TString FileName = ""; 
 
-	if (choice == 0) { FileName = Form("/work/clas/claseg2/apapadop/data_e2a_ep_%s_%s_neutrino6_united4_radphot_test.root",ftarget.c_str(),fbeam_en.c_str()); }
-	if (choice == 1){ FileName = Form("genie_e2a_ep_%s_%s_neutrino6_united4_radphot_test_SuSav2.root",ftarget.c_str(),fbeam_en.c_str()); }
+	if (choice == 0) { FileName = Form("data_%s_%s_e4v_multi.root",ftarget.c_str(),fbeam_en.c_str()); }
+	if (choice == 1){ FileName = Form("genie_gst_%s_%s_e4v_multi.root",ftarget.c_str(),fbeam_en.c_str()); }
 
 	file_out = new TFile(FileName, "Recreate");
 
@@ -189,13 +178,13 @@ void genie_analysis::Loop(Int_t choice) {
 	fiducialcut->InitEClimits();
 	std::cout << " Test InitEClimits Loop " << fiducialcut->up_lim1_ec->Eval(60) << std::endl;
 
+	//Definition and initialization of Histograms
+
 	TH1F *h1_Nprot=new TH1F("h1_Nprot","",5,-0.5,4.5);
-	TH1F *h1_Nprot_NonZeroProt=new TH1F("h1_Nprot_NonZeroProt","",4,0.5,4.5);
 	TH1F *h1_Nphot=new TH1F("h1_Nphot","",10,-0.5,4.5);
 	TH1F *h1_Npiphot=new TH1F("h1_Npiphot","",10,-0.5,4.5);
 	TH1F *h1_Npiphot_norad=new TH1F("h1_Npiphot_norad","",10,-0.5,4.5);
 	TH1F *h1_Npi=new TH1F("h1_Npi","",5,-0.5,4.5);
-	TH1F *h1_Npi_NonZeroProt=new TH1F("h1_Npi_NonZeroProt","",4,-0.5,4.5);
 	TH1F *h1_Npipl=new TH1F("h1_Npipl","",10,-0.5,4.5);
 	TH1F *h1_Npimi=new TH1F("h1_Npimi","",10,-0.5,4.5);
 
@@ -214,6 +203,8 @@ void genie_analysis::Loop(Int_t choice) {
 
 	/** Beginning of Event Loop **/
 
+	int TotalCounter = 0;
+
 	for (Long64_t jentry=0; jentry<nentries;jentry++) {
 
 		Long64_t ientry = LoadTree(jentry);
@@ -230,13 +221,15 @@ void genie_analysis::Loop(Int_t choice) {
 			//cout<<jentry<<endl;
 		}
 
+		TotalCounter ++;
+
 		// ---------------------------------------------------------------------------------------------------------------
 
 		std::string StoreEnergy = fbeam_en;
 
 		// ---------------------------------------------------------------------------------------------------------------
 
-		if(jentry == 0){ //first entry to initialize TorusCurrent, Fiducials and Subtraction classes
+		if(jentry == 0){ // first entry to initialize TorusCurrent, Fiducials
 
 			//The TorusField has to be set before the Fiducialcut parameters are initialized
 			if(en_beam[fbeam_en]>1. && en_beam[fbeam_en]<2. ) //1.1 GeV, we are not using the 1.1 GeV data with 1500 current field
@@ -252,6 +245,7 @@ void genie_analysis::Loop(Int_t choice) {
 			fiducialcut->SetConstants(fTorusCurrent, target_name, en_beam);
 			fiducialcut->SetFiducialCutParameters(fbeam_en);
 			std::cout << " EventLoop: Finished setting up fiducial cut class " << std::endl;
+
 		}
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -269,7 +263,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 		double SmearedPe;
 		double SmearedEe;
-		double e_acc_ratio = 1.;	//will be 1 for CLAS data
+		double e_acc_ratio = 1.;	// will be 1 for CLAS data
 
 		// Outgoing e',	Uncorr and corrected are the same read from root file.
 		//V4_el and V3_el will be changed by smearing for GENIE simulation data
@@ -301,8 +295,6 @@ void genie_analysis::Loop(Int_t choice) {
 
 			e_acc_ratio = acceptance_c(el_momentum, cos(el_theta), phi_ElectronOut, 11,file_acceptance,ApplyAccWeights);
 			if ( fabs(e_acc_ratio) != e_acc_ratio ) { continue; }
-
-			// --------------------------------------------------------------------------------------------------		
 
 		}
 
@@ -338,18 +330,11 @@ void genie_analysis::Loop(Int_t choice) {
 		// Securing ourselves against infinities
 		if ( fabs(WeightIncl) != WeightIncl ) { continue; }
 
-		//Calculation of kinematic quantities (nu, Q2, x bjorken, q and W)
-		double nu = -(V4_el-V4_beam).E();
-		double x_bjk = reco_Q2/(2*m_prot*nu);
-
-		// QE selection
-		//if ( fabs(x_bjk - 1.) > 0.2) { continue; }
-
 		// ---------------------------------------------------------------------------------------------------------------------
 
 		TVector3 V3_q = (V4_beam-V4_el).Vect();
-		double V3_q_theta_deg = V3_q.Theta() * 180. / TMath::Pi();
-		double W_var = TMath::Sqrt((m_prot+nu)*(m_prot+nu)-V3_q*V3_q);
+		double nu = -(V4_el-V4_beam).E();		
+		double W_var = TMath::Sqrt((m_prot+nu)*(m_prot+nu)-V3_q*V3_q);		
 
 		//converting theta to degrees
 		el_theta = el_theta*TMath::RadToDeg();
@@ -374,7 +359,7 @@ void genie_analysis::Loop(Int_t choice) {
 
 		// ---------------------------------------------------------------------------------------------------------------------
 
-		// apapadop: Oct 8 2020: ditching bad sectors
+		// Ditching bad sectors
 		// Counting sectors from 0 to 5
 
 		if (!UseAllSectors) { 
@@ -388,20 +373,6 @@ void genie_analysis::Loop(Int_t choice) {
  
 		//Now we are done with the selection of electrons. Next step is looking for other hadrons in the events
 
-		//Index variables for hadrons (p and pions)
-		int index_p[20]; //index for each proton
-		int index_pi[20]; //index for each pion
-		int ind_pi_phot[20]; //index for pions and photons
-		int index_pipl[20]; //index for each pi plus
-		int index_pimi[20]; //index for each pi minus
-
-		int charge_pi[20]; //Charge for the pions and photons
-		//Smeared Momentum and Energy values for GENIE (simulation) data
-		double Smeared_Pp[20]; //smeared momentum values for protons
-		double Smeared_Ep[20]; //smeared energy values for protons
-		double Smeared_Ppi[20]; //smeared momentum values for pions
-		double Smeared_Epi[20]; //smeared energy values for pions
-
 		//Number of hadrons
 		int num_p = 0;
 		int num_pi = 0;
@@ -412,26 +383,10 @@ void genie_analysis::Loop(Int_t choice) {
 		int num_pi_phot_nonrad = 0; //counting all pions and non-radiation photons
 		int num_phot_rad = 0; //counting radiation photons
 		int num_phot_nonrad = 0;
-		//Index and number variables for neutral particles
-		int ec_index_n[20];
 		int ec_num_n = 0;
-		bool ec_radstat_n[20];
-
-		//Array initialize to -1 or false
-		for (int i = 0; i < 20; i++) {
-			index_p[i] = -1;   index_pi[i] = -1;   index_pipl[i] = -1;   index_pimi[i] = -1;   ind_pi_phot[i] = -1;
-			ec_index_n[i] = -1;   ec_radstat_n[i] = false;
-			charge_pi[i] = -2; //default number should be not a possible real charge
-			Smeared_Pp[i]  = 0; Smeared_Ep[i]  = 0;  //default 0 momentum and energy after smearing
-			Smeared_Ppi[i] = 0; Smeared_Epi[i] = 0;  //default 0 momentum and energy after smearing
-		}
 
 		const double phot_rad_cut = 40;
 		const double phot_e_phidiffcut = 30; //electron - photon phi difference cut
-
-		// Creating vectors to store id of particles in the array
-		vector <int> ProtonID; vector <int> PiPlusID; vector <int> PiMinusID; vector <int> PhotonID;
-		ProtonID.clear(); PiPlusID.clear(); PiMinusID.clear();  PhotonID.clear();
 
 		//Loop for Hadrons
 		for (int i = 0; i < nf; i++) {
@@ -441,12 +396,6 @@ void genie_analysis::Loop(Int_t choice) {
 			//Start of proton selection
 
 			if (pdgf[i] == 2212  && pf[i] > 0.3) {
-
-				double ProtonWeight = 1.;
-				double ProtonPhi_Deg = -999.;
-				double ProtonTheta_Deg = -999.;
-				double ProtonCosTheta = -999.;
-				double ProtonMag = -999.;
 
 				if ( choice > 0 ) { // GENIE
 
@@ -458,42 +407,23 @@ void genie_analysis::Loop(Int_t choice) {
 					double phi_prot = V3_prot_corr.Phi();
 					V3_prot_corr.SetPhi(phi_prot + TMath::Pi()); // Vec.Phi() is between (-180,180), // GENIE coordinate system flipped with respect to CLAS
 
-					ProtonPhi_Deg = V3_prot_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.; 
-					if (ProtonPhi_Deg > 360.) { ProtonPhi_Deg -= 360.; } 
-					ProtonTheta_Deg = V3_prot_corr.Theta() * 180. / TMath::Pi();
-
 					// apapadop Nov 4 2020: true proton counter for truth level studies above a min theta threshold (12 deg)
 					if (PFiducialCutExtra(StoreEnergy, V3_prot_corr)) { TrueProtonsAboveThreshold++; }
-
 					if (ApplyFiducials) { if (!PFiducialCut(StoreEnergy, V3_prot_corr) ) { continue; } } // Proton theta & phi fiducial cuts
 
 					num_p = num_p + 1;
-					index_p[num_p - 1] = i;
-					ProtonID.push_back(i);
-					Smeared_Pp[num_p - 1] = temp_smear_P;
-					Smeared_Ep[num_p - 1] = temp_smear_E;
-
 					phi_prot += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
-					ProtonCosTheta = V3_prot_corr.CosTheta(); 
-					ProtonMag = V3_prot_corr.Mag(); 
+					double ProtonCosTheta = V3_prot_corr.CosTheta(); 
+					double ProtonMag = V3_prot_corr.Mag(); 
 
 					//acceptance_c takes phi in radians and here unmodified by 30 degree.
-					ProtonWeight = wght*acceptance_c(ProtonMag,ProtonCosTheta, phi_prot, 2212,file_acceptance_p,ApplyAccWeights);
+					double ProtonWeight = wght*acceptance_c(ProtonMag,ProtonCosTheta, phi_prot, 2212,file_acceptance_p,ApplyAccWeights);
 					if ( fabs(ProtonWeight) != ProtonWeight ) { continue; } 
 
 				}
 				else { // CLAS data does not need Fiducial Cut again
 
 					num_p = num_p + 1;
-					index_p[num_p - 1] = i;
-					ProtonID.push_back(i);
-
-					TVector3 V3_prot_corr(pxf[i+60],pyf[i+60],pzf[i+60]);
-
-					ProtonPhi_Deg = V3_prot_corr.Phi() * 180. / TMath::Pi() + 180. + 30.; 
-					if (ProtonPhi_Deg > 360.) { ProtonPhi_Deg -= 360.; } 
-					ProtonTheta_Deg = V3_prot_corr.Theta() * 180. / TMath::Pi(); 
-					ProtonMag = V3_prot_corr.Mag(); 
 
 				}
 
@@ -502,12 +432,6 @@ void genie_analysis::Loop(Int_t choice) {
 			// -------------------------------------------------------------------------------------------------------------------
 
 			if (pdgf[i] == -211  && pf[i] > 0.15)  { //Pi minus
-
-				double PiMinusWeight = 1.;
-				double PiMinusPhi_Deg = -999.;
-				double PiMinusTheta_Deg = -999.;
-				double PiMinusCosTheta = -999.;
-				double PiMinusMag = -999.;
 
 				if ( choice > 0) { //GENIE data
 
@@ -529,50 +453,30 @@ void genie_analysis::Loop(Int_t choice) {
 
 					}
 
+					// Pi_phot_fid_united with +1 is for Piplus and Pi_phot_fid_united with -1 is for Piminus
 					if (ApplyFiducials) { if ( !Pi_phot_fid_united(StoreEnergy, V3_pi_corr, -1) ) {  continue; } }
 
 					num_pimi = num_pimi + 1;
 					num_pi = num_pi + 1;
 					num_pi_phot = num_pi_phot + 1;
 					num_pi_phot_nonrad = num_pi_phot_nonrad + 1;
-					index_pimi[num_pi_phot - 1] = i;
-					index_pi[num_pi_phot - 1] = i;
-					ind_pi_phot[num_pi_phot - 1] = i;
-					PiMinusID.push_back(i);
-					charge_pi[num_pi_phot - 1] = -1;
-					Smeared_Ppi[num_pi_phot - 1] = temp_smear_P;
-					Smeared_Epi[num_pi_phot - 1] = temp_smear_E;
 
 					phi_pion += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
-					PiMinusCosTheta = V3_pi_corr.CosTheta(); 
-					PiMinusMag = V3_pi_corr.Mag(); 
+					double PiMinusCosTheta = V3_pi_corr.CosTheta(); 
+					double PiMinusMag = V3_pi_corr.Mag(); 
 
-					PiMinusWeight = wght * acceptance_c(PiMinusMag,PiMinusCosTheta, phi_pion, -211,file_acceptance_pim,true);
+					//acceptance_c takes phi in radians and here unmodified by 30 degree.
+					double PiMinusWeight = wght * acceptance_c(PiMinusMag,PiMinusCosTheta, phi_pion, -211,file_acceptance_pim,true);
 
 					if ( fabs(PiMinusWeight) != PiMinusWeight ) { continue; }
 
-					PiMinusPhi_Deg = V3_pi_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.;
-					if (PiMinusPhi_Deg > 360.) { PiMinusPhi_Deg -= 360.; } 
-					PiMinusTheta_Deg = V3_pi_corr.Theta() * 180. / TMath::Pi();
-
 				}
 				else { // CLAS data does not need Fiducial Cut again
+
 					num_pimi = num_pimi + 1;
 					num_pi = num_pi + 1;
 					num_pi_phot = num_pi_phot + 1;
 					num_pi_phot_nonrad = num_pi_phot_nonrad + 1;
-					index_pimi[num_pi_phot - 1] = i;
-					index_pi[num_pi_phot - 1] = i;
-					ind_pi_phot[num_pi_phot - 1] = i;
-					PiMinusID.push_back(i);
-					charge_pi[num_pi_phot - 1] = -1;
-
-					TVector3 V3_pi_corr(pxf[i],pyf[i],pzf[i]);
-
-					PiMinusPhi_Deg = V3_pi_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.;
-					if (PiMinusPhi_Deg > 360.) { PiMinusPhi_Deg -= 360.; }
-					PiMinusTheta_Deg = V3_pi_corr.Theta() * 180. / TMath::Pi(); 
-					PiMinusMag = V3_pi_corr.Mag(); 
 
 				}
 
@@ -581,12 +485,6 @@ void genie_analysis::Loop(Int_t choice) {
 			// -------------------------------------------------------------------------------------------------------------------
 
 			if ( pdgf[i] == 211  && pf[i] > 0.15)  {
-
-				double PiPlusWeight = 1.;
-				double PiPlusPhi_Deg = -999.;
-				double PiPlusTheta_Deg = -999.;
-				double PiPlusCosTheta = -999.;
-				double PiPlusMag = -999.;
 
 				if ( choice > 0) { //GENIE data
 					//Smearing of pi plus
@@ -606,50 +504,29 @@ void genie_analysis::Loop(Int_t choice) {
 
 					}
 
+					// Pi_phot_fid_united with +1 is for Piplus and Pi_phot_fid_united with -1 is for Piminus
 					if (ApplyFiducials) { if ( !Pi_phot_fid_united(StoreEnergy, V3_pi_corr, 1) )     {  continue; } }
 
 					num_pipl = num_pipl + 1;
 					num_pi  = num_pi + 1;
 					num_pi_phot = num_pi_phot + 1;
 					num_pi_phot_nonrad = num_pi_phot_nonrad + 1;
-					index_pipl[num_pi_phot - 1] = i;
-					index_pi[num_pi_phot - 1] = i;
-					ind_pi_phot[num_pi_phot - 1] = i;
-					PiPlusID.push_back(i);
-					charge_pi[num_pi_phot - 1] = 1;
-					Smeared_Ppi[num_pi_phot - 1] = temp_smear_P;
-					Smeared_Epi[num_pi_phot - 1] = temp_smear_E;
 
 					phi_pion += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
-					PiPlusCosTheta = V3_pi_corr.CosTheta(); 
-					PiPlusMag = V3_pi_corr.Mag(); 
+					double PiPlusCosTheta = V3_pi_corr.CosTheta(); 
+					double PiPlusMag = V3_pi_corr.Mag(); 
 
 					// acceptance_c takes phi in radians and here unmodified by 30 degree.
-					PiPlusWeight = wght * acceptance_c(PiPlusMag,PiPlusCosTheta, phi_pion, 211,file_acceptance_pip,ApplyAccWeights);
+					double PiPlusWeight = wght * acceptance_c(PiPlusMag,PiPlusCosTheta, phi_pion, 211,file_acceptance_pip,ApplyAccWeights);
 					if ( fabs(PiPlusWeight) != PiPlusWeight ) { continue; }
-
-					PiPlusPhi_Deg = V3_pi_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.;
-					if (PiPlusPhi_Deg > 360.) { PiPlusPhi_Deg -= 360.; }
-					PiPlusTheta_Deg = V3_pi_corr.Theta() * 180. / TMath::Pi();
 
 				}
 				else { //CLAS data does not need Fiducial Cut again
+
 					num_pipl = num_pipl + 1;
 					num_pi  = num_pi + 1;
 					num_pi_phot = num_pi_phot + 1;
 					num_pi_phot_nonrad = num_pi_phot_nonrad + 1;
-					index_pipl[num_pi_phot - 1] = i;
-					ind_pi_phot[num_pi_phot - 1] = i;
-					ind_pi_phot[num_pi_phot - 1] = i;
-					PiPlusID.push_back(i);
-					charge_pi[num_pi_phot - 1] = 1;
-
-					TVector3 V3_pi_corr(pxf[i],pyf[i],pzf[i]);
-
-					PiPlusPhi_Deg = V3_pi_corr.Phi() * 180. / TMath::Pi()  + 180. + 30.;
-					if (PiPlusPhi_Deg > 360.) { PiPlusPhi_Deg -= 360.; }
-					PiPlusTheta_Deg = V3_pi_corr.Theta() * 180. / TMath::Pi(); 
-					PiPlusMag = V3_pi_corr.Mag(); 
 
 				}
 
@@ -683,32 +560,12 @@ void genie_analysis::Loop(Int_t choice) {
 
 				ec_num_n = ec_num_n + 1;
 				num_pi_phot = num_pi_phot + 1;
-				ind_pi_phot[num_pi_phot - 1] = i;
-				PhotonID.push_back(i);
-
-				Smeared_Ppi[num_pi_phot - 1] = V3_phot_angles.Mag();
-				Smeared_Epi[num_pi_phot - 1] = V3_phot_angles.Mag();
 
 				 // within 40 degrees in theta and 30 degrees in phi. Electron phi has already added 30 degree and between 0 to 360
 
 				 if(V3_phot_angles.Angle(V3_el)*TMath::RadToDeg() < phot_rad_cut && fabs(neut_phi_mod-el_phi_mod) < phot_e_phidiffcut ) {
 
-					ec_radstat_n[num_pi_phot - 1] = true; // select radiation photons
 					num_phot_rad = num_phot_rad + 1;
-
-				 }
-
-				 if(!ec_radstat_n[num_pi_phot - 1]) {
-
-					num_phot_nonrad = num_phot_nonrad + 1;
-
-					num_pi_phot_nonrad = num_pi_phot_nonrad + 1;
-					charge_pi[num_pi_phot - 1] = 0;
-
-					double GammaPhi_Deg = neut_phi_mod;
-					double GammaTheta_Deg = V3_phot_angles.Theta()*TMath::RadToDeg();
-					double GammaMag = V3_phot_angles.Mag();
-					double GammaWeight = wght;
 
 				 }
 
@@ -731,15 +588,9 @@ void genie_analysis::Loop(Int_t choice) {
 
 		}
 
-		// ----------------------------------------------------------------------------------------------------------------------------
-
 		//Skip event if there is at least one radiation photon
 
-		if (num_phot_rad > 0) {
-
-			continue;
-
-		}
+		if (num_phot_rad > 0) { continue; }
 
 		// -----------------------------------------------------------------------------------------------------------------------------
 
@@ -747,21 +598,13 @@ void genie_analysis::Loop(Int_t choice) {
 
 		h1_Npi->Fill(num_pi);
 		h1_Nprot->Fill(num_p);
-
-		if (num_p > 0) {
-
-			h1_Nprot_NonZeroProt->Fill(num_p);
-			h1_Npi_NonZeroProt->Fill(num_pi);
-
-		}
-
 		h1_Nphot->Fill(ec_num_n);
 		h1_Npipl->Fill(num_pipl);
 		h1_Npimi->Fill(num_pimi);
 		h1_Npiphot->Fill(num_pi_phot);
 		h1_Npiphot_norad->Fill(num_pi_phot_nonrad);
 
-	} //end of event loop (jentry)
+	} // end of event loop (jentry)
 
 	std::cout << "File " << FileName << " created" << std::endl << std::endl;
 

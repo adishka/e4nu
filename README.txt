@@ -9,3 +9,12 @@ git checkout e4v_multiplicity
 
 make clean;make
 ./genie_analysis C12 2261 1
+
+# Multiplicity plots of interest for particles within the fiducial volume of the CLAS detector & above detection threshold
+# Number of protons: h1_Nprot
+# Number of photons: h1_Nphot
+# Number of charged pions & photons (radiative and non radiative): h1_Npiphot
+# Number of charged pions & photons (non radiative): h1_Npiphot_norad
+# Number of charged pions: h1_Npi
+# Number of pi plus's: h1_Npipl
+# Number of pi minus's: h1_Npimi
