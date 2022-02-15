@@ -8,11 +8,6 @@
 #include <TLorentzVector.h>
 
 #include "Fiducial.h"
-#include "Subtraction.h"
-
-// Header file for the classes stored in the TTree if any.
-
-// Fixed size dimensions of array or collections stored in the TTree if any.
 
 class genie_analysis {
 public :
@@ -22,9 +17,7 @@ public :
    std::string ftarget;    // The target name  // ------------------------------->>>>>>>>>>>>>Mariana
    std::string fbeam_en;   // The beam energy  // ------------------------------->>>>>>>>>>>>>Mariana
 
-   int N_tot;
    Fiducial   *fiducialcut;
-   Subtraction *rotation;
    int fTorusCurrent;
    int fchoice;
    std::string target_name;
@@ -222,7 +215,7 @@ public :
    TBranch        *b_sumKEf;   //!
    TBranch        *b_calresp0;   //!
 
-   genie_analysis(std::string, std::string, int, int ,TTree *tree=0);
+   genie_analysis(std::string, std::string, int ,TTree *tree=0);
    virtual ~genie_analysis();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -233,10 +226,6 @@ public :
    virtual void     Show(Long64_t entry = -1);
 
 	// ------------------------------------------------------------------------------------------
-
-	// apapadop // Nov 23 2020: adding extra fiducials with lower theta bounds for protons, pi pluses & pi minuses
-	// Protons & Pi pluses are easy, just a min angle
-	// Pi minuses are a functional form theta = A + B / P
 
 	Bool_t PFiducialCutExtra(std::string beam_en, TVector3 momentum) {
 	
@@ -267,47 +256,17 @@ public :
    void SetFiducialCutParameters(std::string beam_en) {
      fiducialcut->SetFiducialCutParameters(beam_en);
    }
-   Bool_t EFiducialCut(std::string beam_en, TVector3 momentum) {
-     return fiducialcut->EFiducialCut(beam_en, momentum);
-   }
-   Bool_t PFiducialCut(std::string beam_en, TVector3 momentum) {
-     return fiducialcut->PFiducialCut(beam_en, momentum);
-   }
-   Bool_t PiplFiducialCut(std::string beam_en, TVector3 momentum,Float_t *philow,Float_t *phiup) {
-     return fiducialcut->PiplFiducialCut(beam_en, momentum, philow, phiup);
-   }
-   Bool_t PimiFiducialCut(std::string beam_en, TVector3 momentum,Float_t *philow,Float_t *phiup) {
-     return fiducialcut->PimiFiducialCut(beam_en, momentum, philow, phiup);
-   }
-   bool Phot_fid(TVector3 V3_phot) {
-     return fiducialcut->Phot_fid(V3_phot);
-   }
-   bool Pi_phot_fid_united(std::string beam_en, TVector3 V3_pi_phot, int q_pi_phot) {
-     return fiducialcut->Pi_phot_fid_united(beam_en,V3_pi_phot, q_pi_phot);
-   }
+
    Bool_t GetEPhiLimits(std::string beam_en, Float_t momentum, Float_t theta, Int_t sector, Float_t *EPhiMin, Float_t *EPhiMax) {
      return fiducialcut->GetEPhiLimits(beam_en, momentum, theta, sector, EPhiMin, EPhiMax);
    }
-   void prot3_rot_func(std::string beam_en, TVector3 V3q, TVector3 V3prot[3],TVector3  V3prot_uncorr[3],TLorentzVector V4el,double Ecal_3pto2p[][2],double  pmiss_perp_3pto2p[][2],double  P3pto2p[][2],double N_p1[3],double Ecal_3pto1p[3],double  pmiss_perp_3pto1p[3], double *N_p3det);
-   void prot2_rot_func(std::string beam_en, TVector3 V3q, TVector3  V3prot[2],TVector3  V3prot_uncorr[2],TLorentzVector V4el,double Ecal_2pto1p[2],double  pmiss_perp_2pto1p[2],double  P2pto1p[2], double *Nboth);
-   void prot1_pi1_rot_func(std::string beam_en, TVector3 V3q, TVector3  V3prot,TVector3 V3pi, int q_pi,bool radstat, double *N_pi_p,double *N_nopi_p);
-   void prot1_pi2_rot_func(std::string beam_en, TVector3 V3q, TVector3  V3prot,TVector3 V3pi[2], int q_pi[2],bool radstat[2], double *P_1p0pi,double P_1p1pi[2]);
-   void prot1_pi3_rot_func(std::string beam_en, TVector3 V3q, TVector3  V3prot,TVector3 V3pi[3], int q_pi[3],bool radstat[3],double *P_tot);
-   void prot2_pi1_rot_func(std::string beam_en, TVector3 V3q,TVector3 V3_2prot_corr[2],TVector3 V3_2prot_uncorr[2],TVector3 V3_1pi, int q_pi,bool radstat,TLorentzVector V4_el, double Ecal_2p1pi_to2p0pi[2],double p_miss_perp_2p1pi_to2p0pi[2],double P_2p1pito2p0pi[2],double P_2p1pito1p1pi[2],double P_2p1pito1p0pi[2],double *P_tot);
-   void prot2_pi2_rot_func(std::string beam_en, TVector3 V3_q,TVector3 V3_2prot_corr[2],TVector3 V3_2prot_uncorr[2],TVector3 V3_2pi[2], int q_pi[2],bool radstat[2],TLorentzVector V4_el, double Ecal_2p2pi[2],double p_miss_perp_2p2pi[2],double P_tot_2p[2]);
-   void prot3_pi1_rot_func(std::string beam_en, TVector3 V3_q,TVector3 V3_3prot_corr[3],TVector3 V3_3prot_uncorr[3],TVector3 V3_pi, int q_pi,bool radstat,TLorentzVector V4_el, double Ecal_3p1pi[3],double p_miss_perp_3p1pi[3],double P_tot_3p[3]);
-   void pi1_rot_func(std::string beam_en, TVector3 V3_pi, int q_pi,bool radstat,TVector3 V3_q,double *P_pi);
-   void pi2_rot_func(std::string beam_en, TVector3 V3_pi[2], int q_pi[2],bool radstat[2], TVector3 V3_q,double *P_0pi,double P_1pi[2]);
-   void pi3_rot_func(std::string beam_en, TVector3 V3_pi[3], int q_pi[3],bool radstat[3], TVector3 V3_q,double *P_0pi,double P_1pi[3],double P_320[3],double P_3210[][2]);
-   void pi4_rot_func(std::string beam_en, TVector3 V3_pi[4], int q_pi[4],bool radstat[4], TVector3 V3_q,double *P_0pi,double *P_410,double *P_420,double *P_4210,double *P_430,double *P_4310,double *P_4320,double *P_43210);
-   double acceptance_c(double p, double cost, double phi, int id,TFile* file_acceptance, bool ApplyAccWeights);
 
 };
 
 #endif
 #ifdef GENIE_ANALYSIS_C
 
-genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int number_rotations, int choice,TTree *tree) : fChain(0)
+genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int choice,TTree *tree) : fChain(0)
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
@@ -315,8 +274,6 @@ genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int n
 
 
      fiducialcut = new Fiducial();
-     rotation = new Subtraction();
-     N_tot = number_rotations;
      ftarget = a_target;
      fbeam_en = a_beam_en;
      fTorusCurrent = 0;
@@ -338,12 +295,6 @@ genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int n
       // The following code should be used if you want this class to access a chain
       // of trees.
       TChain * chain = new TChain("gst","genie_analysis");
-
-	if (fchoice == 0) { 
-
-		chain->Add(Form("/w/hallb-scifs17exp/clas/claseg2/apapadop/GetCharge_genie_filtered_data_e2a_ep_%s_%s_neutrino6_united4_radphot_test_100M.root",ftarget.c_str(), fbeam_en.c_str())); 
-
-	}
 
       if (fchoice == 1) { 
 
