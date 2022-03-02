@@ -325,9 +325,6 @@ void genie_analysis::Loop(Int_t choice) {
 
 	// ---------------------------------------------------------------------------------------------------------------
 
-	// Justification for the parameter choice
-	// https://docs.google.com/presentation/d/1ghG08JfCYXRXh6O8hcXKrhJOFxkAs_9i5ZfoIkiiEHU/edit?usp=sharing
-
 	TF1 *myElectronFit = new TF1("myElectronFit","[0]+[1]/x",0.,5.);
 
 	if (en_beam[fbeam_en] == 1.161) { myElectronFit->SetParameters(17,7); }
@@ -335,8 +332,6 @@ void genie_analysis::Loop(Int_t choice) {
 	if (en_beam[fbeam_en] == 4.461) { myElectronFit->SetParameters(13.5,15); }
 
 	// ---------------------------------------------------------------------------------------------------------------
-
-	/** Beginning of Event Loop **/
 
 	int TotalCounter = 0;
 
