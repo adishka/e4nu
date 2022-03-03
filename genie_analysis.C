@@ -71,7 +71,7 @@ double DeltaPhiTFunction(TVector3 MuonVector,TVector3 ProtonVector) {
 // Loading all the constants from Constant.h (e_mass, m_prot, m_pimi, m_pipl, m_pion, m_neut = 0.939565,
 // H3_bind_en, He4_bind_en, C12_bind_en, B_bind_en, He3_bind_en, D2_bind_en, Fe_bind_en, Mn_bind_en
 
-void genie_analysis::Loop(Int_t choice) {
+void genie_analysis::Loop() {
 
 	TH1D::SetDefaultSumw2();
 	TH2D::SetDefaultSumw2();
@@ -93,12 +93,6 @@ void genie_analysis::Loop(Int_t choice) {
 	bool ApplyThetaSlice = false; double MinThetaSlice = 36, MaxThetaSlice = 39;
 
 	// ---------------------------------------------------------------------------------------------------------------
-
-	//Choice = 0 is for analysis of CLAS data while choice = 1 is for the analysis of GENIE Simulation
-	if (choice != 1) {
-		std::cout << "This parameter value is not implemented in genie_analysis::Loop(). It should be 1. The given value is " << choice << std::endl;
-		std::exit(0);
-	}
 
 	std::map<std::string,double> bind_en;
 	std::map<std::string,double> target_mass;
@@ -261,12 +255,12 @@ void genie_analysis::Loop(Int_t choice) {
 	// 0pi plots
 
 	TH1F *h1_E_rec_0pi_frac_feed=new TH1F("h1_E_rec_0pi_frac_feed","",n_bins,x_qe);
-	TH1F *h1_E_rec_0pi = new TH1F("h1_E_rec_0pi","",n_bins,x_values);
+	TH1F *h1_E_rec_0pi = new TH1F("h_Erec_subtruct_piplpimi_noprot_3pi","",n_bins,x_values);
 
 	// 1p0pi plots	
 
 	TH1F *h1_E_tot_cut2_fracfeed = new TH1F("h1_E_tot_cut2_fracfeed","",n_bins,x_qe);
-	TH1F *h1_E_tot_cut2 = new TH1F("h1_E_tot_cut2","",n_bins,x_values);
+	TH1F *h1_E_tot_cut2 = new TH1F("epRecoEnergy_slice_0","",n_bins,x_values);
 
 	// ---------------------------------------------------------------------------------------------------
 
@@ -363,14 +357,10 @@ void genie_analysis::Loop(Int_t choice) {
 
 		int Interaction = -1;
 
-		if (choice > 0) {
-
-			if (qel) { Interaction = 1; }
-			if (mec) { Interaction = 2; }
-			if (res) { Interaction = 3; }
-			if (dis) { Interaction = 4; }
-
-		}
+		if (qel) { Interaction = 1; }
+		if (mec) { Interaction = 2; }
+		if (res) { Interaction = 3; }
+		if (dis) { Interaction = 4; }
 
 		// ---------------------------------------------------------------------------------------------------------------
 
@@ -420,22 +410,18 @@ void genie_analysis::Loop(Int_t choice) {
 
 		// ----------------------------------------------------------------------------------------------------------------------	
 
-		if (choice > 0) { //smearing, fiducials and acceptance ratio for GENIE simulation data
+		//Smearing of Electron Vector from Simulation
+		SmearedPe = pl;
+		SmearedEe = sqrt( SmearedPe*SmearedPe + e_mass * e_mass );
+		V3_el.SetXYZ(pxl,pyl,pzl);
+		V4_el.SetPxPyPzE(V3_el.X(),V3_el.Y(),V3_el.Z(),SmearedEe);
+		double phi_ElectronOut = V3_el.Phi(); //in Radians
 
-			//Smearing of Electron Vector from Simulation
-			SmearedPe = pl;
-			SmearedEe = sqrt( SmearedPe*SmearedPe + e_mass * e_mass );
-			V3_el.SetXYZ(pxl,pyl,pzl);
-			V4_el.SetPxPyPzE(V3_el.X(),V3_el.Y(),V3_el.Z(),SmearedEe);
-			double phi_ElectronOut = V3_el.Phi(); //in Radians
+		V3_el.SetPhi(phi_ElectronOut + TMath::Pi() ); // Vec.Phi() is between (-180,180), GENIE coordinate system flipped with respect to CLAS
 
-			V3_el.SetPhi(phi_ElectronOut + TMath::Pi() ); // Vec.Phi() is between (-180,180), GENIE coordinate system flipped with respect to CLAS
-
-			phi_ElectronOut += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
-			el_momentum = V3_el.Mag(); //Momentum after smearing
-			el_theta = V3_el.Theta(); //Angle after smearing	
-
-		}
+		phi_ElectronOut += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
+		el_momentum = V3_el.Mag(); //Momentum after smearing
+		el_theta = V3_el.Theta(); //Angle after smearing	
 
 		// ----------------------------------------------------------------------------------------------------------------------
 
@@ -566,27 +552,23 @@ void genie_analysis::Loop(Int_t choice) {
 
 			if (pdgf[i] == 2212  && pf[i] > 0.3) {
 
-				if ( choice > 0 ) { // GENIE
+				//Smearing of proton
+				double temp_smear_P = pf[i];
+				double temp_smear_E = sqrt( temp_smear_P*temp_smear_P + m_prot * m_prot );
 
-					//Smearing of proton
-					double temp_smear_P = pf[i];
-					double temp_smear_E = sqrt( temp_smear_P*temp_smear_P + m_prot * m_prot );
+				TVector3 V3_prot_corr(pxf[i],pyf[i],pzf[i]);
+				double phi_prot = V3_prot_corr.Phi();
+				V3_prot_corr.SetPhi(phi_prot + TMath::Pi()); // Vec.Phi() is between (-180,180), // GENIE coordinate system flipped with respect to CLAS
 
-					TVector3 V3_prot_corr(pxf[i],pyf[i],pzf[i]);
-					double phi_prot = V3_prot_corr.Phi();
-					V3_prot_corr.SetPhi(phi_prot + TMath::Pi()); // Vec.Phi() is between (-180,180), // GENIE coordinate system flipped with respect to CLAS
+				if (PFiducialCutExtra(StoreEnergy, V3_prot_corr)) { TrueProtonsAboveThreshold++; }
 
-					if (PFiducialCutExtra(StoreEnergy, V3_prot_corr)) { TrueProtonsAboveThreshold++; }
+				num_p = num_p + 1;
+				index_p[num_p - 1] = i;
+				ProtonID.push_back(i);
+				Smeared_Pp[num_p - 1] = temp_smear_P;
+				Smeared_Ep[num_p - 1] = temp_smear_E;
 
-					num_p = num_p + 1;
-					index_p[num_p - 1] = i;
-					ProtonID.push_back(i);
-					Smeared_Pp[num_p - 1] = temp_smear_P;
-					Smeared_Ep[num_p - 1] = temp_smear_E;
-
-					phi_prot += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
-
-				}
+				phi_prot += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
 
 			}
 
@@ -594,38 +576,34 @@ void genie_analysis::Loop(Int_t choice) {
 
 			if (pdgf[i] == -211  && pf[i] > 0.15)  { //Pi minus
 
-				if ( choice > 0) { //GENIE data
+				//Smearing of pi minus
+				double temp_smear_P = pf[i];
+				double temp_smear_E = sqrt( temp_smear_P*temp_smear_P + m_pion * m_pion );
 
-					//Smearing of pi minus
-					double temp_smear_P = pf[i];
-					double temp_smear_E = sqrt( temp_smear_P*temp_smear_P + m_pion * m_pion );
+				TVector3 V3_pi_corr(pxf[i],pyf[i],pzf[i]);
+				double phi_pion = V3_pi_corr.Phi();
+				V3_pi_corr.SetPhi(phi_pion + TMath::Pi()); // Vec.Phi() is between (-180,180)
 
-					TVector3 V3_pi_corr(pxf[i],pyf[i],pzf[i]);
-					double phi_pion = V3_pi_corr.Phi();
-					V3_pi_corr.SetPhi(phi_pion + TMath::Pi()); // Vec.Phi() is between (-180,180)
+				if (PimiFiducialCutExtra(StoreEnergy, V3_pi_corr)) { 
 
-					if (PimiFiducialCutExtra(StoreEnergy, V3_pi_corr)) { 
-
-						TrueChargedPionsAboveThreshold++;
-						TruePiMinusAboveThreshold++;
-
-					}
-
-					num_pimi = num_pimi + 1;
-					num_pi = num_pi + 1;
-					num_pi_phot = num_pi_phot + 1;
-					num_pi_phot_nonrad = num_pi_phot_nonrad + 1;
-					index_pimi[num_pi_phot - 1] = i;
-					index_pi[num_pi_phot - 1] = i;
-					ind_pi_phot[num_pi_phot - 1] = i;
-					PiMinusID.push_back(i);
-					charge_pi[num_pi_phot - 1] = -1;
-					Smeared_Ppi[num_pi_phot - 1] = temp_smear_P;
-					Smeared_Epi[num_pi_phot - 1] = temp_smear_E;
-
-					phi_pion += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
+					TrueChargedPionsAboveThreshold++;
+					TruePiMinusAboveThreshold++;
 
 				}
+
+				num_pimi = num_pimi + 1;
+				num_pi = num_pi + 1;
+				num_pi_phot = num_pi_phot + 1;
+				num_pi_phot_nonrad = num_pi_phot_nonrad + 1;
+				index_pimi[num_pi_phot - 1] = i;
+				index_pi[num_pi_phot - 1] = i;
+				ind_pi_phot[num_pi_phot - 1] = i;
+				PiMinusID.push_back(i);
+				charge_pi[num_pi_phot - 1] = -1;
+				Smeared_Ppi[num_pi_phot - 1] = temp_smear_P;
+				Smeared_Epi[num_pi_phot - 1] = temp_smear_E;
+
+				phi_pion += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
 
 			}
 
@@ -633,37 +611,34 @@ void genie_analysis::Loop(Int_t choice) {
 
 			if ( pdgf[i] == 211  && pf[i] > 0.15)  {
 
-				if ( choice > 0) { //GENIE data
-					//Smearing of pi plus
-					double temp_smear_P = pf[i];
-					double temp_smear_E = sqrt( temp_smear_P*temp_smear_P + m_pion * m_pion );
+				//Smearing of pi plus
+				double temp_smear_P = pf[i];
+				double temp_smear_E = sqrt( temp_smear_P*temp_smear_P + m_pion * m_pion );
 
-					TVector3 V3_pi_corr(pxf[i],pyf[i],pzf[i]);
-					double phi_pion = V3_pi_corr.Phi();
-					V3_pi_corr.SetPhi(phi_pion + TMath::Pi()); // Vec.Phi() is between (-180,180)
+				TVector3 V3_pi_corr(pxf[i],pyf[i],pzf[i]);
+				double phi_pion = V3_pi_corr.Phi();
+				V3_pi_corr.SetPhi(phi_pion + TMath::Pi()); // Vec.Phi() is between (-180,180)
 
-					if (PiplFiducialCutExtra(StoreEnergy, V3_pi_corr)) { 
+				if (PiplFiducialCutExtra(StoreEnergy, V3_pi_corr)) { 
 
-						TrueChargedPionsAboveThreshold++;
-						TruePiPlusAboveThreshold++;
-
-					}
-
-					num_pipl = num_pipl + 1;
-					num_pi  = num_pi + 1;
-					num_pi_phot = num_pi_phot + 1;
-					num_pi_phot_nonrad = num_pi_phot_nonrad + 1;
-					index_pipl[num_pi_phot - 1] = i;
-					index_pi[num_pi_phot - 1] = i;
-					ind_pi_phot[num_pi_phot - 1] = i;
-					PiPlusID.push_back(i);
-					charge_pi[num_pi_phot - 1] = 1;
-					Smeared_Ppi[num_pi_phot - 1] = temp_smear_P;
-					Smeared_Epi[num_pi_phot - 1] = temp_smear_E;
-
-					phi_pion += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
+					TrueChargedPionsAboveThreshold++;
+					TruePiPlusAboveThreshold++;
 
 				}
+
+				num_pipl = num_pipl + 1;
+				num_pi  = num_pi + 1;
+				num_pi_phot = num_pi_phot + 1;
+				num_pi_phot_nonrad = num_pi_phot_nonrad + 1;
+				index_pipl[num_pi_phot - 1] = i;
+				index_pi[num_pi_phot - 1] = i;
+				ind_pi_phot[num_pi_phot - 1] = i;
+				PiPlusID.push_back(i);
+				charge_pi[num_pi_phot - 1] = 1;
+				Smeared_Ppi[num_pi_phot - 1] = temp_smear_P;
+				Smeared_Epi[num_pi_phot - 1] = temp_smear_E;
+
+				phi_pion += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
 
 			}
 
@@ -673,16 +648,14 @@ void genie_analysis::Loop(Int_t choice) {
 
 				//Determine photon vector for the cut on radiation photon via angle with respect to the electron
 				TVector3 V3_phot_angles(pxf[i],pyf[i],pzf[i]);
-				if (choice > 0) { //GENIE data
-					//no smearing of GENIE photons
-					double phi_photon = V3_phot_angles.Phi();
-					V3_phot_angles.SetPhi(phi_photon + TMath::Pi()); // Vec.Phi() is between (-180,180)
 
-					if (Phot_fidExtra(V3_phot_angles)) { 
+				//no smearing of GENIE photons
+				double phi_photon = V3_phot_angles.Phi();
+				V3_phot_angles.SetPhi(phi_photon + TMath::Pi()); // Vec.Phi() is between (-180,180)
+
+				if (Phot_fidExtra(V3_phot_angles)) { 
 	
-						TrueGammasAboveThreshold++;
-
-					}
+					TrueGammasAboveThreshold++;
 
 				}
 
@@ -771,7 +744,7 @@ void genie_analysis::Loop(Int_t choice) {
 			h1_E_rec_0pi_frac_feed->Fill((E_rec-en_beam_Eqe[fbeam_en])/en_beam_Eqe[fbeam_en],WeightIncl);
 
 			InclusiveEQE_BreakDown[0]->Fill(E_rec,WeightIncl);
-			if (choice > 0 && WeightIncl > 0) { InclusiveEQE_BreakDown[Interaction]->Fill(E_rec,WeightIncl); }
+			if (WeightIncl > 0) { InclusiveEQE_BreakDown[Interaction]->Fill(E_rec,WeightIncl); }
 
 		}
 
@@ -791,22 +764,19 @@ void genie_analysis::Loop(Int_t choice) {
 
 			double p_acc_ratio = 1; //acceptance is 1 for CLAS data
 
-			if (choice > 0) { //GENIE data
-				p_acc_ratio = 0; //Reset just to be sure
-				//Fiducial cuts are done in the hadron loop
-				//Vector for proton with momentum smearing
-				V3_prot_corr.SetXYZ(pxf[index_p[0]],pyf[index_p[0]],pzf[index_p[0]]);
-				V4_prot_corr.SetPxPyPzE(pxf[index_p[0]],pyf[index_p[0]],pzf[index_p[0]],Smeared_Ep[0]);
+			p_acc_ratio = 0; //Reset just to be sure
+			//Fiducial cuts are done in the hadron loop
+			//Vector for proton with momentum smearing
+			V3_prot_corr.SetXYZ(pxf[index_p[0]],pyf[index_p[0]],pzf[index_p[0]]);
+			V4_prot_corr.SetPxPyPzE(pxf[index_p[0]],pyf[index_p[0]],pzf[index_p[0]],Smeared_Ep[0]);
 
-				double phi_prot = V3_prot_corr.Phi(); //in Radians
-				V3_prot_corr.SetPhi(phi_prot + TMath::Pi() ); // Vec.Phi() is between (-180,180)
-				phi_prot += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
+			double phi_prot = V3_prot_corr.Phi(); //in Radians
+			V3_prot_corr.SetPhi(phi_prot + TMath::Pi() ); // Vec.Phi() is between (-180,180)
+			phi_prot += TMath::Pi(); // GENIE coordinate system flipped with respect to CLAS
 
-				//Proton kinematic variables
-				double p_theta = V3_prot_corr.Theta();
-				double prot_mom_corr = V3_prot_corr.Mag();
-
-			}
+			//Proton kinematic variables
+			double p_theta = V3_prot_corr.Theta();
+			double prot_mom_corr = V3_prot_corr.Mag();
 
 			TLorentzVector V4_prot_el_tot = V4_prot_corr + V4_el;
 
@@ -857,34 +827,30 @@ void genie_analysis::Loop(Int_t choice) {
 				DeltaPhiT_BreakDown[0]->Fill(deltaphiT,LocalWeight);	     
 				DeltaAlphaT_BreakDown[0]->Fill(deltaalphaT,LocalWeight);				
 
-				if (choice > 0) {
+				ECal_BreakDown[Interaction]->Fill(E_tot,LocalWeight);
+				EQE_BreakDown[Interaction]->Fill(E_rec,LocalWeight);
+				Pmiss_BreakDown[Interaction]->Fill(p_perp_tot,LocalWeight);				
+				DeltaPhiT_BreakDown[Interaction]->Fill(deltaphiT,LocalWeight);	     
+				DeltaAlphaT_BreakDown[Interaction]->Fill(deltaalphaT,LocalWeight);					
 
-					ECal_BreakDown[Interaction]->Fill(E_tot,LocalWeight);
-					EQE_BreakDown[Interaction]->Fill(E_rec,LocalWeight);
-					Pmiss_BreakDown[Interaction]->Fill(p_perp_tot,LocalWeight);				
-					DeltaPhiT_BreakDown[Interaction]->Fill(deltaphiT,LocalWeight);	     
-					DeltaAlphaT_BreakDown[Interaction]->Fill(deltaalphaT,LocalWeight);					
+				if (p_perp_tot < pperp_max[0]) { 
 
-					if (p_perp_tot < pperp_max[0]) { 
+					ECal_LowPmiss_BreakDown[Interaction]->Fill(E_tot,LocalWeight); 
+					EQE_LowPmiss_BreakDown[Interaction]->Fill(E_rec,LocalWeight); 
 
-						ECal_LowPmiss_BreakDown[Interaction]->Fill(E_tot,LocalWeight); 
-						EQE_LowPmiss_BreakDown[Interaction]->Fill(E_rec,LocalWeight); 
+				}
 
-					}
+				if (p_perp_tot > pperp_min[1] && p_perp_tot < pperp_max[1]) { 
 
-					if (p_perp_tot > pperp_min[1] && p_perp_tot < pperp_max[1]) { 
+					ECal_MidPmiss_BreakDown[Interaction]->Fill(E_tot,LocalWeight); 
+					EQE_MidPmiss_BreakDown[Interaction]->Fill(E_rec,LocalWeight); 
 
-						ECal_MidPmiss_BreakDown[Interaction]->Fill(E_tot,LocalWeight); 
-						EQE_MidPmiss_BreakDown[Interaction]->Fill(E_rec,LocalWeight); 
+				}
 
-					}
+				if (p_perp_tot > pperp_min[2] && p_perp_tot < pperp_max[2]) { 
 
-					if (p_perp_tot > pperp_min[2] && p_perp_tot < pperp_max[2]) { 
-
-						ECal_HighPmiss_BreakDown[Interaction]->Fill(E_tot,LocalWeight); 
-						EQE_HighPmiss_BreakDown[Interaction]->Fill(E_rec,LocalWeight); 
-
-					}
+					ECal_HighPmiss_BreakDown[Interaction]->Fill(E_tot,LocalWeight); 
+					EQE_HighPmiss_BreakDown[Interaction]->Fill(E_rec,LocalWeight); 
 
 				}
 
@@ -916,16 +882,11 @@ void genie_analysis::Loop(Int_t choice) {
 	std::cout << std::endl << "1e1p0pi Signal # Events = " << SignalEvents << std::endl;
 	std::cout << std::endl << "Passing Rate = " << int(double(SignalEvents) / double(TotalCounter)*100.) << " \%"<< std::endl << std::endl;
 
-	if (choice > 0) {
-
-		std::cout << std::endl << "QE Fractional Contribution = " << int(double(QESignalEvents) / double(SignalEvents)*100.) << " \%" << std::endl;
-		std::cout << std::endl << "MEC Fractional Contribution = " << int(double(MECSignalEvents) / double(SignalEvents)*100.) << " \%" << std::endl;
-		std::cout << std::endl << "RES Fractional Contribution = " << int(double(RESSignalEvents) / double(SignalEvents)*100.) << " \%" << std::endl;
-		std::cout << std::endl << "DIS Fractional Contribution = " << int(double(DISSignalEvents) / double(SignalEvents)*100.) << " \%" << std::endl;
-		std::cout << std::endl << "-----------------------------------------------------------------------------------------------------" << std::endl;
-
-	}
-
+	std::cout << std::endl << "QE Fractional Contribution = " << int(double(QESignalEvents) / double(SignalEvents)*100.) << " \%" << std::endl;
+	std::cout << std::endl << "MEC Fractional Contribution = " << int(double(MECSignalEvents) / double(SignalEvents)*100.) << " \%" << std::endl;
+	std::cout << std::endl << "RES Fractional Contribution = " << int(double(RESSignalEvents) / double(SignalEvents)*100.) << " \%" << std::endl;
+	std::cout << std::endl << "DIS Fractional Contribution = " << int(double(DISSignalEvents) / double(SignalEvents)*100.) << " \%" << std::endl;
+	std::cout << std::endl << "-----------------------------------------------------------------------------------------------------" << std::endl;
 
 	std::cout << "File " << FileName << " created" << std::endl << std::endl;
 

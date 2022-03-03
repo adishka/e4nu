@@ -19,7 +19,6 @@ public :
 
    Fiducial   *fiducialcut;
    int fTorusCurrent;
-   int fchoice;
    std::string target_name;
    std::map<std::string,double> en_beam;
    std::map<std::string,double> en_beam_Ecal;
@@ -215,13 +214,13 @@ public :
    TBranch        *b_sumKEf;   //!
    TBranch        *b_calresp0;   //!
 
-   genie_analysis(std::string, std::string, int ,TTree *tree=0);
+   genie_analysis(std::string, std::string, TTree *tree=0);
    virtual ~genie_analysis();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop(Int_t choice);
+   virtual void     Loop();
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 
@@ -266,7 +265,7 @@ public :
 #endif
 #ifdef GENIE_ANALYSIS_C
 
-genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int choice,TTree *tree) : fChain(0)
+genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, TTree *tree) : fChain(0)
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
@@ -277,7 +276,6 @@ genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int c
      ftarget = a_target;
      fbeam_en = a_beam_en;
      fTorusCurrent = 0;
-     fchoice = choice;
 
 
 
@@ -296,11 +294,7 @@ genie_analysis::genie_analysis(std::string a_target,std::string a_beam_en, int c
       // of trees.
       TChain * chain = new TChain("gst","genie_analysis");
 
-      if (fchoice == 1) { 
-
-		chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_SuSav2/Exclusive/electrons/%s_%sGeV/apapadop_SuSav2_%s_%sGeV_master*.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));	   
-		
-	}
+	chain->Add(Form("/pnfs/genie/persistent/users/apapadop/e4v_SuSav2/Exclusive/electrons/%s_%sGeV/apapadop_SuSav2_%s_%sGeV_master*.root", ftarget.c_str(),fbeam_en.c_str(),ftarget.c_str(),fbeam_en.c_str()));	   
 
       tree = chain;
 #endif // SINGLE_TREE
