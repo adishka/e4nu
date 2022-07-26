@@ -74,8 +74,8 @@ void PlotGenieAbsXSec() {
 
 	xBCut.push_back("NoxBCut");
 
-	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
-//	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
+//	NameOfPlots.push_back("h_Erec_subtruct_piplpimi_noprot_3pi"); LabelOfPlots.push_back("(e,e')_{0#pi} E_{QE} [GeV]");  OutputPlotNames.push_back("InclusiveeRecoEnergy_slice_0");
+	NameOfPlots.push_back("epRecoEnergy_slice_0"); LabelOfPlots.push_back("(e,e'p)_{1p0#pi} E_{cal} [GeV]"); OutputPlotNames.push_back("epRecoEnergy_slice_0");
 
 	if (NameOfPlots[0] == "h_Erec_subtruct_piplpimi_noprot_3pi") {
 
@@ -85,7 +85,8 @@ void PlotGenieAbsXSec() {
 	} else {
 
 		FSIModel.push_back("hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("G2018");
-		FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");	
+		FSIModel.push_back("SuSav2_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SuSav2");
+		FSIModel.push_back("Fortran_SF_NoRadCorr_LFGM_Truth_WithoutFidAcc"); FSILabel.push_back("SF");			
 
 	}
 
@@ -190,6 +191,7 @@ void PlotGenieAbsXSec() {
 						// --------------------------------------------------------------------------------------------------
 
 						if (FSILabel[WhichFSIModel] == "G2018") { Plots[WhichFSIModel]->SetLineStyle(kDashed); }
+						if (FSILabel[WhichFSIModel] == "SF") { Plots[WhichFSIModel]->SetLineColor(kOrange+7); }						
 						Plots[WhichFSIModel]->Draw("C hist same");  // draw them as lines
 
 						legGenieBlackLine->AddEntry(Plots[WhichFSIModel],FSILabel[WhichFSIModel], "l"); 
@@ -203,7 +205,9 @@ void PlotGenieAbsXSec() {
 					legGenieBlackLine->SetTextFont(FontStyle);
 					legGenieBlackLine->SetNColumns(1); 
 					legGenieBlackLine->SetTextSize(TextSize-0.03); 
-					legGenieBlackLine->Draw(); 				
+					legGenieBlackLine->Draw(); 			
+
+
 
 				} // End of the loop over the plots
 				

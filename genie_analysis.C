@@ -397,7 +397,6 @@ void genie_analysis::Loop() {
 
 		double SmearedPe;
 		double SmearedEe;
-		double e_acc_ratio = 1.;	//will be 1 for CLAS data
 
 		// Outgoing e',	Uncorr and corrected are the same read from root file.
 		//V4_el and V3_el will be changed by smearing for GENIE simulation data
@@ -450,7 +449,7 @@ void genie_analysis::Loop() {
 		// Sanity check, especially for radiation
 		if (wght < 0 || wght > 10) { std::cout << "Something is really wrong with your weights !!!" << std::endl; }
 
-		double WeightIncl = wght*e_acc_ratio / Mott_cross_sec;
+		double WeightIncl = wght / Mott_cross_sec;
 
 		// Securing ourselves against infinities
 		if ( fabs(WeightIncl) != WeightIncl ) { continue; }
@@ -762,9 +761,6 @@ void genie_analysis::Loop() {
 			TVector3 V3_prot_corr;
 			TLorentzVector V4_prot_corr;
 
-			double p_acc_ratio = 1; //acceptance is 1 for CLAS data
-
-			p_acc_ratio = 0; //Reset just to be sure
 			//Fiducial cuts are done in the hadron loop
 			//Vector for proton with momentum smearing
 			V3_prot_corr.SetXYZ(pxf[index_p[0]],pyf[index_p[0]],pzf[index_p[0]]);
@@ -801,7 +797,7 @@ void genie_analysis::Loop() {
 				else { OtherSignalEvents++; }
 
 				//histoweight is 1/Mott_cross_sec for CLAS data
-				double histoweight = p_acc_ratio * e_acc_ratio * wght/Mott_cross_sec;
+				double histoweight = wght/Mott_cross_sec;
 
 				h1_E_tot_cut2->Fill(E_tot,histoweight);
 				h1_E_tot_cut2_fracfeed->Fill(ECalReso,histoweight);

@@ -111,6 +111,13 @@ void AbsoluteXSecScaling(TH1D* h, TString Sample, TString Nucleus, TString E) {
 
 	}
 
+	else if (Sample == "Fortran SF NoRad") { 
+
+				SF = (FortranSFGenieXSec[std::make_pair(Nucleus, E)] * TMath::Power(10.,-38.) *\
+					ConversionFactorCm2ToMicroBarn / (NoRadFortranSFNumberEvents[std::make_pair(Nucleus, E)] ) ) ;
+
+	}
+
 	else {
 
 		std::cout << "Craaaaaaaaaaaaaaap !!!!!!!!! What is the SF in AbsoluteXSecScaling for " << h->GetName() << " in " << Sample << "???????????????" << std::endl;

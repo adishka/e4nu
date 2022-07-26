@@ -56,13 +56,19 @@
 		// ------------------------------------------------------------------------------------------------------
 
 		{ "hA2018_Final_NoRadCorr_LFGM_Truth_WithoutFidAcc", "G2018 NoRad" },
-		{ "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc", "G2018 NoRad" }
+		{ "hA2018_Final_NoRadCorr_LFGM_Truth0pi_WithoutFidAcc", "G2018 NoRad" },
+		
+		// ------------------------------------------------------------------------------------------------------
+
+		{ "Fortran_SF_NoRadCorr_LFGM_Truth_WithoutFidAcc", "Fortran SF NoRad" },		
 
 		// ------------------------------------------------------------------------------------------------------
 
 
 
 	};
+	
+	//--------------------------------//
 
 	// SuSav2 GENIE spline xsec // 10^{-38} cm^2
 
@@ -90,6 +96,8 @@
 		{ std::make_pair("56Fe", "2_261"), 167000000 }, // Q2 > 0.4
 		{ std::make_pair("56Fe", "4_461"), 190600000 } // Q2 > 0.8
 	};
+
+	//--------------------------------//
 
 	// G2018 GENIE spline xsec // 10^{-38} cm^2
 
@@ -121,6 +129,39 @@
 		{ std::make_pair("56Fe", "4_461"), 81100000 } // Q2 > 0.8
 
 	};
+	
+	//--------------------------------//	
+	
+	// Fortran SF GENIE spline xsec // 10^{-38} cm^2
+
+	static std::map<std::pair<TString,TString>,double> FortranSFGenieXSec =
+	{
+		{ std::make_pair("1H", "1_161"),  0. }, // Q2 > 0.1
+		{ std::make_pair("1H", "2_261"),  0. }, // Q2 > 0.4
+		{ std::make_pair("1H", "4_461"),  0. }, // Q2 > 0.8
+		{ std::make_pair("4He", "2_261"), 0. }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"), 0. }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"), 3.17e9  }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"), 0. }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"), 0. }, // Q2 > 0.8
+		{ std::make_pair("56Fe", "2_261"),0. }, // Q > 0.4
+		{ std::make_pair("56Fe", "4_461"),0. } // Q2 > 0.8
+	};
+
+	// No Rad Fortran SF GENIE number events 
+
+	static std::map<std::pair<TString,TString>,double> NoRadFortranSFNumberEvents =
+	{
+
+		{ std::make_pair("4He", "2_261"),  0. }, // Q2 > 0.4
+		{ std::make_pair("4He", "4_461"),  0. }, // Q2 > 0.8
+		{ std::make_pair("12C", "1_161"),  300000. }, // Q2 > 0.1
+		{ std::make_pair("12C", "2_261"),  0. }, // Q2 > 0.4
+		{ std::make_pair("12C", "4_461"),  0. }, // Q2 > 0.8
+		{ std::make_pair("56Fe", "2_261"), 0. }, // Q2 > 0.4
+		{ std::make_pair("56Fe", "4_461"), 0. } // Q2 > 0.8
+
+	};	
 	
 	//  ------------------------------------------------------------------------------	
 
